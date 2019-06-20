@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedWriter;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.file.Files;
@@ -22,8 +21,6 @@ public class TxtWriter implements ITxtWriter<String> {
     private boolean isAppend = true;
     private boolean isWarp = true;
     private String charset = UTF8;
-    private FileOutputStream fos;
-    private OutputStreamWriter osw;
     private BufferedWriter bw;
 
     /**
@@ -100,7 +97,7 @@ public class TxtWriter implements ITxtWriter<String> {
     @Override
     public void close() throws IOException {
         flush();
-        Closee.close(bw, fos, osw);
+        Closee.close(bw);
     }
 
     @Override
