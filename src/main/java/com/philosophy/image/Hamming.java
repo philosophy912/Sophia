@@ -6,8 +6,10 @@ import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Hamming implements ICompare {
     /**
@@ -21,11 +23,21 @@ public class Hamming implements ICompare {
     /**
      * ColorConvertOp
      **/
-    private static ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+    private ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
     /**
      * c
      **/
-    private static double[] c;
+    private double[] c;
+
+    public Hamming() {
+        c = new double[size];
+
+        for (int i = 1; i < size; i++) {
+            c[i] = 1;
+        }
+        c[0] = 1 / Math.sqrt(2.0);
+    }
+
     private int distance(String s1, String s2) {
         int counter = 0;
         for (int k = 0; k < s1.length(); k++) {
@@ -43,16 +55,18 @@ public class Hamming implements ICompare {
         g.dispose();
         return resizedImage;
     }
+
     private BufferedImage grayscale(BufferedImage image) {
         colorConvert.filter(image, image);
         return image;
     }
+
     private double getBlue(BufferedImage image, int x, int y) {
         return (image.getRGB(x, y)) & 0xff;
     }
+
     private double[][] applyDCT(double[][] f) {
         int N = size;
-
         double[][] F = new double[N][N];
         for (int u = 0; u < N; u++) {
             for (int v = 0; v < N; v++) {
@@ -68,6 +82,7 @@ public class Hamming implements ICompare {
         }
         return F;
     }
+
     private String getHash(BufferedImage image) {
         /*
          * 1. Reduce size. Like Average Hash, pHash starts with a small image.
@@ -151,4 +166,5 @@ public class Hamming implements ICompare {
         String s2 = getHash(Picture.read(image2));
         return distance(s1, s2);
     }
+
 }
