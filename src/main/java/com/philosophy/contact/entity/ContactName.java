@@ -1,4 +1,4 @@
-package com.philosophy.contact;
+package com.philosophy.contact.entity;
 
 import lombok.Getter;
 import lombok.Setter;

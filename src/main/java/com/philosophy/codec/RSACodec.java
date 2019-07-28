@@ -30,10 +30,11 @@ import java.util.Base64;
  * @since V1.0.0 2019/5/23 23:49
  **/
 public class RSACodec implements IRSACodec {
-    private static Logger logger = LogManager.getLogger(RSACodec.class);
+    private static Logger log = LogManager.getLogger(RSACodec.class);
     private RSAPublicKey publicKey;
     private RSAPrivateKey privateKey;
-    private static String RSA = "RSA";
+    private static final String RSA = "RSA";
+    private static final String UTF8 = "UTF-8";
 
     /**
      * 获取公钥和私钥（一个文件方式）
@@ -48,11 +49,11 @@ public class RSACodec implements IRSACodec {
             oi = new ObjectInputStream(Files.newInputStream(keyPath));
             kePair = (KeyPair) oi.readObject();
         } catch (Exception e) {
-            logger.error("read key path[" + keyPath + "] failed. " + e.getMessage());
+            log.error("read key path[{}] failed. Error Message{}", keyPath, e.getMessage());
         } finally {
             Closee.close(oi);
-            return kePair;
         }
+        return kePair;
     }
 
     /**
@@ -63,21 +64,21 @@ public class RSACodec implements IRSACodec {
      * @return 公钥和私钥
      */
     private Pair<RSAPublicKey, RSAPrivateKey> getRSAKey(Path publicPath, Path privatePath) {
-        ObjectInputStream oipub = null;
-        ObjectInputStream oipri = null;
+        ObjectInputStream objectInputStreamPublic = null;
+        ObjectInputStream objectInputStreamPrivate = null;
         Pair<RSAPublicKey, RSAPrivateKey> pair = null;
         try {
-            oipub = new ObjectInputStream(Files.newInputStream(publicPath));
-            oipri = new ObjectInputStream(Files.newInputStream(privatePath));
-            RSAPublicKey publicKey = (RSAPublicKey) oipub.readObject();
-            RSAPrivateKey privateKey = (RSAPrivateKey) oipri.readObject();
+            objectInputStreamPublic = new ObjectInputStream(Files.newInputStream(publicPath));
+            objectInputStreamPrivate = new ObjectInputStream(Files.newInputStream(privatePath));
+            RSAPublicKey publicKey = (RSAPublicKey) objectInputStreamPublic.readObject();
+            RSAPrivateKey privateKey = (RSAPrivateKey) objectInputStreamPrivate.readObject();
             pair = new Pair<>(publicKey, privateKey);
         } catch (Exception e) {
-            logger.error("read public path[" + publicPath + "] && private path[" + privatePath + "] failed" + e.getMessage());
+            log.error("read public path[{}] && private path[{}] failed. Error Message{}", publicPath, privatePath, e.getMessage());
         } finally {
-            Closee.close(oipub, oipri);
-            return pair;
+            Closee.close(objectInputStreamPublic, objectInputStreamPrivate);
         }
+        return pair;
     }
 
     /**
@@ -102,6 +103,7 @@ public class RSACodec implements IRSACodec {
 
     /**
      * 保存key
+     *
      * @param keyPath 路径
      * @param keyPair keypair对象
      * @throws IOException 抛出异常
@@ -114,8 +116,9 @@ public class RSACodec implements IRSACodec {
 
     /**
      * 保存key
+     *
      * @param keyPath 路径
-     * @param rsaKey rsakey对象
+     * @param rsaKey  rsakey对象
      * @throws IOException 抛出异常
      */
     private void save(Path keyPath, RSAKey rsaKey) throws IOException {
@@ -136,9 +139,8 @@ public class RSACodec implements IRSACodec {
             if (Files.exists(p)) {
                 try {
                     Files.delete(p);
-                    flag = flag && true;
                 } catch (IOException e) {
-                    logger.error("delete path[" + p + "] failed" + e.getMessage());
+                    log.error("delete path[{}] failed. Error Message{}", p, e.getMessage());
                     flag = false;
                 }
             }
@@ -154,10 +156,10 @@ public class RSACodec implements IRSACodec {
      * @return chiper对象
      * @throws Exception 抛出异常
      */
-    private Cipher chiperInit(ECodecType method, boolean flag) throws Exception {
+    private Cipher chiperInit(String method, boolean flag) throws Exception {
         KeyFactory keyFactory = KeyFactory.getInstance(RSA);
         Cipher cipher = null;
-        if (ECodecType.PUBLIC == method) {
+        if (method.equals(PUBLIC)) {
             String key = encode(publicKey.getEncoded());
             byte[] keyBytes = decode(key);
             X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
@@ -169,7 +171,7 @@ public class RSACodec implements IRSACodec {
             } else {
                 cipher.init(Cipher.DECRYPT_MODE, publicK);
             }
-        } else if (ECodecType.PRIVATE == method) {
+        } else if (method.equals(PRIVATE)) {
             String key = encode(privateKey.getEncoded());
             byte[] keyBytes = decode(key);
             PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
@@ -186,9 +188,10 @@ public class RSACodec implements IRSACodec {
 
     /**
      * chiper加密
+     *
      * @param cipher cipher对象chiperInit获取。
-     * @param str 加密或者解密字符
-     * @param flag True为加密， False为解密
+     * @param str    加密或者解密字符
+     * @param flag   True为加密， False为解密
      * @return
      * @throws Exception
      */
@@ -229,23 +232,24 @@ public class RSACodec implements IRSACodec {
 
     /**
      * 提取方法
+     *
      * @param inputLen
      * @param offSet
      * @param cipher
      * @param data
      * @param out
-     * @param type true加密，false 解密
+     * @param type     true加密，false 解密
      * @throws Exception
      */
-    private void codecData(int inputLen, int offSet, Cipher cipher, byte[] data, ByteArrayOutputStream out, boolean type) throws Exception{
+    private void codecData(int inputLen, int offSet, Cipher cipher, byte[] data, ByteArrayOutputStream out, boolean type) throws Exception {
         byte[] cache;
-        if(type){
+        if (type) {
             if (inputLen - offSet > MAX_ENCRYPT_BLOCK) {
                 cache = cipher.doFinal(data, offSet, MAX_ENCRYPT_BLOCK);
             } else {
                 cache = cipher.doFinal(data, offSet, inputLen - offSet);
             }
-        }else{
+        } else {
             if (inputLen - offSet > MAX_DECRYPT_BLOCK) {
                 cache = cipher.doFinal(data, offSet, MAX_DECRYPT_BLOCK);
             } else {
@@ -258,26 +262,26 @@ public class RSACodec implements IRSACodec {
 
     /**
      * 加密/解密后的字符串
+     *
      * @param source 要加密/解密的字符串
      * @param method PRIVATE或者PUBLIC
-     * @param flag  True为加密， False为解密
+     * @param flag   True为加密， False为解密
      * @return 加密/解密后的字符串
      */
-    private String getString(String source, ECodecType method, boolean flag) {
-        String str = null;
+    private String getString(String source, String method, boolean flag) {
+        String str;
         Cipher cipher;
         try {
-            if(publicKey==null || privateKey ==null){
+            if (publicKey == null || privateKey == null) {
                 return source;
             }
             cipher = chiperInit(method, flag);
             str = chiperEncrypt(cipher, source, flag);
         } catch (Exception e) {
-            logger.error("found some issue when encrypt string" + e.getMessage());
+            log.error("found some issue when encrypt string, Error Message[{}]", e.getMessage());
             str = source;
-        }finally {
-            return str;
         }
+        return str;
     }
 
     @Override
@@ -301,14 +305,14 @@ public class RSACodec implements IRSACodec {
         if (!deleteKey(path)) {
             return null;
         }
-        KeyPairGenerator keyPairGen = null;
+        KeyPairGenerator keyPairGen;
         try {
             keyPairGen = KeyPairGenerator.getInstance(RSA);
             keyPairGen.initialize(1024);
             KeyPair keyPair = keyPairGen.generateKeyPair();
             save(path, keyPair);
         } catch (Exception e) {
-            logger.error("generator key failed" + e.getMessage());
+            log.error("generator key failed" + e.getMessage());
             return null;
         }
         return path;
@@ -318,9 +322,9 @@ public class RSACodec implements IRSACodec {
     public Pair<Path, Path> saveKey(Path publicPath, Path privatePath) {
         Pair<Path, Path> pair = null;
         if (!deleteKey(publicPath, privatePath)) {
-            return pair;
+            return null;
         }
-        KeyPairGenerator keyPairGen = null;
+        KeyPairGenerator keyPairGen;
         try {
             keyPairGen = KeyPairGenerator.getInstance(RSA);
             keyPairGen.initialize(1024);
@@ -333,19 +337,18 @@ public class RSACodec implements IRSACodec {
             save(publicPath, rsaPublicKey);
             pair = new Pair<>(publicPath, privatePath);
         } catch (Exception e) {
-            logger.error("generator key failed" + e.getMessage());
-        } finally {
-            return pair;
+            log.error("generator key failed. Error Message[{}]", e.getMessage());
         }
+        return pair;
     }
 
     @Override
-    public String encrypt(String source, ECodecType method) {
+    public String encrypt(String source, String method) {
         return getString(source, method, true);
     }
 
     @Override
-    public String decrypt(String source, ECodecType method) {
-        return getString(source, method,false);
+    public String decrypt(String source, String method) {
+        return getString(source, method, false);
     }
 }

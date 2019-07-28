@@ -3,25 +3,22 @@ package com.philosophy.txt;
 import com.philosophy.api.txt.ITxtWriter;
 import com.philosophy.tools.Closee;
 import lombok.Setter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import java.io.Writer;
 import java.util.List;
 
-@Setter
 public class TxtWriter implements ITxtWriter<String> {
-    private Logger logger = LogManager.getLogger(TxtWriter.class);
 
-    private boolean isAppend = true;
-    private boolean isWarp = true;
-    private String charset = UTF8;
+    @Setter
     private BufferedWriter bw;
+    @Setter
+    private boolean isWarp;
+
+    public TxtWriter(final Writer writer) {
+        bw = new BufferedWriter(writer);
+    }
 
     /**
      * 写入的txt的line值
@@ -68,31 +65,6 @@ public class TxtWriter implements ITxtWriter<String> {
         }
     }
 
-
-    @Override
-    public void open(Path path) throws IOException {
-        /**
-         * READ	以读取方式打开文件
-         * WRITE　　	已写入方式打开文件
-         * CREATE	如果文件不存在，创建
-         * CREATE_NEW	如果文件不存在，创建；若存在，异常。
-         * APPEND	在文件的尾部追加
-         * DELETE_ON_CLOSE	当流关闭的时候删除文件
-         * TRUNCATE_EXISTING	把文件设置为0字节
-         * SPARSE	文件不够时创建新的文件
-         * SYNC	同步文件的内容和元数据信息随着底层存储设备
-         * DSYNC	同步文件的内容随着底层存储设备
-         */
-        if (isAppend) {
-            if (!Files.exists(path)) {
-                Files.createFile(path);
-            }
-            bw = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(path, StandardOpenOption.WRITE,
-                    StandardOpenOption.APPEND), charset));
-        }
-        bw = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(path, StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE), charset));
-    }
 
     @Override
     public void close() throws IOException {

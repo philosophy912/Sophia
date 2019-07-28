@@ -19,10 +19,10 @@ import java.util.Optional;
  * @since V1.0.0 2019/5/23 23:19
  **/
 public class FilePath {
-    private static Logger logger = LogManager.getLogger(FilePath.class);
-    public static int DIRECTORY_ONLY = 0;
-    public static int DIRECTORY_AND_FILE = 1;
-    public static int FILE_ONLY = 2;
+    private static Logger log = LogManager.getLogger(FilePath.class);
+    private static int DIRECTORY_ONLY = 0;
+    private static int DIRECTORY_AND_FILE = 1;
+    private static int FILE_ONLY = 2;
 
     private FilePath() {
     }
@@ -83,7 +83,7 @@ public class FilePath {
             sizes.add(Files.size(path));
         }
         // 求和
-        Optional<Long> size = sizes.stream().reduce((s1, s2) -> s1+s2);
+        Optional<Long> size = sizes.stream().reduce((s1, s2) -> s1 + s2);
         return size.get();
     }
 
@@ -105,7 +105,7 @@ public class FilePath {
             Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    logger.info("now vistor the file[" + file + "]");
+                    log.info("now visit the file[{}]", file);
                     if (type == FILE_ONLY || type == DIRECTORY_AND_FILE) {
                         paths.add(file);
                     }
@@ -114,7 +114,7 @@ public class FilePath {
 
                 @Override
                 public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                    logger.info("now vistor the folder[" + dir + "]");
+                    log.info("now visit the folder[{}]", dir);
                     if (type == DIRECTORY_ONLY || type == DIRECTORY_AND_FILE) {
                         paths.add(dir);
                     }
@@ -138,6 +138,7 @@ public class FilePath {
 
     /**
      * 获取当前路径
+     *
      * @return 当前所在路径
      */
     public static String getCurrentPath() {

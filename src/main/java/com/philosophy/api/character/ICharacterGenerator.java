@@ -1,10 +1,10 @@
 package com.philosophy.api.character;
 
-public interface ICharacterCreater {
+public interface ICharacterGenerator {
     /**
      * create character
      * @param size
      * @return
      */
-    String create(int size);
+    String generate(int size);
 }

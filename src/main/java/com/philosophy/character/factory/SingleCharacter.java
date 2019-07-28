@@ -1,37 +1,39 @@
 package com.philosophy.character.factory;
 
-import com.philosophy.api.character.ICharacterCreater;
+import com.philosophy.api.character.ICharacterGenerator;
 import com.philosophy.api.character.ICharacterFactory;
-import com.philosophy.character.ECharacterType;
+import com.philosophy.api.character.ECharacterType;
 import com.philosophy.character.types.Chinese;
 import com.philosophy.character.types.English;
 import com.philosophy.character.types.Number;
 import com.philosophy.character.types.Symbol;
+import com.philosophy.exception.LowLevelException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class SignleCharacter implements ICharacterFactory {
-    private Logger logger = LogManager.getLogger(SignleCharacter.class);
-    private ICharacterCreater creater;
+public class SingleCharacter implements ICharacterFactory {
+    private static Logger log = LogManager.getLogger(SingleCharacter.class);
+    private ICharacterGenerator generator;
 
     @Override
     public String create(ECharacterType type, int size) {
         switch (type) {
             case ENGLISH:
-                creater = new English();
+                generator = new English();
                 break;
             case CHINESE:
-                creater = new Chinese();
+                generator = new Chinese();
                 break;
             case SYMBOL:
-                creater = new Symbol();
+                generator = new Symbol();
                 break;
             case NUMBER:
-                creater = new Number();
+                generator = new Number();
                 break;
             default:
-                logger.error("type(" + type + ") is incorrect");
+                log.error("type({}) is incorrect", type);
+                throw new LowLevelException("type[" + type + "] is incorrect");
         }
-        return creater.create(size);
+        return generator.generate(size);
     }
 }

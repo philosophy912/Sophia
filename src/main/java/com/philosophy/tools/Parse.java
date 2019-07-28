@@ -1,7 +1,5 @@
 package com.philosophy.tools;
 
-import com.philosophy.api.IConst;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -10,7 +8,10 @@ import java.util.LinkedList;
  * @author lizhe
  * @since V1.0.0 2019/5/23 23:17
  **/
-public class Parse implements IConst {
+public class Parse {
+
+    private static final String UTF8 = "UTF-8";
+
     private Parse() {
     }
 

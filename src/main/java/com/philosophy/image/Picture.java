@@ -1,6 +1,5 @@
 package com.philosophy.image;
 
-import com.philosophy.api.IConst;
 import com.philosophy.tools.Closee;
 import com.philosophy.tools.FilePath;
 
@@ -20,7 +19,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
-public class Picture implements IConst {
+public class Picture {
+    private static final String UTF8 = "UTF-8";
+
     private int getLength(String text) throws UnsupportedEncodingException {
         int length = 0;
         for (int i = 0; i < text.length(); i++) {
@@ -124,7 +125,7 @@ public class Picture implements IConst {
         write((BufferedImage) itemp, target);
     }
 
-    private Graphics2D handle( Image src, int width, int height, BufferedImage image){
+    private Graphics2D handle(Image src, int width, int height, BufferedImage image) {
         Graphics2D g = image.createGraphics();
         g.drawImage(src, 0, 0, width, height, null);
         return g;
@@ -196,10 +197,11 @@ public class Picture implements IConst {
 
     /**
      * 图像切割(按指定起点坐标和宽高切割)[BMP, JPG, PNG, JPEG, GIF]
+     *
      * @param source 源图片
-     * @param x 目标切片起点坐标X
-     * @param y 目标切片起点坐标Y
-     * @param width 目标切片宽度
+     * @param x      目标切片起点坐标X
+     * @param y      目标切片起点坐标Y
+     * @param width  目标切片宽度
      * @param height 目标切片高度
      * @return 切割后的图像BufferedImage对象
      */
@@ -217,6 +219,7 @@ public class Picture implements IConst {
 
     /**
      * 图像类型转换：GIF->JPG、GIF->PNG、PNG->JPG、PNG->GIF(X)、BMP->PNG
+     *
      * @param source 源图片
      * @param target 目标图片
      */
@@ -226,12 +229,13 @@ public class Picture implements IConst {
     }
 
     /**
-     *彩色转为黑白
+     * 彩色转为黑白
+     *
      * @param source 源图片
      * @param target 目标图片
      */
     public void gray(Path source, Path target) throws IOException {
-        BufferedImage src= read(source);
+        BufferedImage src = read(source);
         ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_GRAY);
         ColorConvertOp op = new ColorConvertOp(cs, null);
         src = op.filter(Optional.ofNullable(src).get(), null);
@@ -240,10 +244,11 @@ public class Picture implements IConst {
 
     /**
      * 获取图片大小(宽x高)
+     *
      * @param image 图片
      * @return 宽高数组[Width, Height]
      */
-    public int[] size(BufferedImage image){
+    public int[] size(BufferedImage image) {
         int width = image.getWidth(); // 得到源图宽
         int height = image.getHeight(); // 得到源图长
         return new int[]{width, height};

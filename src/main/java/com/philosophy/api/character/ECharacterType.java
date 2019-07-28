@@ -1,4 +1,4 @@
-package com.philosophy.character;
+package com.philosophy.api.character;
 
 /**
  * @author lizhe

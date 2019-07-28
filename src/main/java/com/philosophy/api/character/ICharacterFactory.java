@@ -1,11 +1,7 @@
 package com.philosophy.api.character;
 
 
-import com.philosophy.api.IConst;
-import com.philosophy.character.ECharacterType;
-
-public interface ICharacterFactory extends IConst {
-
+public interface ICharacterFactory {
 
     /**
      * create character by type and size

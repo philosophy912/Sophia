@@ -12,10 +12,8 @@ public class Pair<T1, T2> implements Serializable {
     /**
      * 构造函数
      *
-     * @param fst
-     *            分量1
-     * @param snd
-     *            分量2
+     * @param fst 分量1
+     * @param snd 分量2
      */
     public Pair(T1 fst, T2 snd) {
         this.fst = fst;
@@ -69,19 +67,21 @@ public class Pair<T1, T2> implements Serializable {
     /**
      * 判断两个对象是否相等的方法，可处理null
      *
-     * @param obj1
-     *            对象1
-     * @param obj2
-     *            对象1
+     * @param obj1 对象1
+     * @param obj2 对象1
      * @return 都为null 或 obj1.equals(obj2)为true
      */
     protected boolean objectEquals(Object obj1, Object obj2) {
         return obj1 == null && obj2 == null || obj1 != null && obj1.equals(obj2);
     }
 
-    /** 分量1 */
+    /**
+     * 分量1
+     */
     protected T1 fst;
-    /** 分量2 */
+    /**
+     * 分量2
+     */
     protected T2 snd;
 
 }

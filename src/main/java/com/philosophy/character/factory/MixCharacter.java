@@ -1,7 +1,8 @@
 package com.philosophy.character.factory;
 
 import com.philosophy.api.character.ICharacterFactory;
-import com.philosophy.character.ECharacterType;
+import com.philosophy.api.character.ECharacterType;
+import com.philosophy.exception.LowLevelException;
 import com.philosophy.tools.Numeric;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,7 +12,7 @@ import java.util.List;
 
 
 public class MixCharacter implements ICharacterFactory {
-    private Logger logger = LogManager.getLogger(MixCharacter.class);
+    private static Logger log = LogManager.getLogger(MixCharacter.class);
     /**
      * @param size
      * @param types
@@ -20,7 +21,7 @@ public class MixCharacter implements ICharacterFactory {
      * @Description: 建立字符库池
      */
     private List<String> setPool(int size, ECharacterType... types)  {
-        ICharacterFactory strategy = new SignleCharacter();
+        ICharacterFactory strategy = new SingleCharacter();
         List<String> pools = new ArrayList<>();
         for (ECharacterType t : types) {
             for (int i = 0; i < size * 100; i++) {
@@ -73,8 +74,8 @@ public class MixCharacter implements ICharacterFactory {
             case CHINESE_ENGLISH_SYMBOL_NUMBER:
                 return getResultFromPool(size, ECharacterType.CHINESE, ECharacterType.ENGLISH, ECharacterType.SYMBOL, ECharacterType.NUMBER);
             default:
-                logger.error("type(" + type + ") is incorrect");
+                log.error("type({}) is incorrect", type);
+                throw new LowLevelException("type[" + type + "] is incorrect");
         }
-        return null;
     }
 }

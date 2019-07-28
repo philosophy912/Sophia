@@ -2,6 +2,9 @@ package com.philosophy.codec;
 
 import com.philosophy.api.codec.IXESCodec;
 import com.philosophy.tools.Parse;
+import lombok.Setter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -14,33 +17,33 @@ import java.security.Security;
  * @author lizhe
  * @since V1.0.0 2019/5/23 23:50
  **/
+@Setter
 public class XESCodec implements IXESCodec {
-    private int size = 0;
+    private static Logger log = LogManager.getLogger(XESCodec.class);
+    // 加密方式
+    private String codecType;
+    private static final String UTF8 = "UTF-8";
 
-    /**
-     * 根据传入的值生成类型
-     */
-    private String type;
 
-    public XESCodec(ECodecType codecType) {
+    private int getSize() {
+        int size;
         switch (codecType) {
             case AES:
-                this.size = 128;
+                size = 128;
                 break;
             case DES:
-                this.size = 56;
+                size = 56;
                 break;
             case DES3:
-                this.size = 168;
+                size = 168;
                 break;
+            default:
+                throw new RuntimeException("类型错误");
         }
+        return size;
     }
 
-    private boolean checkSizeAndType() {
-        return (size == 0 || type == null);
-    }
-
-    private SecretKey getSecretKey(String source, String keyStr) throws Exception {
+    private SecretKey getSecretKey(String keyStr, int size, String type) throws Exception {
         Security.addProvider(new com.sun.crypto.provider.SunJCE());
         KeyGenerator keyGenerator = KeyGenerator.getInstance(type);
         keyGenerator.init(size, new SecureRandom(keyStr.getBytes(UTF8)));
@@ -49,30 +52,37 @@ public class XESCodec implements IXESCodec {
     }
 
     @Override
-    public String encrypt(String source, String keyStr) throws Exception {
-        if (checkSizeAndType()) {
+    public String encrypt(String source, String keyStr) {
+        try {
+            int size = getSize();
+            SecretKey key = getSecretKey(keyStr, size, codecType);
+            byte[] encodeFormat = key.getEncoded();
+            SecretKeySpec keySpec = new SecretKeySpec(encodeFormat, codecType);
+            Cipher cipher = Cipher.getInstance(codecType);
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+            byte[] src = source.getBytes(UTF8);
+            byte[] resultByte = cipher.doFinal(src);
+            return Parse.toString(resultByte);
+        } catch (Exception e) {
+            log.error("encrypt str{} failed, Error Message[{}]", source, e.getMessage());
             return source;
         }
-        SecretKey key = getSecretKey(source, keyStr);
-        byte[] encodeFormat = key.getEncoded();
-        SecretKeySpec keySpec = new SecretKeySpec(encodeFormat, type);
-        Cipher cipher = Cipher.getInstance(type);
-        cipher.init(Cipher.ENCRYPT_MODE, keySpec);
-        byte[] src = source.getBytes(UTF8);
-        byte[] resultByte = cipher.doFinal(src);
-        return Parse.toString(resultByte);
     }
 
     @Override
-    public String decrypt(String source, String keyStr) throws Exception {
-        if (checkSizeAndType()) {
+    public String decrypt(String source, String keyStr) {
+        try {
+            int size = getSize();
+            SecretKey key = getSecretKey(keyStr, size, codecType);
+            Cipher cipher = Cipher.getInstance(codecType);
+            cipher.init(Cipher.DECRYPT_MODE, key);
+            byte[] codec = Parse.toBytes(source);
+            byte[] resultByte = cipher.doFinal(codec);
+            return new String(resultByte, UTF8);
+        } catch (Exception e) {
+            log.error("decrypt str{} failed, Error Message[{}]", source, e.getMessage());
             return source;
         }
-        SecretKey key = getSecretKey(source, keyStr);
-        Cipher cipher = Cipher.getInstance(type);
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        byte[] codec = Parse.toBytes(source);
-        byte[] resultByte = cipher.doFinal(codec);
-        return new String(resultByte, UTF8);
     }
+
 }

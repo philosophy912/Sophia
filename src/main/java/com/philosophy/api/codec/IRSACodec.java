@@ -1,7 +1,5 @@
 package com.philosophy.api.codec;
 
-import com.philosophy.api.IConst;
-import com.philosophy.codec.ECodecType;
 import com.philosophy.tools.Pair;
 
 import java.nio.file.Path;
@@ -10,7 +8,9 @@ import java.nio.file.Path;
  * @author lizhe
  * @since V1.0.0 2019/5/23 23:48
  **/
-public interface IRSACodec extends IConst {
+public interface IRSACodec {
+    String PUBLIC = "public";
+    String PRIVATE = "private";
     /**
      * RSA最大加密明文大小
      **/
@@ -60,9 +60,8 @@ public interface IRSACodec extends IConst {
      * @param source 要加密的字符串
      * @param method 加密方式，以public key还是以private key方式加密
      * @return 加密后的字符串
-     * @throws Exception 抛出异常
      */
-    String encrypt(String source, ECodecType method);
+    String encrypt(String source, String method);
 
     /**
      * RSA方式解密字符串
@@ -73,7 +72,6 @@ public interface IRSACodec extends IConst {
      *               当字符串以private key加密则需要用public key方式解密
      *               当字符串以public key加密则需要用private key方式加密
      * @return 解密后的字符串
-     * @throws Exception 抛出异常
      */
-    String decrypt(String source, ECodecType method);
+    String decrypt(String source, String method);
 }

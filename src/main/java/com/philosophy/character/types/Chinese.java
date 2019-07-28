@@ -1,6 +1,7 @@
 package com.philosophy.character.types;
 
-import com.philosophy.api.character.ICharacterCreater;
+import com.philosophy.api.character.ICharacterGenerator;
+import com.philosophy.exception.LowLevelException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,9 +12,10 @@ import java.util.Random;
  * @author lizhe
  * @since V1.0.0 2019/5/23 22:51
  **/
-public final class Chinese implements ICharacterCreater {
-    private static Logger logger = LogManager.getLogger(Chinese.class);
+public final class Chinese implements ICharacterGenerator {
+    private static Logger log = LogManager.getLogger(Chinese.class);
 
+    private static final String GBK = "GBK";
 
     private static String initChinese() {
         Random random = new Random();
@@ -23,15 +25,15 @@ public final class Chinese implements ICharacterCreater {
         b[0] = Integer.valueOf(hightPos).byteValue();
         b[1] = Integer.valueOf(lowPos).byteValue();
         try {
-            return new String(b, "GBK");
+            return new String(b, GBK);
         } catch (UnsupportedEncodingException e) {
-            logger.error(e.getMessage());
+            log.error("Error Message[{}]", e.getMessage());
+            throw new LowLevelException("Error Message " + e.getMessage());
         }
-        return null;
     }
 
     @Override
-    public String create(int length) {
+    public String generate(int length) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {
             String chinese = initChinese();

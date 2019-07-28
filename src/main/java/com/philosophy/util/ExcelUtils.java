@@ -11,7 +11,11 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
@@ -19,7 +23,8 @@ import java.util.Date;
 import java.util.List;
 
 public class ExcelUtils {
-    private static Logger logger = LogManager.getLogger(ExcelUtils.class);
+    private static Logger log = LogManager.getLogger(ExcelUtils.class);
+
     /**
      * 创建workbook文件
      *
@@ -29,9 +34,8 @@ public class ExcelUtils {
     private static Workbook createWorkbook(Path path) {
         Workbook workbook = null;
         try {
-            if (Files.exists(path)){
-
-                logger.error("file[" + path.getRoot() + "] is exist");
+            if (Files.exists(path)) {
+                log.error("file[{}] is exist", path.getRoot());
             } else {
                 String ext = FilePath.getExtension(path).toUpperCase();
                 if (ext.equals("XLS")) {
@@ -43,10 +47,9 @@ public class ExcelUtils {
                 workbook.createSheet("sheet1");
             }
         } catch (IOException e) {
-            logger.error(e.getMessage());
-        } finally {
-            return workbook;
+            log.error(e.getMessage());
         }
+        return workbook;
     }
 
     /**
@@ -70,7 +73,7 @@ public class ExcelUtils {
                 wb = new XSSFWorkbook(in);
             }
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         } finally {
             Closee.close(in);
         }
@@ -98,7 +101,7 @@ public class ExcelUtils {
             fos = new FileOutputStream(file);
             wb.write(fos);
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         } finally {
             Closee.close(fos);
             closeWorkbook(wb);
@@ -209,7 +212,7 @@ public class ExcelUtils {
             String[] content = contents.get(i);
             Row row = sheet.createRow(i);
             for (int j = 0; j < content.length; j++) {
-                logger.debug("value is [" + i + ", " + j + "] = " + content[j]);
+                log.debug("value is [{}, {}] = {}", i, j, content[j]);
                 Cell cell = row.createCell(j);
                 setCellValue(cell, content[j]);
             }

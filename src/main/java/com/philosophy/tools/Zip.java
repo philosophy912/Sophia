@@ -20,7 +20,7 @@ import java.util.zip.ZipOutputStream;
  * @since V1.0.0 2019/5/23 23:19
  **/
 public class Zip {
-    private static Logger logger = LogManager.getLogger(Zip.class);
+    private static Logger log = LogManager.getLogger(Zip.class);
 
     private Zip() {
     }
@@ -50,11 +50,11 @@ public class Zip {
             bos = new BufferedOutputStream(out);
             compress(out, bos, source);
         } catch (IOException e) {
-            logger.error("something wrong " + e.getMessage());
+            log.error("something wrong " + e.getMessage());
         } finally {
             Closee.close(out, bos);
-            return target;
         }
+        return target;
     }
 
     /**
@@ -89,7 +89,7 @@ public class Zip {
                 }
                 Closee.close(bis);
             } else {
-                logger.error("file not exist, cannot zip");
+                log.error("file not exist, cannot zip");
                 throw new IOException("file not exist, cannot zip");
             }
         }

@@ -1,12 +1,11 @@
-package com.philosophy.contact;
+package com.philosophy.contact.entity;
 
-import com.philosophy.character.ECharacterType;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class CSV {
+public class VCF extends ContactName {
     /**
      * 姓的相关Bean
      */
@@ -20,12 +19,7 @@ public class CSV {
      */
     private int contactSize;
     /**
-     * CSV写的类型
-     */
-    private ECharacterType type;
-    /**
      * 电话号码的前缀
      */
     private PhoneNumber entity;
-
 }

@@ -1,42 +1,29 @@
 package com.philosophy.csv;
 
-
 import com.philosophy.api.csv.ECSVType;
 import com.philosophy.api.csv.ICsvWriter;
 import com.philosophy.tools.Closee;
 import lombok.Setter;
 import org.supercsv.io.CsvListWriter;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.file.Path;
+import java.io.Writer;
 import java.util.List;
 
-@Setter
-public class CsvWriter implements ICsvWriter<String>{
-    private ECSVType type = ECSVType.COMMA;
-    private boolean isAppend = true;
-    private String charset = UTF8;
+public class CsvWriter implements ICsvWriter<String> {
+    @Setter
+    private ECSVType type;
+    private CsvListWriter csvListWriter;
 
-    private CsvListWriter writer;
-    private OutputStreamWriter osw;
-
-    public CsvWriter() {
+    public CsvWriter(final Writer writer) {
+        csvListWriter = new CsvListWriter(writer, type.getCsvPreference());
     }
 
-    public CsvWriter(ECSVType type, boolean isAppend, String charset) {
-        this.type = type;
-        this.isAppend = isAppend;
-        this.charset = charset;
-    }
 
     @Override
     public void write(String[] strings) throws IOException {
-        if (writer == null) {
-            throw new IOException("Writer is null, open writer firstly");
-        }
-        writer.write(strings);
+        checkWriter();
+        csvListWriter.write(strings);
     }
 
     @Override
@@ -46,14 +33,15 @@ public class CsvWriter implements ICsvWriter<String>{
         }
     }
 
-    @Override
-    public void open(Path path) throws IOException {
-        osw = new OutputStreamWriter(new FileOutputStream(path.toFile(), isAppend), charset);
-        writer = new CsvListWriter(osw, type.getCsvPreference());
-    }
 
     @Override
     public void close() {
-        Closee.close(writer, osw);
+        Closee.close(csvListWriter);
+    }
+
+    private void checkWriter() throws IOException {
+        if (csvListWriter == null) {
+            throw new IOException("csvListWriter is null, open File first");
+        }
     }
 }

@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
  * @since V1.0.0 2019/5/23 23:07
  **/
 public class CharacterUtils {
-    private Logger logger = LogManager.getLogger(CharacterUtils.class);
+    private Logger log = LogManager.getLogger(CharacterUtils.class);
 
     /**
      * 去掉windows不支持的字符(用于文件命名)
@@ -32,7 +32,7 @@ public class CharacterUtils {
                 sb.append(c);
             }
         }
-        logger.debug("After remove not fit Windows char is " + sb.toString());
+        log.debug("After remove not fit Windows char is " + sb.toString());
         return sb.toString();
     }
 
