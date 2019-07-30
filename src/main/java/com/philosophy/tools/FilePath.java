@@ -20,9 +20,9 @@ import java.util.Optional;
  **/
 public class FilePath {
     private static Logger log = LogManager.getLogger(FilePath.class);
-    private static int DIRECTORY_ONLY = 0;
-    private static int DIRECTORY_AND_FILE = 1;
-    private static int FILE_ONLY = 2;
+    private static final int DIRECTORY_ONLY = 0;
+    private static final int DIRECTORY_AND_FILE = 1;
+    private static final int FILE_ONLY = 2;
 
     private FilePath() {
     }
@@ -70,7 +70,7 @@ public class FilePath {
      * @IOException
      */
     public static long size(Path path) throws IOException {
-        final List<Long> sizes = new ArrayList<>();
+        List<Long> sizes = new ArrayList<>();
         if (Files.isDirectory(path)) {
             Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
                 @Override
