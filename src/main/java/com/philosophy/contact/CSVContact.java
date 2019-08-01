@@ -4,7 +4,10 @@ import com.philosophy.api.contact.IContact;
 import com.philosophy.api.character.ECharacterType;
 import com.philosophy.contact.entity.CSV;
 import com.philosophy.contact.entity.ContactName;
+import com.philosophy.exception.LowLevelException;
 import lombok.Setter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +16,14 @@ import java.util.List;
  * @author lizhe
  * @since V1.0.0 2019/7/28 21:28
  **/
-@Setter
+
 public class CSVContact extends Contact implements IContact {
+    private static Logger log = LogManager.getLogger(CSVContact.class);
+    @Setter
     private CSV csv;
-    private static final int CSV_SIZE = 21;
+    // CSV创建的通讯录数量
+    @Setter
+    private int CSV_SIZE = 21;
     /**
      * CSV中文 *.
      */
@@ -44,6 +51,9 @@ public class CSVContact extends Contact implements IContact {
 
     @Override
     public List<String[]> generator() {
+        if (CSV_SIZE > 21) {
+            throw new LowLevelException("CSV_SIZE must less 21");
+        }
         ContactName firstContact = csv.getFirst();
         ContactName lastContact = csv.getLast();
         String preNumber = csv.getEntity().getPreNumber();
@@ -61,18 +71,22 @@ public class CSVContact extends Contact implements IContact {
 
 
     private String[] genCSVContact(String first, String last, String[] numbers, ECharacterType type) {
-        String[] strings = null;
-        if (type.equals(ECharacterType.CHINESE)) {
-            strings = new String[CSV_TITLE_CHINESE.length];
-        } else if (type.equals(ECharacterType.ENGLISH)) {
-            strings = new String[CSV_TITLE_ENGLISH.length];
-        } else {
-            return strings;
+        log.debug("first [{}], last[{}], number Size[{}] type[{}]", first, last, numbers.length, type);
+        String[] strings;
+        switch (type) {
+            case CHINESE:
+                strings = new String[CSV_TITLE_CHINESE.length];
+                break;
+            case ENGLISH:
+                strings = new String[CSV_TITLE_ENGLISH.length];
+                break;
+            default:
+                throw new LowLevelException("type " + type.getValue() + " is incorrect");
         }
         strings[3] = first;
         strings[1] = last;
         for (int j = 0; j < numbers.length; j++) {
-            strings[29 + j] = numbers[0];
+            strings[29 + j] = numbers[j];
         }
         return strings;
     }

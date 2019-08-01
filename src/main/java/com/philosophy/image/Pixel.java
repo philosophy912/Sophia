@@ -39,8 +39,8 @@ public class Pixel implements ICompare {
             }
             int j = 0;
             for (int m = 0; m < strings.length; m++) {
-                String[] value1 = list1[i][j].toString().split(",");
-                String[] value2 = list2[i][j].toString().split(",");
+                String[] value1 = list1[i][j].split(",");
+                String[] value2 = list2[i][j].split(",");
                 int k = 0;
                 for (int n = 0; n < value2.length; n++) {
                     if (Math.abs(Integer.parseInt(value1[k]) - Integer.parseInt(value2[k])) < 5) {
