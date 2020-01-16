@@ -3,6 +3,9 @@ package com.philosophy.contact.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author lizhe
+ */
 @Setter
 @Getter
 public class ContactName {
@@ -14,7 +17,7 @@ public class ContactName {
     /**
      * 名字的长度
      */
-    private int Length;
+    private int length;
     /**
      * 是否需要加前缀
      */

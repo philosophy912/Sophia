@@ -2,10 +2,12 @@ package com.philosophy.contact.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-
+/**
+ * @author lizhe
+ */
 @Setter
 @Getter
-public class VCF extends ContactName {
+public class Vcf extends ContactName {
     /**
      * 姓的相关Bean
      */

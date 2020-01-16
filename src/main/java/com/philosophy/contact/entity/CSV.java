@@ -1,12 +1,14 @@
 package com.philosophy.contact.entity;
 
-import com.philosophy.api.character.ECharacterType;
+import com.philosophy.character.api.CharEnum;
 import lombok.Getter;
 import lombok.Setter;
-
+/**
+ * @author lizhe
+ */
 @Setter
 @Getter
-public class CSV {
+public class Csv {
     /**
      * 姓的相关Bean
      */
@@ -22,7 +24,7 @@ public class CSV {
     /**
      * CSV写的类型
      */
-    private ECharacterType type;
+    private CharEnum type;
     /**
      * 电话号码的前缀
      */

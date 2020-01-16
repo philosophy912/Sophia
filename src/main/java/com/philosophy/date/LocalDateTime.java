@@ -8,6 +8,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author lizhe
+ */
 public class LocalDateTime {
     /**
      * <code>LocalDate</code>转换成为<code>Date</code>
