@@ -16,6 +16,7 @@ public class MixCharFactory implements ICharFactory {
 
     /**
      * 建立字符库池
+     * 字符串库池大小为100
      *
      * @param size  字符库池容量
      * @param types 字符库池类型

@@ -4,7 +4,6 @@ package com.philosophy.base.util;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
@@ -14,20 +13,12 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
 /**
+ * InOutUtils工具类，继承了IOUtils工具类
+ *
  * @author lizhe
  * @date 2019/10/12:16:20
  */
 public class InOutUtils extends IOUtils {
-    /**
-     * 打开InputStream流
-     *
-     * @param path 文件
-     * @return InputStream流
-     * @throws IOException IO异常
-     */
-    public static InputStream openInputStream(Path path) throws IOException {
-        return Files.newInputStream(path);
-    }
 
     /**
      * 打开文件为Reader
@@ -38,7 +29,7 @@ public class InOutUtils extends IOUtils {
      * @throws IOException IO异常
      */
     public static Reader openReader(Path path, String charset) throws IOException {
-        return new InputStreamReader(openInputStream(path), charset);
+        return new InputStreamReader(Files.newInputStream(path), charset);
     }
 
     /**

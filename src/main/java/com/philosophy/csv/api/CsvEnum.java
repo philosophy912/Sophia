@@ -99,7 +99,7 @@ public enum CsvEnum {
         this.csvFormat = csvFormat;
     }
 
-    public CSVFormat getCSVFormat() {
+    public CSVFormat getCsvFormat() {
         return csvFormat;
     }
 }

@@ -22,9 +22,8 @@ public class CsvWriter implements ICsvWriter<String> {
 
     public CsvWriter(Writer writer, CsvEnum csvEnum) {
         this.writer = writer;
-        csvFormat = csvEnum.getCSVFormat().withRecordSeparator("\r\n");
+        csvFormat = csvEnum.getCsvFormat().withRecordSeparator("\r\n");
     }
-
 
     @Override
     public void write(String[] contents) throws IOException {
@@ -41,7 +40,7 @@ public class CsvWriter implements ICsvWriter<String> {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         Closee.close(writer, csvPrinter);
     }
 }

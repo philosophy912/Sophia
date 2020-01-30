@@ -5,7 +5,6 @@ import com.philosophy.excel.utils.ExcelUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
@@ -26,11 +25,12 @@ public class BaseTestUtils {
 
     @Test
     public void specialTest() {
+        ExcelUtils excelUtils = new ExcelUtils();
         if(!IS_NEED_IGNORE){
             String excel = "D:\\Workspace\\project\\tools\\src\\main\\resources\\dbc1\\HiFire_GSE_CONFCAN_IC_MMI_CAN_V0.87.xls";
             String sheetName = "CONFCAN";
             try {
-                List<String[]> contents = ExcelUtils.read(Paths.get(excel), sheetName);
+                List<String[]> contents = excelUtils.read(Paths.get(excel), sheetName);
                 for(String[] content: contents){
                     log.debug(Arrays.toString(content));
                 }

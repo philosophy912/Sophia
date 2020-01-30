@@ -13,16 +13,20 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 class ExcelUtilsTest {
     private static final String RESOURCES = BaseTestUtils.getResourceFolder();
     private Path tempFile;
     private Path file;
     private String sheetName = "测试用例";
+    private ExcelUtils excelUtils;
 
     @BeforeEach
     void setUp() throws IOException {
+        excelUtils = new ExcelUtils();
         file = Paths.get(RESOURCES + "\\仪表自动化测试用例汇总_v1.4.xlsx");
         tempFile = Paths.get(RESOURCES + "\\temp.xls");
         FilesUtils.deleteFiles(tempFile);
@@ -37,13 +41,13 @@ class ExcelUtilsTest {
 
     @Test
     void read() throws IOException {
-        List<String[]> contents = ExcelUtils.read(file, sheetName);
+        List<String[]> contents = excelUtils.read(file, sheetName);
         assertEquals(contents.size(), 231);
     }
 
     @Test
     void testRead() throws IOException {
-        String content = ExcelUtils.read(file, sheetName, 16, 7);
+        String content = excelUtils.read(file, sheetName, 16, 7);
         assertEquals("1.仪表不显示挡位", content);
 
     }
@@ -51,9 +55,9 @@ class ExcelUtilsTest {
     @Test
     void write() throws IOException {
         String[] content = new String[]{"a", "b", "c", "d", "123", "12.3"};
-        ExcelUtils.write(tempFile, sheetName, content);
+        excelUtils.write(tempFile, sheetName, content);
         assertTrue(Files.exists(tempFile));
-        List<String[]> contents = ExcelUtils.read(tempFile, sheetName);
+        List<String[]> contents = excelUtils.read(tempFile, sheetName);
         assertEquals(contents.size(), 1);
         String[] readContent = contents.get(0);
         assertEquals(content.length, readContent.length);
@@ -74,9 +78,9 @@ class ExcelUtilsTest {
             }
             contents.add(content);
         }
-        ExcelUtils.write(tempFile, sheetName, contents);
+        excelUtils.write(tempFile, sheetName, contents);
         assertTrue(Files.exists(tempFile));
-        List<String[]> readContents = ExcelUtils.read(tempFile, sheetName);
+        List<String[]> readContents = excelUtils.read(tempFile, sheetName);
         assertEquals(readContents.size(), size);
         for (int i = 0; i < readContents.size(); i++) {
             String[] content = contents.get(i);

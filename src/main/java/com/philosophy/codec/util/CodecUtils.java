@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -18,9 +17,9 @@ import java.security.NoSuchAlgorithmException;
 @Slf4j
 public class CodecUtils {
 
-    private static Codec codec = new Codec();
-    private static RsaCodec rsaCodec = new RsaCodec();
-    private static XesCodec xesCodec = new XesCodec();
+    private Codec codec = new Codec();
+    private RsaCodec rsaCodec = new RsaCodec();
+    private XesCodec xesCodec = new XesCodec();
 
     /**
      * 支持MD5和SHA加密
@@ -30,7 +29,7 @@ public class CodecUtils {
      * @param source    要加密的字符串
      * @return 加密后的结果
      */
-    public static String encrypt(CodecEnum codecEnum, String source) {
+    public String encrypt(CodecEnum codecEnum, String source) {
         String result;
         switch (codecEnum) {
             case MD5:
@@ -40,7 +39,6 @@ public class CodecUtils {
                 break;
             default:
                 result = source;
-                break;
         }
         return result;
     }
@@ -54,7 +52,7 @@ public class CodecUtils {
      * @param key       加密的秘钥
      * @return 加密后的结果
      */
-    public static String encrypt(CodecEnum codecEnum, String source, String key) {
+    public String encrypt(CodecEnum codecEnum, String source, String key) {
         String result;
         switch (codecEnum) {
             case DES:
@@ -65,7 +63,6 @@ public class CodecUtils {
                 break;
             default:
                 result = source;
-                break;
         }
         return result;
     }
@@ -79,7 +76,7 @@ public class CodecUtils {
      * @param key       解密的秘钥
      * @return 解密后的结果
      */
-    public static String decrypt(CodecEnum codecEnum, String source, String key) {
+    public String decrypt(CodecEnum codecEnum, String source, String key) {
         String result;
         switch (codecEnum) {
             case DES:
@@ -90,7 +87,6 @@ public class CodecUtils {
                 break;
             default:
                 result = source;
-                break;
         }
         return result;
     }
@@ -103,7 +99,7 @@ public class CodecUtils {
      * @param publicPath 秘钥文件(支持公钥加密）
      * @return 加密后的字符串
      */
-    public static String encrypt(String source, Path publicPath) {
+    public String encrypt(String source, Path publicPath) {
         String result;
         try {
             rsaCodec.readPublicKey(publicPath);
@@ -123,7 +119,7 @@ public class CodecUtils {
      * @param privatePath 秘钥文件(支持私钥解密）
      * @return 加密后的字符串
      */
-    public static String decrypt(String source, Path privatePath) {
+    public String decrypt(String source, Path privatePath) {
         String result;
         try {
             rsaCodec.readPrivateKey(privatePath);
@@ -141,15 +137,8 @@ public class CodecUtils {
      * @param privatePath 私钥
      * @param publicPath  公钥
      */
-    public static boolean genKey(Path privatePath, Path publicPath) {
-        boolean flag = true;
-        try {
-            rsaCodec.genKey(publicPath, privatePath);
-        } catch (NoSuchAlgorithmException | IOException e) {
-            log.warn("create key failed, error message is [{}]", e.getMessage());
-            flag = false;
-        }
-        return flag;
+    public void genKey(Path privatePath, Path publicPath) throws IOException, NoSuchAlgorithmException {
+        rsaCodec.genKey(publicPath, privatePath);
     }
 
 }

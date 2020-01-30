@@ -1,7 +1,6 @@
 package com.philosophy.excel.common;
 
 import com.philosophy.base.util.FilesUtils;
-import com.philosophy.base.util.InOutUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -76,7 +75,7 @@ public class ExcelBase {
         if (!Files.exists(path)) {
             return createWorkbook(path);
         } else {
-            InputStream inputStream = InOutUtils.openInputStream(path);
+            InputStream inputStream = Files.newInputStream(path);
             String ext = FilesUtils.getExtension(path).toUpperCase();
             if (!(XLS.equals(ext) || XLSX.equals(ext))) {
                 throw new RuntimeException("file must be xls or xlsx");
@@ -130,8 +129,8 @@ public class ExcelBase {
                 } else {
                     String str = String.valueOf(cell.getNumericCellValue());
                     log.debug("str = {}", str);
-                    String EChar = "E";
-                    if (EChar.contains(str)) {
+                    String science = "E";
+                    if (science.contains(str)) {
                         return new BigDecimal(str).toPlainString();
                     } else {
                         String[] num = str.split("\\.");

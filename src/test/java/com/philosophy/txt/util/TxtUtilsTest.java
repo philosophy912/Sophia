@@ -13,7 +13,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 class TxtUtilsTest {
     private static final String RESOURCES = BaseTestUtils.getResourceFolder();
@@ -22,9 +24,11 @@ class TxtUtilsTest {
     private boolean isWrap = true;
     private boolean isAppend = false;
     private Path testTxt;
+    private TxtUtils txtUtils;
 
     @BeforeEach
     void setUp() throws IOException {
+        txtUtils = new TxtUtils();
         txt = Paths.get(RESOURCES + "\\test.txt");
         testTxt = Paths.get(RESOURCES + "\\normal.txt");
         FilesUtils.deleteFiles(testTxt);
@@ -37,7 +41,7 @@ class TxtUtilsTest {
 
     @Test
     void read() throws IOException {
-        List<String> contents = TxtUtils.read(txt, charset, true);
+        List<String> contents = txtUtils.read(txt, charset, true);
         int i = 1;
         for (String s : contents) {
             assertEquals(String.valueOf(i), s);
@@ -49,9 +53,9 @@ class TxtUtilsTest {
     void write() throws IOException {
         FilesUtils.deleteFiles(testTxt);
         String content = "adslfjdlskjfd";
-        TxtUtils.write(testTxt, content, charset, isAppend, isWrap);
+        txtUtils.write(testTxt, content, charset, isAppend, isWrap);
         assertTrue(Files.exists(testTxt));
-        List<String> contents = TxtUtils.read(testTxt, charset, true);
+        List<String> contents = txtUtils.read(testTxt, charset, true);
         assertEquals(1, contents.size());
         assertEquals(content, contents.get(0));
 
@@ -61,9 +65,9 @@ class TxtUtilsTest {
     void testWrite() throws IOException {
         FilesUtils.deleteFiles(testTxt);
         String[] content = new String[]{"adslfjdlskjfd", "adslfjdlskjfd"};
-        TxtUtils.write(testTxt, content, charset, isAppend, isWrap);
+        txtUtils.write(testTxt, content, charset, isAppend, isWrap);
         assertTrue(Files.exists(testTxt));
-        List<String> contents = TxtUtils.read(testTxt, charset, true);
+        List<String> contents = txtUtils.read(testTxt, charset, true);
         assertEquals(2, contents.size());
         for (int i = 0; i < contents.size(); i++) {
             assertEquals(content[i], contents.get(i));
@@ -77,9 +81,9 @@ class TxtUtilsTest {
         contentList.add(new String[]{"sfsdfsdf"});
         contentList.add(new String[]{"adslfjdlskjfd"});
         contentList.add(new String[]{"sewerer"});
-        TxtUtils.write(testTxt, contentList, charset, isAppend, isWrap);
+        txtUtils.write(testTxt, contentList, charset, isAppend, isWrap);
         assertTrue(Files.exists(testTxt));
-        List<String> contents = TxtUtils.read(testTxt, charset, false);
+        List<String> contents = txtUtils.read(testTxt, charset, false);
         assertEquals(3, contents.size());
         for (int i = 0; i < contents.size(); i++) {
             assertEquals(contentList.get(i)[0], contents.get(i));

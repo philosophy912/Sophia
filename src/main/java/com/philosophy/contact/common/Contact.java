@@ -17,6 +17,7 @@ import java.util.List;
  **/
 @Slf4j
 class Contact {
+
     /**
      * 生成通讯录的名字
      *

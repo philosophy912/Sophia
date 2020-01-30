@@ -66,7 +66,7 @@ public class CsvReader implements ICsvReader<String[]> {
      * @throws IOException IO异常
      */
     private void readAll() throws IOException {
-        this.records = csvEnum.getCSVFormat().parse(reader);
+        this.records = csvEnum.getCsvFormat().parse(reader);
     }
 
 
@@ -129,7 +129,7 @@ public class CsvReader implements ICsvReader<String[]> {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         Closee.close(reader);
     }
 }

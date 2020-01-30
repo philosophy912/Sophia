@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 class MergeUtilsTest {
 
@@ -40,7 +41,7 @@ class MergeUtilsTest {
         Double[] source = new Double[]{1d, 2d, 3d, 4d, 5d};
         double[] target = MergeUtils.convert(source);
         for (int i = 0; i < source.length; i++) {
-            assertEquals(new BigDecimal(source[i]), new BigDecimal(target[i]));
+            assertEquals(BigDecimal.valueOf(source[i]), BigDecimal.valueOf(target[i]));
         }
         Double[] src = MergeUtils.convert(target);
         for (int i = 0; i < source.length; i++) {
@@ -53,7 +54,7 @@ class MergeUtilsTest {
         Float[] source = new Float[]{1f, 2f, 3f, 4f, 5f};
         float[] target = MergeUtils.convert(source);
         for (int i = 0; i < source.length; i++) {
-            assertEquals(new BigDecimal(source[i]), new BigDecimal(target[i]));
+            assertEquals(BigDecimal.valueOf(source[i]), BigDecimal.valueOf(target[i]));
         }
         Float[] src = MergeUtils.convert(target);
         for (int i = 0; i < source.length; i++) {

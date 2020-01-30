@@ -19,12 +19,12 @@ import java.util.List;
 public class TxtUtils {
 
 
-    private static TxtReader getReader(Path path, String charset, boolean skipBlankLine) throws IOException {
+    private TxtReader getReader(Path path, String charset, boolean skipBlankLine) throws IOException {
         Reader reader = InOutUtils.openReader(path, charset);
         return new TxtReader(reader, skipBlankLine);
     }
 
-    private static TxtWriter getWriter(Path path, String charset, boolean isAppend, boolean isWrap) throws IOException {
+    private TxtWriter getWriter(Path path, String charset, boolean isAppend, boolean isWrap) throws IOException {
         Writer writer = InOutUtils.openWriter(path, charset, isAppend);
         TxtWriter txtWriter = new TxtWriter(writer);
         txtWriter.setWarp(isWrap);
@@ -39,7 +39,7 @@ public class TxtUtils {
      * @return 内容
      * @throws IOException IO异常
      */
-    public static List<String> read(Path path, String charset, boolean skipBlankLine) throws IOException {
+    public List<String> read(Path path, String charset, boolean skipBlankLine) throws IOException {
         TxtReader reader = getReader(path, charset, skipBlankLine);
         List<String> contents = reader.read();
         reader.close();
@@ -56,7 +56,7 @@ public class TxtUtils {
      * @param isWrap   是否换行
      * @throws IOException IO异常
      */
-    public static void write(Path path, List<String[]> content, String charset,
+    public void write(Path path, List<String[]> content, String charset,
                       boolean isAppend, boolean isWrap) throws IOException {
         TxtWriter writer = getWriter(path, charset, isAppend, isWrap);
         writer.write(content);
@@ -73,7 +73,7 @@ public class TxtUtils {
      * @param isWrap   是否换行
      * @throws IOException IO异常
      */
-    public static void write(Path path, String[] content, String charset,
+    public void write(Path path, String[] content, String charset,
                       boolean isAppend, boolean isWrap) throws IOException {
         TxtWriter writer = getWriter(path, charset, isAppend, isWrap);
         writer.write(content);
@@ -90,8 +90,7 @@ public class TxtUtils {
      * @param isWrap   是否换行
      * @throws IOException IO异常
      */
-    public static void write(Path path, String content, String charset,
-                      boolean isAppend, boolean isWrap) throws IOException {
+    public void write(Path path, String content, String charset, boolean isAppend, boolean isWrap) throws IOException {
         TxtWriter writer = getWriter(path, charset, isAppend, isWrap);
         writer.write(content);
         writer.close();

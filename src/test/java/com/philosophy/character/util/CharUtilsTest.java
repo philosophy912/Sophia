@@ -3,7 +3,8 @@ package com.philosophy.character.util;
 import com.philosophy.base.util.NumericUtils;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 class CharUtilsTest {
 

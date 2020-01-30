@@ -26,7 +26,7 @@ public class ExcelUtils {
      * @return sheet的所有内容
      * @throws IOException IO异常
      */
-    public static List<String[]> read(Path path, String sheetName) throws IOException {
+    public List<String[]> read(Path path, String sheetName) throws IOException {
         Workbook workbook = ExcelBase.openWorkbook(path);
         ExcelReader reader = new ExcelReader(workbook);
         reader.readSheet(sheetName);
@@ -45,7 +45,7 @@ public class ExcelUtils {
      * @return 读取到的单元格的值
      * @throws IOException IO异常
      */
-    public static String read(Path path, String sheetName, int rowIndex, int columnIndex) throws IOException {
+    public String read(Path path, String sheetName, int rowIndex, int columnIndex) throws IOException {
         Workbook workbook = ExcelBase.openWorkbook(path);
         ExcelReader reader = new ExcelReader(workbook);
         String result = reader.read(sheetName, rowIndex, columnIndex);
@@ -60,7 +60,7 @@ public class ExcelUtils {
      * @param sheetName 要创建的sheet的名字
      * @param contents  sheet的内容
      */
-    public static void write(Path path, String sheetName, String[] contents) throws IOException {
+    public void write(Path path, String sheetName, String[] contents) throws IOException {
         Workbook workbook = ExcelBase.openWorkbook(path);
         ExcelWriter writer = new ExcelWriter(workbook, path);
         writer.createSheet(sheetName);
@@ -75,7 +75,7 @@ public class ExcelUtils {
      * @param sheetName 要创建的sheet的名字
      * @param contents  sheet的内容
      */
-    public static void write(Path path, String sheetName, List<String[]> contents) throws IOException {
+    public void write(Path path, String sheetName, List<String[]> contents) throws IOException {
         Workbook workbook = ExcelBase.openWorkbook(path);
         ExcelWriter writer = new ExcelWriter(workbook, path);
         writer.createSheet(sheetName);

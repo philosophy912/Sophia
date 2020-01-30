@@ -4,7 +4,6 @@ import com.philosophy.image.api.CompareEnum;
 import com.philosophy.image.common.Picture;
 import com.philosophy.image.factory.ImageCompareFactory;
 
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,7 +15,7 @@ import java.util.Map;
  */
 public class ImageUtils {
 
-    private static Picture picture = new Picture();
+    private Picture picture = new Picture();
 
 
     /**
@@ -27,7 +26,7 @@ public class ImageUtils {
      * @param scale  缩放比例
      * @param flag   缩放选择:true放大false缩小
      */
-    public static void scale(Path source, Path target, int scale, boolean flag) throws IOException {
+    public void scale(Path source, Path target, int scale, boolean flag) throws IOException {
         BufferedImage bi = picture.read(source);
         picture.scale(bi, target, scale, flag);
     }
@@ -42,7 +41,7 @@ public class ImageUtils {
      * @param flag   比例不对时是否需要补白:true为补白,false为不补白
      * @throws IOException 抛出异常
      */
-    public static void scale(Path source, Path target, int height, int width, boolean flag) throws IOException {
+    public void scale(Path source, Path target, int height, int width, boolean flag) throws IOException {
         BufferedImage bi = picture.read(source);
         picture.scale(bi, target, height, width, flag);
     }
@@ -57,7 +56,7 @@ public class ImageUtils {
      * @param height 目标切片高度
      * @return 切割后的图像BufferedImage对象
      */
-    public static BufferedImage cut(Path source, int x, int y, int width, int height) throws IOException {
+    public BufferedImage cut(Path source, int x, int y, int width, int height) throws IOException {
         return picture.cut(source, x, y, width, height);
     }
 
@@ -67,7 +66,7 @@ public class ImageUtils {
      * @param source 源图片
      * @param target 目标图片
      */
-    public static void convert(Path source, Path target) throws IOException {
+    public void convert(Path source, Path target) throws IOException {
         BufferedImage bi = picture.read(source);
         picture.convert(bi, target);
     }
@@ -78,7 +77,7 @@ public class ImageUtils {
      * @param source 源图片
      * @param target 目标图片
      */
-    public static void gray(Path source, Path target) throws IOException {
+    public void gray(Path source, Path target) throws IOException {
         BufferedImage bi = picture.read(source);
         picture.gray(bi, target);
     }
@@ -89,7 +88,7 @@ public class ImageUtils {
      * @param image 图片
      * @return 宽高数组[Width, Height]
      */
-    public static Map<Integer, Integer> size(Path image) throws IOException {
+    public Map<Integer, Integer> size(Path image) throws IOException {
         BufferedImage bi = picture.read(image);
         return picture.size(bi);
     }
@@ -104,7 +103,7 @@ public class ImageUtils {
      * @return 相似度（汉明距返回的是整数）
      * @throws IOException IO异常
      */
-    public static double compare(CompareEnum compareEnum, Path image1, Path image2) throws IOException {
+    public double compare(CompareEnum compareEnum, Path image1, Path image2) throws IOException {
         BufferedImage bi1 = picture.read(image1);
         BufferedImage bi2 = picture.read(image2);
         return ImageCompareFactory.createCompare(compareEnum).compare(bi1, bi2);
@@ -117,7 +116,7 @@ public class ImageUtils {
      * @param path 文件地址
      * @throws IOException IO异常
      */
-    public static void write(BufferedImage bi, Path path) throws IOException {
+    public void write(BufferedImage bi, Path path) throws IOException {
         picture.write(bi, path);
     }
 

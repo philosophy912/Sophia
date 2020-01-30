@@ -1,7 +1,6 @@
 package com.philosophy.codec.common;
 
 import com.philosophy.base.common.Closee;
-import com.philosophy.base.common.Pair;
 import com.philosophy.base.util.ParseUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -236,7 +235,6 @@ public class RsaCodec {
      *
      * @param publicPath  Public的文件路径
      * @param privatePath Private的文件路径
-     * @return 返回<code>Pair<Path, Path></code>， 其中First表示Public Key，Second表示Private Path
      */
     public void genKey(Path publicPath, Path privatePath) throws NoSuchAlgorithmException, IOException {
         KeyPairGenerator keyPairGen;

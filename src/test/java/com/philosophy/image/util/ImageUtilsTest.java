@@ -15,7 +15,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 class ImageUtilsTest {
     private static final String RESOURCES = BaseTestUtils.getResourceFolder();
@@ -25,9 +28,11 @@ class ImageUtilsTest {
     private Path img1;
     private Path img2;
     private Path img3;
+    private ImageUtils imageUtils;
 
     @BeforeEach
     void setUp() {
+        imageUtils = new ImageUtils();
         originImage = Paths.get(RESOURCES + "\\052.JPG_4200x3600_24.jpg");
         targetImage = Paths.get(RESOURCES + "\\target.jpg");
         pngImg = Paths.get(RESOURCES + "\\target.png");
@@ -43,7 +48,7 @@ class ImageUtilsTest {
 
     @Test
     void testSize() throws IOException {
-        Map<Integer, Integer> size = ImageUtils.size(originImage);
+        Map<Integer, Integer> size = imageUtils.size(originImage);
         assertEquals(size.get(Picture.WIDTH), 4200);
         assertEquals(size.get(Picture.HEIGHT), 3600);
 
@@ -52,11 +57,11 @@ class ImageUtilsTest {
     @Test
     void scale() throws IOException {
         FilesUtils.deleteFiles(targetImage);
-        Map<Integer, Integer> origin = ImageUtils.size(originImage);
+        Map<Integer, Integer> origin = imageUtils.size(originImage);
         int scale = 2;
-        ImageUtils.scale(originImage, targetImage, scale, false);
+        imageUtils.scale(originImage, targetImage, scale, false);
         assertTrue(Files.exists(targetImage));
-        Map<Integer, Integer> target = ImageUtils.size(targetImage);
+        Map<Integer, Integer> target = imageUtils.size(targetImage);
         assertEquals(origin.get(Picture.WIDTH) / scale, target.get(Picture.WIDTH));
         assertEquals(origin.get(Picture.HEIGHT) / scale, target.get(Picture.HEIGHT));
     }
@@ -64,13 +69,13 @@ class ImageUtilsTest {
     @Test
     void testScale() throws IOException {
         FilesUtils.deleteFiles(targetImage);
-        Map<Integer, Integer> origin = ImageUtils.size(originImage);
+        Map<Integer, Integer> origin = imageUtils.size(originImage);
         int size = 3;
         int height = origin.get(Picture.HEIGHT) / size;
         int width = origin.get(Picture.WIDTH) / size;
-        ImageUtils.scale(originImage, targetImage, height, width, false);
+        imageUtils.scale(originImage, targetImage, height, width, false);
         assertTrue(Files.exists(targetImage));
-        Map<Integer, Integer> target = ImageUtils.size(targetImage);
+        Map<Integer, Integer> target = imageUtils.size(targetImage);
         assertEquals(width, target.get(Picture.WIDTH));
         assertEquals(height, target.get(Picture.HEIGHT));
     }
@@ -80,10 +85,10 @@ class ImageUtilsTest {
         FilesUtils.deleteFiles(targetImage);
         int width = 1000;
         int height = 1000;
-        BufferedImage target = ImageUtils.cut(originImage, 200, 1200, width, height);
-        ImageUtils.write(target, targetImage);
+        BufferedImage target = imageUtils.cut(originImage, 200, 1200, width, height);
+        imageUtils.write(target, targetImage);
         assertTrue(Files.exists(targetImage));
-        Map<Integer, Integer> targetSize = ImageUtils.size(targetImage);
+        Map<Integer, Integer> targetSize = imageUtils.size(targetImage);
         assertEquals(targetSize.get(Picture.HEIGHT), height);
         assertEquals(targetSize.get(Picture.WIDTH), width);
 
@@ -92,29 +97,29 @@ class ImageUtilsTest {
     @Test
     void convert() throws IOException {
         FilesUtils.deleteFiles(pngImg);
-        ImageUtils.convert(originImage, pngImg);
+        imageUtils.convert(originImage, pngImg);
         assertTrue(Files.exists(pngImg));
     }
 
     @Test
     void gray() throws IOException {
         FilesUtils.deleteFiles(targetImage);
-        ImageUtils.gray(originImage, targetImage);
+        imageUtils.gray(originImage, targetImage);
         assertTrue(Files.exists(targetImage));
     }
 
     @Test
     void compare() throws IOException {
-        double result1 = ImageUtils.compare(CompareEnum.HISTOGRAM, img1, img2);
-        double result2 = ImageUtils.compare(CompareEnum.HISTOGRAM, img1, img3);
+        double result1 = imageUtils.compare(CompareEnum.HISTOGRAM, img1, img2);
+        double result2 = imageUtils.compare(CompareEnum.HISTOGRAM, img1, img3);
         assertTrue(result1 > 0.99);
         assertFalse(result2 > 0.99);
-        double result3 = ImageUtils.compare(CompareEnum.PIXEL, img1, img2);
-        double result4 = ImageUtils.compare(CompareEnum.PIXEL, img1, img3);
+        double result3 = imageUtils.compare(CompareEnum.PIXEL, img1, img2);
+        double result4 = imageUtils.compare(CompareEnum.PIXEL, img1, img3);
         assertTrue(result3 > 0.99);
         assertFalse(result4 > 0.99);
-        double result5 = ImageUtils.compare(CompareEnum.HAMMING, img1, img2);
-        double result6 = ImageUtils.compare(CompareEnum.HAMMING, img1, img3);
+        double result5 = imageUtils.compare(CompareEnum.HAMMING, img1, img2);
+        double result6 = imageUtils.compare(CompareEnum.HAMMING, img1, img3);
         assertTrue(result5 < 1);
         assertFalse(result6 < 1);
     }

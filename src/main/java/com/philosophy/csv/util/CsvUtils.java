@@ -28,7 +28,7 @@ public class CsvUtils {
      * @return 实例化后的CsvReader
      * @throws IOException IO异常
      */
-    private static CsvReader getReader(Path path, String charset, CsvEnum type) throws IOException {
+    private CsvReader getReader(Path path, String charset, CsvEnum type) throws IOException {
         log.debug("read file [{}]", path);
         Reader reader = InOutUtils.openReader(path, charset);
         return new CsvReader(reader, type);
@@ -44,7 +44,7 @@ public class CsvUtils {
      * @return 实例化后的CsvWriter
      * @throws IOException IO异常
      */
-    private static CsvWriter getWriter(Path path, String charset, CsvEnum type, boolean isAppend) throws IOException {
+    private CsvWriter getWriter(Path path, String charset, CsvEnum type, boolean isAppend) throws IOException {
         log.debug("write file [{}]", path);
         Writer writer = InOutUtils.openWriter(path, charset, isAppend);
         return new CsvWriter(writer, type);
@@ -59,7 +59,7 @@ public class CsvUtils {
      * @return 读取到的内容
      * @throws IOException IO异常
      */
-    public static String[] readTitle(Path path, String charset, CsvEnum type) throws Exception {
+    public String[] readTitle(Path path, String charset, CsvEnum type) throws Exception {
         CsvReader reader = getReader(path, charset, type);
         String[] contents = reader.readTitle();
         reader.close();
@@ -75,7 +75,7 @@ public class CsvUtils {
      * @return 读取的内容
      * @throws IOException IO异常
      */
-    public static List<String[]> readContent(Path path, String charset, CsvEnum type) throws Exception {
+    public List<String[]> readContent(Path path, String charset, CsvEnum type) throws Exception {
         CsvReader reader = getReader(path, charset, type);
         List<String[]> contents = reader.readContent();
         reader.close();
@@ -93,7 +93,7 @@ public class CsvUtils {
      * @return 读取的内容
      * @throws IOException IO异常
      */
-    public static String read(Path path, String charset, CsvEnum type, int column, int row) throws IOException {
+    public String read(Path path, String charset, CsvEnum type, int column, int row) throws IOException {
         CsvReader reader = getReader(path, charset, type);
         List<String[]> content = reader.read();
         return reader.read(content, column, row);
@@ -111,7 +111,7 @@ public class CsvUtils {
      * @return 读取的内容
      * @throws IOException IO异常
      */
-    public static String read(Path path, String charset, CsvEnum type, String title, int row) throws Exception {
+    public String read(Path path, String charset, CsvEnum type, String title, int row) throws Exception {
         CsvReader reader = getReader(path, charset, type);
         List<String[]> content = reader.read();
         reader.close();
@@ -127,9 +127,9 @@ public class CsvUtils {
      * @return 读取的内容
      * @throws IOException IO异常
      */
-    public static List<String[]> read(Path path, String charset, CsvEnum type) throws Exception {
+    public List<String[]> read(Path path, String charset, CsvEnum type) throws Exception {
         CsvReader reader = getReader(path, charset, type);
-        List<String[]> content =  reader.read();
+        List<String[]> content = reader.read();
         reader.close();
         return content;
     }
@@ -144,8 +144,8 @@ public class CsvUtils {
      * @param content  内容
      * @throws IOException IO异常
      */
-    public static void write(Path path, String charset, CsvEnum type, boolean isAppend,
-                             String[] content) throws Exception {
+    public void write(Path path, String charset, CsvEnum type, boolean isAppend,
+                      String[] content) throws Exception {
         CsvWriter writer = getWriter(path, charset, type, isAppend);
         writer.write(content);
         writer.close();
@@ -161,8 +161,8 @@ public class CsvUtils {
      * @param content  内容
      * @throws IOException IO异常
      */
-    public static void write(Path path, String charset, CsvEnum type, boolean isAppend,
-                             List<String[]> content) throws Exception {
+    public void write(Path path, String charset, CsvEnum type, boolean isAppend,
+                      List<String[]> content) throws Exception {
         CsvWriter writer = getWriter(path, charset, type, isAppend);
         writer.write(content);
         writer.close();
