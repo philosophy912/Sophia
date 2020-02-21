@@ -19,7 +19,7 @@ public class TxtWriter implements ITxtWriter<String> {
     @Setter
     private boolean isWarp;
 
-    private static int WRITE_LINE_LIMITE = 100;
+    private static int WRITE_LINE_LIMIT = 100;
 
     public TxtWriter(final Writer writer) {
         bw = new BufferedWriter(writer);
@@ -38,7 +38,7 @@ public class TxtWriter implements ITxtWriter<String> {
 
     private void lineEnd() throws IOException {
         line++;
-        if ((line % WRITE_LINE_LIMITE) == 0) {
+        if ((line % WRITE_LINE_LIMIT) == 0) {
             flush();
         }
     }
@@ -50,7 +50,7 @@ public class TxtWriter implements ITxtWriter<String> {
      * @throws IOException IO异常
      */
     public void flush(int i) throws IOException {
-        if ((i % WRITE_LINE_LIMITE) == 0) {
+        if ((i % WRITE_LINE_LIMIT) == 0) {
             flush();
         }
     }
