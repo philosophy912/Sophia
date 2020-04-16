@@ -1,6 +1,8 @@
 package com.philosophy.base.util;
 
 import com.philosophy.BaseTestUtils;
+import com.philosophy.base.common.Pair;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -60,5 +62,22 @@ class FilesUtilsTest {
         assertFalse(Files.exists(file2));
         assertFalse(Files.exists(file3));
         assertFalse(Files.exists(file4));
+    }
+
+    @SneakyThrows
+    @Test
+    void getFileNameAndExtension() {
+        Pair<String, String> pair1 = FilesUtils.getFileNameAndExtension(Paths.get(RESOURCES + "\\1.txt"));
+        Pair<String, String> pair2 = FilesUtils.getFileNameAndExtension(Paths.get(RESOURCES + "\\aaa.txt"));
+        Pair<String, String> pair3 = FilesUtils.getFileNameAndExtension(Paths.get(RESOURCES + "\\bbb.xls"));
+        Pair<String, String> pair4 = FilesUtils.getFileNameAndExtension(Paths.get(RESOURCES + "\\1cc.dbc"));
+        assertEquals("1", pair1.getFirst());
+        assertEquals("txt", pair1.getSecond());
+        assertEquals("aaa", pair2.getFirst());
+        assertEquals("txt", pair2.getSecond());
+        assertEquals("bbb", pair3.getFirst());
+        assertEquals("xls", pair3.getSecond());
+        assertEquals("1cc", pair4.getFirst());
+        assertEquals("dbc", pair4.getSecond());
     }
 }

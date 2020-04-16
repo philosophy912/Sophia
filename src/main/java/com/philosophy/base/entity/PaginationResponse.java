@@ -11,10 +11,8 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-@ApiModel
 public final class PaginationResponse {
 
     private EnvData envData;
-    @ApiModelProperty(value = "响应状态")
     private boolean success = true;
 }

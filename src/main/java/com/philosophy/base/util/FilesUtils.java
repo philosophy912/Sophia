@@ -1,5 +1,6 @@
 package com.philosophy.base.util;
 
+import com.philosophy.base.common.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 
@@ -56,11 +57,28 @@ public class FilesUtils extends FileUtils {
     }
 
     /**
+     * 获取文件名以及扩展名
+     *
+     * @param path 文件名字
+     * @return Pair<String, String> Pair<文件名, 扩展名>
+     * @throws IOException 当文件是文件夹的时候抛出IO异常
+     */
+    public static Pair<String, String> getFileNameAndExtension(Path path) throws IOException {
+        if (Files.isDirectory(path)) {
+            throw new IOException(path + " is not file");
+        }
+        String fullName = path.getFileName().toString();
+        int pointIndex = fullName.lastIndexOf(".");
+        return new Pair<>(fullName.substring(0, pointIndex), fullName.substring(pointIndex + 1));
+    }
+
+
+    /**
      * 获取扩展名
      *
      * @param path 文件名字
      * @return 扩展名
-     * @throws IOException 当传入的是文件夹则抛出异常
+     * @throws IOException 当文件是文件夹的时候抛出IO异常
      */
     public static String getExtension(Path path) throws IOException {
         if (Files.isDirectory(path)) {
