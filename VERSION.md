@@ -6,3 +6,9 @@
     
 #### V2.0.5
     增加了Entity的Swagger的说明
+    
+#### V2.0.6
+    fix去掉了swagger的import错误
+    
+#### V2.0.7
+    增加了编码格式

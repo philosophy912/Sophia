@@ -6,11 +6,13 @@ import com.philosophy.txt.common.TxtWriter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -53,11 +55,12 @@ public class TxtUtils {
      * 从txt文件中读取内容
      *
      * @param inputStream 输入流
+     * @param charset 编码格式
      * @return 内容
      * @throws IOException IO异常
      */
-    public List<String> read(InputStream inputStream, boolean skipBlankLine) throws IOException {
-        TxtReader reader = new TxtReader(new BufferedReader(new InputStreamReader(inputStream)), skipBlankLine);
+    public List<String> read(InputStream inputStream, String charset, boolean skipBlankLine) throws IOException {
+        TxtReader reader = new TxtReader(new BufferedReader(new InputStreamReader(inputStream, charset)), skipBlankLine);
         List<String> contents = reader.read();
         reader.close();
         return contents;
