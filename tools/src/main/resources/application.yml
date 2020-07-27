@@ -1,0 +1,43 @@
+logging:
+  level:
+    com.chinatsp.*: info
+    com.philosophy.*: info
+    root: info
+
+project:
+#  # 项目名称，跟生成出来的DBC有关系
+#  projectName: gse
+#  # DBC文件的名字， 必须放到运行路径下
+#  dbcName: HiFire_GSE_CONFCAN_Matrix_CAN_V2.0_IC_MMI.dbc
+#  # 测试用例excel的名字， 必须放到运行路径下
+#  testCaseName: 3J2仪表自动化测试用例汇总_v0.22.xlsx
+#  # 目前仅支持类型 cluster和AirCondition
+#  type: cluster
+
+  # 项目名称，跟生成出来的DBC有关系
+  projectName: faw
+  # DBC文件的名字， 必须放到运行路径下
+  dbcName: FAW_E115_FCP_CANMatrix_V1.6.dbc
+  # 测试用例excel的名字， 必须放到运行路径下
+  testCaseName: 1Q1空调屏测试用例汇总_V1.xlsx
+  # 目前仅支持类型 cluster和AirCondition
+  type: AirCondition
+
+#  # 项目名称，跟生成出来的DBC有关系
+#  projectName: bordrin
+#  # DBC文件的名字， 必须放到运行路径下
+#  dbcName: HiFire_B31CP_Info_HU_CAN_V2.0.dbc
+#  # 测试用例excel的名字， 必须放到运行路径下
+#  testCaseName: 仪表自动化测试用例汇总_v1.4.xlsx
+#  # 目前仅支持类型 cluster和AirCondition
+#  type: cluster
+
+
+  # 屏幕尺寸的宽
+  width: 1280
+  # 屏幕尺寸的高
+  height: 720
+  # automotive最低版本号
+  automotive: 2.0
+  # 串口端口
+  socPort: COM23

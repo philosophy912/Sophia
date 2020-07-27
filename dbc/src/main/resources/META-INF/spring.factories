@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.chinatsp.dbc.impl.DbcParser, \
+com.chinatsp.dbc.impl.ExcelDbcParser

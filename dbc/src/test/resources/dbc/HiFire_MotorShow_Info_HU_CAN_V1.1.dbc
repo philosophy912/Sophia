@@ -1,0 +1,884 @@
+VERSION ""
+
+
+NS_ : 
+        NS_DESC_
+        CM_
+        BA_DEF_
+        BA_
+        VAL_
+        CAT_DEF_
+        CAT_
+        FILTER
+        BA_DEF_DEF_
+        EV_DATA_
+        ENVVAR_DATA_
+        SGTYPE_
+        SGTYPE_VAL_
+        BA_DEF_SGTYPE_
+        BA_SGTYPE_
+        SIG_TYPE_REF_
+        VAL_TABLE_
+        SIG_GROUP_
+        SIG_VALTYPE_
+        SIGTYPE_VALTYPE_
+        BO_TX_BU_
+        BA_DEF_REL_
+        BA_REL_
+        BA_DEF_DEF_REL_
+        BU_SG_REL_
+        BU_EV_REL_
+        BU_BO_REL_
+        SG_MUL_VAL_
+
+BS_:
+
+BU_: HU 
+
+
+BO_ 644 HU_CLIMSwch: 8 HU
+ SG_ HU_FeetBlwSwch : 0|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_FaceBlwSwch : 1|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_TmpSynchrSwch : 10|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_BlwrFlowVal : 14|4@0+ (1,0) [0|15] "" CGW
+ SG_ HU_BlwGlassModSwch : 15|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_DrvrSeatHeatLvl : 18|3@0+ (1,0) [0|7] "" CGW
+ SG_ HU_CirculnSwch : 2|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_DrvrTmpSetVal : 23|5@0+ (1,0) [0|31] "" CGW
+ SG_ HU_PassSeatHeatLvl : 26|3@0+ (1,0) [0|7] "" CGW
+ SG_ HU_ACRDEFSwch : 3|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_PassTmpSetVal : 31|5@0+ (1,0) [0|31] "" CGW
+ SG_ HU_ACDEFSwch : 4|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_ACSwch : 5|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_ClimAutoSwch : 6|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_ClimSwch : 7|1@0+ (1,0) [0|1] "" CGW
+
+BO_ 640 HU_DrvMod_ChrgMod: 8 HU
+ SG_ HU_LowCreepModSet : 11|2@0+ (1,0) [0|3] "" CGW
+ SG_ HU_4WhlDrv : 13|2@0+ (1,0) [0|3] "" CGW
+ SG_ HU_DrvMod : 15|2@0+ (1,0) [0|3] "" CGW
+ SG_ HU_ACChrgnCur : 23|6@0+ (1,0) [0|40] "A" CGW
+ SG_ HU_ResvChrgStartTi : 29|6@0+ (1,0) [0|47] "" Vector__XXX
+ SG_ HU_ChrgMod : 31|2@0+ (1,0) [0|3] "" CGW
+ SG_ HU_ResvChrgTi : 39|5@0+ (1,0) [0|23] "" Vector__XXX
+ SG_ HU_EgyRecycLvl : 9|2@0+ (1,0) [0|3] "" CGW
+
+BO_ 641 HU_ESPSwch: 8 HU
+ SG_ HU_AutoHoldSwch : 15|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ HU_TotlOdo : 47|24@0+ (0.1,0) [0|999999.9] "km" Vector__XXX
+ SG_ HU_ESPOFFSwch : 7|2@0+ (1,0) [0|3] "" Vector__XXX
+
+BO_ 650 HU_GW_LIN_1: 8 HU
+ SG_ HU_ALMWarn_FLDoor : 10|2@0+ (1,0) [0|3] "" CGW
+ SG_ HU_ALMEnbl_FLDoor : 11|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_ALMCustmzColor : 15|4@0+ (1,0) [0|15] "" CGW
+ SG_ HU_ALMWarn_RRDoor : 17|2@0+ (1,0) [0|3] "" CGW
+ SG_ HU_ALMEnbl_RRDoor : 18|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_ALMWarn_FRDoor : 20|2@0+ (1,0) [0|3] "" CGW
+ SG_ HU_ALMEnbl_FRDoor : 21|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_ALMWarn_RLDoor : 23|2@0+ (1,0) [0|3] "" CGW
+ SG_ HU_ALMBritnsLvlAdj : 5|4@0+ (1,0) [0|15] "" CGW
+ SG_ HU_ALMBrthWithMusic : 6|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_ALMSwch : 7|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_ALMEnbl_RLDoor : 8|1@0+ (1,0) [0|1] "" CGW
+
+BO_ 651 HU_GW_LIN_2: 8 HU
+ SG_ HU_ALMEnbl_ConsoleIP : 11|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_Other_ALMCustmzColor : 15|4@0+ (1,0) [0|15] "" CGW
+ SG_ HU_Other_ALMBritnsLvlAdj : 5|4@0+ (1,0) [0|15] "" CGW
+ SG_ HU_Other_ALMBrthWithMusic : 6|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_Other_ALMSwch : 7|1@0+ (1,0) [0|1] "" CGW
+
+BO_ 647 HU_LocInform: 8 HU
+ SG_ HU_CurLocLatitude : 39|28@0+ (0.000001,-90) [-90|90] "degree" CGW
+ SG_ HU_CurLocLongitude : 6|29@0+ (0.000001,-180) [-180|180] "degree" CGW
+ SG_ HU_CurLocVld : 7|1@0+ (1,0) [0|1] "" CGW
+
+BO_ 648 HU_ShowMotrorInform: 8 HU
+ SG_ HU_lckReq : 1|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_RemOpenCLIM : 2|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_RearFogSwitch : 3|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_FrontFogSwitch : 4|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_UnlckReq : 6|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_SchgCarReq : 7|1@0+ (1,0) [0|1] "" CGW
+
+BO_ 649 HU_TiInform: 8 HU
+ SG_ HU_LocTiMth : 15|4@0+ (1,0) [1|12] "month" CGW
+ SG_ HU_LocTiD : 23|5@0+ (1,0) [1|31] "day" CGW
+ SG_ HU_LocTiHr : 31|5@0+ (1,0) [0|23] "hour" CGW
+ SG_ HU_LocTiM : 39|6@0+ (1,0) [0|59] "minute" CGW
+ SG_ HU_LocTiS : 47|6@0+ (1,0) [0|59] "second" CGW
+ SG_ HU_SW_Ver : 55|8@0+ (1,0) [0|255] "" CGW
+ SG_ HU_LocTiY : 6|5@0+ (1,2019) [2019|2050] "year" CGW
+ SG_ HU_HW_Ver : 63|8@0+ (1,0) [0|255] "" CGW
+ SG_ HU_LocTiVld : 7|1@0+ (1,0) [0|1] "" CGW
+
+BO_ 643 HU_iBCMSwch: 8 HU
+ SG_ HU_TurnAsistLiFctSwch : 11|2@0+ (1,0) [0|3] "" CGW
+ SG_ HU_VhclBkGndLiAdj : 15|4@0+ (1,0) [0|15] "" CGW
+ SG_ HU_PBDReq : 16|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_FolwHomeTiAdj : 19|3@0+ (1,0) [0|7] "" CGW
+ SG_ HU_FolwHomeReq : 21|2@0+ (1,0) [0|3] "" CGW
+ SG_ HU_MirrAutoFoldSet : 23|2@0+ (1,0) [0|3] "" CGW
+ SG_ HU_AutoClosedWinSwch : 25|2@0+ (1,0) [0|3] "" CGW
+ SG_ HU_LokgCarSet : 27|2@0+ (1,0) [0|3] "" CGW
+ SG_ HU_AVAS_PWSSwch : 29|2@0+ (1,0) [0|3] "" CGW
+ SG_ HU_HeadlampHeiAdj : 3|3@0+ (1,0) [0|7] "" CGW
+ SG_ HU_AutoSpdLockSet : 31|2@0+ (1,0) [0|3] "" CGW
+ SG_ HU_WinSwchReq : 39|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_LiReq : 6|3@0+ (1,0) [0|7] "" CGW
+ SG_ HU_DeActvSt : 7|1@0+ (1,0) [0|1] "" CGW
+ SG_ HU_MirrLiSwch : 9|2@0+ (1,0) [0|3] "" CGW
+
+BO_ 91 BCU_04: 8 CGW
+ SG_ BCU_04_CRC : 7|8@0+ (1,0) [0|255] "" HU
+ SG_ BCU_04_MsgCntr : 15|4@0+ (1,0) [0|15] "" HU
+ SG_ VehSpdSts : 23|1@0+ (1,0) [0|1] "" HU
+ SG_ VehSpd : 20|13@0+ (0.05625,0) [0|360] "km/h" HU
+
+BO_ 591 BCU_09: 4 CGW
+ SG_ EBDFailLampReq : 4|1@0+ (1,0) [0|1] "" HU
+ SG_ ABSFailLampReq : 7|1@0+ (1,0) [0|1] "" HU
+
+BO_ 660 CLIM_HU: 8 CGW
+ SG_ Clim_PM25Disp : 1|10@0+ (1,0) [0|999] "ug/m3" HU
+ SG_ Clim_BlwrFlowDisp : 5|4@0+ (1,0) [0|15] "" HU
+ SG_ Clim_DrvModSts : 7|2@0+ (1,0) [0|3] "" HU
+ SG_ Clim_DrvrTmpDisp : 23|8@0+ (1,0) [0|255] "℃" HU
+ SG_ Clim_PassTmpDisp : 31|8@0+ (1,0) [0|255] "℃" HU
+ SG_ Clim_DrvrSeatHeatgLvlSts : 34|3@0+ (1,0) [0|7] "" HU
+ SG_ Clim_TmpSynchSts : 35|1@0+ (1,0) [0|1] "" HU
+ SG_ Clim_ClimSwchSts : 36|1@0+ (1,0) [0|1] "" HU
+ SG_ Clim_FaceModSts : 37|1@0+ (1,0) [0|1] "" HU
+ SG_ Clim_FootModSts : 38|1@0+ (1,0) [0|1] "" HU
+ SG_ Clim_ReDefrostingSts : 40|1@0+ (1,0) [0|1] "" HU
+ SG_ Clim_FrntDefrostingSts : 41|1@0+ (1,0) [0|1] "" HU
+ SG_ Clim_ACSts : 42|1@0+ (1,0) [0|1] "" HU
+ SG_ Clim_PassSeatHeatgLvlSts : 47|3@0+ (1,0) [0|7] "" HU
+ SG_ Clim_AutoModSts : 54|1@0+ (1,0) [0|1] "" HU
+ SG_ Clim_Int_ExtCirculnSts : 63|2@0+ (1,0) [0|3] "" HU
+ SG_ Clim_BlwGlassModSts : 61|1@0+ (1,0) [0|1] "" HU
+
+BO_ 659 CLIM_OutsideTmp: 8 CGW
+ SG_ Clim_OutsideTmp : 7|8@0+ (1,-40) [-40|215] "℃" HU
+ SG_ Clim_OutsideTmpVld : 15|1@0+ (1,0) [0|1] "" HU
+
+BO_ 769 EPSChassisCAN_1: 8 CGW
+ SG_ EPS_Sts : 7|2@0+ (1,0) [0|3] "" HU
+
+BO_ 655 PT_Fault: 8 CGW
+ SG_ BCU_RemChrgnTime : 7|10@0+ (1,0) [0|1023] "min" HU
+ SG_ CDU_DCDCFlt : 12|2@0+ (1,0) [0|3] "" HU
+ SG_ BCU_BattOverTmp : 10|1@0+ (1,0) [0|1] "" HU
+ SG_ BCU_SOH : 23|7@0+ (1,0) [0|100] "%" HU
+ SG_ MCU_MotOverSpdWarn : 31|2@0+ (1,0) [0|3] "" HU
+ SG_ MCU_SysTmpWarn : 29|2@0+ (1,0) [0|3] "" HU
+ SG_ MCU_MotActlSpd : 39|16@0+ (1,-20000) [-20000|20000] "rpm" HU
+
+BO_ 533 VCUPowertrainCAN_3: 8 CGW
+ SG_ VCU_ChrgStsIndcr : 1|1@0+ (1,0) [0|1] "" HU
+ SG_ VCU_ChrgConnectIndcr : 2|1@0+ (1,0) [0|1] "" HU
+ SG_ VCU_TurtleLampon : 3|1@0+ (1,0) [0|1] "" HU
+ SG_ VCU_ActlGear : 6|3@0+ (1,0) [0|7] "" HU
+ SG_ VCU_PtRdy : 7|1@0+ (1,0) [0|1] "" HU
+ SG_ VCU_PtOverTmp : 13|3@0+ (1,0) [0|7] "" HU
+ SG_ VCU_PwrBattFltIndcr : 14|1@0+ (1,0) [0|1] "" HU
+ SG_ VCU_PtFltIndcr : 15|1@0+ (1,0) [0|1] "" HU
+ SG_ VCU_PwrBattVlt : 23|14@0+ (0.1,0) [0|500] "V" HU
+ SG_ VCU_PwrBattCur : 39|14@0+ (0.1,-500) [-500|500] "A" HU
+
+BO_ 532 VCUPowertrainCAN_4: 8 CGW
+ SG_ VCU_VhclResidualMile : 7|10@0+ (1,0) [0|600] "km" HU
+ SG_ VCU_EgyCnsPer100km : 11|9@0+ (0.1,0) [0|30] "kWh/100km" HU
+ SG_ VCU_DispSoc : 31|7@0+ (1,0) [0|100] "%" HU
+ SG_ VCU_PwrFlowIndcr : 35|3@0+ (1,0) [0|7] "" HU
+ SG_ VCU_VhclActlPwr : 47|9@0+ (1,-200) [-200|200] "kw" HU
+ SG_ VCU_BattLoTmpHeatgSts : 32|1@0+ (1,0) [0|1] "" HU
+ SG_ VCU_GearChgWarn : 39|2@0+ (1,0) [0|3] "" HU
+ SG_ VCU_EMParkingLockFlt : 54|1@0+ (1,0) [0|1] "" HU
+ SG_ VCU_ChrgElecLockFlt : 53|2@0+ (1,0) [0|3] "" HU
+
+BO_ 400 iBCM_BCM_Sts: 8 CGW
+ SG_ iBCM_AntitheftSts : 7|2@0+ (1,0) [0|3] "" HU
+ SG_ iBCM_PwrMod : 5|2@0+ (1,0) [0|3] "" HU
+ SG_ iBCM_HoodSts : 3|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_DrvrDoorLckSts : 2|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_AutoLiSwch : 15|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_PosnLiSts : 14|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_HiBeamSts : 13|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_LoBeamSts : 12|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_ReFogLiSts : 11|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_FrntFogLiSts : 10|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_TurnLiSts : 9|2@0+ (1,0) [0|3] "" HU
+ SG_ iBCM_DRLSts : 23|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_BrkLi : 22|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_FL_DoorAjarSts : 21|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_FR_DoorAjarSts : 20|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_RL_DoorAjarSts : 19|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_RR_DoorAjarSts : 18|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_Trunk_AjarSts : 17|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_Welcome_Sts : 26|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_FolwMeHomeSts : 24|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_HomeTiDlySetg : 39|8@0+ (1,0) [0|60] "s" HU
+ SG_ iBCM_BCM_1_MsgRolgCntr : 51|4@0+ (1,0) [0|15] "" HU
+ SG_ iBCM_BCM_1_Chks : 63|8@0+ (1,0) [0|255] "" HU
+
+BO_ 405 iBCM_LIN_WinPosn: 8 CGW
+ SG_ FLW_FLDoorWindowsPosition : 7|4@0+ (1,0) [0|15] "" HU
+ SG_ FRW_FRDoorWindowsPosition : 3|4@0+ (1,0) [0|15] "" HU
+ SG_ RLW_RLDoorWindowsPosition : 15|4@0+ (1,0) [0|15] "" HU
+ SG_ RRW_RRDoorWindowsPosition : 11|4@0+ (1,0) [0|15] "" HU
+ SG_ SR_SrPosition : 23|3@0+ (1,0) [0|7] "" HU
+
+BO_ 402 iBCM_TPMS_TireP_SysSts: 8 CGW
+ SG_ iBCM_FL_TireP : 7|8@0+ (1.373,0) [0|348.742] "kpa" HU
+ SG_ iBCM_FR_TireP : 15|8@0+ (1.373,0) [0|348.742] "kpa" HU
+ SG_ iBCM_RL_TireP : 23|8@0+ (1.373,0) [0|348.742] "kpa" HU
+ SG_ iBCM_RR_TireP : 31|8@0+ (1.373,0) [0|348.742] "kpa" HU
+ SG_ iBCM_FL_TirePSts : 39|2@0+ (1,0) [0|3] "" HU
+ SG_ iBCM_FR_TirePSts : 37|2@0+ (1,0) [0|3] "" HU
+ SG_ iBCM_RL_TirePSts : 35|2@0+ (1,0) [0|3] "" HU
+ SG_ iBCM_RR_TirePSts : 33|2@0+ (1,0) [0|3] "" HU
+ SG_ iBCM_TPMS_SysSts : 55|2@0+ (1,0) [0|3] "" HU
+
+BO_ 403 iBCM_TPMS_TireTmp: 8 CGW
+ SG_ iBCM_FL_TireTmp : 7|8@0+ (1,-50) [-50|204] "℃" HU
+ SG_ iBCM_FR_TireTmp : 15|8@0+ (1,-50) [-50|204] "℃" HU
+ SG_ iBCM_RL_TireTmp : 23|8@0+ (1,-50) [-50|204] "℃" HU
+ SG_ iBCM_RR_TireTmp : 31|8@0+ (1,-50) [-50|204] "℃" HU
+ SG_ iBCM_FL_TireTmpSts : 39|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_FR_TireTmpSts : 38|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_RL_TireTmpSts : 37|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_RR_TireTmpSts : 36|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_FL_FastLkg : 35|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_FR_FastLkg : 34|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_RL_FastLkg : 33|1@0+ (1,0) [0|1] "" HU
+ SG_ iBCM_RR_FastLkg : 32|1@0+ (1,0) [0|1] "" HU
+
+
+CM_ " ";
+
+CM_ SG_ 640 HU_LowCreepModSet "HU_LowCreepModeSet
+低速蠕动模式开关";
+CM_ SG_ 640 HU_4WhlDrv "HU_4WheelDrive
+4WD驱动模式";
+CM_ SG_ 640 HU_DrvMod "HU_DriveMode
+驾驶模式";
+CM_ SG_ 640 HU_ACChrgnCur "HU_ACChargingCurrent
+交流充电电流";
+CM_ SG_ 640 HU_ResvChrgStartTi "HU_ReserveChargeStartTime
+充电预约开始时间";
+CM_ SG_ 640 HU_ChrgMod "HU_ChargeMode
+充电模式";
+CM_ SG_ 640 HU_ResvChrgTi "HU_ReserveChargeTime
+预约充电时长";
+CM_ SG_ 640 HU_EgyRecycLvl "HU_EnergyRecycleLevel
+能量回收等级";
+CM_ SG_ 643 HU_TurnAsistLiFctSwch "HU_TurnAsistLightFunctionSwitch
+转向辅助照明灯功能";
+CM_ SG_ 643 HU_VhclBkGndLiAdj "HU_VehicleBackgroundLightAdjust
+车内背景光亮度调节";
+CM_ SG_ 643 HU_PBDReq "HU_PBDRequest
+电动尾门请求信号";
+CM_ SG_ 643 HU_FolwHomeTiAdj "HU_FollowHomeTimeAdjust
+跟随回家功能时间调节";
+CM_ SG_ 643 HU_FolwHomeReq "HU_FollowHomeReq
+跟随回家功能开关请求";
+CM_ SG_ 643 HU_MirrAutoFoldSet "HU_MirrorAutoFoldSet
+后视镜自动折叠";
+CM_ SG_ 643 HU_AutoClosedWinSwch "Auto Closed Window Switch
+一键升窗开关信号";
+CM_ SG_ 643 HU_LokgCarSet "HU_LookingCarSet
+寻车HORN鸣叫设置";
+CM_ SG_ 643 HU_AVAS_PWSSwch "PWS(PedestrianWarningSystem) Switch
+行人警示系统开关（上电默认开）";
+CM_ SG_ 643 HU_HeadlampHeiAdj "HU_HeadlampHeightAdjust
+大灯高度调节";
+CM_ SG_ 643 HU_AutoSpdLockSet "HU_AutoSpeedLockSet
+自动落锁设置";
+CM_ SG_ 643 HU_WinSwchReq "Window Switch Request
+天窗开关请求";
+CM_ SG_ 643 HU_LiReq "HU_Light Request
+灯光点亮请求";
+CM_ SG_ 643 HU_DeActvSt "HU_DeActiveState
+主机非活跃状态";
+CM_ SG_ 643 HU_MirrLiSwch "HU_MirrorLightSwitch
+后视镜照地灯开关";
+CM_ SG_ 644 HU_FeetBlwSwch "HU_FeetBlowSwitch
+吹脚按钮开关";
+CM_ SG_ 644 HU_FaceBlwSwch "HU_FaceBlowSwitch
+吹面按钮开关";
+CM_ SG_ 644 HU_TmpSynchrSwch "HU_TempSynchroSwitch
+温度同步按键开关";
+CM_ SG_ 644 HU_BlwrFlowVal "Blower Air volume value
+鼓风机风量值";
+CM_ SG_ 644 HU_BlwGlassModSwch "吹玻璃模式开关
+Glass Blowing Mode Switch ";
+CM_ SG_ 644 HU_DrvrSeatHeatLvl "Driver Seat Heating Level
+主驾座椅加热等级";
+CM_ SG_ 644 HU_CirculnSwch "HU_CirculationSwitch
+内外循环开关";
+CM_ SG_ 644 HU_DrvrTmpSetVal "Driver Setting Temperature Value 
+主驾设定温度值";
+CM_ SG_ 644 HU_PassSeatHeatLvl "Passenger Seat Heating Level
+副驾座椅加热等级";
+CM_ SG_ 644 HU_ACRDEFSwch "HU_ACRDEFSwitch
+后除霜开关";
+CM_ SG_ 644 HU_PassTmpSetVal "Passenge Setting Temperature Value 
+副驾设定温度值";
+CM_ SG_ 644 HU_ACDEFSwch "HU_ACDEFSwitch
+前除霜开关";
+CM_ SG_ 644 HU_ACSwch "HU_ACSwitch
+AC按键开关";
+CM_ SG_ 644 HU_ClimAutoSwch "HU_ClimateAutoSwitch
+Auto按键开关";
+CM_ SG_ 644 HU_ClimSwch "HU_ClimateSwitch
+Climate(AC)开关";
+CM_ SG_ 641 HU_AutoHoldSwch "HU_AutoHoldSwitch
+AutoHold开关";
+CM_ SG_ 641 HU_TotlOdo "HU_TotalOdometer
+累计里程";
+CM_ SG_ 641 HU_ESPOFFSwch "HU_ESPOFFSwitch
+ESP OFF开关";
+CM_ SG_ 647 HU_CurLocLatitude "HU_CurrentLocationLatitude
+当前位置纬度";
+CM_ SG_ 647 HU_CurLocLongitude "HU_CurrentLocationLongitude
+当前位置经度";
+CM_ SG_ 647 HU_CurLocVld "HU_CurrentLocationValid
+当前位置信息有效";
+CM_ SG_ 649 HU_LocTiMth "HU_LocalTimeMonth
+本地时间月";
+CM_ SG_ 649 HU_LocTiD "HU_LocalTimeDay
+本地时间日";
+CM_ SG_ 649 HU_LocTiHr "HU_LocalTimeHour
+本地时间时";
+CM_ SG_ 649 HU_LocTiM "HU_LocalTimeMinute
+本地时间分";
+CM_ SG_ 649 HU_LocTiS "HU_LocalTimeSecond
+本地时间秒";
+CM_ SG_ 649 HU_SW_Ver "HU_Software Version
+软件版本";
+CM_ SG_ 649 HU_LocTiY "HU_LocalTimeYear
+本地时间年";
+CM_ SG_ 649 HU_HW_Ver "HU_Hardware Version
+硬件版本";
+CM_ SG_ 649 HU_LocTiVld "HU_LocalTimeValid
+本地时间有效位";
+CM_ SG_ 648 HU_lckReq "HU_lockReq
+闭锁请求";
+CM_ SG_ 648 HU_RemOpenCLIM "Remote Open Climate
+远程开启空调";
+CM_ SG_ 648 HU_RearFogSwitch "Rear Fog light Switch
+后雾灯开启";
+CM_ SG_ 648 HU_FrontFogSwitch "Front Fog light Switch
+前雾灯开启";
+CM_ SG_ 648 HU_UnlckReq "HU_UnlockReq
+解锁请求";
+CM_ SG_ 648 HU_SchgCarReq "HU_SearchingCarReq
+寻车请求";
+CM_ SG_ 650 HU_ALMWarn_FLDoor "左前门开氛围灯报警
+ALM Warning Of Left Front Door
+(静态报警：门开，对应车门红色灯显示，门关，默认颜色显示；
+动态报警：门开，且后方来车，对应车门红色闪烁警示，门关，默认颜色显示)";
+CM_ SG_ 650 HU_ALMEnbl_FLDoor "左前门氛围灯使能位
+ALM Enable Of Left Front Door";
+CM_ SG_ 650 HU_ALMCustmzColor "用户自定义氛围灯颜色
+ALM Color Customize";
+CM_ SG_ 650 HU_ALMWarn_RRDoor "右后门开氛围灯报警
+ALM Warning Of Right Rear Door";
+CM_ SG_ 650 HU_ALMEnbl_RRDoor "右后门氛围灯使能位
+ALM Enable Of Right Rear Door";
+CM_ SG_ 650 HU_ALMWarn_FRDoor "右前门开氛围灯报警
+ALM Warning Of Right Front Door";
+CM_ SG_ 650 HU_ALMEnbl_FRDoor "右前门氛围灯使能位
+ALM Enable Of Right Front Door";
+CM_ SG_ 650 HU_ALMWarn_RLDoor "左后门开氛围灯报警
+ALM Warning Of Left Rear Door";
+CM_ SG_ 650 HU_ALMBritnsLvlAdj "氛围灯亮度等级调节
+ALM Brightness Level Adjust";
+CM_ SG_ 650 HU_ALMBrthWithMusic "氛围灯音乐随动控制
+ALM Breathe With Music Control";
+CM_ SG_ 650 HU_ALMSwch "氛围灯开关控制
+ALM On/Off Switch Control";
+CM_ SG_ 650 HU_ALMEnbl_RLDoor "左后门氛围灯使能位
+ALM Enable Of Left Rear Door";
+CM_ SG_ 651 HU_ALMEnbl_ConsoleIP "中控台仪表板氛围灯使能位
+Console and IP ALM Enable";
+CM_ SG_ 651 HU_Other_ALMCustmzColor "用户自定义氛围灯颜色
+ALM Color Customize";
+CM_ SG_ 651 HU_Other_ALMBritnsLvlAdj "氛围灯亮度等级调节
+ALM Brightness Level Adjust";
+CM_ SG_ 651 HU_Other_ALMBrthWithMusic "氛围灯音乐随动控制
+ALM Breathe With Music Control";
+CM_ SG_ 651 HU_Other_ALMSwch "氛围灯开关控制
+ALM On/Off Switch Control";
+CM_ SG_ 402 iBCM_FL_TireP "TireLeftFrontPressure
+左前轮胎压压力";
+CM_ SG_ 402 iBCM_FR_TireP "TireRightFrontPressure
+右前轮胎压压力";
+CM_ SG_ 402 iBCM_RL_TireP "TireLeftRearPressure
+左后轮胎压压力";
+CM_ SG_ 402 iBCM_RR_TireP "TireRightRearPressure
+右后轮胎压压力";
+CM_ SG_ 402 iBCM_FL_TirePSts "TireLeftFrontPressureStatus
+左前轮胎压状态";
+CM_ SG_ 402 iBCM_FR_TirePSts "TireRightFrontPressureStatus
+右前轮胎压状态";
+CM_ SG_ 402 iBCM_RL_TirePSts "TireLeftRearPressureStatus
+左后轮胎压状态";
+CM_ SG_ 402 iBCM_RR_TirePSts "TireRightRearPressureStatus
+右后轮胎压状态";
+CM_ SG_ 402 iBCM_TPMS_SysSts "TPMSSystemStatus
+TPMS系统状态";
+CM_ SG_ 403 iBCM_FL_TireTmp "TireLeftFrontTemperature
+左前轮胎温";
+CM_ SG_ 403 iBCM_FR_TireTmp "TireRightFrontTemperature
+右前轮胎温";
+CM_ SG_ 403 iBCM_RL_TireTmp "TireLeftRearTemperature
+左后轮胎温";
+CM_ SG_ 403 iBCM_RR_TireTmp "TireRightRearTemperature
+右后轮胎温";
+CM_ SG_ 403 iBCM_FL_TireTmpSts "TireLeftFrontTemperatureStatus
+左前轮轮胎温状态";
+CM_ SG_ 403 iBCM_FR_TireTmpSts "TireRightFrontTemperatureStatus
+右前轮轮胎温状态";
+CM_ SG_ 403 iBCM_RL_TireTmpSts "TireLeftRearTemperatureStatus
+左后轮轮胎温状态";
+CM_ SG_ 403 iBCM_RR_TireTmpSts "TireRightRearTemperatureStatus
+右后轮轮胎温状态";
+CM_ SG_ 403 iBCM_FL_FastLkg "Tire Front Left FastLeakage
+左前轮快速漏气(预留)";
+CM_ SG_ 403 iBCM_FR_FastLkg "Tire Front Right FastLeakage
+右前轮快速漏气(预留)";
+CM_ SG_ 403 iBCM_RL_FastLkg "Tire Rear Left FastLeakage
+左后轮快速漏气(预留)";
+CM_ SG_ 403 iBCM_RR_FastLkg "Tire Rear Right Fast Leakage
+右后轮快速漏气(预留)";
+CM_ SG_ 400 iBCM_AntitheftSts "Vehicle Antitheft Status
+防盗报警状态";
+CM_ SG_ 400 iBCM_PwrMod "Power Mode
+系统电源";
+CM_ SG_ 400 iBCM_HoodSts "Hood status
+前舱盖开关";
+CM_ SG_ 400 iBCM_DrvrDoorLckSts "Driver Door Lock Status
+驾驶侧门锁状态";
+CM_ SG_ 400 iBCM_AutoLiSwch "Signal to indicate auto light to
+自动大灯开关开启";
+CM_ SG_ 400 iBCM_PosnLiSts "Position Light Status
+位置灯状态";
+CM_ SG_ 400 iBCM_HiBeamSts "High Beam Status
+远光灯状态";
+CM_ SG_ 400 iBCM_LoBeamSts "Low beam status
+ (近光灯)";
+CM_ SG_ 400 iBCM_ReFogLiSts "Rear fog lamp status 
+(后雾灯)";
+CM_ SG_ 400 iBCM_FrntFogLiSts "Front fog lamp status 
+(前雾灯)";
+CM_ SG_ 400 iBCM_TurnLiSts "Turn lamp status and hazard warning lamp status
+ (转向灯状态/危险警告)";
+CM_ SG_ 400 iBCM_DRLSts "Day running light output command
+日行灯";
+CM_ SG_ 400 iBCM_BrkLi "Brake light 
+刹车灯";
+CM_ SG_ 400 iBCM_FL_DoorAjarSts "Driver Door Ajar Status
+驾驶侧门开关状态";
+CM_ SG_ 400 iBCM_FR_DoorAjarSts "Passenger Door Ajar Status
+副驾驶侧门开关状态";
+CM_ SG_ 400 iBCM_RL_DoorAjarSts "Rear Left Door Ajar Status
+左后门开关状态";
+CM_ SG_ 400 iBCM_RR_DoorAjarSts "Rear Right Door Ajar Status
+右后门开关状态";
+CM_ SG_ 400 iBCM_Trunk_AjarSts "Trunk Ajar Status
+后背门开关状态";
+CM_ SG_ 400 iBCM_Welcome_Sts "Welcome Status
+迎宾状态";
+CM_ SG_ 400 iBCM_FolwMeHomeSts "Follow Me Home Function Status
+伴我回家功能（启闭）状态";
+CM_ SG_ 400 iBCM_HomeTiDlySetg "The setting of Follow Me Home TimeDely  in iBCM  Memory
+iBCM内伴我回家灯延迟时间设定";
+CM_ SG_ 400 iBCM_BCM_1_MsgRolgCntr "MessageRollingCounter is from 0   
+to 15 ,increase one unit on every message transmission
+报文计数器";
+CM_ SG_ 400 iBCM_BCM_1_Chks "Message Checksum                        ";
+CM_ SG_ 405 FLW_FLDoorWindowsPosition "Left front window position 
+左前车窗位置";
+CM_ SG_ 405 FRW_FRDoorWindowsPosition "Right front window position 
+右前车窗位置";
+CM_ SG_ 405 RLW_RLDoorWindowsPosition "Left rear window position
+左后车窗位置";
+CM_ SG_ 405 RRW_RRDoorWindowsPosition "Rignt rear window position
+右后车窗位置";
+CM_ SG_ 405 SR_SrPosition "Roof window position
+天窗位置";
+CM_ SG_ 660 Clim_PM25Disp "PM2.5 display
+PM2.5显示";
+CM_ SG_ 660 Clim_BlwrFlowDisp "Blower Air Flow display
+鼓风机风量显示";
+CM_ SG_ 660 Clim_DrvModSts "Drive Mode Feedback 
+驾驶模式反馈";
+CM_ SG_ 660 Clim_DrvrTmpDisp "Driver temperature display
+主驾驶温度显示";
+CM_ SG_ 660 Clim_PassTmpDisp "Passenger temperature display
+副驾驶温度显示";
+CM_ SG_ 660 Clim_DrvrSeatHeatgLvlSts "Driver Seat Heating Level Display 
+主驾驶座椅加热档位显示";
+CM_ SG_ 660 Clim_TmpSynchSts "Temperature Synchronization status Display 
+温度同步状态显示";
+CM_ SG_ 660 Clim_ClimSwchSts "Climate switch status display
+空调开关状态显示（CLIM ON/OFF开关）";
+CM_ SG_ 660 Clim_FaceModSts "Blow face mode status display 
+吹面模式状态显示";
+CM_ SG_ 660 Clim_FootModSts "Blow foot mode status display 
+吹脚模式状态显示";
+CM_ SG_ 660 Clim_ReDefrostingSts "Rear Defrosting Status display
+后除霜模式显示";
+CM_ SG_ 660 Clim_FrntDefrostingSts "Front Defrosting Status display
+前除霜模式显示";
+CM_ SG_ 660 Clim_ACSts "AC status display
+AC状态显示";
+CM_ SG_ 660 Clim_PassSeatHeatgLvlSts "Passenger Seat Heating Level Display 
+副驾驶座椅加热档位显示";
+CM_ SG_ 660 Clim_AutoModSts "AUTO mode display 
+AUTO模式显示";
+CM_ SG_ 660 Clim_Int_ExtCirculnSts "Internal/external circulation status display 
+内外循环状态显示";
+CM_ SG_ 660 Clim_BlwGlassModSts "Blow glass mode status display 
+吹玻璃状态显示";
+CM_ SG_ 91 BCU_04_CRC "BCU_04 CRC      ";
+CM_ SG_ 91 BCU_04_MsgCntr "BCU_04 Message counter      ";
+CM_ SG_ 91 VehSpdSts "Vehicle speed validity and initialization status      ";
+CM_ SG_ 91 VehSpd "Vehicle speed. Invalid values 1901 - 1FFF      ";
+CM_ SG_ 533 VCU_ChrgStsIndcr "Charge status indicator
+充电状态指示";
+CM_ SG_ 533 VCU_ChrgConnectIndcr "Charge connect indicator
+充电链接指示";
+CM_ SG_ 533 VCU_TurtleLampon "TurtleLampon
+（乌龟灯）驱动功率受限指示灯";
+CM_ SG_ 533 VCU_ActlGear "Actual gear
+真实档位";
+CM_ SG_ 533 VCU_PtRdy "Powertrain have
+ready
+动力系统准备就绪";
+CM_ SG_ 533 VCU_PtOverTmp "Powertrain over temperature
+动力系统过温";
+CM_ SG_ 533 VCU_PwrBattFltIndcr "Power battery fault indicator
+动力电池故障指示";
+CM_ SG_ 533 VCU_PtFltIndcr "Powertrain fault indicator
+动力系统故障指示";
+CM_ SG_ 533 VCU_PwrBattVlt "Voltage of power battery
+动力电池电压";
+CM_ SG_ 533 VCU_PwrBattCur "Current of power battery
+动力电池电流";
+CM_ SG_ 532 VCU_VhclResidualMile "vehicle residual mileage
+剩余续驶里程";
+CM_ SG_ 532 VCU_EgyCnsPer100km "Energy consume per 100km
+平均百公里能耗";
+CM_ SG_ 532 VCU_DispSoc "SOC used for display
+动力电池剩余SOC";
+CM_ SG_ 532 VCU_PwrFlowIndcr "Power flow indicator
+能量流";
+CM_ SG_ 532 VCU_VhclActlPwr "Vehicle actual power
+车辆实际功率";
+CM_ SG_ 532 VCU_BattLoTmpHeatgSts "Battery low temperature heating status
+电池低温加热状态";
+CM_ SG_ 532 VCU_GearChgWarn "Gear change warning
+换档条件不满足";
+CM_ SG_ 532 VCU_EMParkingLockFlt "EM parking lock fault
+电机驻车锁故障";
+CM_ SG_ 532 VCU_ChrgElecLockFlt "Charging electrical lock fault
+充电电子锁故障";
+CM_ SG_ 655 BCU_RemChrgnTime "Remain Charging Time
+剩余充电时间";
+CM_ SG_ 655 CDU_DCDCFlt "DCDC fault status
+DCDC故障状态";
+CM_ SG_ 655 BCU_BattOverTmp "Battery Over Tempeture Waring
+动力电池过温报警";
+CM_ SG_ 655 BCU_SOH "SOH
+电池健康状态";
+CM_ SG_ 655 MCU_MotOverSpdWarn "Motor over speed warnig
+电机超速报警";
+CM_ SG_ 655 MCU_SysTmpWarn "Systerm tempeture waring
+电机系统温度报警";
+CM_ SG_ 655 MCU_MotActlSpd "Motor Actual speed
+电机实际转速";
+CM_ SG_ 591 EBDFailLampReq "EBD fail lamp request  ";
+CM_ SG_ 591 ABSFailLampReq "ABS fail lamp request  ";
+CM_ SG_ 769 EPS_Sts "EPS Status
+EPS系统状态信号";
+CM_ SG_ 659 Clim_OutsideTmp "Out-Car temperature 
+车外温度";
+CM_ SG_ 659 Clim_OutsideTmpVld "Out-car temperature Validity
+车外温度有效性";
+
+
+BA_DEF_ BO_  "NmMessage" ENUM "No","Yes";
+BA_DEF_ BO_  "DiagState" ENUM  "No","Yes";
+BA_DEF_ BO_  "DiagRequest" ENUM  "No","Yes";
+BA_DEF_ BO_  "DiagResponse" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cycle","NoSendType","IfActive";
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 0;
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cycle","OnChange","OnWrite","IfActive","OnChangeWithRepetition","OnWriteWithRepetition","IfActiveWithRepetition";
+BA_DEF_ SG_  "GenSigStartValue" INT 0 0;
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTimeFast" INT 0 0;
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 0;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 0;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_ BO_  "CANFD_BRS" ENUM  "0","1";
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ SG_  "GenSigTimeoutValue" INT 0 1000000000;
+BA_DEF_ BO_  "GenMsgCycleTimeActive" INT 0 0;
+BA_DEF_ BU_  "ILUsed" ENUM  "No","Yes";
+BA_DEF_ BU_  "DiagStationAddress" HEX 0 255;
+BA_DEF_ BU_  "NmNode" ENUM  "Not","Yes";
+BA_DEF_ BU_  "NmStationAddress" HEX 0 65535;
+BA_DEF_ BU_  "NmCAN" INT 0 2;
+BA_DEF_  "Manufacturer" STRING ;
+BA_DEF_  "NmType" STRING ;
+BA_DEF_  "NmBaseAddress" HEX 0 2047;
+BA_DEF_  "NmMessageCount" INT 0 255;
+BA_DEF_ BO_  "_Cdb_Sc_CTm_FAW_v3_0" INT 0 0;
+BA_DEF_ BO_  "_Cdb_Sc_CTm_FAW_v2_3" INT 0 0;
+BA_DEF_ BO_  "_Cdb_Sc_CTm_FAW_v3_1" INT 0 0;
+BA_DEF_ BO_  "_Cdb_Sc_CTm_FAW_v2_2" INT 0 0;
+BA_DEF_ BO_  "_Cdb_Sc_CTm_FAW_v2_1" INT 0 0;
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 65535;
+BA_DEF_  "BusType" STRING ;
+
+
+BA_DEF_DEF_  "NmMessage" "No";
+BA_DEF_DEF_  "DiagState" "No";
+BA_DEF_DEF_  "DiagRequest" "No";
+BA_DEF_DEF_  "DiagResponse" "No";
+BA_DEF_DEF_  "GenMsgSendType" "Cycle";
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "GenSigSendType" "Cycle";
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 0;
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "CANFD_BRS" "0";
+BA_DEF_DEF_  "VFrameFormat" "StandardCAN";
+BA_DEF_DEF_  "NodeLayerModules" "oseknm01.dll,osek_tp.dll,CANoeILNLVector.dll";
+BA_DEF_DEF_  "GenSigTimeoutValue" 0;
+BA_DEF_DEF_  "GenMsgCycleTimeActive" 0;
+BA_DEF_DEF_  "ILUsed" "No";
+BA_DEF_DEF_  "DiagStationAddress" 0;
+BA_DEF_DEF_  "NmNode" "Not";
+BA_DEF_DEF_  "NmStationAddress" 0;
+BA_DEF_DEF_  "NmCAN" 0;
+BA_DEF_DEF_  "Manufacturer" "";
+BA_DEF_DEF_  "NmType" "";
+BA_DEF_DEF_  "NmBaseAddress" 1024;
+BA_DEF_DEF_  "NmMessageCount" 128;
+BA_DEF_DEF_  "_Cdb_Sc_CTm_FAW_v3_0" 0;
+BA_DEF_DEF_  "_Cdb_Sc_CTm_FAW_v2_3" 0;
+BA_DEF_DEF_  "_Cdb_Sc_CTm_FAW_v3_1" 0;
+BA_DEF_DEF_  "_Cdb_Sc_CTm_FAW_v2_2" 0;
+BA_DEF_DEF_  "_Cdb_Sc_CTm_FAW_v2_1" 0;
+BA_DEF_DEF_  "GenMsgILSupport" "No";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "BusType" "CAN FD";
+BA_ "BusType" "CAN";
+BA_ "DBName" "Info";
+BA_ "GenMsgCycleTime" BO_ 644 100;
+BA_ "GenMsgCycleTime" BO_ 640 100;
+BA_ "GenSigStartValue" SG_ 640 HU_ACChrgnCur 5;
+BA_ "GenSigStartValue" SG_ 640 HU_EgyRecycLvl 1;
+BA_ "GenMsgCycleTime" BO_ 641 100;
+BA_ "GenMsgCycleTime" BO_ 650 50;
+BA_ "GenSigStartValue" SG_ 650 HU_ALMBritnsLvlAdj 4;
+BA_ "GenMsgCycleTime" BO_ 651 50;
+BA_ "GenSigStartValue" SG_ 651 HU_Other_ALMBritnsLvlAdj 4;
+BA_ "GenMsgCycleTime" BO_ 647 1000;
+BA_ "GenSigStartValue" SG_ 647 HU_CurLocVld 1;
+BA_ "GenMsgCycleTime" BO_ 648 100;
+BA_ "GenMsgCycleTime" BO_ 649 1000;
+BA_ "GenSigStartValue" SG_ 649 HU_LocTiVld 1;
+BA_ "GenMsgCycleTime" BO_ 643 100;
+BA_ "GenSigStartValue" SG_ 643 HU_FolwHomeTiAdj 1;
+BA_ "GenSigStartValue" SG_ 643 HU_LiReq 1;
+BA_ "GenMsgCycleTime" BO_ 91 20;
+BA_ "GenMsgCycleTime" BO_ 591 100;
+BA_ "GenSigStartValue" SG_ 591 EBDFailLampReq 1;
+BA_ "GenSigStartValue" SG_ 591 ABSFailLampReq 1;
+BA_ "GenMsgCycleTime" BO_ 660 100;
+BA_ "GenSigStartValue" SG_ 660 Clim_PM25Disp 1000;
+BA_ "GenMsgCycleTime" BO_ 659 100;
+BA_ "GenMsgCycleTime" BO_ 769 20;
+BA_ "GenMsgCycleTime" BO_ 655 100;
+BA_ "GenMsgCycleTime" BO_ 533 100;
+BA_ "GenMsgCycleTime" BO_ 532 100;
+BA_ "GenMsgCycleTime" BO_ 400 100;
+BA_ "GenMsgCycleTime" BO_ 405 200;
+BA_ "GenMsgCycleTime" BO_ 402 200;
+BA_ "GenSigStartValue" SG_ 402 iBCM_FL_TireP 255;
+BA_ "GenSigStartValue" SG_ 402 iBCM_FR_TireP 255;
+BA_ "GenSigStartValue" SG_ 402 iBCM_RL_TireP 255;
+BA_ "GenSigStartValue" SG_ 402 iBCM_RR_TireP 255;
+BA_ "GenMsgCycleTime" BO_ 403 200;
+BA_ "GenSigStartValue" SG_ 403 iBCM_FL_TireTmp 255;
+BA_ "GenSigStartValue" SG_ 403 iBCM_FR_TireTmp 255;
+BA_ "GenSigStartValue" SG_ 403 iBCM_RL_TireTmp 255;
+BA_ "GenSigStartValue" SG_ 403 iBCM_RR_TireTmp 255;
+VAL_ 640 HU_LowCreepModSet 3 "Not used" 2 "Reserved" 1 "Off" 0 "On" ;
+VAL_ 640 HU_4WhlDrv 3 "Reserved" 2 "Reserved" 1 "4WheelDrive" 0 "2WheelDrive" ;
+VAL_ 640 HU_DrvMod 3 "Invalid" 2 "Sport Mode" 1 "ECO Mode" 0 "Normal Mode" ;
+VAL_ 640 HU_ACChrgnCur 63 "Invalid" 62 "Invalid" 61 "Invalid" 60 "Invalid" 59 "Invalid" 58 "Invalid" 57 "Invalid" 56 "Invalid" 55 "Invalid" 54 "Invalid" 53 "Invalid" 52 "Invalid" 51 "Invalid" 50 "Invalid" 49 "Invalid" 48 "Invalid" 47 "Invalid" 46 "Invalid" 45 "Invalid" 44 "Invalid" 43 "Invalid" 42 "Invalid" 41 "Invalid" ;
+VAL_ 640 HU_ResvChrgStartTi 63 "Invalid" 62 "Invalid" 61 "Invalid" 60 "Invalid" 59 "Invalid" 58 "Invalid" 57 "Invalid" 56 "Invalid" 55 "Invalid" 54 "Invalid" 53 "Invalid" 52 "Invalid" 51 "Invalid" 50 "Invalid" 49 "Invalid" 48 "Invalid" 47 "23:30" 46 "23:00" 45 "22:30" 44 "22:00" 43 "21:30" 42 "21:00" 41 "20:30" 40 "20:00" 39 "19:30" 38 "19:00" 37 "18:30" 36 "18:00" 35 "17:30" 34 "17:00" 33 "16:30" 32 "16:00" 31 "15:30" 30 "15:00" 29 "14:30" 28 "14:00" 27 "13:30" 26 "13:00" 25 "12:30" 24 "12:00" 23 "11:30" 22 "11:00" 21 "10:30" 20 "10:00" 19 "09:30" 18 "09:00" 17 "08:30" 16 "08:00" 15 "07:30" 14 "07:00" 13 "06:30" 12 "06:00" 11 "05:30" 10 "05:00" 9 "04:30" 8 "04:00" 7 "03:30" 6 "03:00" 5 "02:30" 4 "02:00" 3 "01:30" 2 "01:00" 1 "00:30" 0 "00:00" ;
+VAL_ 640 HU_ChrgMod 3 "Reserved" 2 "Reserved" 1 "Remote Charging Mode" 0 "Normal Charging Mode" ;
+VAL_ 640 HU_ResvChrgTi 31 "Invalid" 30 "Invalid" 29 "Invalid" 28 "Invalid" 27 "Invalid" 26 "Invalid" 25 "Invalid" 24 "Invalid" 23 "12 hour" 22 "11.5 hour" 21 "11 hour" 20 "10.5 hour" 19 "10 hour" 18 "9.5 hour" 17 "9 hour" 16 "8.5 hour" 15 "8 hour" 14 "7.5 hour" 13 "7 hour" 12 "6.5 hour" 11 "6 hour" 10 "5.5hour" 9 "5hour" 8 "4.5hour" 7 "4hour" 6 "3.5hour" 5 "3hour" 4 "2.5hour" 3 "2hour" 2 "1.5hour" 1 "1hour" 0 "0.5hour" ;
+VAL_ 640 HU_EgyRecycLvl 3 "Reserved" 2 "High" 1 "Mid" 0 "Low" ;
+VAL_ 643 HU_TurnAsistLiFctSwch 3 "Not used" 2 "Reserved" 1 "Off" 0 "On" ;
+VAL_ 643 HU_VhclBkGndLiAdj 15 "Reserved" 14 "Reserved" 13 "Reserved" 12 "Reserved" 11 "Reserved" 10 "100%" 9 "90%" 8 "80%" 7 "70%" 6 "60%" 5 "50%" 4 "40%" 3 "30%" 2 "20%" 1 "10%" 0 "Auto" ;
+VAL_ 643 HU_PBDReq 1 "Open" 0 "Closed" ;
+VAL_ 643 HU_FolwHomeTiAdj 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Reserved" 3 "120s" 2 "60s" 1 "30s" 0 "15s" ;
+VAL_ 643 HU_FolwHomeReq 3 "Not used" 2 "Reserved" 1 "On" 0 "Off" ;
+VAL_ 643 HU_MirrAutoFoldSet 3 "Not used" 2 "Reserved" 1 "Off" 0 "On" ;
+VAL_ 643 HU_AutoClosedWinSwch 3 "Not used" 2 "Reserved" 1 "Off" 0 "On" ;
+VAL_ 643 HU_LokgCarSet 3 "Not used" 2 "Reserved" 1 "Off" 0 "On" ;
+VAL_ 643 HU_AVAS_PWSSwch 3 "Not used" 2 "Reserved" 1 "Off" 0 "On" ;
+VAL_ 643 HU_HeadlampHeiAdj 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "5 Level" 3 "4 Level" 2 "3 Level" 1 "2 Level" 0 "1 Level" ;
+VAL_ 643 HU_AutoSpdLockSet 3 "Not used" 2 "Reserved" 1 "Off" 0 "On" ;
+VAL_ 643 HU_WinSwchReq 1 "Open" 0 "Closed" ;
+VAL_ 643 HU_LiReq 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Reserved" 3 "Low Beam and Postion light" 2 "postion light" 1 "AUTO" 0 "OFF" ;
+VAL_ 643 HU_DeActvSt 1 "Not Active" 0 "Active" ;
+VAL_ 643 HU_MirrLiSwch 3 "Not used" 2 "Reserved" 1 "Off" 0 "On" ;
+VAL_ 644 HU_FeetBlwSwch 1 "On" 0 "Off" ;
+VAL_ 644 HU_FaceBlwSwch 1 "On" 0 "Off" ;
+VAL_ 644 HU_TmpSynchrSwch 1 "On" 0 "Off" ;
+VAL_ 644 HU_BlwrFlowVal 15 "Reserved" 14 "Reserved" 13 "Reserved" 12 "Reserved" 11 "Reserved" 10 "Reserved" 9 "Reserved" 8 "Level 8" 7 "Level 7" 6 "Level 6" 5 "Level 5" 4 "Level 4" 3 "Level 3" 2 "Level 2" 1 "Level 1" 0 "Level 0" ;
+VAL_ 644 HU_BlwGlassModSwch 1 "On" 0 "Off" ;
+VAL_ 644 HU_DrvrSeatHeatLvl 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Reserved" 3 "Level 3" 2 "Level 2" 1 "Level 1" 0 "Off" ;
+VAL_ 644 HU_CirculnSwch 1 "On" 0 "Off" ;
+VAL_ 644 HU_DrvrTmpSetVal 31 "Reserved" 30 "Reserved" 29 "Reserved" 28 "Reserved" 27 "Reserved" 26 "Reserved" 25 "Reserved" 24 "Reserved" 23 "Reserved" 22 "Reserved" 21 "Reserved" 20 "Reserved" 19 "Reserved" 18 "Reserved" 17 "Reserved" 16 "HI" 15 "30℃" 14 "29℃" 13 "28℃" 12 "27℃" 11 "26℃" 10 "25℃" 9 "24℃" 8 "23℃" 7 "22℃" 6 "21℃" 5 "20℃" 4 "19℃" 3 "18℃" 2 "17℃" 1 "16℃" 0 "LO" ;
+VAL_ 644 HU_PassSeatHeatLvl 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Reserved" 3 "Level3" 2 "Level 2" 1 "Level 1" 0 "Off" ;
+VAL_ 644 HU_ACRDEFSwch 1 "On" 0 "Off" ;
+VAL_ 644 HU_PassTmpSetVal 31 "Reserved" 30 "Reserved" 29 "Reserved" 28 "Reserved" 27 "Reserved" 26 "Reserved" 25 "Reserved" 24 "Reserved" 23 "Reserved" 22 "Reserved" 21 "Reserved" 20 "Reserved" 19 "Reserved" 18 "Reserved" 17 "Reserved" 16 "HI" 15 "30℃" 14 "29℃" 13 "28℃" 12 "27℃" 11 "26℃" 10 "25℃" 9 "24℃" 8 "23℃" 7 "22℃" 6 "21℃" 5 "20℃" 4 "19℃" 3 "18℃" 2 "17℃" 1 "16℃" 0 "LO" ;
+VAL_ 644 HU_ACDEFSwch 1 "On" 0 "Off" ;
+VAL_ 644 HU_ACSwch 1 "On" 0 "Off" ;
+VAL_ 644 HU_ClimAutoSwch 1 "On" 0 "Off" ;
+VAL_ 644 HU_ClimSwch 1 "On" 0 "Off" ;
+VAL_ 641 HU_AutoHoldSwch 3 "Not used" 2 "Reserved" 1 "Off" 0 "On" ;
+VAL_ 641 HU_TotlOdo 16777215 "Invalid" ;
+VAL_ 641 HU_ESPOFFSwch 3 "Not used" 2 "Reserved" 1 "ESP OFFSwitch On" 0 "ESP OFFSwitch Off" ;
+VAL_ 647 HU_CurLocVld 1 "Validity" 0 "Invalidity" ;
+VAL_ 649 HU_LocTiMth 15 "Invalid" 14 "Invalid" 13 "Invalid" 0 "Invalid" ;
+VAL_ 649 HU_LocTiD 0 "Invalid" ;
+VAL_ 649 HU_LocTiHr 31 "Invalid" 30 "Invalid" 29 "Invalid" 28 "Invalid" 27 "Invalid" 26 "Invalid" 25 "Invalid" 24 "Invalid" ;
+VAL_ 649 HU_LocTiM 63 "Invalid" 62 "Invalid" 61 "Invalid" ;
+VAL_ 649 HU_LocTiS 63 "Invalid" 62 "Invalid" 61 "Invalid" ;
+VAL_ 649 HU_LocTiVld 1 "Validity" 0 "Invalidity" ;
+VAL_ 648 HU_lckReq 1 "Request lock" 0 "No Request" ;
+VAL_ 648 HU_RemOpenCLIM 1 "On" 0 "Off" ;
+VAL_ 648 HU_RearFogSwitch 1 "On" 0 "Off" ;
+VAL_ 648 HU_FrontFogSwitch 1 "On" 0 "Off" ;
+VAL_ 648 HU_UnlckReq 1 "Request Unlock" 0 "No Request" ;
+VAL_ 648 HU_SchgCarReq 1 "Request Searching Car" 0 "No Request" ;
+VAL_ 650 HU_ALMWarn_FLDoor 3 "Reserved" 2 "Dynomic Warning" 1 "Static Warning" 0 "Normal Working" ;
+VAL_ 650 HU_ALMEnbl_FLDoor 1 "Enabled" 0 "Not enabled" ;
+VAL_ 650 HU_ALMCustmzColor 15 "Reserved" 14 "Reserved" 13 "Reserved" 12 "Reserved" 11 "Reserved" 10 "Reserved" 9 "Reserved" 8 "Reserved" 7 "Reserved" 6 "White" 5 "Purple" 4 "Yellow" 3 "Red" 2 "Orange" 1 "Green" 0 "Ice-blue" ;
+VAL_ 650 HU_ALMWarn_RRDoor 3 "Reserved" 2 "Dynomic Warning" 1 "Static Warning" 0 "Normal Working" ;
+VAL_ 650 HU_ALMEnbl_RRDoor 1 "Enabled" 0 "Not enabled" ;
+VAL_ 650 HU_ALMWarn_FRDoor 3 "Reserved" 2 "Dynomic Warning" 1 "Static Warning" 0 "Normal Working" ;
+VAL_ 650 HU_ALMEnbl_FRDoor 1 "Enabled" 0 "Not enabled" ;
+VAL_ 650 HU_ALMWarn_RLDoor 3 "Reserved" 2 "Dynomic Warning" 1 "Static Warning" 0 "Normal Working" ;
+VAL_ 650 HU_ALMBritnsLvlAdj 15 "Reserved" 14 "Reserved" 13 "Reserved" 12 "Reserved" 11 "Reserved" 10 "Reserved" 9 "Reserved" 8 "Reserved" 7 "Reserved" 6 "Reserved" 5 "Lel 5" 4 "Lel 4" 3 "Lel 3" 2 "Lel 2" 1 "Lel 1" 0 "Reserved" ;
+VAL_ 650 HU_ALMBrthWithMusic 1 "Music on" 0 "Music off" ;
+VAL_ 650 HU_ALMSwch 1 "Off" 0 "On" ;
+VAL_ 650 HU_ALMEnbl_RLDoor 1 "Enabled" 0 "Not enabled" ;
+VAL_ 651 HU_ALMEnbl_ConsoleIP 1 "Enabled" 0 "Not enabled" ;
+VAL_ 651 HU_Other_ALMCustmzColor 15 "Reserved" 14 "Reserved" 13 "Reserved" 12 "Reserved" 11 "Reserved" 10 "Reserved" 9 "Reserved" 8 "Reserved" 7 "Reserved" 6 "White" 5 "Purple" 4 "Yellow" 3 "Red" 2 "Orange" 1 "Green" 0 "Ice-blue" ;
+VAL_ 651 HU_Other_ALMBritnsLvlAdj 15 "Reserved" 14 "Reserved" 13 "Reserved" 12 "Reserved" 11 "Reserved" 10 "Reserved" 9 "Reserved" 8 "Reserved" 7 "Reserved" 6 "Reserved" 5 "Lel 5" 4 "Lel 4" 3 "Lel 3" 2 "Lel 2" 1 "Lel 1" 0 "Reserved" ;
+VAL_ 651 HU_Other_ALMBrthWithMusic 1 "Music on" 0 "Music off" ;
+VAL_ 651 HU_Other_ALMSwch 1 "Off" 0 "On" ;
+VAL_ 402 iBCM_FL_TireP 255 "Invalid" ;
+VAL_ 402 iBCM_FR_TireP 255 "Invalid" ;
+VAL_ 402 iBCM_RL_TireP 255 "Invalid" ;
+VAL_ 402 iBCM_RR_TireP 255 "Invalid" ;
+VAL_ 402 iBCM_FL_TirePSts 3 "Reserved" 2 "Under-pressure" 1 "Over-pressure" 0 "Normal" ;
+VAL_ 402 iBCM_FR_TirePSts 3 "Reserved" 2 "Under-pressure" 1 "Over-pressure" 0 "Normal" ;
+VAL_ 402 iBCM_RL_TirePSts 3 "Reserved" 2 "Under-pressure" 1 "Over-pressure" 0 "Normal" ;
+VAL_ 402 iBCM_RR_TirePSts 3 "Reserved" 2 "Under-pressure" 1 "Over-pressure" 0 "Normal" ;
+VAL_ 402 iBCM_TPMS_SysSts 3 "Reserved" 2 "Reserved" 1 "System is abnormal" 0 "System is ok" ;
+VAL_ 403 iBCM_FL_TireTmp 255 "Invalid" ;
+VAL_ 403 iBCM_FR_TireTmp 255 "Invalid" ;
+VAL_ 403 iBCM_RL_TireTmp 255 "Invalid" ;
+VAL_ 403 iBCM_RR_TireTmp 255 "Invalid" ;
+VAL_ 403 iBCM_FL_TireTmpSts 1 "Over-temp" 0 "Normal" ;
+VAL_ 403 iBCM_FR_TireTmpSts 1 "Over-temp" 0 "Normal" ;
+VAL_ 403 iBCM_RL_TireTmpSts 1 "Over-temp" 0 "Normal" ;
+VAL_ 403 iBCM_RR_TireTmpSts 1 "Over-temp" 0 "Normal" ;
+VAL_ 403 iBCM_FL_FastLkg 1 "Fast Leakage" 0 "Not Fast Leakage" ;
+VAL_ 403 iBCM_FR_FastLkg 1 "Fast Leakage" 0 "Not Fast Leakage" ;
+VAL_ 403 iBCM_RL_FastLkg 1 "Fast Leakage" 0 "Not Fast Leakage" ;
+VAL_ 403 iBCM_RR_FastLkg 1 "Fast Leakage" 0 "Not Fast Leakage" ;
+VAL_ 400 iBCM_AntitheftSts 3 "Alarmed" 2 "Prearmed" 1 "Armed" 0 "Disarmed" ;
+VAL_ 400 iBCM_PwrMod 3 "Reserved" 2 "ON" 1 "ACC" 0 "OFF" ;
+VAL_ 400 iBCM_HoodSts 1 "Open" 0 "Close" ;
+VAL_ 400 iBCM_DrvrDoorLckSts 1 "Lock" 0 "Unlock" ;
+VAL_ 400 iBCM_AutoLiSwch 1 "ON" 0 "OFF" ;
+VAL_ 400 iBCM_PosnLiSts 1 "ON" 0 "OFF" ;
+VAL_ 400 iBCM_HiBeamSts 1 "On" 0 "Off" ;
+VAL_ 400 iBCM_LoBeamSts 1 "ON" 0 "OFF" ;
+VAL_ 400 iBCM_ReFogLiSts 1 "ON" 0 "OFF" ;
+VAL_ 400 iBCM_FrntFogLiSts 1 "ON" 0 "OFF" ;
+VAL_ 400 iBCM_TurnLiSts 3 "Hazard warning on" 2 "Left turn lamp on" 1 "Right turn lamp on" 0 "Off" ;
+VAL_ 400 iBCM_DRLSts 1 "On" 0 "Off" ;
+VAL_ 400 iBCM_BrkLi 1 "On" 0 "Off" ;
+VAL_ 400 iBCM_FL_DoorAjarSts 1 "Open" 0 "Close" ;
+VAL_ 400 iBCM_FR_DoorAjarSts 1 "Open" 0 "Close" ;
+VAL_ 400 iBCM_RL_DoorAjarSts 1 "Open" 0 "Close" ;
+VAL_ 400 iBCM_RR_DoorAjarSts 1 "Open" 0 "Close" ;
+VAL_ 400 iBCM_Trunk_AjarSts 1 "Open" 0 "Close" ;
+VAL_ 400 iBCM_Welcome_Sts 1 "On" 0 "Off/Default" ;
+VAL_ 400 iBCM_FolwMeHomeSts 1 "On" 0 "Off/Default" ;
+VAL_ 400 iBCM_HomeTiDlySetg 255 "Invalid" 254 "Invalid" 253 "Invalid" 252 "Invalid" 251 "Invalid" 250 "Invalid" 249 "Invalid" 248 "Invalid" 247 "Invalid" 246 "Invalid" 245 "Invalid" 244 "Invalid" 243 "Invalid" 242 "Invalid" 241 "Invalid" 240 "Invalid" 239 "Invalid" 238 "Invalid" 237 "Invalid" 236 "Invalid" 235 "Invalid" 234 "Invalid" 233 "Invalid" 232 "Invalid" 231 "Invalid" 230 "Invalid" 229 "Invalid" 228 "Invalid" 227 "Invalid" 226 "Invalid" 225 "Invalid" 224 "Invalid" 223 "Invalid" 222 "Invalid" 221 "Invalid" 220 "Invalid" 219 "Invalid" 218 "Invalid" 217 "Invalid" 216 "Invalid" 215 "Invalid" 214 "Invalid" 213 "Invalid" 212 "Invalid" 211 "Invalid" 210 "Invalid" 209 "Invalid" 208 "Invalid" 207 "Invalid" 206 "Invalid" 205 "Invalid" 204 "Invalid" 203 "Invalid" 202 "Invalid" 201 "Invalid" 200 "Invalid" 199 "Invalid" 198 "Invalid" 197 "Invalid" 196 "Invalid" 195 "Invalid" 194 "Invalid" 193 "Invalid" 192 "Invalid" 191 "Invalid" 190 "Invalid" 189 "Invalid" 188 "Invalid" 187 "Invalid" 186 "Invalid" 185 "Invalid" 184 "Invalid" 183 "Invalid" 182 "Invalid" 181 "Invalid" 180 "Invalid" 179 "Invalid" 178 "Invalid" 177 "Invalid" 176 "Invalid" 175 "Invalid" 174 "Invalid" 173 "Invalid" 172 "Invalid" 171 "Invalid" 170 "Invalid" 169 "Invalid" 168 "Invalid" 167 "Invalid" 166 "Invalid" 165 "Invalid" 164 "Invalid" 163 "Invalid" 162 "Invalid" 161 "Invalid" 160 "Invalid" 159 "Invalid" 158 "Invalid" 157 "Invalid" 156 "Invalid" 155 "Invalid" 154 "Invalid" 153 "Invalid" 152 "Invalid" 151 "Invalid" 150 "Invalid" 149 "Invalid" 148 "Invalid" 147 "Invalid" 146 "Invalid" 145 "Invalid" 144 "Invalid" 143 "Invalid" 142 "Invalid" 141 "Invalid" 140 "Invalid" 139 "Invalid" 138 "Invalid" 137 "Invalid" 136 "Invalid" 135 "Invalid" 134 "Invalid" 133 "Invalid" 132 "Invalid" 131 "Invalid" 130 "Invalid" 129 "Invalid" 128 "Invalid" 127 "Invalid" 126 "Invalid" 125 "Invalid" 124 "Invalid" 123 "Invalid" 122 "Invalid" 121 "Invalid" 120 "Invalid" 119 "Invalid" 118 "Invalid" 117 "Invalid" 116 "Invalid" 115 "Invalid" 114 "Invalid" 113 "Invalid" 112 "Invalid" 111 "Invalid" 110 "Invalid" 109 "Invalid" 108 "Invalid" 107 "Invalid" 106 "Invalid" 105 "Invalid" 104 "Invalid" 103 "Invalid" 102 "Invalid" 101 "Invalid" 100 "Invalid" 99 "Invalid" 98 "Invalid" 97 "Invalid" 96 "Invalid" 95 "Invalid" 94 "Invalid" 93 "Invalid" 92 "Invalid" 91 "Invalid" 90 "Invalid" 89 "Invalid" 88 "Invalid" 87 "Invalid" 86 "Invalid" 85 "Invalid" 84 "Invalid" 83 "Invalid" 82 "Invalid" 81 "Invalid" 80 "Invalid" 79 "Invalid" 78 "Invalid" 77 "Invalid" 76 "Invalid" 75 "Invalid" 74 "Invalid" 73 "Invalid" 72 "Invalid" 71 "Invalid" 70 "Invalid" 69 "Invalid" 68 "Invalid" 67 "Invalid" 66 "Invalid" 65 "Invalid" 64 "Invalid" 63 "Invalid" 62 "Invalid" 61 "Invalid" ;
+VAL_ 405 FLW_FLDoorWindowsPosition 15 "Reserved" 14 "Reserved" 13 "Reserved" 12 "Reserved" 11 "Reserved" 10 "Reserved" 9 "Reserved" 8 "Fully open" 7 "Between large mid-opening and fully open" 6 "Large mid-opening position" 5 "Between slight opening and large mid-opening" 4 "Slight opening" 3 "Between short drop position and slight opening" 2 "Short drop position" 1 "Between closed and short drop position" 0 "Closed" ;
+VAL_ 405 FRW_FRDoorWindowsPosition 15 "Reserved" 14 "Reserved" 13 "Reserved" 12 "Reserved" 11 "Reserved" 10 "Reserved" 9 "Reserved" 8 "Fully open" 7 "Between large mid-opening and fully open" 6 "Large mid-opening position" 5 "Between slight opening and large mid-opening" 4 "Slight opening" 3 "Between short drop position and slight opening" 2 "Short drop position" 1 "Between closed and short drop position" 0 "Closed" ;
+VAL_ 405 RLW_RLDoorWindowsPosition 15 "Reserved" 14 "Reserved" 13 "Reserved" 12 "Reserved" 11 "Reserved" 10 "Reserved" 9 "Reserved" 8 "Fully open" 7 "Between large mid-opening and fully open" 6 "Large mid-opening position" 5 "Between slight opening and large mid-opening" 4 "Slight opening" 3 "Between short drop position and slight opening" 2 "Short drop position" 1 "Between closed and short drop position" 0 "Closed" ;
+VAL_ 405 RRW_RRDoorWindowsPosition 15 "Reserved" 14 "Reserved" 13 "Reserved" 12 "Reserved" 11 "Reserved" 10 "Reserved" 9 "Reserved" 8 "Fully open" 7 "Between large mid-opening and fully open" 6 "Large mid-opening position" 5 "Between slight opening and large mid-opening" 4 "Slight opening" 3 "Between short drop position and slight opening" 2 "Short drop position" 1 "Between closed and short drop position" 0 "Closed" ;
+VAL_ 405 SR_SrPosition 7 "Uninitialized" 6 "Fully open" 5 "Partially slide" 4 "Antipinch in partially slide" 3 "Fully close" 2 "Antipinch in vent" 1 "Vent area" 0 "Tilt up" ;
+VAL_ 660 Clim_PM25Disp 1023 "Invalid" 1022 "Invalid" 1021 "Invalid" 1020 "Invalid" 1019 "Invalid" 1018 "Invalid" 1017 "Invalid" 1016 "Invalid" 1015 "Invalid" 1014 "Invalid" 1013 "Invalid" 1012 "Invalid" 1011 "Invalid" 1010 "Invalid" 1009 "Invalid" 1008 "Invalid" 1007 "Invalid" 1006 "Invalid" 1005 "Invalid" 1004 "Invalid" 1003 "Invalid" 1002 "Invalid" 1001 "Invalid" 1000 "Invalid" ;
+VAL_ 660 Clim_BlwrFlowDisp 15 "Reserved" 14 "Reserved" 13 "Reserved" 12 "Reserved" 11 "Reserved" 10 "Reserved" 9 "Reserved" 8 "Level 8" 7 "Level 7" 6 "Level 6" 5 "Level 5" 4 "Level 4" 3 "Level 3" 2 "Level 2" 1 "Level 1" 0 "Level 0" ;
+VAL_ 660 Clim_DrvModSts 3 "Invalid" 2 "Sport Mode" 1 "ECO Mode" 0 "Normal Mode" ;
+VAL_ 660 Clim_DrvrTmpDisp 255 "Reserved" 254 "Reserved" 253 "Reserved" 252 "Reserved" 251 "Reserved" 250 "Reserved" 249 "Reserved" 248 "Reserved" 247 "Reserved" 246 "Reserved" 245 "Reserved" 244 "Reserved" 243 "Reserved" 242 "Reserved" 241 "Reserved" 240 "Reserved" 239 "Reserved" 238 "Reserved" 237 "Reserved" 236 "Reserved" 235 "Reserved" 234 "Reserved" 233 "Reserved" 232 "Reserved" 231 "Reserved" 230 "Reserved" 229 "Reserved" 228 "Reserved" 227 "Reserved" 226 "Reserved" 225 "Reserved" 224 "Reserved" 223 "Reserved" 222 "Reserved" 221 "Reserved" 220 "Reserved" 219 "Reserved" 218 "Reserved" 217 "Reserved" 216 "Reserved" 215 "Reserved" 214 "Reserved" 213 "Reserved" 212 "Reserved" 211 "Reserved" 210 "Reserved" 209 "Reserved" 208 "Reserved" 207 "Reserved" 206 "Reserved" 205 "Reserved" 204 "Reserved" 203 "Reserved" 202 "Reserved" 201 "Reserved" 200 "Reserved" 199 "Reserved" 198 "Reserved" 197 "Reserved" 196 "Reserved" 195 "Reserved" 194 "Reserved" 193 "Reserved" 192 "Reserved" 191 "Reserved" 190 "Reserved" 189 "Reserved" 188 "Reserved" 187 "Reserved" 186 "Reserved" 185 "Reserved" 184 "Reserved" 183 "Reserved" 182 "Reserved" 181 "Reserved" 180 "Reserved" 179 "Reserved" 178 "Reserved" 177 "Reserved" 176 "Reserved" 175 "Reserved" 174 "Reserved" 173 "Reserved" 172 "Reserved" 171 "Reserved" 170 "Reserved" 169 "Reserved" 168 "Reserved" 167 "Reserved" 166 "Reserved" 165 "Reserved" 164 "Reserved" 163 "Reserved" 162 "Reserved" 161 "Reserved" 160 "Reserved" 159 "Reserved" 158 "Reserved" 157 "Reserved" 156 "Reserved" 155 "Reserved" 154 "Reserved" 153 "Reserved" 152 "Reserved" 151 "Reserved" 150 "Reserved" 149 "Reserved" 148 "Reserved" 147 "Reserved" 146 "Reserved" 145 "Reserved" 144 "Reserved" 143 "Reserved" 142 "Reserved" 141 "Reserved" 140 "Reserved" 139 "Reserved" 138 "Reserved" 137 "Reserved" 136 "Reserved" 135 "Reserved" 134 "Reserved" 133 "Reserved" 132 "Reserved" 131 "Reserved" 130 "Reserved" 129 "Reserved" 128 "Reserved" 127 "Reserved" 126 "Reserved" 125 "Reserved" 124 "Reserved" 123 "Reserved" 122 "Reserved" 121 "Reserved" 120 "Reserved" 119 "Reserved" 118 "Reserved" 117 "Reserved" 116 "Reserved" 115 "Reserved" 114 "Reserved" 113 "Reserved" 112 "Reserved" 111 "Reserved" 110 "Reserved" 109 "Reserved" 108 "Reserved" 107 "Reserved" 106 "Reserved" 105 "Reserved" 104 "Reserved" 103 "Reserved" 102 "Reserved" 101 "Reserved" 100 "Reserved" 99 "Reserved" 98 "Reserved" 97 "Reserved" 96 "Reserved" 95 "Reserved" 94 "Reserved" 93 "Reserved" 92 "Reserved" 91 "Reserved" 90 "Reserved" 89 "Reserved" 88 "Reserved" 87 "Reserved" 86 "Reserved" 85 "Reserved" 84 "Reserved" 83 "Reserved" 82 "Reserved" 81 "Reserved" 80 "Reserved" 79 "Reserved" 78 "Reserved" 77 "Reserved" 76 "Reserved" 75 "Reserved" 74 "Reserved" 73 "Reserved" 72 "Reserved" 71 "Reserved" 70 "Reserved" 69 "Reserved" 68 "Reserved" 67 "Reserved" 66 "Reserved" 65 "Reserved" 64 "Reserved" 63 "Reserved" 62 "Reserved" 61 "Reserved" 60 "Reserved" 59 "Reserved" 58 "Reserved" 57 "Reserved" 56 "Reserved" 55 "Reserved" 54 "Reserved" 53 "Reserved" 52 "Reserved" 51 "Reserved" 50 "Reserved" 49 "Reserved" 48 "Reserved" 47 "Reserved" 46 "Reserved" 45 "Reserved" 44 "Reserved" 43 "Reserved" 42 "Reserved" 41 "Reserved" 40 "Reserved" 39 "Reserved" 38 "Reserved" 37 "Reserved" 36 "Reserved" 35 "Reserved" 34 "Reserved" 33 "Reserved" 32 "Reserved" 31 "Reserved" 30 "Reserved" 29 "Reserved" 28 "Reserved" 27 "Reserved" 26 "Reserved" 25 "Reserved" 24 "Reserved" 23 "Reserved" 22 "Reserved" 21 "Reserved" 20 "Reserved" 19 "Reserved" 18 "Reserved" 17 "Reserved" 16 "HI" 15 "30" 14 "29" 13 "28" 12 "27" 11 "26" 10 "25" 9 "24" 8 "23" 7 "22" 6 "21" 5 "20" 4 "19" 3 "18" 2 "17" 1 "16" 0 "LO" ;
+VAL_ 660 Clim_PassTmpDisp 255 "Reserved" 254 "Reserved" 253 "Reserved" 252 "Reserved" 251 "Reserved" 250 "Reserved" 249 "Reserved" 248 "Reserved" 247 "Reserved" 246 "Reserved" 245 "Reserved" 244 "Reserved" 243 "Reserved" 242 "Reserved" 241 "Reserved" 240 "Reserved" 239 "Reserved" 238 "Reserved" 237 "Reserved" 236 "Reserved" 235 "Reserved" 234 "Reserved" 233 "Reserved" 232 "Reserved" 231 "Reserved" 230 "Reserved" 229 "Reserved" 228 "Reserved" 227 "Reserved" 226 "Reserved" 225 "Reserved" 224 "Reserved" 223 "Reserved" 222 "Reserved" 221 "Reserved" 220 "Reserved" 219 "Reserved" 218 "Reserved" 217 "Reserved" 216 "Reserved" 215 "Reserved" 214 "Reserved" 213 "Reserved" 212 "Reserved" 211 "Reserved" 210 "Reserved" 209 "Reserved" 208 "Reserved" 207 "Reserved" 206 "Reserved" 205 "Reserved" 204 "Reserved" 203 "Reserved" 202 "Reserved" 201 "Reserved" 200 "Reserved" 199 "Reserved" 198 "Reserved" 197 "Reserved" 196 "Reserved" 195 "Reserved" 194 "Reserved" 193 "Reserved" 192 "Reserved" 191 "Reserved" 190 "Reserved" 189 "Reserved" 188 "Reserved" 187 "Reserved" 186 "Reserved" 185 "Reserved" 184 "Reserved" 183 "Reserved" 182 "Reserved" 181 "Reserved" 180 "Reserved" 179 "Reserved" 178 "Reserved" 177 "Reserved" 176 "Reserved" 175 "Reserved" 174 "Reserved" 173 "Reserved" 172 "Reserved" 171 "Reserved" 170 "Reserved" 169 "Reserved" 168 "Reserved" 167 "Reserved" 166 "Reserved" 165 "Reserved" 164 "Reserved" 163 "Reserved" 162 "Reserved" 161 "Reserved" 160 "Reserved" 159 "Reserved" 158 "Reserved" 157 "Reserved" 156 "Reserved" 155 "Reserved" 154 "Reserved" 153 "Reserved" 152 "Reserved" 151 "Reserved" 150 "Reserved" 149 "Reserved" 148 "Reserved" 147 "Reserved" 146 "Reserved" 145 "Reserved" 144 "Reserved" 143 "Reserved" 142 "Reserved" 141 "Reserved" 140 "Reserved" 139 "Reserved" 138 "Reserved" 137 "Reserved" 136 "Reserved" 135 "Reserved" 134 "Reserved" 133 "Reserved" 132 "Reserved" 131 "Reserved" 130 "Reserved" 129 "Reserved" 128 "Reserved" 127 "Reserved" 126 "Reserved" 125 "Reserved" 124 "Reserved" 123 "Reserved" 122 "Reserved" 121 "Reserved" 120 "Reserved" 119 "Reserved" 118 "Reserved" 117 "Reserved" 116 "Reserved" 115 "Reserved" 114 "Reserved" 113 "Reserved" 112 "Reserved" 111 "Reserved" 110 "Reserved" 109 "Reserved" 108 "Reserved" 107 "Reserved" 106 "Reserved" 105 "Reserved" 104 "Reserved" 103 "Reserved" 102 "Reserved" 101 "Reserved" 100 "Reserved" 99 "Reserved" 98 "Reserved" 97 "Reserved" 96 "Reserved" 95 "Reserved" 94 "Reserved" 93 "Reserved" 92 "Reserved" 91 "Reserved" 90 "Reserved" 89 "Reserved" 88 "Reserved" 87 "Reserved" 86 "Reserved" 85 "Reserved" 84 "Reserved" 83 "Reserved" 82 "Reserved" 81 "Reserved" 80 "Reserved" 79 "Reserved" 78 "Reserved" 77 "Reserved" 76 "Reserved" 75 "Reserved" 74 "Reserved" 73 "Reserved" 72 "Reserved" 71 "Reserved" 70 "Reserved" 69 "Reserved" 68 "Reserved" 67 "Reserved" 66 "Reserved" 65 "Reserved" 64 "Reserved" 63 "Reserved" 62 "Reserved" 61 "Reserved" 60 "Reserved" 59 "Reserved" 58 "Reserved" 57 "Reserved" 56 "Reserved" 55 "Reserved" 54 "Reserved" 53 "Reserved" 52 "Reserved" 51 "Reserved" 50 "Reserved" 49 "Reserved" 48 "Reserved" 47 "Reserved" 46 "Reserved" 45 "Reserved" 44 "Reserved" 43 "Reserved" 42 "Reserved" 41 "Reserved" 40 "Reserved" 39 "Reserved" 38 "Reserved" 37 "Reserved" 36 "Reserved" 35 "Reserved" 34 "Reserved" 33 "Reserved" 32 "Reserved" 31 "Reserved" 30 "Reserved" 29 "Reserved" 28 "Reserved" 27 "Reserved" 26 "Reserved" 25 "Reserved" 24 "Reserved" 23 "Reserved" 22 "Reserved" 21 "Reserved" 20 "Reserved" 19 "Reserved" 18 "Reserved" 17 "Reserved" 16 "HI" 15 "30" 14 "29" 13 "28" 12 "27" 11 "26" 10 "25" 9 "24" 8 "23" 7 "22" 6 "21" 5 "20" 4 "19" 3 "18" 2 "17" 1 "16" 0 "LO" ;
+VAL_ 660 Clim_DrvrSeatHeatgLvlSts 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Reserved" 3 "Level3" 2 "Level2" 1 "Level1" 0 "Off" ;
+VAL_ 660 Clim_TmpSynchSts 1 "On" 0 "Off" ;
+VAL_ 660 Clim_ClimSwchSts 1 "On" 0 "Off" ;
+VAL_ 660 Clim_FaceModSts 1 "On" 0 "Off" ;
+VAL_ 660 Clim_FootModSts 1 "On" 0 "Off" ;
+VAL_ 660 Clim_ReDefrostingSts 1 "On" 0 "Off" ;
+VAL_ 660 Clim_FrntDefrostingSts 1 "On" 0 "Off" ;
+VAL_ 660 Clim_ACSts 1 "On" 0 "Off" ;
+VAL_ 660 Clim_PassSeatHeatgLvlSts 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Reserved" 3 "Level3" 2 "Level2" 1 "Level1" 0 "Off" ;
+VAL_ 660 Clim_AutoModSts 1 "On" 0 "Off" ;
+VAL_ 660 Clim_Int_ExtCirculnSts 3 "Automatic external circulation" 2 "Automatic internal circulation" 1 "Manual extern circulation" 0 "Manual internal  circulation" ;
+VAL_ 660 Clim_BlwGlassModSts 1 "On" 0 "Off" ;
+VAL_ 91 VehSpdSts 1 "Invalid" 0 "Valid" ;
+VAL_ 533 VCU_ChrgStsIndcr 1 "True" 0 "False" ;
+VAL_ 533 VCU_ChrgConnectIndcr 1 "True" 0 "False" ;
+VAL_ 533 VCU_TurtleLampon 1 "Lamp on" 0 "Lamp off" ;
+VAL_ 533 VCU_ActlGear 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Reserved" 3 "D" 2 "N" 1 "R" 0 "P" ;
+VAL_ 533 VCU_PtRdy 1 "True" 0 "False" ;
+VAL_ 533 VCU_PtOverTmp 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Reserved" 3 "PTCoolant over temperature" 2 "Motore over tmp" 1 "MCU over tmp" 0 "Normal" ;
+VAL_ 533 VCU_PwrBattFltIndcr 1 "True" 0 "False" ;
+VAL_ 533 VCU_PtFltIndcr 1 "True" 0 "False" ;
+VAL_ 532 VCU_PwrFlowIndcr 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Regener Power Flow" 3 "Driving Power Flow" 2 "Chrge Finished Power Flow" 1 "Charging Power Flow" 0 "No Power Flow" ;
+VAL_ 532 VCU_BattLoTmpHeatgSts 1 "True" 0 "False" ;
+VAL_ 532 VCU_GearChgWarn 3 "Reserved" 2 "GSM fault" 1 "Gear change condition not satisfy" 0 "No warning" ;
+VAL_ 532 VCU_EMParkingLockFlt 1 "Fault" 0 "No fault" ;
+VAL_ 532 VCU_ChrgElecLockFlt 3 "Reserved" 2 "Electrincal Lock can't Opened" 1 "Electrincal Lock can't Locked" 0 "No fault" ;
+VAL_ 655 CDU_DCDCFlt 3 "Leve III" 2 "Level II" 1 "Level I" 0 "Not Fault" ;
+VAL_ 655 BCU_BattOverTmp 1 "Fault" 0 "Normal" ;
+VAL_ 655 MCU_MotOverSpdWarn 3 "Reserved" 2 "Fault" 1 "Derating" 0 "Normal" ;
+VAL_ 655 MCU_SysTmpWarn 3 "Coolant over tempeture dreating" 2 "Motore over tempeture dreating" 1 "MCU over tempeture dreating" 0 "Normal" ;
+VAL_ 591 EBDFailLampReq 1 "Lamp On" 0 "Lamp Off" ;
+VAL_ 591 ABSFailLampReq 1 "Lamp On" 0 "Lamp Off" ;
+VAL_ 769 EPS_Sts 3 "Reserved" 2 "Intermittent Error Detected" 1 "Permanent Error Detected" 0 "No Fault" ;
+VAL_ 659 Clim_OutsideTmpVld 1 "Validity" 0 "Invalidity" ;

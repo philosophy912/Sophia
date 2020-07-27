@@ -1,0 +1,71 @@
+logging:
+  level:
+    com.chinatsp.dbc.*: info
+    root: info
+
+dbcfile: D:\Workspace\github\knife\dbc\src\test\resources\dbc\4InfoCAN_ICAR 7 月杂合车协议-1.dbc
+
+# EXCEL方式的DBC配置文件
+dbcexcel:
+  ############################ matrix表的sheet名字 ############################
+  sheetName: Matrix
+  ############################ DBC矩阵表文件最大的列号  ############################
+  maxColumn: 29
+  # 报文名称
+  msgName: 0
+  # 报文类型
+  msgType: 1
+  # 报文标识符
+  msgId: 2
+  # 扩展帧标识
+  extendedFrame: 3
+  # 报文发送类型
+  msgSendType: 4
+  # 报文周期时间
+  msgCycleTime: 5
+  # 报文长度
+  msgLength: 6
+  # 信号名称
+  signalName: 7
+  # 信号描述
+  signalDescription: 8
+  # 排列格式
+  byteOrder: 9
+  # 起始字节
+  startByte: 10
+  #  起始位
+  startBit: 11
+  # 信号发送类型
+  signalSendType: 12
+  # 信号长度
+  bitLength: 13
+  # 数据类型
+  dataType: 14
+  # 精度
+  resolution: 15
+  # 偏移量
+  offset: 16
+  # 物理最小值
+  physicalSignalMinValue: 17
+  # 物理最大值
+  physicalSignalMaxValue: 18
+  # 总线最小值
+  signalMinValue: 19
+  # 总线最大值
+  signalMaxValue: 20
+  # 初始值
+  initialValue: 21
+  # 无效值
+  invalidValue: 22
+  # 非使能值
+  inactiveValue: 23
+  # 单位
+  unit: 24
+  # 信号值描述
+  signalValueDescription: 25
+  # 报文发送的快速周期
+  msgCycleTimeFast: 26
+  # 报文快速发送的次数
+  msgNrOfReption: 27
+  # 报文延时时间
+  msgDelayTime: 28

@@ -1,0 +1,8 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.philosophy.codec.util.CodecUtils,\
+com.philosophy.contact.util.ContractUtils,\
+com.philosophy.csv.util.CsvUtils,\
+com.philosophy.date.LocalDateTime,\
+com.philosophy.image.util.ImageUtils,\
+com.philosophy.txt.util.TxtUtils,\
+com.philosophy.excel.utils.ExcelUtils

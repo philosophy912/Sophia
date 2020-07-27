@@ -1,0 +1,408 @@
+VERSION ""
+
+
+NS_ : 
+        NS_DESC_
+        CM_
+        BA_DEF_
+        BA_
+        VAL_
+        CAT_DEF_
+        CAT_
+        FILTER
+        BA_DEF_DEF_
+        EV_DATA_
+        ENVVAR_DATA_
+        SGTYPE_
+        SGTYPE_VAL_
+        BA_DEF_SGTYPE_
+        BA_SGTYPE_
+        SIG_TYPE_REF_
+        VAL_TABLE_
+        SIG_GROUP_
+        SIG_VALTYPE_
+        SIGTYPE_VALTYPE_
+        BO_TX_BU_
+        BA_DEF_REL_
+        BA_REL_
+        BA_DEF_DEF_REL_
+        BU_SG_REL_
+        BU_EV_REL_
+        BU_BO_REL_
+        SG_MUL_VAL_
+
+BS_:
+
+BU_: AMP 
+
+
+BO_ 1395 AMP_InfoNM: 8 AMP
+ SG_ AMP_NMCodtrSleepBit : 11|1@0+ (1,0) [0|1] "" TBox,HU,CGW
+ SG_ AMP_AWB : 12|1@0+ (1,0) [0|1] "" TBox,HU,CGW
+ SG_ AMP_PNI : 14|1@0+ (1,0) [0|1] "" TBox,HU,CGW
+ SG_ AMP_RptMsgStsDir : 23|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ AMP_SourceNodeAdd : 7|8@0+ (1,0) [115|115] "" TBox,HU,CGW
+ SG_ AMP_RMR : 8|1@0+ (1,0) [0|1] "" TBox,HU,CGW
+
+BO_ 896 AMP_Sts: 1 AMP
+ SG_ AMP_HU_PwrSt : 7|2@0+ (1,0) [0|3] "" HU
+
+BO_ 369 CGW_ChassisToInfo: 8 CGW
+ SG_ ESP_VhclSpd : 7|13@0+ (0.05625,0) [0|300] "km/h" TBox,HU,AMP,PAS
+ SG_ ESP_VhclSpd_Vld : 10|1@0+ (1,0) [0|1] "" TBox,HU,AMP,PAS
+
+BO_ 1392 CGW_InfoNM: 8 CGW
+ SG_ CGW_SourceNodeAdd : 7|8@0+ (1,0) [112|112] "" TBox,HU,AMP
+ SG_ CGW_RMR : 8|1@0+ (1,0) [0|1] "" TBox,HU,AMP
+ SG_ CGW_NMCodtrSleepBit : 11|1@0+ (1,0) [0|1] "" TBox,HU,AMP
+ SG_ CGW_AWB : 12|1@0+ (1,0) [0|1] "" TBox,HU,AMP
+ SG_ CGW_PNI : 14|1@0+ (1,0) [0|1] "" TBox,HU,AMP
+
+BO_ 370 CGW_PTToInfo_1: 8 CGW
+ SG_ VCU_ActlGear : 14|3@0+ (1,0) [0|7] "" TBox,HU,AMP,PAS
+ SG_ VCU_PtRdy : 31|1@0+ (1,0) [0|1] "" TBox,HU,AMP,PAS
+
+BO_ 646 HU_AMP_EQSet: 8 HU
+ SG_ HU_AMP_EQModSelt : 7|3@0+ (1,0) [0|7] "" AMP
+ SG_ HU_AMP_EQ1Set : 4|5@0+ (1,0) [0|31] "" AMP
+ SG_ HU_AMP_EQ2Set : 15|5@0+ (1,0) [0|31] "" AMP
+ SG_ HU_AMP_EQ3Set : 10|5@0+ (1,0) [0|31] "" AMP
+ SG_ HU_AMP_EQ4Set : 21|5@0+ (1,0) [0|31] "" AMP
+ SG_ HU_AMP_EQ5Set : 16|5@0+ (1,0) [0|31] "" AMP
+
+BO_ 645 HU_AMP_Set: 8 HU
+ SG_ HU_AMP_ESSSwch : 5|2@0+ (1,0) [0|3] "" AMP
+ SG_ HU_AMP_ESSModSelt : 3|2@0+ (1,0) [0|3] "" AMP
+ SG_ HU_AMP_MuteSet : 1|2@0+ (1,0) [0|3] "" AMP
+ SG_ HU_AMP_LondnessSwch : 15|2@0+ (1,0) [0|3] "" AMP
+ SG_ HU_AMP_VSCModSeln : 13|2@0+ (1,0) [0|3] "" AMP
+ SG_ HU_AMP_VhclAlrmVolStepSet : 11|3@0+ (1,0) [0|7] "" AMP
+ SG_ HU_AMP_AudSrcInform : 23|4@0+ (1,0) [0|15] "" AMP
+ SG_ HU_AMP_MainVolStepSet : 19|4@0+ (1,0) [0|15] "" AMP
+ SG_ HU_AMP_Navi_VRModSet : 31|2@0+ (1,0) [0|3] "" AMP
+ SG_ HU_AMP_NaviVolStepSet : 29|4@0+ (1,0) [0|15] "" AMP
+ SG_ HU_AMP_CallVolStepSet : 39|4@0+ (1,0) [0|15] "" AMP
+ SG_ HU_AMP_IntConctVolStepSet : 35|4@0+ (1,0) [0|15] "" AMP
+ SG_ HU_AMP_OutputCH_LF : 47|2@0+ (1,0) [0|3] "" AMP
+ SG_ HU_AMP_OutputCH_RF : 45|2@0+ (1,0) [0|3] "" AMP
+ SG_ HU_AMP_OutputCH_LR : 43|2@0+ (1,0) [0|3] "" AMP
+ SG_ HU_AMP_OutputCH_RR : 41|2@0+ (1,0) [0|3] "" AMP
+ SG_ HU_AMP_LeRiAudBalnSet : 55|5@0+ (1,0) [0|31] "" AMP
+ SG_ HU_AMP_FrntReAudBalnSet : 63|5@0+ (1,0) [0|31] "" AMP
+
+BO_ 1394 HU_InfoNM: 8 HU
+ SG_ HU_SourceNodeAdd : 7|8@0+ (1,0) [114|114] "" TBox,AMP,CGW
+ SG_ HU_RMR : 8|1@0+ (1,0) [0|1] "" TBox,AMP,CGW
+ SG_ HU_NMCodtrSleepBit : 11|1@0+ (1,0) [0|1] "" TBox,AMP,CGW
+ SG_ HU_AWB : 12|1@0+ (1,0) [0|1] "" TBox,AMP,CGW
+ SG_ HU_PNI : 14|1@0+ (1,0) [0|1] "" TBox,AMP,CGW
+
+BO_ 643 HU_iBCMSwch: 8 HU
+ SG_ HU_VSG_PWSSwch : 29|2@0+ (1,0) [0|3] "" AMP,CGW
+ SG_ HU_LokgCarSet : 27|2@0+ (1,0) [0|3] "" AMP,CGW
+
+BO_ 1393 TBox_InfoNM: 8 TBox
+ SG_ TBox_SourceNodeAdd : 7|8@0+ (1,0) [113|113] "" HU,AMP,CGW
+ SG_ TBox_RMR : 8|1@0+ (1,0) [0|1] "" HU,AMP,CGW
+ SG_ TBox_NMCodtrSleepBit : 11|1@0+ (1,0) [0|1] "" HU,AMP,CGW
+ SG_ TBox_AWB : 12|1@0+ (1,0) [0|1] "" HU,AMP,CGW
+ SG_ TBox_PNI : 14|1@0+ (1,0) [0|1] "" HU,AMP,CGW
+
+BO_ 284 VCU_HUDisp_1: 8 CGW
+ SG_ VCU_ChrgStsIndcr : 7|1@0+ (1,0) [0|1] "" TBox,HU,AMP
+
+BO_ 656 iBCM_BCMStsFb: 8 CGW
+ SG_ iBCM_LckUnlck_SchgCarIndcn : 18|3@0+ (1,0) [0|7] "" AMP
+
+
+CM_ " ";
+
+CM_ SG_ 896 AMP_HU_PwrSt "State of Power Feedback to HU
+AMP向主机反馈Power的状态";
+CM_ SG_ 1395 AMP_NMCodtrSleepBit "NM Coordinator Sleep Bit
+网络管理协调睡眠指示位";
+CM_ SG_ 1395 AMP_AWB "Active wakeup bit
+主动唤醒指示位";
+CM_ SG_ 1395 AMP_PNI "Partial netwark information bit 
+局部网络指示位";
+CM_ SG_ 1395 AMP_RptMsgStsDir "Repeat message State Direction
+重复报文状态指示位";
+CM_ SG_ 1395 AMP_SourceNodeAdd "Source Node Address
+原节点地址";
+CM_ SG_ 1395 AMP_RMR "Repeat message request
+重复报文请求";
+CM_ SG_ 643 HU_VSG_PWSSwch "PWS(PedestrianWarningSystem) Switch
+行人警示系统开关（上电默认开）";
+CM_ SG_ 643 HU_LokgCarSet "HU_LookingCarSet
+寻车HORN鸣叫设置";
+CM_ SG_ 645 HU_AMP_ESSSwch "HU_AMP_ESSSwitch
+车内发动机模拟声开关";
+CM_ SG_ 645 HU_AMP_ESSModSelt "HU_AMP_ESSModSelect
+车内发动机模拟声选择";
+CM_ SG_ 645 HU_AMP_MuteSet "Mute/Unmute Set
+静音设置";
+CM_ SG_ 645 HU_AMP_LondnessSwch "Londness Switch
+响度补偿开关（上电默认开）";
+CM_ SG_ 645 HU_AMP_VSCModSeln "Vehicle Speed Compensation mode selection
+声音车速补偿模式选择（上电默认Middle mode）";
+CM_ SG_ 645 HU_AMP_VhclAlrmVolStepSet "VehicleAlarmVolumeStepSet 
+车辆报警提示音量设置（车辆提示报警音）";
+CM_ SG_ 645 HU_AMP_AudSrcInform "Audio Source Information
+音源模式设置";
+CM_ SG_ 645 HU_AMP_MainVolStepSet "Main Volume Step Set
+多媒体音量设置(0~15step)";
+CM_ SG_ 645 HU_AMP_Navi_VRModSet "Navigation/VoiceRecognition(VR) mode set
+导航/语音模式设置";
+CM_ SG_ 645 HU_AMP_NaviVolStepSet " Navigation volume step set
+导航音量设置";
+CM_ SG_ 645 HU_AMP_CallVolStepSet "Call volume step set
+通话音量设置";
+CM_ SG_ 645 HU_AMP_IntConctVolStepSet "Interconnection volume step
+语音交互音量设置";
+CM_ SG_ 645 HU_AMP_OutputCH_LF "Output Channel_LeftFront
+左前输出通道(车辆提示报警音）";
+CM_ SG_ 645 HU_AMP_OutputCH_RF "Output Channel_RigntFront
+右前输出通道(车辆提示报警音）";
+CM_ SG_ 645 HU_AMP_OutputCH_LR "Output Channel_LeftRear
+左后输出通道(车辆提示报警音）";
+CM_ SG_ 645 HU_AMP_OutputCH_RR "Output Channel_RightRear
+右后输出通道(车辆提示报警音）";
+CM_ SG_ 645 HU_AMP_LeRiAudBalnSet "Left/Right Audio Balance setting(-9,+9)
+左/右平衡设置";
+CM_ SG_ 645 HU_AMP_FrntReAudBalnSet "Front/Rear audio Balance setting(-9,+9)
+前/后平衡设置";
+CM_ SG_ 646 HU_AMP_EQModSelt "HU_AMP_EQ模式选择";
+CM_ SG_ 646 HU_AMP_EQ1Set "EQ1 设置EQ1 setting";
+CM_ SG_ 646 HU_AMP_EQ2Set "EQ2设置EQ2 setting";
+CM_ SG_ 646 HU_AMP_EQ3Set "EQ3设置EQ3 setting";
+CM_ SG_ 646 HU_AMP_EQ4Set "EQ4 设置EQ4 setting";
+CM_ SG_ 646 HU_AMP_EQ5Set "EQ5设置EQ5 setting";
+CM_ SG_ 1394 HU_SourceNodeAdd "Source Node Address
+原节点地址";
+CM_ SG_ 1394 HU_RMR "Repeat message request
+重复报文请求";
+CM_ SG_ 1394 HU_NMCodtrSleepBit "NM Coordinator Sleep Bit
+网络管理协调睡眠指示位";
+CM_ SG_ 1394 HU_AWB "Active wakeup bit
+主动唤醒指示位";
+CM_ SG_ 1394 HU_PNI "Partial netwark information bit 
+局部网络指示位";
+CM_ SG_ 1393 TBox_SourceNodeAdd "Source Node Address
+原节点地址";
+CM_ SG_ 1393 TBox_RMR "Repeat message request
+重复报文请求";
+CM_ SG_ 1393 TBox_NMCodtrSleepBit "NM Coordinator Sleep Bit
+网络管理协调睡眠指示位";
+CM_ SG_ 1393 TBox_AWB "Active wakeup bit
+主动唤醒指示位";
+CM_ SG_ 1393 TBox_PNI "Partial netwark information bit 
+局部网络指示位";
+CM_ SG_ 1392 CGW_SourceNodeAdd "Source Node Address
+原节点地址";
+CM_ SG_ 1392 CGW_RMR "Repeat message request
+重复报文请求";
+CM_ SG_ 1392 CGW_NMCodtrSleepBit "NM Coordinator Sleep Bit
+网络管理协调睡眠指示位";
+CM_ SG_ 1392 CGW_AWB "Active wakeup bit
+主动唤醒指示位";
+CM_ SG_ 1392 CGW_PNI "Partial netwark information bit 
+局部网络指示位";
+CM_ SG_ 284 VCU_ChrgStsIndcr "Charge status indicator
+充电状态指示";
+CM_ SG_ 370 VCU_ActlGear "Actual gear";
+CM_ SG_ 370 VCU_PtRdy "Powertrain have ready
+动力系统准备就绪";
+CM_ SG_ 369 ESP_VhclSpd "Vehicle speed out";
+CM_ SG_ 369 ESP_VhclSpd_Vld "Vehicle speed out status";
+CM_ SG_ 656 iBCM_LckUnlck_SchgCarIndcn "Successfully LockUnlock/SearchingCar Indiction
+解闭锁/寻车成功指示信号";
+
+
+BA_DEF_ BO_  "NmMessage" ENUM "No","Yes";
+BA_DEF_ BO_  "DiagState" ENUM  "No","Yes";
+BA_DEF_ BO_  "DiagRequest" ENUM  "No","Yes";
+BA_DEF_ BO_  "DiagResponse" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cycle","NoSendType","IfActive";
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 0;
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cycle","OnChange","OnWrite","IfActive","OnChangeWithRepetition","OnWriteWithRepetition","IfActiveWithRepetition";
+BA_DEF_ SG_  "GenSigStartValue" INT 0 0;
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTimeFast" INT 0 0;
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 0;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 0;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_ BO_  "CANFD_BRS" ENUM  "0","1";
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ SG_  "GenSigTimeoutValue" INT 0 1000000000;
+BA_DEF_ BO_  "GenMsgCycleTimeActive" INT 0 0;
+BA_DEF_ BU_  "ILUsed" ENUM  "No","Yes";
+BA_DEF_ BU_  "DiagStationAddress" HEX 0 255;
+BA_DEF_ BU_  "NmNode" ENUM  "Not","Yes";
+BA_DEF_ BU_  "NmStationAddress" HEX 0 65535;
+BA_DEF_ BU_  "NmCAN" INT 0 2;
+BA_DEF_  "Manufacturer" STRING ;
+BA_DEF_  "NmType" STRING ;
+BA_DEF_  "NmBaseAddress" HEX 0 2047;
+BA_DEF_  "NmMessageCount" INT 0 255;
+BA_DEF_ BO_  "_Cdb_Sc_CTm_FAW_v3_0" INT 0 0;
+BA_DEF_ BO_  "_Cdb_Sc_CTm_FAW_v2_3" INT 0 0;
+BA_DEF_ BO_  "_Cdb_Sc_CTm_FAW_v3_1" INT 0 0;
+BA_DEF_ BO_  "_Cdb_Sc_CTm_FAW_v2_2" INT 0 0;
+BA_DEF_ BO_  "_Cdb_Sc_CTm_FAW_v2_1" INT 0 0;
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 65535;
+BA_DEF_  "BusType" STRING ;
+
+
+BA_DEF_DEF_  "NmMessage" "No";
+BA_DEF_DEF_  "DiagState" "No";
+BA_DEF_DEF_  "DiagRequest" "No";
+BA_DEF_DEF_  "DiagResponse" "No";
+BA_DEF_DEF_  "GenMsgSendType" "Cycle";
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "GenSigSendType" "Cycle";
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 0;
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "CANFD_BRS" "0";
+BA_DEF_DEF_  "VFrameFormat" "StandardCAN";
+BA_DEF_DEF_  "NodeLayerModules" "oseknm01.dll,osek_tp.dll,CANoeILNLVector.dll";
+BA_DEF_DEF_  "GenSigTimeoutValue" 0;
+BA_DEF_DEF_  "GenMsgCycleTimeActive" 0;
+BA_DEF_DEF_  "ILUsed" "No";
+BA_DEF_DEF_  "DiagStationAddress" 0;
+BA_DEF_DEF_  "NmNode" "Not";
+BA_DEF_DEF_  "NmStationAddress" 0;
+BA_DEF_DEF_  "NmCAN" 0;
+BA_DEF_DEF_  "Manufacturer" "";
+BA_DEF_DEF_  "NmType" "";
+BA_DEF_DEF_  "NmBaseAddress" 1024;
+BA_DEF_DEF_  "NmMessageCount" 128;
+BA_DEF_DEF_  "_Cdb_Sc_CTm_FAW_v3_0" 0;
+BA_DEF_DEF_  "_Cdb_Sc_CTm_FAW_v2_3" 0;
+BA_DEF_DEF_  "_Cdb_Sc_CTm_FAW_v3_1" 0;
+BA_DEF_DEF_  "_Cdb_Sc_CTm_FAW_v2_2" 0;
+BA_DEF_DEF_  "_Cdb_Sc_CTm_FAW_v2_1" 0;
+BA_DEF_DEF_  "GenMsgILSupport" "No";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "BusType" "CAN FD";
+BA_ "BusType" "CAN";
+BA_ "DBName" "Info";
+BA_ "NmMessage" BO_ 1395 1;
+BA_ "GenMsgCycleTime" BO_ 1395 500;
+BA_ "GenMsgCycleTimeFast" BO_ 1395 10;
+BA_ "GenMsgNrOfRepetition" BO_ 1395 5;
+BA_ "GenSigSendType" SG_ 1395 AMP_NMCodtrSleepBit 6;
+BA_ "GenSigSendType" SG_ 1395 AMP_AWB 6;
+BA_ "GenSigSendType" SG_ 1395 AMP_PNI 6;
+BA_ "GenSigSendType" SG_ 1395 AMP_RptMsgStsDir 6;
+BA_ "GenSigSendType" SG_ 1395 AMP_SourceNodeAdd 6;
+BA_ "GenSigStartValue" SG_ 1395 AMP_SourceNodeAdd 115;
+BA_ "GenSigSendType" SG_ 1395 AMP_RMR 6;
+BA_ "GenMsgCycleTime" BO_ 896 1000;
+BA_ "GenMsgCycleTime" BO_ 369 20;
+BA_ "NmMessage" BO_ 1392 1;
+BA_ "GenMsgCycleTime" BO_ 1392 500;
+BA_ "GenMsgCycleTimeFast" BO_ 1392 10;
+BA_ "GenMsgNrOfRepetition" BO_ 1392 5;
+BA_ "GenSigSendType" SG_ 1392 CGW_SourceNodeAdd 6;
+BA_ "GenSigStartValue" SG_ 1392 CGW_SourceNodeAdd 112;
+BA_ "GenSigSendType" SG_ 1392 CGW_RMR 6;
+BA_ "GenSigSendType" SG_ 1392 CGW_NMCodtrSleepBit 6;
+BA_ "GenSigSendType" SG_ 1392 CGW_AWB 6;
+BA_ "GenSigSendType" SG_ 1392 CGW_PNI 6;
+BA_ "GenMsgCycleTime" BO_ 370 50;
+BA_ "GenMsgCycleTime" BO_ 646 100;
+BA_ "GenSigStartValue" SG_ 646 HU_AMP_EQ1Set 9;
+BA_ "GenSigStartValue" SG_ 646 HU_AMP_EQ2Set 9;
+BA_ "GenSigStartValue" SG_ 646 HU_AMP_EQ3Set 9;
+BA_ "GenSigStartValue" SG_ 646 HU_AMP_EQ4Set 9;
+BA_ "GenSigStartValue" SG_ 646 HU_AMP_EQ5Set 9;
+BA_ "GenMsgCycleTime" BO_ 645 100;
+BA_ "GenSigStartValue" SG_ 645 HU_AMP_LondnessSwch 1;
+BA_ "GenSigStartValue" SG_ 645 HU_AMP_VSCModSeln 2;
+BA_ "GenSigStartValue" SG_ 645 HU_AMP_VhclAlrmVolStepSet 4;
+BA_ "GenSigStartValue" SG_ 645 HU_AMP_AudSrcInform 1;
+BA_ "GenSigStartValue" SG_ 645 HU_AMP_MainVolStepSet 10;
+BA_ "GenSigStartValue" SG_ 645 HU_AMP_NaviVolStepSet 10;
+BA_ "GenSigStartValue" SG_ 645 HU_AMP_CallVolStepSet 10;
+BA_ "GenSigStartValue" SG_ 645 HU_AMP_IntConctVolStepSet 10;
+BA_ "GenSigStartValue" SG_ 645 HU_AMP_LeRiAudBalnSet 9;
+BA_ "GenSigStartValue" SG_ 645 HU_AMP_FrntReAudBalnSet 9;
+BA_ "NmMessage" BO_ 1394 1;
+BA_ "GenMsgCycleTime" BO_ 1394 500;
+BA_ "GenMsgCycleTimeFast" BO_ 1394 10;
+BA_ "GenMsgNrOfRepetition" BO_ 1394 5;
+BA_ "GenSigSendType" SG_ 1394 HU_SourceNodeAdd 6;
+BA_ "GenSigStartValue" SG_ 1394 HU_SourceNodeAdd 114;
+BA_ "GenSigSendType" SG_ 1394 HU_RMR 6;
+BA_ "GenSigSendType" SG_ 1394 HU_NMCodtrSleepBit 6;
+BA_ "GenSigSendType" SG_ 1394 HU_AWB 6;
+BA_ "GenSigSendType" SG_ 1394 HU_PNI 6;
+BA_ "GenMsgCycleTime" BO_ 643 100;
+BA_ "NmMessage" BO_ 1393 1;
+BA_ "GenMsgCycleTime" BO_ 1393 500;
+BA_ "GenMsgCycleTimeFast" BO_ 1393 10;
+BA_ "GenMsgNrOfRepetition" BO_ 1393 5;
+BA_ "GenSigSendType" SG_ 1393 TBox_SourceNodeAdd 6;
+BA_ "GenSigStartValue" SG_ 1393 TBox_SourceNodeAdd 113;
+BA_ "GenSigSendType" SG_ 1393 TBox_RMR 6;
+BA_ "GenSigSendType" SG_ 1393 TBox_NMCodtrSleepBit 6;
+BA_ "GenSigSendType" SG_ 1393 TBox_AWB 6;
+BA_ "GenSigSendType" SG_ 1393 TBox_PNI 6;
+BA_ "GenMsgCycleTime" BO_ 284 100;
+BA_ "GenMsgCycleTime" BO_ 656 100;
+VAL_ 896 AMP_HU_PwrSt 3 "Not used" 2 "Reserved" 1 "On" 0 "Off" ;
+VAL_ 1395 AMP_NMCodtrSleepBit 1 "Synch Shutdwn Req by codtr" 0 "Synch Shutdwn NotReq by codtr" ;
+VAL_ 1395 AMP_AWB 1 "Active wakeup" 0 "Passive wakeup" ;
+VAL_ 1395 AMP_PNI 1 "Contain PNI" 0 "Contain no PNI" ;
+VAL_ 1395 AMP_RptMsgStsDir 1 "On Repeat message State" 0 "Not on Repeat message State" ;
+VAL_ 1395 AMP_RMR 1 "Rpt Msg state req" 0 "Rpt Msg state not req" ;
+VAL_ 643 HU_VSG_PWSSwch 3 "Not used" 2 "Reserved" 1 "Off" 0 "On" ;
+VAL_ 643 HU_LokgCarSet 3 "Not used" 2 "Reserved" 1 "Off" 0 "On" ;
+VAL_ 645 HU_AMP_ESSSwch 3 "Not used" 2 "Reserved" 1 "Off" 0 "On" ;
+VAL_ 645 HU_AMP_ESSModSelt 3 "Reserved" 2 "ESS mode3" 1 "ESS mode2" 0 "ESS mode1" ;
+VAL_ 645 HU_AMP_MuteSet 3 "Not used" 2 "Reserved" 1 "All speakers unmute" 0 "All speakers mute" ;
+VAL_ 645 HU_AMP_LondnessSwch 3 "Not used" 2 "Reserved" 1 "Londness on" 0 "Londness off" ;
+VAL_ 645 HU_AMP_VSCModSeln 3 "Speed gain high mode" 2 "Speed gain middle mode" 1 "Speed gain low mode" 0 "Speed gain mode Off" ;
+VAL_ 645 HU_AMP_VhclAlrmVolStepSet 7 "Invalid" 6 "Invalid" 5 "Invalid" 4 "Level 5" 3 "Level 4" 2 "Level 3" 1 "Level 2" 0 "Level 1" ;
+VAL_ 645 HU_AMP_AudSrcInform 15 "Reserved" 14 "Reserved" 13 "Reserved" 12 "Reserved" 11 "Reserved" 10 "Reserved" 9 "Reserved" 8 "Reserved" 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Reserved" 3 "VR" 2 "Call(BT Call, E-Call, Ring)" 1 "Multi Media(left)" 0 "Off" ;
+VAL_ 645 HU_AMP_MainVolStepSet 15 "15" 14 "14" 13 "13" 12 "12" 11 "11" 10 "10" 9 "9" 8 "8" 7 "7" 6 "6" 5 "5" 4 "4" 3 "3" 2 "2" 1 "1" 0 "0" ;
+VAL_ 645 HU_AMP_Navi_VRModSet 3 "Reserved" 2 "System Sound" 1 "NAVI ON" 0 "Off" ;
+VAL_ 645 HU_AMP_NaviVolStepSet 15 "15" 14 "14" 13 "13" 12 "12" 11 "11" 10 "10" 9 "9" 8 "8" 7 "7" 6 "6" 5 "5" 4 "4" 3 "3" 2 "2" 1 "1" 0 "0" ;
+VAL_ 645 HU_AMP_CallVolStepSet 15 "15" 14 "14" 13 "13" 12 "12" 11 "11" 10 "10" 9 "9" 8 "8" 7 "7" 6 "6" 5 "5" 4 "4" 3 "3" 2 "2" 1 "1" 0 "0" ;
+VAL_ 645 HU_AMP_IntConctVolStepSet 15 "15" 14 "14" 13 "13" 12 "12" 11 "11" 10 "10" 9 "9" 8 "8" 7 "7" 6 "6" 5 "5" 4 "4" 3 "3" 2 "2" 1 "1" 0 "0" ;
+VAL_ 645 HU_AMP_OutputCH_LF 3 "Not used" 2 "Reserved" 1 "On" 0 "Off" ;
+VAL_ 645 HU_AMP_OutputCH_RF 3 "Not used" 2 "Reserved" 1 "On" 0 "Off" ;
+VAL_ 645 HU_AMP_OutputCH_LR 3 "Not used" 2 "Reserved" 1 "On" 0 "Off" ;
+VAL_ 645 HU_AMP_OutputCH_RR 3 "Not used" 2 "Reserved" 1 "On" 0 "Off" ;
+VAL_ 645 HU_AMP_LeRiAudBalnSet 31 "Invalid" 30 "Invalid" 29 "Invalid" 28 "Invalid" 27 "Invalid" 26 "Invalid" 25 "Invalid" 24 "Invalid" 23 "Invalid" 22 "Invalid" 21 "Invalid" 20 "Invalid" 19 "Invalid" 18 "9" 17 "8" 16 "7" 15 "6" 14 "5" 13 "4" 12 "3" 11 "2" 10 "1" 9 "0" 8 "-1" 7 "-2" 6 "-3" 5 "-4" 4 "-5" 3 "-6" 2 "-7" 1 "-8" 0 "-9" ;
+VAL_ 645 HU_AMP_FrntReAudBalnSet 31 "Invalid" 30 "Invalid" 29 "Invalid" 28 "Invalid" 27 "Invalid" 26 "Invalid" 25 "Invalid" 24 "Invalid" 23 "Invalid" 22 "Invalid" 21 "Invalid" 20 "Invalid" 19 "Invalid" 18 "9" 17 "8" 16 "7" 15 "6" 14 "5" 13 "4" 12 "3" 11 "2" 10 "1" 9 "0" 8 "-1" 7 "-2" 6 "-3" 5 "-4" 4 "-5" 3 "-6" 2 "-7" 1 "-8" 0 "-9" ;
+VAL_ 646 HU_AMP_EQModSelt 7 "Invalid" 6 "自定义" 5 "打击" 4 "爵士" 3 "流行" 2 "古典" 1 "摇滚" 0 "标准" ;
+VAL_ 646 HU_AMP_EQ1Set 31 "Invalid" 30 "Invalid" 29 "Invalid" 28 "Invalid" 27 "Invalid" 26 "Invalid" 25 "Invalid" 24 "Invalid" 23 "Invalid" 22 "Invalid" 21 "Invalid" 20 "Invalid" 19 "Invalid" 18 "9" 17 "8" 16 "7" 15 "6" 14 "5" 13 "4" 12 "3" 11 "2" 10 "1" 9 "0" 8 "-1" 7 "-2" 6 "-3" 5 "-4" 4 "-5" 3 "-6" 2 "-7" 1 "-8" 0 "-9" ;
+VAL_ 646 HU_AMP_EQ2Set 31 "Invalid" 30 "Invalid" 29 "Invalid" 28 "Invalid" 27 "Invalid" 26 "Invalid" 25 "Invalid" 24 "Invalid" 23 "Invalid" 22 "Invalid" 21 "Invalid" 20 "Invalid" 19 "Invalid" 18 "9" 17 "8" 16 "7" 15 "6" 14 "5" 13 "4" 12 "3" 11 "2" 10 "1" 9 "0" 8 "-1" 7 "-2" 6 "-3" 5 "-4" 4 "-5" 3 "-6" 2 "-7" 1 "-8" 0 "-9" ;
+VAL_ 646 HU_AMP_EQ3Set 31 "Invalid" 30 "Invalid" 29 "Invalid" 28 "Invalid" 27 "Invalid" 26 "Invalid" 25 "Invalid" 24 "Invalid" 23 "Invalid" 22 "Invalid" 21 "Invalid" 20 "Invalid" 19 "Invalid" 18 "9" 17 "8" 16 "7" 15 "6" 14 "5" 13 "4" 12 "3" 11 "2" 10 "1" 9 "0" 8 "-1" 7 "-2" 6 "-3" 5 "-4" 4 "-5" 3 "-6" 2 "-7" 1 "-8" 0 "-9" ;
+VAL_ 646 HU_AMP_EQ4Set 31 "Invalid" 30 "Invalid" 29 "Invalid" 28 "Invalid" 27 "Invalid" 26 "Invalid" 25 "Invalid" 24 "Invalid" 23 "Invalid" 22 "Invalid" 21 "Invalid" 20 "Invalid" 19 "Invalid" 18 "9" 17 "8" 16 "7" 15 "6" 14 "5" 13 "4" 12 "3" 11 "2" 10 "1" 9 "0" 8 "-1" 7 "-2" 6 "-3" 5 "-4" 4 "-5" 3 "-6" 2 "-7" 1 "-8" 0 "-9" ;
+VAL_ 646 HU_AMP_EQ5Set 31 "Invalid" 30 "Invalid" 29 "Invalid" 28 "Invalid" 27 "Invalid" 26 "Invalid" 25 "Invalid" 24 "Invalid" 23 "Invalid" 22 "Invalid" 21 "Invalid" 20 "Invalid" 19 "Invalid" 18 "9" 17 "8" 16 "7" 15 "6" 14 "5" 13 "4" 12 "3" 11 "2" 10 "1" 9 "0" 8 "-1" 7 "-2" 6 "-3" 5 "-4" 4 "-5" 3 "-6" 2 "-7" 1 "-8" 0 "-9" ;
+VAL_ 1394 HU_RMR 1 "Rpt Msg state req" 0 "Rpt Msg state not req" ;
+VAL_ 1394 HU_NMCodtrSleepBit 1 "Synch Shutdwn Req by codtr" 0 "Synch Shutdwn NotReq by codtr" ;
+VAL_ 1394 HU_AWB 1 "Active wakeup" 0 "Passive wakeup" ;
+VAL_ 1394 HU_PNI 1 "Contain PNI" 0 "Contain no PNI" ;
+VAL_ 1393 TBox_RMR 1 "Rpt Msg state req" 0 "Rpt Msg state not req" ;
+VAL_ 1393 TBox_NMCodtrSleepBit 1 "Synch Shutdwn Req by codtr" 0 "Synch Shutdwn NotReq by codtr" ;
+VAL_ 1393 TBox_AWB 1 "Active wakeup" 0 "Passive wakeup" ;
+VAL_ 1393 TBox_PNI 1 "Contain PNI" 0 "Contain no PNI" ;
+VAL_ 1392 CGW_RMR 1 "Rpt Msg state req" 0 "Rpt Msg state not req" ;
+VAL_ 1392 CGW_NMCodtrSleepBit 1 "Synch Shutdwn Req by codtr" 0 "Synch Shutdwn NotReq by codtr" ;
+VAL_ 1392 CGW_AWB 1 "Active wakeup" 0 "Passive wakeup" ;
+VAL_ 1392 CGW_PNI 1 "Contain PNI" 0 "Contain no PNI" ;
+VAL_ 284 VCU_ChrgStsIndcr 1 "True" 0 "False" ;
+VAL_ 370 VCU_ActlGear 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Reserved" 3 "D" 2 "N" 1 "R" 0 "P" ;
+VAL_ 370 VCU_PtRdy 1 "True" 0 "False" ;
+VAL_ 369 ESP_VhclSpd 8191 "Invalid" ;
+VAL_ 369 ESP_VhclSpd_Vld 1 "Validity" 0 "Invalidity" ;
+VAL_ 656 iBCM_LckUnlck_SchgCarIndcn 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Reserved" 3 "SearchingCar" 2 "Lock" 1 "Unlock" 0 "No Request" ;
