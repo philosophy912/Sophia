@@ -1,6 +1,7 @@
 package com.philosophy.character.api;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author lizhe
@@ -37,7 +38,9 @@ public enum CharEnum {
     ENGLISH_SYMBOL_NUMBER(21),
     // 中文、英文、字符、数字混合
     CHINESE_ENGLISH_SYMBOL_NUMBER(22);
+
     @Getter
+    @Setter
     private int value;
 
     CharEnum(int value) {

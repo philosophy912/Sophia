@@ -1,6 +1,7 @@
 package com.philosophy.image.api;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author lizhe
@@ -15,6 +16,7 @@ public enum CompareEnum {
     PIXEL("PIXEL");
 
     @Getter
+    @Setter
     private String value;
 
     CompareEnum(String value) {

@@ -53,4 +53,18 @@ public class CharUtils {
         sb.append(index);
         return sb.toString();
     }
+
+    /**
+     * 首字母大写
+     *
+     * @param str 字符串
+     * @return 首字母大写后的字符串
+     */
+    public static String upperCase(String str) {
+        char[] ch = str.toCharArray();
+        if (ch[0] >= 'a' && ch[0] <= 'z') {
+            ch[0] = (char) (ch[0] - 32);
+        }
+        return new String(ch);
+    }
 }

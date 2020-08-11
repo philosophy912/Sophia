@@ -1,5 +1,7 @@
 package com.philosophy.csv.api;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.csv.CSVFormat;
 
 /**
@@ -93,6 +95,8 @@ public enum CsvEnum {
      */
     TDF(CSVFormat.TDF);
 
+    @Getter
+    @Setter
     private CSVFormat csvFormat;
 
     CsvEnum(CSVFormat csvFormat) {

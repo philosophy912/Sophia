@@ -1,6 +1,8 @@
 package com.philosophy.excel.common;
 
+import com.philosophy.base.common.Closee;
 import com.philosophy.base.util.FilesUtils;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -24,8 +26,8 @@ import java.text.SimpleDateFormat;
  **/
 @Slf4j
 public class ExcelBase {
-    private static final String XLS = "XLS";
-    private static final String XLSX = "XLSX";
+    public static final String XLS = "XLS";
+    public static final String XLSX = "XLSX";
 
     /**
      * 根据sheet名字获取sheet所在位置
@@ -33,7 +35,7 @@ public class ExcelBase {
      * @param sheetName sheet名字
      * @return 所在位置
      */
-    public static int getSheetIndex(Workbook workbook, String sheetName) {
+    public int getSheetIndex(Workbook workbook, String sheetName) {
         for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
             String sheet = workbook.getSheetAt(i).getSheetName().trim();
             if (sheetName.equals(sheet)) {
@@ -50,7 +52,7 @@ public class ExcelBase {
      * @param path 文件
      * @throws IOException IO异常
      */
-    private static Workbook createWorkbook(Path path) throws IOException {
+    private Workbook createWorkbook(Path path) throws IOException {
         if (Files.exists(path)) {
             throw new RuntimeException("path[" + path.toString() + "] is exist");
         }
@@ -71,7 +73,7 @@ public class ExcelBase {
      * @param path excel文件
      * @throws IOException IO异常
      */
-    public static Workbook openWorkbook(Path path) throws IOException {
+    public Workbook openWorkbook(Path path) throws IOException {
         if (!Files.exists(path)) {
             return createWorkbook(path);
         } else {
@@ -97,7 +99,7 @@ public class ExcelBase {
      * @param columnIndex 自然列
      * @return 存在返回true，不存在返回false
      */
-    public static boolean isCellExist(Workbook workbook, String sheetName, int rowIndex, int columnIndex) {
+    public boolean isCellExist(Workbook workbook, String sheetName, int rowIndex, int columnIndex) {
         try {
             int sheetIndex = getSheetIndex(workbook, sheetName);
             Sheet sheet = workbook.getSheetAt(sheetIndex);
@@ -115,7 +117,7 @@ public class ExcelBase {
      * @param cell 单元格
      * @return 单元格的值
      */
-    public static String getCellValue(Cell cell) {
+    public String getCellValue(Cell cell) {
         String result;
         CellType type = cell.getCellType();
         switch (type) {
@@ -158,5 +160,42 @@ public class ExcelBase {
                 break;
         }
         return result;
+    }
+
+    /**
+     * 处理sheet
+     *
+     * @param wb               读取出来的workbook
+     * @param sheetName        sheet的名字
+     * @param isRemoveFirstRow 是否去除第一行
+     * @return sheet对象
+     */
+    private Sheet handleSheet(Workbook wb, String sheetName, boolean isRemoveFirstRow) {
+        int sheetIndex = getSheetIndex(wb, sheetName);
+        Sheet sheet = wb.getSheetAt(sheetIndex);
+        if (isRemoveFirstRow) {
+            // 去掉第一行的内容
+            sheet.removeRow(sheet.getRow(0));
+        }
+        log.debug("total excel row is {}", sheet.getPhysicalNumberOfRows());
+        return sheet;
+    }
+
+    @SneakyThrows
+    public Workbook open(Path path) {
+        log.info("excel path is [{}]", path.toAbsolutePath());
+        if (!Files.exists(path)) {
+            throw new RuntimeException("excel file [{" + path + "}] not found in ");
+        }
+        return openWorkbook(path);
+    }
+
+    public Sheet getSheet(Workbook workbook, String sheetName, boolean isRemoveFirstRow) {
+        return handleSheet(workbook, sheetName, isRemoveFirstRow);
+    }
+
+
+    public void close(Workbook workbook) {
+        Closee.close(workbook);
     }
 }

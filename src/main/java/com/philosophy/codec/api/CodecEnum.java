@@ -1,6 +1,7 @@
 package com.philosophy.codec.api;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author lizhe
@@ -19,6 +20,7 @@ public enum CodecEnum {
     DES("DES");
 
     @Getter
+    @Setter
     private String value;
 
     CodecEnum(String value) {

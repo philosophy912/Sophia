@@ -17,7 +17,7 @@ import java.util.List;
  * @since V1.0.0 2019/10/20 9:27
  **/
 @Slf4j
-public class ExcelReader implements IExcelReader<String[]> {
+public class ExcelReader extends ExcelBase implements IExcelReader<String[]> {
 
     private Workbook workbook;
     private Sheet sheet;
@@ -29,19 +29,19 @@ public class ExcelReader implements IExcelReader<String[]> {
 
     @Override
     public void readSheet(String sheetName) {
-        int sheetIndex = ExcelBase.getSheetIndex(workbook, sheetName);
+        int sheetIndex = getSheetIndex(workbook, sheetName);
         sheet = workbook.getSheetAt(sheetIndex);
     }
 
     @Override
     public String read(String sheetName, int rowIndex, int columnIndex) {
         readSheet(sheetName);
-        if (!ExcelBase.isCellExist(workbook, sheetName, rowIndex, columnIndex)) {
+        if (!isCellExist(workbook, sheetName, rowIndex, columnIndex)) {
             throw new RuntimeException("cell [" + rowIndex + ", " + columnIndex + "] " +
                     "is not found in sheet [" + sheetName + "]");
         }
         Cell cell = sheet.getRow(rowIndex - 1).getCell(columnIndex - 1);
-        return ExcelBase.getCellValue(cell);
+        return getCellValue(cell);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ExcelReader implements IExcelReader<String[]> {
             String[] content = new String[columnCount];
             for (int j = 0; j < columnCount; j++) {
                 Cell cell = row.getCell(j);
-                String cellValue = ExcelBase.getCellValue(cell);
+                String cellValue = getCellValue(cell);
                 content[j] = cellValue;
                 log.debug("cell[{},{}] = {}", i, j, cellValue);
             }

@@ -4,6 +4,7 @@ package com.philosophy.excel.common;
 import com.philosophy.base.common.Closee;
 import com.philosophy.base.util.NumericUtils;
 import com.philosophy.excel.api.IExcelWriter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -23,7 +24,9 @@ import java.util.List;
 @Slf4j
 public class ExcelWriter implements IExcelWriter<String> {
 
+    @Setter
     private Workbook workbook;
+    @Setter
     private Path path;
     private OutputStream outputStream;
     private Sheet sheet;

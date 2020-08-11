@@ -16,9 +16,9 @@ import java.util.List;
  */
 public class CsvWriter implements ICsvWriter<String> {
 
-    private Writer writer;
+    private final Writer writer;
     private CSVPrinter csvPrinter;
-    private CSVFormat csvFormat;
+    private final CSVFormat csvFormat;
 
     public CsvWriter(Writer writer, CsvEnum csvEnum) {
         this.writer = writer;
@@ -28,14 +28,14 @@ public class CsvWriter implements ICsvWriter<String> {
     @Override
     public void write(String[] contents) throws IOException {
         csvPrinter = new CSVPrinter(writer, csvFormat);
-        csvPrinter.printRecord(contents);
+        csvPrinter.printRecord((Object) contents);
     }
 
     @Override
     public void write(List<String[]> contents) throws IOException {
         csvPrinter = new CSVPrinter(writer, csvFormat);
         for(String[] content: contents){
-            csvPrinter.printRecord(content);
+            csvPrinter.printRecord((Object) content);
         }
     }
 

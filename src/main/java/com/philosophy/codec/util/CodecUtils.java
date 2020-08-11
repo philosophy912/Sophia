@@ -4,6 +4,7 @@ import com.philosophy.codec.api.CodecEnum;
 import com.philosophy.codec.common.Codec;
 import com.philosophy.codec.common.RsaCodec;
 import com.philosophy.codec.common.XesCodec;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -16,9 +17,11 @@ import java.security.NoSuchAlgorithmException;
  */
 @Slf4j
 public class CodecUtils {
-
+    @Setter
     private Codec codec = new Codec();
+    @Setter
     private RsaCodec rsaCodec = new RsaCodec();
+    @Setter
     private XesCodec xesCodec = new XesCodec();
 
     /**
