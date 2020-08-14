@@ -1,10 +1,11 @@
-package com.chinatsp.code.entity;
+package com.chinatsp.code.entity.actions;
 
+import com.chinatsp.code.entity.types.SystemEnum;
+import com.chinatsp.code.entity.types.TouchActionEnum;
 import javafx.util.Pair;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import sun.rmi.server.InactiveGroupException;
 
 import java.util.List;
 

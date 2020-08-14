@@ -1,5 +1,6 @@
-package com.chinatsp.code.entity;
+package com.chinatsp.code.entity.actions;
 
+import com.chinatsp.code.entity.types.SystemEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

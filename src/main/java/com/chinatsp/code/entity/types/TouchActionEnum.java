@@ -1,4 +1,4 @@
-package com.chinatsp.code.entity;
+package com.chinatsp.code.entity.types;
 
 import lombok.Getter;
 import lombok.Setter;

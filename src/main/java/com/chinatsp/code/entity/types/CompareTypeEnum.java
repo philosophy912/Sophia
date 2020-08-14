@@ -1,22 +1,23 @@
-package com.chinatsp.code.entity;
+package com.chinatsp.code.entity.types;
 
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * @author lizhe
- * @date 2020/8/12 14:57
+ * @date 2020/8/14 15:08
  **/
-public enum SystemEnum {
+public enum CompareTypeEnum {
 
-    ANDROID("android"),
-    QNX("qnx"),
-    LINUX("linux");
+    LIGHT("light"),
+    DARK("dark"),
+    BLINK("blink");
+
     @Setter
     @Getter
     private String value;
 
-    SystemEnum(String value) {
+    CompareTypeEnum(String value) {
         this.value = value;
     }
 
@@ -26,12 +27,12 @@ public enum SystemEnum {
      * @param value 枚举值
      * @return 返回类型
      */
-    public static SystemEnum fromValue(String value) {
-        for (SystemEnum type : values()) {
+    public static CompareTypeEnum fromValue(String value) {
+        for (CompareTypeEnum type : values()) {
             if (value.equalsIgnoreCase(type.value)) {
                 return type;
             }
         }
-        throw new RuntimeException("not support System type[" + value + "]");
+        throw new RuntimeException("not support compare type[" + value + "]");
     }
 }
