@@ -1,4 +1,4 @@
-package com.chinatsp.code.entity.actions;
+package com.chinatsp.code.entity.excel.actions;
 
 import com.chinatsp.code.entity.types.SystemEnum;
 import com.chinatsp.code.entity.types.TouchActionEnum;
@@ -24,11 +24,11 @@ public class TouchAction {
     /**
      * 操作类型
      */
-    private SystemEnum type;
+    private String type;
     /**
      * 屏幕操作类型
      */
-    private TouchActionEnum touchAction;
+    private String touchAction;
     /**
      * 屏幕序号
      */
@@ -36,7 +36,7 @@ public class TouchAction {
     /**
      * 操作的坐标点
      */
-    private List<Pair<Integer, Integer>> positions;
+    private List<Integer[]> positions;
     /**
      * 滑动持续时间
      */

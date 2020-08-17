@@ -1,4 +1,4 @@
-package com.chinatsp.code.entity.config;
+package com.chinatsp.code.entity.excel.config;
 
 import lombok.Getter;
 import lombok.Setter;

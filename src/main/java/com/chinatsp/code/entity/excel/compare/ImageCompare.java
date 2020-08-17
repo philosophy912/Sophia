@@ -1,9 +1,11 @@
-package com.chinatsp.code.entity.compare;
+package com.chinatsp.code.entity.excel.compare;
 
 import com.chinatsp.code.entity.types.CompareTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
 
 /**
  * @author lizhe
@@ -24,7 +26,7 @@ public class ImageCompare {
     /**
      * 对比类型
      */
-    private CompareTypeEnum compareType;
+    private String compareType;
     /**
      * 要对比的图片
      */
@@ -40,7 +42,7 @@ public class ImageCompare {
     /**
      * 图片对比区域
      */
-    private String position;
+    private List<Integer[]> position;
     /**
      * 相似度
      */

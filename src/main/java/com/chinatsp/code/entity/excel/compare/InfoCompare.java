@@ -1,7 +1,5 @@
-package com.chinatsp.code.entity.compare;
+package com.chinatsp.code.entity.excel.compare;
 
-import com.chinatsp.code.entity.elements.AndroidElement;
-import com.chinatsp.code.entity.info.Information;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

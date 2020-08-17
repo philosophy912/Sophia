@@ -1,6 +1,5 @@
-package com.chinatsp.code.entity.info;
+package com.chinatsp.code.entity.excel.info;
 
-import com.chinatsp.code.entity.elements.AndroidElement;
 import com.chinatsp.code.entity.types.ElementAttributeEnum;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +28,6 @@ public class Information {
     /**
      * 要保存元素的属性
      */
-    private List<ElementAttributeEnum> attributes;
+    private List<String> attributes;
 
 }

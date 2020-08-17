@@ -1,4 +1,4 @@
-package com.chinatsp.code.entity.compare;
+package com.chinatsp.code.entity.excel.compare;
 
 import lombok.Getter;
 import lombok.Setter;

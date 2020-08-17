@@ -1,4 +1,4 @@
-package com.chinatsp.code.entity.actions;
+package com.chinatsp.code.entity.excel.actions;
 
 import com.chinatsp.code.entity.types.SystemEnum;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class Screenshot  {
     /**
      * 操作类型
      */
-    private SystemEnum type;
+    private String type;
     /**
      * 函数名
      */

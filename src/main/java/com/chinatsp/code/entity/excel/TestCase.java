@@ -1,5 +1,6 @@
-package com.chinatsp.code.entity;
+package com.chinatsp.code.entity.excel;
 
+import com.philosophy.base.common.Triple;
 import javafx.util.Pair;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,7 +43,7 @@ public class TestCase {
     /**
      * 前置条件函数名列表
      */
-    private List<Pair<String, String>> preConditionFunctions;
+    private List<Triple<String, String, String[]>> preConditionFunctions;
     /**
      * 执行步骤描述
      */
@@ -50,7 +51,7 @@ public class TestCase {
     /**
      * 执行步骤函数名列表
      */
-    private List<Pair<String, String>> stepsFunctions;
+    private List<Triple<String, String, String[]>> stepsFunctions;
     /**
      * 期望结果描述
      */
@@ -58,7 +59,7 @@ public class TestCase {
     /**
      * 期望结果函数名列表
      */
-    private List<Pair<String, String>> expectResultFunctions;
+    private List<Triple<String, String, String[]>> expectResultFunctions;
 
 
 }
