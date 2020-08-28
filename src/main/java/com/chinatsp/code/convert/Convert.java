@@ -4,8 +4,11 @@ import com.chinatsp.code.entity.BaseEntity;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 /**
+ * 将Sheet转换成为Entity
  * @author lizhe
  * @date 2020/8/27 16:04
  **/
@@ -14,9 +17,9 @@ public class Convert<T extends BaseEntity> {
     /**
      * 从excel中读取到
      * @param sheet excel的sheet
-     * @return T
+     * @return List<T>
      */
-    public T readExcel(Sheet sheet){
+    public List<T> readExcel(Sheet sheet){
         return null;
     }
 }

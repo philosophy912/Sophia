@@ -5,18 +5,17 @@ import lombok.Setter;
 
 /**
  * @author lizhe
- * @date 2020/8/27 13:11
+ * @date 2020/8/27 10:07
  **/
-public enum CompareTypeEnum {
-    LIGHT("亮图"),
-    DARK("暗图"),
-    BLINK("闪烁图");
+public enum DeviceTpeEnum {
+    QNX("QNX"),
+    ANDROID("ANDROID");
 
     @Setter
     @Getter
     private String value;
 
-    CompareTypeEnum(String value) {
+    DeviceTpeEnum(String value) {
         this.value = value;
     }
 
@@ -26,12 +25,12 @@ public enum CompareTypeEnum {
      * @param value 枚举类型的值
      * @return 枚举类型
      */
-    public static CompareTypeEnum fromValue(String value) {
-        for (CompareTypeEnum type : values()) {
+    public static DeviceTpeEnum fromValue(String value) {
+        for (DeviceTpeEnum type : values()) {
             if (type.value.trim().equalsIgnoreCase(value)) {
                 return type;
             }
         }
-        throw new RuntimeException("not support CompareTypeEnum type[" + value + "]");
+        throw new RuntimeException("not support DeviceTpeEnum type[" + value + "]");
     }
 }

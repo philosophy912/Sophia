@@ -1,7 +1,7 @@
 package com.chinatsp.code.entity.actions;
 
 import com.chinatsp.code.entity.BaseEntity;
-import com.chinatsp.code.enumeration.ScreenShotTypeEnum;
+import com.chinatsp.code.enumeration.DeviceTpeEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,9 +15,9 @@ import lombok.ToString;
 @ToString
 public class ScreenShotAction extends BaseEntity {
     /**
-     * 截图类型，目前只支持ScreenShotTypeEnum描述的类型
+     * 截图类型，目前只支持DeviceTpeEnum描述的类型
      */
-    private ScreenShotTypeEnum screenShotType;
+    private DeviceTpeEnum deviceTpeEnum;
     /**
      * 截图张数
      */

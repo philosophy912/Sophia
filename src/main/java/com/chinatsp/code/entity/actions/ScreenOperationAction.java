@@ -1,7 +1,7 @@
 package com.chinatsp.code.entity.actions;
 
 import com.chinatsp.code.entity.BaseEntity;
-import com.chinatsp.code.enumeration.ScreenTypeEnum;
+import com.chinatsp.code.enumeration.DeviceTpeEnum;
 import javafx.util.Pair;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,9 +18,9 @@ import java.util.List;
 @ToString
 public class ScreenOperationAction extends BaseEntity {
     /**
-     * 屏幕类型, 只支持ScreenTypeEnum描述的类型
+     * 屏幕类型, 只支持DeviceTpeEnum描述的类型
      */
-    private ScreenTypeEnum screenType;
+    private DeviceTpeEnum deviceTpeEnum;
     /**
      * 屏幕序号
      */
