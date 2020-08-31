@@ -8,9 +8,9 @@ import lombok.Setter;
  * @date 2020/8/27 10:03
  **/
 public enum TestCaseTypeEnum {
-    CLUSTER("CLUSTER"),
-    ANDROID("ANDROID"),
-    AIR_CONDITION("AIRCONDITION");
+    CLUSTER("仪表"),
+    ANDROID("中控"),
+    AIR_CONDITION("空调屏");
 
     @Setter
     @Getter

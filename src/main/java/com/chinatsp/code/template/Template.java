@@ -1,26 +1,33 @@
 package com.chinatsp.code.template;
 
 import com.chinatsp.code.entity.actions.RelayAction;
-import com.chinatsp.code.enumeration.TestCaseTypeEnum;
+import com.chinatsp.code.utils.EnumUtils;
 import com.philosophy.base.util.ClazzUtils;
 import com.philosophy.base.util.FilesUtils;
+import com.philosophy.base.util.ParseUtils;
 import com.philosophy.character.util.CharUtils;
 import com.philosophy.excel.utils.ExcelUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataValidation;
+import org.apache.poi.ss.usermodel.DataValidationConstraint;
+import org.apache.poi.ss.usermodel.DataValidationHelper;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddressList;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,9 +43,21 @@ import java.util.Map;
 @Slf4j
 public class Template {
 
-    private final ExcelUtils excelUtils = new ExcelUtils();
     private static final Map<String, String> map;
     private static final Map<String, String> classMap;
+    private final int TEMPLATE_SIZE = 10;
+    private EnumUtils enumUtils;
+    private ExcelUtils excelUtils;
+
+    @Autowired
+    public void setEnumUtils(EnumUtils enumUtils) {
+        this.enumUtils = enumUtils;
+    }
+
+    @Autowired
+    public void setExcelUtils(ExcelUtils excelUtils) {
+        this.excelUtils = excelUtils;
+    }
 
     static {
         map = new HashMap<>();
@@ -152,10 +171,17 @@ public class Template {
         return width;
     }
 
-
+    /**
+     * 设置每一个Sheet中的内容
+     *
+     * @param sheet     sheet
+     * @param cellStyle 样式
+     * @param className 类名
+     */
     private void setSheet(Sheet sheet, CellStyle cellStyle, String className) {
         Row row = sheet.createRow(0);
         List<String> titles = getTitles(className);
+        Map<Integer, String[]> enums = getEnums(className);
         for (int i = 0; i < titles.size(); i++) {
             Cell cell = row.createCell(i);
             String content = titles.get(i);
@@ -163,7 +189,50 @@ public class Template {
             cell.setCellStyle(cellStyle);
             sheet.setColumnWidth(i, getWidth(content));
         }
-        // 根据
+        for (int i = 1; i < TEMPLATE_SIZE + 1; i++) {
+            row = sheet.createRow(i);
+            // 设置单元格为下拉式的菜单，其中数据的值根据枚举中的value确定
+            for (Map.Entry<Integer, String[]> entry : enums.entrySet()) {
+                Integer index = entry.getKey();
+                String[] values = entry.getValue();
+                DataValidationHelper helper = sheet.getDataValidationHelper();
+                DataValidationConstraint constraint = helper.createExplicitListConstraint(values);
+                CellRangeAddressList cellRangeAddressList = new CellRangeAddressList(i, i, index, index);
+                DataValidation dataValidation = helper.createValidation(constraint, cellRangeAddressList);
+                sheet.addValidationData(dataValidation);
+            }
+            // 用于设置序号以及画边框
+            for (int j = 0; j < titles.size(); j++) {
+                Cell cell = row.createCell(j);
+                if (j == 0) {
+                    cell.setCellValue(j);
+                }
+                cell.setCellValue("");
+                cell.setCellStyle(cellStyle);
+            }
+        }
+    }
+
+    /**
+     * 获取枚举在表头中的序号以及可用的枚举值
+     *
+     * @param className 类名
+     * @return 序号, 枚举值数组
+     */
+    @SneakyThrows
+    private Map<Integer, String[]> getEnums(String className) {
+        Map<Integer, String[]> enums = new HashMap<>();
+        Class clazz = Class.forName(className);
+        Object object = clazz.newInstance();
+        Field[] fields = object.getClass().getDeclaredFields();
+        for (int i = 0; i < fields.length; i++) {
+            Field field = fields[i];
+            if (field.getType().isEnum()) {
+                String[] enumValues = ParseUtils.toArray(enumUtils.getEnumValues(field.getType()));
+                enums.put(i + 3, enumValues);
+            }
+        }
+        return enums;
     }
 
 
@@ -173,7 +242,7 @@ public class Template {
      * @param path 文件
      */
     @SneakyThrows
-    public void CreateTemplateExcelFile(Path path) {
+    public void createTemplateExcelFile(Path path) {
         // 确保path不存在
         if (Files.exists(path)) {
             FilesUtils.deleteFiles(path);
@@ -181,9 +250,15 @@ public class Template {
         Workbook workbook = excelUtils.openWorkbook(path);
         String PACKAGE_NAME = "com.chinatsp.code.entity";
         List<String> classes = ClazzUtils.getClazzName(PACKAGE_NAME, true);
+        // 去掉了抽象类
         classes.remove("com.chinatsp.code.entity.BaseEntity");
-        // 设置单元格内容自动换行
+        // 设置单元格内容自动换行、四周边框以及居中显示
         CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setBorderBottom(BorderStyle.THIN);
+        cellStyle.setBorderLeft(BorderStyle.THIN);
+        cellStyle.setBorderRight(BorderStyle.THIN);
+        cellStyle.setBorderTop(BorderStyle.THIN);
         cellStyle.setWrapText(true);
         for (String className : classes) {
             String[] splits = className.split("\\.");
@@ -199,21 +274,16 @@ public class Template {
 
     @SneakyThrows
     public static void main(String[] args) {
-//        Path path = Paths.get("d:\\template.xlsx");
-//        Template template = new Template();
-//        template.CreateTemplateExcelFile(path);
-        RelayAction relayAction = new RelayAction();
-        Field[] fields = relayAction.getClass().getDeclaredFields();
-        for(Field field: fields){
-            if(field.getType().isEnum()){
-                Class enumClass = field.getType();
-                Method method = enumClass.getMethod("values");
-                Object object = method.invoke(enumClass);
-                System.out.println(object);
-                // 必须要统一，否则无法使用相同方法获取枚举值
-                // https://blog.csdn.net/SunFlowerXT/article/details/90035512
-            }
-        }
+//        EnumUtils enumUtils = new EnumUtils();
+//        RelayAction relayAction = new RelayAction();
+//        Field[] fields = relayAction.getClass().getDeclaredFields();
+//        for (Field field : fields) {
+//            if (field.getType().isEnum()) {
+//                Class enumClass = field.getType();
+//                List<String> values = enumUtils.getEnumValues(enumClass);
+//                values.forEach(System.out::println);
+//            }
+//        }
 
     }
 }
