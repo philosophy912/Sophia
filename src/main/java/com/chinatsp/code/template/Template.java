@@ -1,6 +1,7 @@
 package com.chinatsp.code.template;
 
-import com.chinatsp.code.entity.actions.RelayAction;
+import com.chinatsp.code.beans.ClassAttributes;
+import com.chinatsp.code.beans.ClassNames;
 import com.chinatsp.code.utils.EnumUtils;
 import com.philosophy.base.util.ClazzUtils;
 import com.philosophy.base.util.FilesUtils;
@@ -9,7 +10,6 @@ import com.philosophy.character.util.CharUtils;
 import com.philosophy.excel.utils.ExcelUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,11 +44,12 @@ import java.util.Map;
 @Slf4j
 public class Template {
 
-    private static final Map<String, String> map;
-    private static final Map<String, String> classMap;
-    private final int TEMPLATE_SIZE = 10;
+    //    private static final Map<String, String> map;
+//    private static final Map<String, String> classMap;
     private EnumUtils enumUtils;
     private ExcelUtils excelUtils;
+    private ClassAttributes classAttributes;
+    private ClassNames classNames;
 
     @Autowired
     public void setEnumUtils(EnumUtils enumUtils) {
@@ -59,68 +61,86 @@ public class Template {
         this.excelUtils = excelUtils;
     }
 
-    static {
-        map = new HashMap<>();
-        map.put("id", "序号");
-        map.put("name", "名字/函数名");
-        map.put("comment", "描述");
-        map.put("batteryType", "电源类型");
-        map.put("batteryOperationType", "电源操作类型");
-        map.put("values", "电源操作值");
-        map.put("repeatTimes", "重复次数");
-        map.put("curveFile", "电压曲线文件");
-        map.put("element", "元素名");
-        map.put("slideTimes", "滑动次数");
-        map.put("relayOperationType", "继电器操作类型");
-        map.put("channelIndex", "继电器通道");
-        map.put("operationActionType", "操作类型");
-        map.put("screenIndex", "屏幕序号");
-        map.put("points", "坐标点");
-        map.put("continueTimes", "持续时间");
-        map.put("deviceTpeEnum", "屏幕类型");
-        map.put("count", "截图张数");
-        map.put("imageName", "截图名称");
-        map.put("isArea", "是否区域截图");
-        map.put("signals", "信号名与值");
-        map.put("locators", "元素定位符");
-        map.put("params", "函数参数");
-        map.put("messageId", "信号ID");
-        map.put("signalName", "信号名");
-        map.put("expectValue", "期望值");
-        map.put("exact", "是否精确对比");
-        map.put("elementCompareType", "元素对比类型");
-        map.put("timeout", "超时时间");
-        map.put("compareType", "图片对比方式");
-        map.put("templateLight", "模板亮图");
-        map.put("templateDark", "模板暗图");
-        map.put("positions", "比较区域");
-        map.put("similarity", "相似度");
-        map.put("isGray", "是否灰度对比");
-        map.put("threshold", "灰度二值化阈值");
-        map.put("origin", "原始信息");
-        map.put("target", "目标信息");
-        map.put("elementAttributes", "元素属性");
-        map.put("testCaseType", "测试用例类型");
-        map.put("moduleName", "模块名");
-        map.put("preConditionDescription", "前置条件描述");
-        map.put("stepsDescription", "操作步骤描述");
-        map.put("expectDescription", "期望结果描述");
-        classMap = new HashMap<>();
-        classMap.put("TestCase", "测试用例");
-        classMap.put("ScreenShotAction", "截图操作");
-        classMap.put("ScreenOperationAction", "屏幕操作");
-        classMap.put("ElementAction", "元素操作");
-        classMap.put("RelayAction", "继电器操作");
-        classMap.put("BatteryAction", "电源操作");
-        classMap.put("Information", "信息保存");
-        classMap.put("Can", "Can信号");
-        classMap.put("Element", "安卓元素");
-        classMap.put("CanCompare", "CAN信号对比");
-        classMap.put("ImageCompare", "图片对比");
-        classMap.put("InformationCompare", "信息对比");
-        classMap.put("ElementCompare", "Android元素对比");
-        classMap.put("Common", "公共函数");
+    @Autowired
+    public void setClassAttributes(ClassAttributes classAttributes) {
+        this.classAttributes = classAttributes;
     }
+
+    @Autowired
+    public void setClassNames(ClassNames classNames) {
+        this.classNames = classNames;
+    }
+
+    //    static {
+//        // 创建静态的属性的中文名以及Sheet的中文名
+//        map = new HashMap<>();
+//        map.put("id", "序号");
+//        map.put("name", "名字/函数名");
+//        map.put("comment", "描述");
+//        map.put("batteryType", "电源类型");
+//        map.put("batteryOperationType", "电源操作类型");
+//        map.put("values", "电源操作值");
+//        map.put("repeatTimes", "重复次数");
+//        map.put("curveFile", "电压曲线文件");
+//        map.put("element", "元素名");
+//        map.put("slideTimes", "滑动次数");
+//        map.put("relayOperationType", "继电器操作类型");
+//        map.put("channelIndex", "继电器通道");
+//        map.put("operationActionType", "操作类型");
+//        map.put("screenIndex", "屏幕序号");
+//        map.put("points", "坐标点");
+//        map.put("continueTimes", "持续时间");
+//        map.put("deviceTpeEnum", "屏幕类型");
+//        map.put("count", "截图张数");
+//        map.put("imageName", "截图名称");
+//        map.put("isArea", "是否区域截图");
+//        map.put("signals", "信号名与值");
+//        map.put("locators", "元素定位符");
+//        map.put("params", "函数参数");
+//        map.put("messageId", "信号ID");
+//        map.put("signalName", "信号名");
+//        map.put("expectValue", "期望值");
+//        map.put("exact", "是否精确对比");
+//        map.put("elementCompareType", "元素对比类型");
+//        map.put("timeout", "超时时间");
+//        map.put("compareType", "图片对比方式");
+//        map.put("templateLight", "模板亮图");
+//        map.put("templateDark", "模板暗图");
+//        map.put("positions", "比较区域");
+//        map.put("similarity", "相似度");
+//        map.put("isGray", "是否灰度对比");
+//        map.put("threshold", "灰度二值化阈值");
+//        map.put("origin", "原始信息");
+//        map.put("target", "目标信息");
+//        map.put("elementAttributes", "元素属性");
+//        map.put("testCaseType", "测试用例类型");
+//        map.put("moduleName", "模块名");
+//        map.put("preConditionDescription", "前置条件描述");
+//        map.put("stepsDescription", "操作步骤描述");
+//        map.put("expectDescription", "期望结果描述");
+//        classMap = new HashMap<>();
+//        classMap.put("TestCase", "测试用例");
+//        classMap.put("ScreenShotAction", "截图操作");
+//        classMap.put("ScreenOperationAction", "屏幕操作");
+//        classMap.put("ElementAction", "元素操作");
+//        classMap.put("RelayAction", "继电器操作");
+//        classMap.put("BatteryAction", "电源操作");
+//        classMap.put("Information", "信息保存");
+//        classMap.put("Can", "Can信号");
+//        classMap.put("Element", "安卓元素");
+//        classMap.put("CanCompare", "CAN信号对比");
+//        classMap.put("ImageCompare", "图片对比");
+//        classMap.put("InformationCompare", "信息对比");
+//        classMap.put("ElementCompare", "Android元素对比");
+//        classMap.put("Common", "公共函数");
+//    }
+    @SneakyThrows
+    private String getConfigValue(Object object, String name) {
+        name = CharUtils.lowerCase(name);
+        Method method = object.getClass().getMethod("get" + CharUtils.upperCase(name));
+        return (String) method.invoke(object);
+    }
+
 
     /**
      * 根据类名获取表头
@@ -131,25 +151,25 @@ public class Template {
     @SneakyThrows
     private List<String> getTitles(String className) {
         List<String> titles = new LinkedList<>();
-        Class clazz = Class.forName(className);
+        Class<?> clazz = Class.forName(className);
         if (!Modifier.isAbstract(clazz.getModifiers())) {
             Object object = clazz.newInstance();
             Field[] fields = object.getClass().getSuperclass().getDeclaredFields();
-            for (Field field : fields) {
-                String name = field.getName();
-                String upperName = CharUtils.upperCase(name);
-                log.debug("field name is {}", name);
-                titles.add(upperName + "\n" + map.get(name));
-            }
+            setTitles(titles, fields);
             fields = object.getClass().getDeclaredFields();
-            for (Field field : fields) {
-                String name = field.getName();
-                String upperName = CharUtils.upperCase(name);
-                log.debug("field name is {}", name);
-                titles.add(upperName + "\n" + map.get(name));
-            }
+            setTitles(titles, fields);
         }
         return titles;
+    }
+
+    private void setTitles(List<String> titles, Field[] fields) {
+        for (Field field : fields) {
+            String name = field.getName();
+            String upperName = CharUtils.upperCase(name);
+            log.debug("field name is {}", name);
+            String chinese = getConfigValue(classAttributes, name);
+            titles.add(upperName + "\n" + chinese);
+        }
     }
 
     /**
@@ -189,6 +209,8 @@ public class Template {
             cell.setCellStyle(cellStyle);
             sheet.setColumnWidth(i, getWidth(content));
         }
+        // 生成的测试用例模板数量
+        int TEMPLATE_SIZE = 200;
         for (int i = 1; i < TEMPLATE_SIZE + 1; i++) {
             row = sheet.createRow(i);
             // 设置单元格为下拉式的菜单，其中数据的值根据枚举中的value确定
@@ -204,10 +226,11 @@ public class Template {
             // 用于设置序号以及画边框
             for (int j = 0; j < titles.size(); j++) {
                 Cell cell = row.createCell(j);
-                if (j == 0) {
-                    cell.setCellValue(j);
+                if (j ==0){
+                    cell.setCellValue(i);
+                }else{
+                    cell.setCellValue("");
                 }
-                cell.setCellValue("");
                 cell.setCellStyle(cellStyle);
             }
         }
@@ -222,7 +245,7 @@ public class Template {
     @SneakyThrows
     private Map<Integer, String[]> getEnums(String className) {
         Map<Integer, String[]> enums = new HashMap<>();
-        Class clazz = Class.forName(className);
+        Class<?> clazz = Class.forName(className);
         Object object = clazz.newInstance();
         Field[] fields = object.getClass().getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
@@ -251,7 +274,8 @@ public class Template {
         String PACKAGE_NAME = "com.chinatsp.code.entity";
         List<String> classes = ClazzUtils.getClazzName(PACKAGE_NAME, true);
         // 去掉了抽象类
-        classes.remove("com.chinatsp.code.entity.BaseEntity");
+        String BASE_ENTITY = "com.chinatsp.code.entity.BaseEntity";
+        classes.remove(BASE_ENTITY);
         // 设置单元格内容自动换行、四周边框以及居中显示
         CellStyle cellStyle = workbook.createCellStyle();
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
@@ -264,26 +288,12 @@ public class Template {
             String[] splits = className.split("\\.");
             String sheetName = splits[splits.length - 1];
             sheetName = CharUtils.upperCase(sheetName);
-            sheetName = sheetName + "(" + classMap.get(sheetName) + ")";
+            String chinese = getConfigValue(classNames, sheetName);
+            sheetName = CharUtils.upperCase(chinese) + "(" + sheetName + ")";
             Sheet sheet = workbook.createSheet(sheetName);
             setSheet(sheet, cellStyle, className);
         }
         workbook.write(Files.newOutputStream(path));
         excelUtils.close(workbook);
-    }
-
-    @SneakyThrows
-    public static void main(String[] args) {
-//        EnumUtils enumUtils = new EnumUtils();
-//        RelayAction relayAction = new RelayAction();
-//        Field[] fields = relayAction.getClass().getDeclaredFields();
-//        for (Field field : fields) {
-//            if (field.getType().isEnum()) {
-//                Class enumClass = field.getType();
-//                List<String> values = enumUtils.getEnumValues(enumClass);
-//                values.forEach(System.out::println);
-//            }
-//        }
-
     }
 }
