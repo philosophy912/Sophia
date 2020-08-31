@@ -1,10 +1,14 @@
 package com.philosophy.base.common;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -126,10 +130,11 @@ public class Reflect {
 
     /**
      * 调用方法
-     * @param cls class
+     *
+     * @param cls        class
      * @param methodName 方法名
      * @param paramTypes 参数类型
-     * @param paras 参数名
+     * @param paras      参数名
      * @return 执行结果
      */
     public static Object invoke(Class<?> cls, String methodName, Class<?>[] paramTypes, Object[] paras) {
@@ -144,4 +149,6 @@ public class Reflect {
             throw new RuntimeException(t);
         }
     }
+
+
 }
