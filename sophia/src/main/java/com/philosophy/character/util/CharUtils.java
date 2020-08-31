@@ -67,4 +67,18 @@ public class CharUtils {
         }
         return new String(ch);
     }
+
+    /**
+     * 首字母小写
+     *
+     * @param str 字符串
+     * @return 首字母小写后的字符串
+     */
+    public static String lowerCase(String str) {
+        char[] ch = str.toCharArray();
+        if (ch[0] >= 'A' && ch[0] <= 'Z') {
+            ch[0] = (char) (ch[0] + 32);
+        }
+        return new String(ch);
+    }
 }
