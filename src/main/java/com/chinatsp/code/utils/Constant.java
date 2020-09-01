@@ -9,6 +9,9 @@ public interface Constant {
     String PACKAGE_NAME = "com.chinatsp.code.entity";
     // 抽象基础实体类
     String BASE_ENTITY = PACKAGE_NAME + ".BaseEntity";
-
+    // 英文的是
+    String YES = "yes";
+    // 中文的是
+    String CHINESE_YES ="是";
 
 }

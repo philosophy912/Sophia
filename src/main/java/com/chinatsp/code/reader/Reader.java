@@ -3,13 +3,12 @@ package com.chinatsp.code.reader;
 import com.chinatsp.code.beans.ClassNames;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.collection.Element;
-import com.philosophy.base.common.Reflect;
+import com.chinatsp.code.utils.ConvertUtils;
 import com.philosophy.base.util.ClazzUtils;
-import com.philosophy.character.util.CharUtils;
 import com.philosophy.excel.utils.ExcelUtils;
+import javafx.util.Pair;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.EnumUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -19,13 +18,18 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static com.chinatsp.code.utils.Constant.CHINESE_YES;
 import static com.chinatsp.code.utils.Constant.PACKAGE_NAME;
+import static com.chinatsp.code.utils.Constant.YES;
 
 /**
  * @author lizhe
@@ -37,6 +41,7 @@ public class Reader {
 
     private ExcelUtils excelUtils;
     private ClassNames classNames;
+    private ConvertUtils convertUtils;
 
     @Autowired
     public void setExcelUtils(ExcelUtils excelUtils) {
@@ -46,6 +51,11 @@ public class Reader {
     @Autowired
     public void setClassNames(ClassNames classNames) {
         this.classNames = classNames;
+    }
+
+    @Autowired
+    public void setConvertUtils(ConvertUtils convertUtils) {
+        this.convertUtils = convertUtils;
     }
 
     /**
@@ -140,8 +150,8 @@ public class Reader {
      * @return 实体类集合
      */
     @SneakyThrows
-    private List<? extends BaseEntity> handleSheet(Sheet sheet, String sheetName) {
-        List<? extends BaseEntity> entities = new ArrayList<>();
+    private List<BaseEntity> handleSheet(Sheet sheet, String sheetName) {
+        List<BaseEntity> entities = new ArrayList<>();
         // 获取当前Sheet对应的对象值
         String fullClassName = getFullClassName(sheetName);
         Class<?> clazz = Class.forName(fullClassName);
@@ -157,7 +167,7 @@ public class Reader {
     }
 
     @SneakyThrows
-    private void handleRow(List<? extends BaseEntity> entities, Row row, Class<?> clazz, Map<String, Integer> entityMap, int rowNo) {
+    private void handleRow(List<BaseEntity> entities, Row row, Class<?> clazz, Map<String, Integer> entityMap, int rowNo) {
         // 实例化对象，属于BaseEntity的子类
         Object o = clazz.newInstance();
         Field[] fields = clazz.getSuperclass().getDeclaredFields();
@@ -170,7 +180,7 @@ public class Reader {
             setAttributeValue(o, field, cellValue, rowNo);
         }
         // 这样添加错误
-        entities.add(o);
+        entities.add((BaseEntity) o);
     }
 
     /**
@@ -188,17 +198,28 @@ public class Reader {
             log.debug("handle enum type");
             // 此处的o是枚举
             Method method = clazz.getMethod("fromValue", String.class);
-            field.set(object, method.invoke(null, cellValue));
+            try {
+                field.set(object, method.invoke(null, cellValue));
+            } catch (Exception e) {
+                String error = "第" + index + "行填写错误，请检查" + clazz.getName() + "的值";
+                throw new RuntimeException(error);
+            }
         } else if (clazz.equals(String.class)) {
-            log.debug("handle string type");
+            log.trace("handle string type");
             field.set(object, cellValue);
         } else if (clazz.equals(Integer.class)) {
-            log.debug("handle integer type");
+            log.trace("handle integer type");
+            try {
+                field.set(object, Integer.parseInt(cellValue));
+            } catch (Exception e) {
+                String error = "第" + index + "行填写错误，请检查" + clazz.getName() + "的值";
+                throw new RuntimeException(error);
+            }
         } else if (clazz.equals(Element.class)) {
             /*
              * 也需要特别处理，因为可能存在Element没有读取到的情况
              */
-            log.debug("handle element type");
+            log.trace("handle element type");
         } else if (clazz.equals(List.class)) {
             /*
              * 特别处理LIST，因为有多种类型
@@ -210,13 +231,59 @@ public class Reader {
              * positions : java.util.List : java.util.List<java.util.Map<com.chinatsp.code.enumeration.PositionEnum, java.lang.Integer>>
              * elementAttributes : java.util.List : java.util.List<com.chinatsp.code.enumeration.ElementAttributeEnum>
              */
-            log.debug("handle list type");
+            log.trace("handle list type");
+            Type genericType = field.getGenericType();
+            String typeName = genericType.getTypeName();
+            if (typeName.contains(Pair.class.getName())) {
+                Pair<String, String> types = ConvertUtils.getTypes(typeName);
+            } else if (typeName.contains(Map.class.getName())) {
+
+            } else {
+                ParameterizedType pt = (ParameterizedType) genericType;
+                Class<?> genericClazz = (Class<?>) pt.getActualTypeArguments()[0];
+                if (genericClazz.isEnum()) {
+                    // 此处的o是枚举
+                    Method method = genericClazz.getMethod("fromValue", String.class);
+                    List<String> strings = convertUtils.convertStrings(cellValue);
+                    List lists = new LinkedList<>();
+                    try {
+                        // 遍历获取枚举
+                        for(String s: strings){
+                            lists.add(method.invoke(null, s));
+                        }
+                        field.set(object, lists);
+                    } catch (Exception e) {
+                        String error = "第" + index + "行填写错误，请检查" + clazz.getName() + "的值";
+                        throw new RuntimeException(error);
+                    }
+                } else if (genericClazz == String.class) {
+                    List<String> strings = convertUtils.convertStrings(cellValue);
+                    field.set(object, strings);
+                } else if (genericClazz == Double.class) {
+                    List<Double> doubles = convertUtils.convertDoubles(cellValue);
+                    field.set(object, doubles);
+                }
+            }
         } else if (clazz.equals(Boolean.class)) {
-            log.debug("handle boolean type");
+            log.trace("handle boolean type");
+            boolean flag = cellValue.equalsIgnoreCase(YES) || cellValue.equalsIgnoreCase(CHINESE_YES);
+            field.set(object, flag);
         } else if (clazz.equals(Long.class)) {
-            log.debug("handle long type");
+            log.trace("handle long type");
+            try {
+                field.set(object, Long.parseLong(cellValue));
+            } catch (Exception e) {
+                String error = "第" + index + "行填写错误，请检查" + clazz.getName() + "的值";
+                throw new RuntimeException(error);
+            }
         } else if (clazz.equals(Double.class)) {
-            log.debug("handle double type");
+            log.trace("handle double type");
+            try {
+                field.set(object, Double.parseDouble(cellValue));
+            } catch (Exception e) {
+                String error = "第" + index + "行填写错误，请检查" + clazz.getName() + "的值";
+                throw new RuntimeException(error);
+            }
         }
     }
 
@@ -226,15 +293,15 @@ public class Reader {
      * @param path 文件路径
      * @return 实体字典
      */
-    public Map<String, List<? extends BaseEntity>> readEntity(Path path) {
-        Map<String, List<? extends BaseEntity>> map = new HashMap<>(10);
+    public Map<String, List<BaseEntity>> readEntity(Path path) {
+        Map<String, List<BaseEntity>> map = new HashMap<>(10);
         Map<String, Sheet> sheetMap = readExcel(path);
         log.info("sheetMap size is {}", sheetMap.size());
         for (Map.Entry<String, Sheet> entry : sheetMap.entrySet()) {
             String className = entry.getKey();
             log.debug("handle {}", className);
             Sheet sheet = entry.getValue();
-            List<? extends BaseEntity> classes = handleSheet(sheet, className);
+            List<BaseEntity> classes = handleSheet(sheet, className);
             map.put(className, classes);
         }
         return map;
