@@ -29,7 +29,7 @@ public class Reflect {
             if (null != objClass.getSuperclass()) {
                 method = getMethod(objClass.getSuperclass(), name, parameterTypes);
             }
-            if (null == method && null != objClass.getInterfaces()) {
+            if (null == method) {
                 for (Class<?> iface : objClass.getInterfaces()) {
                     method = getMethod(iface, name, parameterTypes);
                     if (null != method) {
@@ -53,7 +53,7 @@ public class Reflect {
             methods.addAll(getAllMethods(objClass.getSuperclass()));
         }
         Class<?>[] interfaces = objClass.getInterfaces();
-        if (null != interfaces && interfaces.length > 0) {
+        if (interfaces.length > 0) {
             for (Class<?> iface : interfaces) {
                 methods.addAll(getAllMethods(iface));
             }
