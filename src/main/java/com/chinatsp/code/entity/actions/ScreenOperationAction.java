@@ -3,7 +3,7 @@ package com.chinatsp.code.entity.actions;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.enumeration.DeviceTpeEnum;
 import com.chinatsp.code.enumeration.OperationActionTypeEnum;
-import javafx.util.Pair;
+import com.philosophy.base.common.Pair;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

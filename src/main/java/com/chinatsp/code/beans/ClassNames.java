@@ -9,6 +9,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 /**
+ * 配置类，关联了Sheet页面，也就是说读取excel的时候，获取一个sheet页面是从这里获取的
+ * 举例： testCase表示有一个Sheet的名字一定包含testcase，同时也表示这个Sheet对应的就是TestCase对象
+ *
  * @author lizhe
  * @date 2020-08-31 22:47
  */

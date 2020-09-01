@@ -1,12 +1,12 @@
 package com.chinatsp.code.entity.collection;
 
 import com.chinatsp.code.entity.BaseEntity;
-import javafx.util.Pair;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lizhe
@@ -19,5 +19,5 @@ public class Can extends BaseEntity {
     /**
      * CAN信号名和值，允许有多个
      */
-    private List<Pair<String, Double>> signals;
+    private List<Map<String, String>> signals;
 }

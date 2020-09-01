@@ -34,6 +34,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static com.chinatsp.code.utils.Constant.BASE_ENTITY;
+import static com.chinatsp.code.utils.Constant.PACKAGE_NAME;
+
 /**
  * 创建Template文件
  *
@@ -102,7 +105,7 @@ public class Template {
         for (Field field : fields) {
             String name = field.getName();
             String upperName = CharUtils.upperCase(name);
-            log.debug("field name is {}", name);
+            log.trace("field name is {}", name);
             String chinese = getConfigValue(classAttributes, name);
             titles.add(upperName + "\n" + chinese);
         }
@@ -203,10 +206,8 @@ public class Template {
     @SneakyThrows
     public void createTemplateExcelFile(Path path) {
         Workbook workbook = excelUtils.openWorkbook(path);
-        String PACKAGE_NAME = "com.chinatsp.code.entity";
         List<String> classes = ClazzUtils.getClazzName(PACKAGE_NAME, true);
         // 去掉了抽象类
-        String BASE_ENTITY = "com.chinatsp.code.entity.BaseEntity";
         classes.remove(BASE_ENTITY);
         // 设置单元格内容自动换行、四周边框以及居中显示
         CellStyle cellStyle = workbook.createCellStyle();
@@ -219,10 +220,10 @@ public class Template {
         for (String className : classes) {
             String[] splits = className.split("\\.");
             String sheetName = splits[splits.length - 1];
-            log.debug("sheetName = {}", sheetName);
+            log.trace("sheetName = {}", sheetName);
             sheetName = CharUtils.upperCase(sheetName);
             String chinese = getConfigValue(classNames, sheetName);
-            log.debug("chinese name is = {}", chinese);
+            log.trace("chinese name is = {}", chinese);
             sheetName = CharUtils.upperCase(chinese) + "(" + sheetName + ")";
             Sheet sheet = workbook.createSheet(sheetName);
             setSheet(sheet, cellStyle, className);
