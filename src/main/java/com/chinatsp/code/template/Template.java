@@ -2,9 +2,8 @@ package com.chinatsp.code.template;
 
 import com.chinatsp.code.beans.ClassAttributes;
 import com.chinatsp.code.beans.ClassNames;
-import com.chinatsp.code.utils.EnumUtils;
 import com.philosophy.base.util.ClazzUtils;
-import com.philosophy.base.util.FilesUtils;
+import com.philosophy.base.util.EnumUtils;
 import com.philosophy.base.util.ParseUtils;
 import com.philosophy.character.util.CharUtils;
 import com.philosophy.excel.utils.ExcelUtils;
@@ -27,6 +26,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -44,8 +44,6 @@ import java.util.Map;
 @Slf4j
 public class Template {
 
-    //    private static final Map<String, String> map;
-//    private static final Map<String, String> classMap;
     private EnumUtils enumUtils;
     private ExcelUtils excelUtils;
     private ClassAttributes classAttributes;
@@ -71,74 +69,12 @@ public class Template {
         this.classNames = classNames;
     }
 
-    //    static {
-//        // 创建静态的属性的中文名以及Sheet的中文名
-//        map = new HashMap<>();
-//        map.put("id", "序号");
-//        map.put("name", "名字/函数名");
-//        map.put("comment", "描述");
-//        map.put("batteryType", "电源类型");
-//        map.put("batteryOperationType", "电源操作类型");
-//        map.put("values", "电源操作值");
-//        map.put("repeatTimes", "重复次数");
-//        map.put("curveFile", "电压曲线文件");
-//        map.put("element", "元素名");
-//        map.put("slideTimes", "滑动次数");
-//        map.put("relayOperationType", "继电器操作类型");
-//        map.put("channelIndex", "继电器通道");
-//        map.put("operationActionType", "操作类型");
-//        map.put("screenIndex", "屏幕序号");
-//        map.put("points", "坐标点");
-//        map.put("continueTimes", "持续时间");
-//        map.put("deviceTpeEnum", "屏幕类型");
-//        map.put("count", "截图张数");
-//        map.put("imageName", "截图名称");
-//        map.put("isArea", "是否区域截图");
-//        map.put("signals", "信号名与值");
-//        map.put("locators", "元素定位符");
-//        map.put("params", "函数参数");
-//        map.put("messageId", "信号ID");
-//        map.put("signalName", "信号名");
-//        map.put("expectValue", "期望值");
-//        map.put("exact", "是否精确对比");
-//        map.put("elementCompareType", "元素对比类型");
-//        map.put("timeout", "超时时间");
-//        map.put("compareType", "图片对比方式");
-//        map.put("templateLight", "模板亮图");
-//        map.put("templateDark", "模板暗图");
-//        map.put("positions", "比较区域");
-//        map.put("similarity", "相似度");
-//        map.put("isGray", "是否灰度对比");
-//        map.put("threshold", "灰度二值化阈值");
-//        map.put("origin", "原始信息");
-//        map.put("target", "目标信息");
-//        map.put("elementAttributes", "元素属性");
-//        map.put("testCaseType", "测试用例类型");
-//        map.put("moduleName", "模块名");
-//        map.put("preConditionDescription", "前置条件描述");
-//        map.put("stepsDescription", "操作步骤描述");
-//        map.put("expectDescription", "期望结果描述");
-//        classMap = new HashMap<>();
-//        classMap.put("TestCase", "测试用例");
-//        classMap.put("ScreenShotAction", "截图操作");
-//        classMap.put("ScreenOperationAction", "屏幕操作");
-//        classMap.put("ElementAction", "元素操作");
-//        classMap.put("RelayAction", "继电器操作");
-//        classMap.put("BatteryAction", "电源操作");
-//        classMap.put("Information", "信息保存");
-//        classMap.put("Can", "Can信号");
-//        classMap.put("Element", "安卓元素");
-//        classMap.put("CanCompare", "CAN信号对比");
-//        classMap.put("ImageCompare", "图片对比");
-//        classMap.put("InformationCompare", "信息对比");
-//        classMap.put("ElementCompare", "Android元素对比");
-//        classMap.put("Common", "公共函数");
-//    }
     @SneakyThrows
     private String getConfigValue(Object object, String name) {
         name = CharUtils.lowerCase(name);
         Method method = object.getClass().getMethod("get" + CharUtils.upperCase(name));
-        return (String) method.invoke(object);
+        String value = (String) method.invoke(object);
+        return new String(value.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
     }
 
 
@@ -226,9 +162,9 @@ public class Template {
             // 用于设置序号以及画边框
             for (int j = 0; j < titles.size(); j++) {
                 Cell cell = row.createCell(j);
-                if (j ==0){
+                if (j == 0) {
                     cell.setCellValue(i);
-                }else{
+                } else {
                     cell.setCellValue("");
                 }
                 cell.setCellStyle(cellStyle);
@@ -266,10 +202,6 @@ public class Template {
      */
     @SneakyThrows
     public void createTemplateExcelFile(Path path) {
-        // 确保path不存在
-        if (Files.exists(path)) {
-            FilesUtils.deleteFiles(path);
-        }
         Workbook workbook = excelUtils.openWorkbook(path);
         String PACKAGE_NAME = "com.chinatsp.code.entity";
         List<String> classes = ClazzUtils.getClazzName(PACKAGE_NAME, true);
@@ -287,8 +219,10 @@ public class Template {
         for (String className : classes) {
             String[] splits = className.split("\\.");
             String sheetName = splits[splits.length - 1];
+            log.debug("sheetName = {}", sheetName);
             sheetName = CharUtils.upperCase(sheetName);
             String chinese = getConfigValue(classNames, sheetName);
+            log.debug("chinese name is = {}", chinese);
             sheetName = CharUtils.upperCase(chinese) + "(" + sheetName + ")";
             Sheet sheet = workbook.createSheet(sheetName);
             setSheet(sheet, cellStyle, className);
