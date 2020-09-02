@@ -1,6 +1,7 @@
 package com.chinatsp.code.api.reader;
 
 
+import com.chinatsp.code.entity.collection.Element;
 import com.chinatsp.code.utils.Constant;
 import com.philosophy.base.util.ClazzUtils;
 import lombok.SneakyThrows;
@@ -31,6 +32,9 @@ class BaseReaderTest {
             Class<?> clazz = Class.forName(name);
             Field[] fields = clazz.getDeclaredFields();
             for (Field field : fields) {
+                if (field.getType() == Element.class){
+                    System.out.println(clazz.getName());
+                }
                 // System.out.println(field.getName() + " : " + field.getType().getName() + " : " + field.getType().isEnum());
                 if (field.getType() == List.class) {
                     Type genericType = field.getGenericType();

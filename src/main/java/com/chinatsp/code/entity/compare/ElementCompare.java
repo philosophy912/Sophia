@@ -22,7 +22,7 @@ public class ElementCompare extends BaseEntity {
     /**
      * 安卓元素
      */
-    private Element element;
+    private String element;
     /**
      * 超时时间
      */

@@ -13,5 +13,11 @@ public interface Constant {
     String YES = "yes";
     // 中文的是
     String CHINESE_YES ="是";
+    // 逗号
+    String COMMA = ",";
+    // 等号
+    String EQUAL = "=";
+    // 回车换行
+    String NEXT_LINE = "\r\n";
 
 }

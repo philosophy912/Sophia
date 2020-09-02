@@ -2,7 +2,6 @@ package com.chinatsp.code.reader;
 
 import com.chinatsp.code.beans.ClassNames;
 import com.chinatsp.code.entity.BaseEntity;
-import com.chinatsp.code.entity.collection.Element;
 import com.chinatsp.code.utils.ConvertUtils;
 import com.philosophy.base.util.ClazzUtils;
 import com.philosophy.excel.utils.ExcelUtils;
@@ -194,6 +193,7 @@ public class Reader {
     private void setAttributeValue(Object object, Field field, String cellValue, int index) {
         field.setAccessible(true);
         Class<?> clazz = field.getType();
+        String className = clazz.getName();
         if (clazz.isEnum()) {
             log.debug("handle enum type");
             // 此处的o是枚举
@@ -201,7 +201,7 @@ public class Reader {
             try {
                 field.set(object, method.invoke(null, cellValue));
             } catch (Exception e) {
-                String error = "第" + index + "行填写错误，请检查" + clazz.getName() + "的值";
+                String error = "第" + index + "行填写错误，请检查" + className + "的值";
                 throw new RuntimeException(error);
             }
         } else if (clazz.equals(String.class)) {
@@ -212,57 +212,8 @@ public class Reader {
             try {
                 field.set(object, Integer.parseInt(cellValue));
             } catch (Exception e) {
-                String error = "第" + index + "行填写错误，请检查" + clazz.getName() + "的值";
+                String error = "第" + index + "行填写错误，请检查" + className + "的值";
                 throw new RuntimeException(error);
-            }
-        } else if (clazz.equals(Element.class)) {
-            /*
-             * 也需要特别处理，因为可能存在Element没有读取到的情况
-             */
-            log.trace("handle element type");
-        } else if (clazz.equals(List.class)) {
-            /*
-             * 特别处理LIST，因为有多种类型
-             * values : java.util.List : java.util.List<java.lang.Double>
-             * points : java.util.List : java.util.List<com.philosophy.base.common.Pair<java.lang.Integer, java.lang.Integer>>
-             * signals : java.util.List : java.util.List<java.util.Map<java.lang.String, java.lang.String>>
-             * locators : java.util.List : java.util.List<java.util.Map<java.lang.String, java.lang.String>>
-             * params : java.util.List : java.util.List<java.lang.String>
-             * positions : java.util.List : java.util.List<java.util.Map<com.chinatsp.code.enumeration.PositionEnum, java.lang.Integer>>
-             * elementAttributes : java.util.List : java.util.List<com.chinatsp.code.enumeration.ElementAttributeEnum>
-             */
-            log.trace("handle list type");
-            Type genericType = field.getGenericType();
-            String typeName = genericType.getTypeName();
-            if (typeName.contains(Pair.class.getName())) {
-                Pair<String, String> types = ConvertUtils.getTypes(typeName);
-            } else if (typeName.contains(Map.class.getName())) {
-
-            } else {
-                ParameterizedType pt = (ParameterizedType) genericType;
-                Class<?> genericClazz = (Class<?>) pt.getActualTypeArguments()[0];
-                if (genericClazz.isEnum()) {
-                    // 此处的o是枚举
-                    Method method = genericClazz.getMethod("fromValue", String.class);
-                    List<String> strings = convertUtils.convertStrings(cellValue);
-                    List lists = new LinkedList<>();
-                    try {
-                        // 遍历获取枚举
-                        for(String s: strings){
-                            lists.add(method.invoke(null, s));
-                        }
-                        field.set(object, lists);
-                    } catch (Exception e) {
-                        String error = "第" + index + "行填写错误，请检查" + clazz.getName() + "的值";
-                        throw new RuntimeException(error);
-                    }
-                } else if (genericClazz == String.class) {
-                    List<String> strings = convertUtils.convertStrings(cellValue);
-                    field.set(object, strings);
-                } else if (genericClazz == Double.class) {
-                    List<Double> doubles = convertUtils.convertDoubles(cellValue);
-                    field.set(object, doubles);
-                }
             }
         } else if (clazz.equals(Boolean.class)) {
             log.trace("handle boolean type");
@@ -273,7 +224,7 @@ public class Reader {
             try {
                 field.set(object, Long.parseLong(cellValue));
             } catch (Exception e) {
-                String error = "第" + index + "行填写错误，请检查" + clazz.getName() + "的值";
+                String error = "第" + index + "行填写错误，请检查" + className + "的值";
                 throw new RuntimeException(error);
             }
         } else if (clazz.equals(Double.class)) {
@@ -281,8 +232,105 @@ public class Reader {
             try {
                 field.set(object, Double.parseDouble(cellValue));
             } catch (Exception e) {
-                String error = "第" + index + "行填写错误，请检查" + clazz.getName() + "的值";
+                String error = "第" + index + "行填写错误，请检查" + className + "的值";
                 throw new RuntimeException(error);
+            }
+        } else if (clazz.equals(List.class)) {
+            /*
+             * 特别处理LIST，因为有多种类型
+             *  values : java.util.List : <java.lang.Double>
+             *  points : java.util.List : <com.philosophy.base.common.Pair<java.lang.Integer, java.lang.Integer>>
+             *  signals : java.util.List : <com.philosophy.base.common.Pair<java.lang.String, java.lang.String>>
+             *  locators : java.util.List : <java.util.Map<java.lang.String, java.lang.String>>
+             *  params : java.util.List : <java.lang.String>
+             *  positions : java.util.List : <java.lang.Integer[]>
+             *  elementAttributes : java.util.List : <com.chinatsp.code.enumeration.ElementAttributeEnum>
+             */
+            log.trace("handle list type");
+            Type genericType = field.getGenericType();
+            String typeName = genericType.getTypeName();
+            if (typeName.contains(Pair.class.getName())) {
+                // 特别注意Pair有两个方式，一个是全Integer，一个是全String
+                if (typeName.contains("String")) {
+                    try {
+                        List<Pair<String, String>> pairs = convertUtils.convertPairStringString(cellValue, "-");
+                        field.set(object, pairs);
+                    } catch (Exception e) {
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                        throw new RuntimeException(error);
+                    }
+                } else if(typeName.contains("Integer")) {
+                    try {
+                        List<Pair<Integer, Integer>> pairs = convertUtils.convertPairIntegerInteger(cellValue, "-");
+                        field.set(object, pairs);
+                    } catch (Exception e) {
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                        throw new RuntimeException(error);
+                    }
+                }else {
+                    String error = "can not support type now";
+                    throw new RuntimeException(error);
+                }
+            } else if (typeName.contains(Map.class.getName())) {
+                if(typeName.contains("String")) {
+                    try {
+                        List<Map<String, String>> mapList = convertUtils.convertMapStringString(cellValue);
+                        field.set(object, mapList);
+                    } catch (Exception e) {
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                        throw new RuntimeException(error);
+                    }
+                }else{
+                    String error = "can not support type now";
+                    throw new RuntimeException(error);
+                }
+            } else {
+                ParameterizedType pt = (ParameterizedType) genericType;
+                Class<?> genericClazz = (Class<?>) pt.getActualTypeArguments()[0];
+                if (genericClazz.isEnum()) {
+                    // 此处的o是枚举
+                    Method method = genericClazz.getMethod("fromValue", String.class);
+                    List<String> strings = convertUtils.convertStrings(cellValue);
+                    List<Object> lists = new LinkedList<>();
+                    try {
+                        // 遍历获取枚举
+                        for (String s : strings) {
+                            lists.add(method.invoke(null, s));
+                        }
+                        field.set(object, lists);
+                    } catch (Exception e) {
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                        throw new RuntimeException(error);
+                    }
+                } else if (genericClazz == String.class) {
+                    List<String> strings;
+                    try {
+                        strings = convertUtils.convertStrings(cellValue);
+                    } catch (Exception e) {
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                        throw new RuntimeException(error);
+                    }
+                    field.set(object, strings);
+                } else if (genericClazz == Double.class) {
+                    List<Double> doubles;
+                    try {
+                        doubles = convertUtils.convertDoubles(cellValue);
+                    } catch (Exception e) {
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                        throw new RuntimeException(error);
+                    }
+                    field.set(object, doubles);
+                } else if (genericClazz == Integer[].class) {
+                    List<Integer[]> integers;
+                    try {
+                        integers = convertUtils.convertIntegerArrays(cellValue, "-");
+                    } catch (Exception e) {
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                        throw new RuntimeException(error);
+                    }
+                    field.set(object, integers);
+
+                }
             }
         }
     }

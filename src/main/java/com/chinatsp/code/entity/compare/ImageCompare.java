@@ -39,7 +39,7 @@ public class ImageCompare extends BaseEntity {
     /**
      * 图片对比区域
      */
-    private List<Map<PositionEnum, Integer>> positions;
+    private List<Integer[]> positions;
     /**
      * 相似度
      */

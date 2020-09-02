@@ -1,7 +1,6 @@
 package com.chinatsp.code.entity.storage;
 
 import com.chinatsp.code.entity.BaseEntity;
-import com.chinatsp.code.entity.collection.Element;
 import com.chinatsp.code.enumeration.ElementAttributeEnum;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +19,7 @@ public class Information extends BaseEntity {
     /**
      * 要保存的元素名
      */
-    private Element element;
+    private String element;
     /**
      * 要保存的属性值内容
      */

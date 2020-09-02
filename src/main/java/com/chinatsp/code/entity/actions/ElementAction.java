@@ -22,7 +22,7 @@ public class ElementAction extends BaseEntity {
     /**
      * 要操作的元素名
      */
-    private Element element;
+    private String element;
     /**
      * 滑动次数，仅对滑动有效
      */
