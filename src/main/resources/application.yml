@@ -1,4 +1,4 @@
 logging:
   level:
     root: info
-    com.chinatsp.code.*: debug
+    com.chinatsp.code.*: info

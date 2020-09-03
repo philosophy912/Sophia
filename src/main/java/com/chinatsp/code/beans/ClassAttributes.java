@@ -107,5 +107,7 @@ public class ClassAttributes {
     private String stepsDescription;
     @Value("${expectDescription}")
     private String expectDescription;
+    @Value("${appearCount}")
+    private String appearCount;
 
 }

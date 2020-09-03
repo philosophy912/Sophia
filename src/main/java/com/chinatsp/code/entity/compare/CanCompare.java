@@ -28,7 +28,7 @@ public class CanCompare extends BaseEntity {
     /**
      * 出现次数
      */
-    private Integer count = 0;
+    private Integer appearCount = 0;
     /**
      * 是否精确对比
      */

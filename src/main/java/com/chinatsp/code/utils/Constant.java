@@ -17,7 +17,21 @@ public interface Constant {
     String COMMA = ",";
     // 等号
     String EQUAL = "=";
+    // 横线
+    String LINE = "-";
+    // 分割点
+    String SPLIT_POINT = "\\.";
     // 回车换行
     String NEXT_LINE = "\r\n";
+    // 换行
+    String LINUX_NEXT_LINE = "\n";
+    // 左括号（英文)
+    String LEFT_BRACKETS = "(";
+    // 右括号（英文)
+    String RIGHT_BRACKETS = ")";
+    // 左括号（英文)
+    String SPLIT_LEFT_BRACKETS = "\\(";
+    // 右括号（英文)
+    String SPLIT_RIGHT_BRACKETS = "\\)";
 
 }

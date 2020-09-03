@@ -36,7 +36,7 @@ public enum ElementAttributeEnum {
      */
     public static ElementAttributeEnum fromValue(String value) {
         for (ElementAttributeEnum type : values()) {
-            if (type.value.trim().replace("_", "").equalsIgnoreCase(value)) {
+            if (type.value.trim().replace("_", "").equalsIgnoreCase(value.replace("_", ""))) {
                 return type;
             }
         }

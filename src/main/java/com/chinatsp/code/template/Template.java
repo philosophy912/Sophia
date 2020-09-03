@@ -35,7 +35,9 @@ import java.util.List;
 import java.util.Map;
 
 import static com.chinatsp.code.utils.Constant.BASE_ENTITY;
+import static com.chinatsp.code.utils.Constant.LEFT_BRACKETS;
 import static com.chinatsp.code.utils.Constant.PACKAGE_NAME;
+import static com.chinatsp.code.utils.Constant.RIGHT_BRACKETS;
 
 /**
  * 创建Template文件
@@ -224,7 +226,7 @@ public class Template {
             sheetName = CharUtils.upperCase(sheetName);
             String chinese = getConfigValue(classNames, sheetName);
             log.trace("chinese name is = {}", chinese);
-            sheetName = CharUtils.upperCase(chinese) + "(" + sheetName + ")";
+            sheetName = CharUtils.upperCase(chinese) + LEFT_BRACKETS + sheetName + RIGHT_BRACKETS;
             Sheet sheet = workbook.createSheet(sheetName);
             setSheet(sheet, cellStyle, className);
         }

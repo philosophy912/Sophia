@@ -43,6 +43,7 @@ attribute:
   preConditionDescription: 前置条件描述
   stepsDescription: 操作步骤描述
   expectDescription: 期望结果描述
+  appearCount: 出现次数
 
 classname:
   testCase: 测试用例

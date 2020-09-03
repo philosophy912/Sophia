@@ -1,6 +1,7 @@
 package com.chinatsp.code.utils;
 
-import javafx.util.Pair;
+import com.philosophy.base.common.Pair;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 import static com.chinatsp.code.utils.Constant.COMMA;
 import static com.chinatsp.code.utils.Constant.EQUAL;
+import static com.chinatsp.code.utils.Constant.LINUX_NEXT_LINE;
 import static com.chinatsp.code.utils.Constant.NEXT_LINE;
 
 /**
@@ -18,7 +20,9 @@ import static com.chinatsp.code.utils.Constant.NEXT_LINE;
  * @date 2020-09-01 21:38
  */
 @Component
+@Slf4j
 public class ConvertUtils {
+
 
     /**
      * 將CellValue转换成Map<String, String>集合
@@ -83,7 +87,8 @@ public class ConvertUtils {
      * @return String集合
      */
     public List<String> convertStrings(String value) {
-        String[] values = value.split(NEXT_LINE);
+        log.trace("cell value is {}", value);
+        String[] values = value.split(LINUX_NEXT_LINE);
         return new LinkedList<>(Arrays.asList(values));
     }
 
@@ -100,7 +105,13 @@ public class ConvertUtils {
         return doubles;
     }
 
-
+    /**
+     * 将CellValue转换成Integer数组集合
+     *
+     * @param value 单元格中的数据
+     * @param split 分隔符
+     * @return Integer数组集合
+     */
     public List<Integer[]> convertIntegerArrays(String value, String split) {
         List<String> values = convertStrings(value);
         List<Integer[]> integerLists = new LinkedList<>();
@@ -113,5 +124,39 @@ public class ConvertUtils {
             integerLists.add(integers);
         });
         return integerLists;
+    }
+
+    /**
+     * 将CellValue转换成Integer
+     * 主要对付有以0x方式表示的数据
+     *
+     * @param cellValue 单元格中的数据
+     * @return Integer
+     */
+    public Integer convertInteger(String cellValue) {
+        cellValue = cellValue.toLowerCase();
+        if (cellValue.contains("x")) {
+            cellValue = cellValue.split("x")[1];
+            return Integer.parseInt(cellValue, 16);
+        } else {
+            return Integer.parseInt(cellValue);
+        }
+    }
+
+    /**
+     * 将CellValue转换成Long
+     * 主要对付有以0x方式表示的数据
+     *
+     * @param cellValue 单元格中的数据
+     * @return Long
+     */
+    public Long convertLong(String cellValue) {
+        cellValue = cellValue.toLowerCase();
+        if (cellValue.contains("x")) {
+            cellValue = cellValue.split("x")[1];
+            return Long.parseLong(cellValue, 16);
+        } else {
+            return Long.parseLong(cellValue);
+        }
     }
 }

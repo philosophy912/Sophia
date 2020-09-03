@@ -3,9 +3,9 @@ package com.chinatsp.code.reader;
 import com.chinatsp.code.beans.ClassNames;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.utils.ConvertUtils;
+import com.philosophy.base.common.Pair;
 import com.philosophy.base.util.ClazzUtils;
 import com.philosophy.excel.utils.ExcelUtils;
-import javafx.util.Pair;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
@@ -27,7 +27,13 @@ import java.util.List;
 import java.util.Map;
 
 import static com.chinatsp.code.utils.Constant.CHINESE_YES;
+import static com.chinatsp.code.utils.Constant.EQUAL;
+import static com.chinatsp.code.utils.Constant.LINE;
+import static com.chinatsp.code.utils.Constant.LINUX_NEXT_LINE;
 import static com.chinatsp.code.utils.Constant.PACKAGE_NAME;
+import static com.chinatsp.code.utils.Constant.SPLIT_LEFT_BRACKETS;
+import static com.chinatsp.code.utils.Constant.SPLIT_POINT;
+import static com.chinatsp.code.utils.Constant.SPLIT_RIGHT_BRACKETS;
 import static com.chinatsp.code.utils.Constant.YES;
 
 /**
@@ -70,16 +76,19 @@ public class Reader {
         Field[] fields = classNames.getClass().getDeclaredFields();
         for (Field field : fields) {
             String fieldName = field.getName();
-            log.trace("field name is {}", fieldName);
+            log.debug("field name is {}", fieldName);
             for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
                 Sheet sheet = workbook.getSheetAt(i);
                 String sheetName = sheet.getSheetName();
-                log.trace("sheet name is {}", sheetName);
-                if (sheetName.toLowerCase().contains(fieldName.toLowerCase())) {
+                log.debug("sheet name is {}", sheetName);
+                String name = sheetName.split(SPLIT_LEFT_BRACKETS)[1].split(SPLIT_RIGHT_BRACKETS)[0];
+                log.debug("compare sheet name is {}", name);
+                if (name.equalsIgnoreCase(fieldName.toLowerCase())) {
                     map.put(fieldName, sheet);
                 }
             }
         }
+        log.debug("map size is {}", map.size());
         excelUtils.close(workbook);
         return map;
     }
@@ -93,7 +102,9 @@ public class Reader {
     private String getFullClassName(String sheetName) {
         List<String> classes = ClazzUtils.getClazzName(PACKAGE_NAME, true);
         for (String className : classes) {
-            if (className.toLowerCase().contains(sheetName.toLowerCase())) {
+            String[] names = className.split(SPLIT_POINT);
+            String name = names[names.length-1];
+            if (name.equalsIgnoreCase(sheetName)) {
                 return className;
             }
         }
@@ -134,8 +145,9 @@ public class Reader {
             for (int i = 0; i < titleRow.getPhysicalNumberOfCells(); i++) {
                 Cell cell = titleRow.getCell(i);
                 String cellValue = excelUtils.getCellValue(cell);
-                if (cellValue.toLowerCase().contains(fieldName.toLowerCase())) {
-                    map.put(cellValue, i);
+                String value = cellValue.split(LINUX_NEXT_LINE)[0];
+                if (value.equalsIgnoreCase(fieldName)) {
+                    map.put(fieldName, i);
                 }
             }
         }
@@ -178,7 +190,16 @@ public class Reader {
             // 设置属性值
             setAttributeValue(o, field, cellValue, rowNo);
         }
-        // 这样添加错误
+        fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            // 属性名
+            String name = field.getName();
+            Integer index = entityMap.get(name);
+            String cellValue = excelUtils.getCellValue(row.getCell(index));
+            // 设置属性值
+            setAttributeValue(o, field, cellValue, rowNo);
+        }
+        // 强行转换成BaseEntity类型，后续使用的时候根据实际情况做强制转换
         entities.add((BaseEntity) o);
     }
 
@@ -191,6 +212,8 @@ public class Reader {
      */
     @SneakyThrows
     private void setAttributeValue(Object object, Field field, String cellValue, int index) {
+        String fieldName = field.getName();
+        log.debug("file name is = {}", fieldName);
         field.setAccessible(true);
         Class<?> clazz = field.getType();
         String className = clazz.getName();
@@ -210,7 +233,7 @@ public class Reader {
         } else if (clazz.equals(Integer.class)) {
             log.trace("handle integer type");
             try {
-                field.set(object, Integer.parseInt(cellValue));
+                field.set(object, convertUtils.convertInteger(cellValue));
             } catch (Exception e) {
                 String error = "第" + index + "行填写错误，请检查" + className + "的值";
                 throw new RuntimeException(error);
@@ -222,7 +245,7 @@ public class Reader {
         } else if (clazz.equals(Long.class)) {
             log.trace("handle long type");
             try {
-                field.set(object, Long.parseLong(cellValue));
+                field.set(object, convertUtils.convertLong(cellValue));
             } catch (Exception e) {
                 String error = "第" + index + "行填写错误，请检查" + className + "的值";
                 throw new RuntimeException(error);
@@ -249,30 +272,31 @@ public class Reader {
             log.trace("handle list type");
             Type genericType = field.getGenericType();
             String typeName = genericType.getTypeName();
+            log.debug("type name = {}", typeName);
             if (typeName.contains(Pair.class.getName())) {
                 // 特别注意Pair有两个方式，一个是全Integer，一个是全String
                 if (typeName.contains("String")) {
                     try {
-                        List<Pair<String, String>> pairs = convertUtils.convertPairStringString(cellValue, "-");
+                        List<Pair<String, String>> pairs = convertUtils.convertPairStringString(cellValue, EQUAL);
                         field.set(object, pairs);
                     } catch (Exception e) {
                         String error = "第" + index + "行填写错误，请检查" + className + "的值";
                         throw new RuntimeException(error);
                     }
-                } else if(typeName.contains("Integer")) {
+                } else if (typeName.contains("Integer")) {
                     try {
-                        List<Pair<Integer, Integer>> pairs = convertUtils.convertPairIntegerInteger(cellValue, "-");
+                        List<Pair<Integer, Integer>> pairs = convertUtils.convertPairIntegerInteger(cellValue, LINE);
                         field.set(object, pairs);
                     } catch (Exception e) {
                         String error = "第" + index + "行填写错误，请检查" + className + "的值";
                         throw new RuntimeException(error);
                     }
-                }else {
+                } else {
                     String error = "can not support type now";
                     throw new RuntimeException(error);
                 }
             } else if (typeName.contains(Map.class.getName())) {
-                if(typeName.contains("String")) {
+                if (typeName.contains("String")) {
                     try {
                         List<Map<String, String>> mapList = convertUtils.convertMapStringString(cellValue);
                         field.set(object, mapList);
@@ -280,7 +304,7 @@ public class Reader {
                         String error = "第" + index + "行填写错误，请检查" + className + "的值";
                         throw new RuntimeException(error);
                     }
-                }else{
+                } else {
                     String error = "can not support type now";
                     throw new RuntimeException(error);
                 }
@@ -297,11 +321,11 @@ public class Reader {
                         for (String s : strings) {
                             lists.add(method.invoke(null, s));
                         }
-                        field.set(object, lists);
                     } catch (Exception e) {
                         String error = "第" + index + "行填写错误，请检查" + className + "的值";
                         throw new RuntimeException(error);
                     }
+                    field.set(object, lists);
                 } else if (genericClazz == String.class) {
                     List<String> strings;
                     try {
@@ -316,14 +340,19 @@ public class Reader {
                     try {
                         doubles = convertUtils.convertDoubles(cellValue);
                     } catch (Exception e) {
-                        String error = "第" + index + "行填写错误，请检查" + className + "的值";
-                        throw new RuntimeException(error);
+                        // todo 特殊處理
+                        if (fieldName.equalsIgnoreCase("Values")){
+                            doubles = null;
+                        }else{
+                            String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                            throw new RuntimeException(error);
+                        }
                     }
                     field.set(object, doubles);
                 } else if (genericClazz == Integer[].class) {
                     List<Integer[]> integers;
                     try {
-                        integers = convertUtils.convertIntegerArrays(cellValue, "-");
+                        integers = convertUtils.convertIntegerArrays(cellValue, LINE);
                     } catch (Exception e) {
                         String error = "第" + index + "行填写错误，请检查" + className + "的值";
                         throw new RuntimeException(error);
@@ -344,11 +373,12 @@ public class Reader {
     public Map<String, List<BaseEntity>> readEntity(Path path) {
         Map<String, List<BaseEntity>> map = new HashMap<>(10);
         Map<String, Sheet> sheetMap = readExcel(path);
-        log.info("sheetMap size is {}", sheetMap.size());
+        log.debug("sheetMap size is {}", sheetMap.size());
         for (Map.Entry<String, Sheet> entry : sheetMap.entrySet()) {
             String className = entry.getKey();
-            log.debug("handle {}", className);
+            log.debug("handle className {}", className);
             Sheet sheet = entry.getValue();
+            log.debug("sheet name = {}", sheet.getSheetName());
             List<BaseEntity> classes = handleSheet(sheet, className);
             map.put(className, classes);
         }
