@@ -44,45 +44,78 @@ def handle_data(contents: list) -> list:
 
 
 def __filter_condition(x: tuple) -> list:
-    condition1 = (x[3] == "支出")
-    condition2 = ("蚂蚁财富" not in x[2])
-    condition3 = ("李小花" not in x[2])
-    condition4 = ("医保消费" not in x[2])
-    condition5 = ("熊纪涛" not in x[2])
-    return condition1 and condition2 and condition3 and condition4
+    condition1 = ("蚂蚁财富" not in x[2])
+    condition2 = ("李小花" not in x[2])
+    condition3 = ("医保消费" not in x[2])
+    condition4 = ("理财买入" not in x[2])
+    condition5 = ("大药房连锁" not in x[2])
+    return condition1 and condition2 and condition3 and condition4 and condition5
 
 
 def separate_type(contents: list) -> tuple:
-    pay = list(filter(__filter_condition, contents))
+    out_come = list(filter(lambda x: x[3] == "支出", contents))
+    pay = list(filter(__filter_condition, out_come))
     in_come = list(filter(lambda x: x[3] == "收入", contents))
     return pay, in_come
 
 
+def check_detail(pay_detail: str, check_list: (list, tuple)) -> bool:
+    for content in check_list:
+        if content in pay_detail:
+            return True
+    return False
+
+
 def get_category(pay_detail: str, pay_amount: str) -> tuple:
-    if "商品" in pay_detail or "亲情卡" in pay_detail:
+    alipay = "商品", "亲情卡"
+    if check_detail(pay_detail, alipay):
         account = "支付宝P"
     else:
         account = "招行信用卡P"
     # 类别
     category = "食品酒水"
     sub_category = "早餐"
-
-    if "唐家臻记" in pay_detail or "紫燕百味鸡" in pay_detail:
+    outsource = "唐家臻记", "紫燕百味鸡", "敖锦记烫油鹅", "掌柜土鸡片"
+    lunch = "阿蠔海鲜焖面", "卢婆婆姜鸭面", "顺旺基", "荟福源", "宜宾燃面", "享米时", "老麻抄手", "西北面点王", \
+            "袁记云饺", "籣州牛肉面", "成都鸡汤抄手", "大巴山猪脚饭", "卤鹅饭", "e特黄焖鸡瓦香鸡成都店", \
+            "杨铭宇黄焖鸡米饭", "八二小区干海椒抄手", "晓武林烤鸭", "乡村基", "戊丰记卤肉饭", "沙县小吃成都银泰城店", \
+            "喜水饺", "兵哥豌豆面", "福记羊肉米粉", "岭南牛杂", "自小田", "搪瓷盌小面成都伏龙北巷", "蚝门圣焱", "本味简餐厅", \
+            "粤饺皇", "南城香冒烤鸭卤肉饭", "贰柒拾乐山干绍面", "拾小馆"
+    vegetables = "*登梅", "雪梅", "思忠", "*琴", "兰兰姐", "*再泉", "春儿", "蔡德文", "沈德全", "小兰蔬菜店", \
+                 "玲利", "邓花椒"
+    meat = "金忠食品", "邓哥鱼铺", "龙仕林", "成都泥厨子大食堂", "章相山", "ZXS"
+    out_eat = "金翠河烧鹅餐厅", "马帮冒菜", "实惠啤酒鸭", "麦当劳", "食其家", "正反面", "青羊区东方宫牛肉拉面店", "成都港九餐饮", \
+              "八二私房水饺", "鱼吖吖（武侯店）", "口味鲜面庄", "叶抄手", "雷四孃小吃", "朱记蛙三", "火舞凉山西昌原生烧烤", \
+              "万州烤鱼", "肯德基", "巴山豆花饭成都", "卡萨马可", "老北京炸酱面", "禾木烤肉", "峨眉山周记烧烤", "青年火锅店", \
+              "茵赫餐饮管理", "汉堡王", "热恋冰淇淋"
+    drink = "书亦烧仙草", "星巴克", "书亦燒仙草", "Mii Coffee", "茶百道", "瑞幸咖啡", "GREYBOX COFFEE"
+    super_market = "成都市北城天街店", "成都荆竹中路店", "麦德龙", "欧尚成都市高新店", "谊品生鲜", "高新店", "成都盒马", \
+                   "成都中营贸易", "招商雍华府店", "万家V+南区", "银犁冷藏"
+    snacks = "永辉(成都市银泰城店)", "面包新语(银泰城店)", "雪糕批发"
+    pets = "鸡胸肉鲜", "猫", "伍德氏", "激光笔", "瑞爱康宠物医院"
+    treat = "先生的酒桌"
+    if check_detail(pay_detail, outsource):
         sub_category = "外购凉菜"
+    elif "水果" in pay_detail:
+        sub_category = "水果"
+    elif check_detail(pay_detail, super_market):
+        sub_category = "超市购物"
+    elif check_detail(pay_detail, snacks):
+        sub_category = "零食"
+    elif check_detail(pay_detail, pets):
+        category = "休闲娱乐"
+        sub_category = "宠物"
+    elif check_detail(pay_detail, treat):
+        category = "人情费用"
+        sub_category = "请客"
     elif "亲情卡" in pay_detail:
         category = "人情费用"
         sub_category = "孝敬父母"
-    elif "金忠食品" in pay_detail:
+    elif check_detail(pay_detail, meat):
         sub_category = "肉类"
-    elif "阿蠔海鲜焖面" in pay_detail or "卢婆婆姜鸭面" in pay_detail \
-            or "顺旺基" in pay_detail or "荟福源" in pay_detail or "宜宾燃面" in pay_detail \
-            or "享米时" in pay_detail or "老麻抄手" in pay_detail or "西北面点王" in pay_detail \
-            or "袁记云饺" in pay_detail or "籣州牛肉面" in pay_detail or "成都鸡汤抄手" in pay_detail \
-            or "大巴山猪脚饭" in pay_detail or "卤鹅饭" in pay_detail or "e特黄焖鸡瓦香鸡成都店" in pay_detail \
-            or "杨铭宇黄焖鸡米饭" in pay_detail or "八二小区干海椒抄手" in pay_detail or "晓武林烤鸭" in pay_detail \
-            or "乡村基" in pay_detail or "戊丰记卤肉饭" in pay_detail or "沙县小吃成都银泰城店" in pay_detail:
+    elif check_detail(pay_detail, lunch):
         sub_category = "中餐"
-    elif "书亦烧仙草" in pay_detail:
+    elif check_detail(pay_detail, drink):
         sub_category = "饮料"
     elif "相互宝" in pay_detail:
         category = "金融保险"
@@ -96,22 +129,13 @@ def get_category(pay_detail: str, pay_amount: str) -> tuple:
             sub_category = "公交"
         else:
             sub_category = "地铁"
-    elif "*登梅" in pay_detail or "雪梅" in pay_detail or "*瑞林" in pay_detail \
-            or "思忠" in pay_detail or "*琴" in pay_detail or "兰兰姐" in pay_detail \
-            or "*再泉" in pay_detail or "春儿" in pay_detail or "蔡德文" in pay_detail:
+    elif check_detail(pay_detail, vegetables):
         sub_category = "蔬菜"
-    elif "雪糕批发" in pay_detail:
-        sub_category = "零食"
-    elif "邓哥鱼铺" in pay_detail or "龙仕林" in pay_detail or "成都泥厨子大食堂" in pay_detail:
-        sub_category = "肉类"
-    elif "金翠河烧鹅餐厅" in pay_detail or "马帮冒菜" in pay_detail or "实惠啤酒鸭" in pay_detail \
-            or "青年火锅店" in pay_detail:
+    elif check_detail(pay_detail, out_eat):
         sub_category = "外出美食"
     elif "谢孝元" in pay_detail:
         sub_category = "面"
-    elif "周小霞" in pay_detail:
-        sub_category = "早餐"
-    elif "无感支付" in pay_detail or "停车场" in pay_detail:
+    elif "无感支付" in pay_detail or "停车场" in pay_detail or "*瑞林" in pay_detail:
         category = "行车交通"
         sub_category = "停车"
     elif "燃气费" in pay_detail:
@@ -119,9 +143,7 @@ def get_category(pay_detail: str, pay_amount: str) -> tuple:
         sub_category = "燃气费"
     elif "电费" in pay_detail:
         category = "居家生活"
-        sub_category = "燃气费"
-    elif "星巴克" in pay_detail or "书亦燒仙草" in pay_detail or "Mii Coffee" in pay_detail:
-        sub_category = "饮料"
+        sub_category = "电费"
     elif "滴滴快车" in pay_detail:
         category = "行车交通"
         sub_category = "打车"
@@ -131,12 +153,15 @@ def get_category(pay_detail: str, pay_amount: str) -> tuple:
     elif "中国电信官方旗舰店" in pay_detail:
         category = "交流通讯"
         sub_category = "手机费"
-    elif "物业管理费" in pay_detail:
+    elif check_detail(pay_detail, ("重庆华宇", "物业管理费")):
         category = "居家生活"
         sub_category = "物管费"
     elif "壳牌" in pay_detail:
         category = "行车交通"
         sub_category = "加油"
+    elif "宜家家居" in pay_detail:
+        category = "购物消费"
+        sub_category = "家居日用"
     return category, sub_category, account
 
 
@@ -166,8 +191,8 @@ def handle_in_come(in_come: list) -> list:
 
 
 def write_excel(pay: list, in_come: list):
-    # app = xw.App(False, False)
-    wb = xw.Book("template.xls")
+    app = xw.App(visible=False, add_book=False)
+    wb = app.books.open("template.xls")
     pay_sht = wb.sheets["支出"]
     in_come_sht = wb.sheets["收入"]
     pay_sht.range("A2").value = pay
