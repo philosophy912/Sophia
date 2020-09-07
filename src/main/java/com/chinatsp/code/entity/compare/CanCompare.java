@@ -24,7 +24,7 @@ public class CanCompare extends BaseEntity {
     /**
      * 期望值
      */
-    private Integer expectValue;
+    private Long expectValue;
     /**
      * 出现次数
      */

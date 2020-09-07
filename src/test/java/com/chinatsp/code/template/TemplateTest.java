@@ -26,7 +26,7 @@ class TemplateTest {
     @SneakyThrows
     @Test
     void createTemplateExcelFile() {
-        Path path = Paths.get("d:\\template.xlsx");
+        Path path = Paths.get("template.xlsx");
         if(Files.exists(path)){
             FilesUtils.deleteFiles(path);
         }

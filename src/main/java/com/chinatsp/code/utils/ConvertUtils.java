@@ -1,5 +1,6 @@
 package com.chinatsp.code.utils;
 
+import com.chinatsp.code.enumeration.AndroidLocatorTypeEnum;
 import com.philosophy.base.common.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,6 @@ import java.util.Map;
 import static com.chinatsp.code.utils.Constant.COMMA;
 import static com.chinatsp.code.utils.Constant.EQUAL;
 import static com.chinatsp.code.utils.Constant.LINUX_NEXT_LINE;
-import static com.chinatsp.code.utils.Constant.NEXT_LINE;
 
 /**
  * @author lizhe
@@ -31,15 +31,15 @@ public class ConvertUtils {
      * @param value 元格中的数据
      * @return Map<String, String>集合
      */
-    public List<Map<String, String>> convertMapStringString(String value) {
+    public List<Map<AndroidLocatorTypeEnum, String>> convertMapStringString(String value) {
         List<String> strings = convertStrings(value);
-        List<Map<String, String>> mapList = new LinkedList<>();
+        List<Map<AndroidLocatorTypeEnum, String>> mapList = new LinkedList<>();
         strings.forEach(s -> {
-            Map<String, String> map = new HashMap<>();
+            Map<AndroidLocatorTypeEnum, String> map = new HashMap<>();
             String[] locators = s.split(COMMA);
             for (String locator : locators) {
                 String[] keyValue = locator.split(EQUAL);
-                map.put(keyValue[0], keyValue[1]);
+                map.put(AndroidLocatorTypeEnum.fromValue(keyValue[0]), keyValue[1]);
             }
             mapList.add(map);
         });
@@ -159,4 +159,5 @@ public class ConvertUtils {
             return Long.parseLong(cellValue);
         }
     }
+
 }

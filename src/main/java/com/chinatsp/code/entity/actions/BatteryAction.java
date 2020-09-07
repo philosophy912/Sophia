@@ -29,7 +29,7 @@ public class BatteryAction extends BaseEntity {
      * 要设置的值
      * 调节电压则以-分割，如12-18-0.1-5
      */
-    private List<Double> values;
+    private Double[] values;
     /**
      * 重复次数
      */

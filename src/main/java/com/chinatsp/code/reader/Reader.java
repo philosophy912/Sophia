@@ -2,6 +2,7 @@ package com.chinatsp.code.reader;
 
 import com.chinatsp.code.beans.ClassNames;
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.enumeration.AndroidLocatorTypeEnum;
 import com.chinatsp.code.utils.ConvertUtils;
 import com.philosophy.base.common.Pair;
 import com.philosophy.base.util.ClazzUtils;
@@ -103,7 +104,7 @@ public class Reader {
         List<String> classes = ClazzUtils.getClazzName(PACKAGE_NAME, true);
         for (String className : classes) {
             String[] names = className.split(SPLIT_POINT);
-            String name = names[names.length-1];
+            String name = names[names.length - 1];
             if (name.equalsIgnoreCase(sheetName)) {
                 return className;
             }
@@ -258,6 +259,14 @@ public class Reader {
                 String error = "第" + index + "行填写错误，请检查" + className + "的值";
                 throw new RuntimeException(error);
             }
+        } else if (clazz.equals(Double[].class)) {
+            log.trace("handle double type");
+            try {
+                field.set(object, convertUtils.convertDoubles(cellValue));
+            } catch (Exception e) {
+                String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                throw new RuntimeException(error);
+            }
         } else if (clazz.equals(List.class)) {
             /*
              * 特别处理LIST，因为有多种类型
@@ -298,7 +307,7 @@ public class Reader {
             } else if (typeName.contains(Map.class.getName())) {
                 if (typeName.contains("String")) {
                     try {
-                        List<Map<String, String>> mapList = convertUtils.convertMapStringString(cellValue);
+                        List<Map<AndroidLocatorTypeEnum, String>> mapList = convertUtils.convertMapStringString(cellValue);
                         field.set(object, mapList);
                     } catch (Exception e) {
                         String error = "第" + index + "行填写错误，请检查" + className + "的值";
@@ -335,20 +344,6 @@ public class Reader {
                         throw new RuntimeException(error);
                     }
                     field.set(object, strings);
-                } else if (genericClazz == Double.class) {
-                    List<Double> doubles;
-                    try {
-                        doubles = convertUtils.convertDoubles(cellValue);
-                    } catch (Exception e) {
-                        // todo 特殊處理
-                        if (fieldName.equalsIgnoreCase("Values")){
-                            doubles = null;
-                        }else{
-                            String error = "第" + index + "行填写错误，请检查" + className + "的值";
-                            throw new RuntimeException(error);
-                        }
-                    }
-                    field.set(object, doubles);
                 } else if (genericClazz == Integer[].class) {
                     List<Integer[]> integers;
                     try {

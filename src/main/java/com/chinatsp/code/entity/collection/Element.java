@@ -1,6 +1,7 @@
 package com.chinatsp.code.entity.collection;
 
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.enumeration.AndroidLocatorTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,5 +24,5 @@ public class Element extends BaseEntity {
      * 以xx=xx,yy=yy的方式实现多重定位，如：
      * id=test,classname=com.android.layout
      */
-    private List<Map<String, String>> locators;
+    private List<Map<AndroidLocatorTypeEnum, String>> locators;
 }
