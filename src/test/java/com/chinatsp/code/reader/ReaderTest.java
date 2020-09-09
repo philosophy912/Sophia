@@ -1,5 +1,6 @@
 package com.chinatsp.code.reader;
 
+import com.chinatsp.code.BaseTestUtils;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.testcase.TestCase;
 import com.philosophy.base.util.ClazzUtils;
@@ -45,7 +46,7 @@ class ReaderTest {
     @Test
     void readEntity() {
         List<String> classes = ClazzUtils.getClazzName(PACKAGE_NAME, true);
-        Path path = Paths.get("D:\\Workspace\\github\\code\\template.xlsx");
+        Path path = Paths.get(BaseTestUtils.getFileFolder(), "template.xlsx");
         Map<String, List<BaseEntity>> map = reader.readEntity(path);
         for (Map.Entry<String, List<BaseEntity>> entry : map.entrySet()) {
             String className = entry.getKey();

@@ -36,6 +36,7 @@ import static com.chinatsp.code.utils.Constant.SPLIT_LEFT_BRACKETS;
 import static com.chinatsp.code.utils.Constant.SPLIT_POINT;
 import static com.chinatsp.code.utils.Constant.SPLIT_RIGHT_BRACKETS;
 import static com.chinatsp.code.utils.Constant.YES;
+import static com.chinatsp.dbc.api.IConstant.POINT;
 
 /**
  * @author lizhe
@@ -217,7 +218,9 @@ public class Reader {
         log.debug("file name is = {}", fieldName);
         field.setAccessible(true);
         Class<?> clazz = field.getType();
-        String className = clazz.getName();
+        String className = object.getClass().getName();
+        String[] classNames = className.split(SPLIT_POINT);
+        className = "类[" + classNames[classNames.length - 1] + "]的属性[" + fieldName + "]";
         if (clazz.isEnum()) {
             log.debug("handle enum type");
             // 此处的o是枚举
