@@ -36,7 +36,6 @@ import static com.chinatsp.code.utils.Constant.SPLIT_LEFT_BRACKETS;
 import static com.chinatsp.code.utils.Constant.SPLIT_POINT;
 import static com.chinatsp.code.utils.Constant.SPLIT_RIGHT_BRACKETS;
 import static com.chinatsp.code.utils.Constant.YES;
-import static com.chinatsp.dbc.api.IConstant.POINT;
 
 /**
  * @author lizhe
@@ -164,6 +163,7 @@ public class Reader {
      */
     @SneakyThrows
     private List<BaseEntity> handleSheet(Sheet sheet, String sheetName) {
+        log.debug("now handle sheet [{}]", sheetName);
         List<BaseEntity> entities = new ArrayList<>();
         // 获取当前Sheet对应的对象值
         String fullClassName = getFullClassName(sheetName);
@@ -228,7 +228,7 @@ public class Reader {
             try {
                 field.set(object, method.invoke(null, cellValue));
             } catch (Exception e) {
-                String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
                 throw new RuntimeException(error);
             }
         } else if (clazz.equals(String.class)) {
@@ -239,7 +239,7 @@ public class Reader {
             try {
                 field.set(object, convertUtils.convertInteger(cellValue));
             } catch (Exception e) {
-                String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
                 throw new RuntimeException(error);
             }
         } else if (clazz.equals(Boolean.class)) {
@@ -251,7 +251,7 @@ public class Reader {
             try {
                 field.set(object, convertUtils.convertLong(cellValue));
             } catch (Exception e) {
-                String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
                 throw new RuntimeException(error);
             }
         } else if (clazz.equals(Double.class)) {
@@ -259,15 +259,15 @@ public class Reader {
             try {
                 field.set(object, Double.parseDouble(cellValue));
             } catch (Exception e) {
-                String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
                 throw new RuntimeException(error);
             }
         } else if (clazz.equals(Double[].class)) {
             log.trace("handle double type");
             try {
-                field.set(object, convertUtils.convertDoubles(cellValue));
+                field.set(object, convertUtils.convertDoubleArrays(cellValue, LINE));
             } catch (Exception e) {
-                String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
                 throw new RuntimeException(error);
             }
         } else if (clazz.equals(List.class)) {
@@ -292,7 +292,7 @@ public class Reader {
                         List<Pair<String, String>> pairs = convertUtils.convertPairStringString(cellValue, EQUAL);
                         field.set(object, pairs);
                     } catch (Exception e) {
-                        String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
                         throw new RuntimeException(error);
                     }
                 } else if (typeName.contains("Integer")) {
@@ -300,7 +300,7 @@ public class Reader {
                         List<Pair<Integer, Integer>> pairs = convertUtils.convertPairIntegerInteger(cellValue, LINE);
                         field.set(object, pairs);
                     } catch (Exception e) {
-                        String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
                         throw new RuntimeException(error);
                     }
                 } else {
@@ -313,7 +313,7 @@ public class Reader {
                         List<Map<AndroidLocatorTypeEnum, String>> mapList = convertUtils.convertMapStringString(cellValue);
                         field.set(object, mapList);
                     } catch (Exception e) {
-                        String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
                         throw new RuntimeException(error);
                     }
                 } else {
@@ -334,7 +334,7 @@ public class Reader {
                             lists.add(method.invoke(null, s));
                         }
                     } catch (Exception e) {
-                        String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
                         throw new RuntimeException(error);
                     }
                     field.set(object, lists);
@@ -343,7 +343,7 @@ public class Reader {
                     try {
                         strings = convertUtils.convertStrings(cellValue);
                     } catch (Exception e) {
-                        String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
                         throw new RuntimeException(error);
                     }
                     field.set(object, strings);
@@ -352,7 +352,7 @@ public class Reader {
                     try {
                         integers = convertUtils.convertIntegerArrays(cellValue, LINE);
                     } catch (Exception e) {
-                        String error = "第" + index + "行填写错误，请检查" + className + "的值";
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
                         throw new RuntimeException(error);
                     }
                     field.set(object, integers);

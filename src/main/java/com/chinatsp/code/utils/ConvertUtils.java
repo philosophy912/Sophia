@@ -3,6 +3,7 @@ package com.chinatsp.code.utils;
 import com.chinatsp.code.enumeration.AndroidLocatorTypeEnum;
 import com.philosophy.base.common.Pair;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -102,6 +103,24 @@ public class ConvertUtils {
         List<String> values = convertStrings(value);
         List<Double> doubles = new LinkedList<>();
         values.forEach(s -> doubles.add(Double.parseDouble(s)));
+        return doubles;
+    }
+
+    /**
+     * 将CellValue转换成Double数组
+     *
+     * @param value 单元格中的数据
+     * @return Double数组
+     */
+    public Double[] convertDoubleArrays(String value, String split) {
+        if (Strings.isEmpty(value)) {
+            return null;
+        }
+        String[] values = value.split(split);
+        Double[] doubles = new Double[values.length];
+        for (int i = 0; i < values.length; i++) {
+            doubles[i] = Double.parseDouble(values[i]);
+        }
         return doubles;
     }
 
