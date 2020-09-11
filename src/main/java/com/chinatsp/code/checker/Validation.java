@@ -6,6 +6,7 @@ import com.chinatsp.dbc.entity.Message;
 import com.chinatsp.dbc.entity.Signal;
 import com.philosophy.base.common.Pair;
 import com.philosophy.character.util.CharUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * @date 2020/8/28 9:14
  **/
 @Component
+@Slf4j
 public class Validation {
 
     private CheckUtils checkUtils;
@@ -180,11 +182,11 @@ public class Validation {
      * @param maxValue  最大值
      * @param minValue  最小值
      */
-    public void checkBatteryOperator(Double[] voltages, int index, String className, double maxValue, double minValue) {
+    public void checkBatteryOperator(Double[] voltages, int index, String className, double minValue, double maxValue) {
         if (voltages.length == 1) {
             Double startVoltage = voltages[0];
             if (startVoltage < minValue || startVoltage > maxValue) {
-                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压超过了[" + minValue + "," + maxValue + "]";
+                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压" + startVoltage + "超过了[" + minValue + "," + maxValue + "]";
                 throw new RuntimeException(error);
             }
         } else if (voltages.length == 4) {
@@ -194,11 +196,11 @@ public class Validation {
             // Double intervalTime = values[3];
             Double maxStep = maxValue - minValue;
             if (startVoltage < minValue || startVoltage > maxValue) {
-                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压超过了[" + minValue + "," + maxValue + "]";
+                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压" + startVoltage + "超过了[" + minValue + "," + maxValue + "]";
                 throw new RuntimeException(error);
             }
             if (endVoltage < minValue || endVoltage > maxValue) {
-                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压超过了[" + minValue + "," + maxValue + "]";
+                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压" + startVoltage + "超过了[" + minValue + "," + maxValue + "]";
                 throw new RuntimeException(error);
             }
             if (step > maxStep) {
@@ -228,28 +230,16 @@ public class Validation {
                 String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，CAN矩阵表中找不到" + signalName + "信号";
                 throw new RuntimeException(error);
             } else {
-                checkCanValue(index, className, signalName, signal.getSignalSize(), convertUtils.convertLong(value));
+                try {
+                    checkCanValue(index, className, signalName, signal.getSignalSize(), convertUtils.convertLong(value));
+                } catch (NumberFormatException e) {
+                    String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，信号值填写错误[" + e.getMessage() + "]";
+                    throw new RuntimeException(error);
+                }
             }
         }
     }
 
-    /**
-     * 检查signal的名字和值是否正确
-     *
-     * @param signalName  信号名称
-     * @param expectValue 期望值
-     * @param messages    消息集合
-     * @param index       行号
-     * @param className   类名
-     */
-    public void checkSignalName(String signalName, Long expectValue, List<Message> messages, int index, String className) {
-        Signal signal = getSignal(messages, signalName);
-        if (null == signal) {
-            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，CAN矩阵表中找不到" + signalName + "信号";
-            throw new RuntimeException(error);
-        }
-        checkCanValue(index, className, signalName, signal.getSignalSize(), expectValue);
-    }
 
     /**
      * 检查Message ID的值是否正确
@@ -259,11 +249,23 @@ public class Validation {
      * @param index     行号
      * @param className 类名
      */
-    public void checkMessageId(Long messageId, List<Message> messages, int index, String className) {
+    public void checkMessageId(Long messageId, String signalName, Long expectValue, List<Message> messages, int index, String className) {
         Message message = getMessage(messages, messageId);
         if (null == message) {
-            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，CAN的消息ID" + messageId + "找不到";
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，CAN的消息ID[" + messageId + "]找不到";
             throw new RuntimeException(error);
+        } else {
+            Signal signal = null;
+            for (Signal sig : message.getSignals()) {
+                if (sig.getName().equals(signalName)) {
+                    signal = sig;
+                }
+            }
+            if (null == signal) {
+                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，CAN矩阵表中信号[" + messageId + "]找不到[" + signalName + "]信号";
+                throw new RuntimeException(error);
+            }
+            checkCanValue(index, className, signalName, signal.getSignalSize(), expectValue);
         }
     }
 
@@ -276,7 +278,7 @@ public class Validation {
      */
     public void checkSimilarity(Float similarity, int index, String className) {
         if (similarity < 0 || similarity > 100) {
-            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，相似度在0-100间";
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，相似度在0-100间， 当前值为" + similarity;
             throw new RuntimeException(error);
         }
     }

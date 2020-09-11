@@ -50,5 +50,7 @@ public class ClassNames {
     private String elementCompare;
     @Value("${common}")
     private String common;
+    @Value(("${configure}"))
+    private String configure;
 
 }

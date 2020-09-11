@@ -2,6 +2,7 @@ package com.chinatsp.code.template;
 
 import com.chinatsp.code.beans.ClassAttributes;
 import com.chinatsp.code.beans.ClassNames;
+import com.chinatsp.code.beans.Configures;
 import com.philosophy.base.util.ClazzUtils;
 import com.philosophy.base.util.EnumUtils;
 import com.philosophy.base.util.ParseUtils;
@@ -53,6 +54,7 @@ public class Template {
     private ExcelUtils excelUtils;
     private ClassAttributes classAttributes;
     private ClassNames classNames;
+    private Configures configures;
 
     @Autowired
     public void setEnumUtils(EnumUtils enumUtils) {
@@ -72,6 +74,11 @@ public class Template {
     @Autowired
     public void setClassNames(ClassNames classNames) {
         this.classNames = classNames;
+    }
+
+    @Autowired
+    public void setConfigures(Configures configures) {
+        this.configures = configures;
     }
 
     @SneakyThrows
@@ -230,7 +237,52 @@ public class Template {
             Sheet sheet = workbook.createSheet(sheetName);
             setSheet(sheet, cellStyle, className);
         }
+        setConfigureSheet(workbook, cellStyle);
         workbook.write(Files.newOutputStream(path));
         excelUtils.close(workbook);
+    }
+
+    /**
+     * 创建ConfigureSheet
+     *
+     * @param workbook  workbook
+     * @param cellStyle 单元格样式
+     */
+    @SneakyThrows
+    private void setConfigureSheet(Workbook workbook, CellStyle cellStyle) {
+        String configure = "configure";
+        String chinese = getConfigValue(classNames, configure);
+        String sheetName = CharUtils.upperCase(chinese) + LEFT_BRACKETS + CharUtils.upperCase(configure) + RIGHT_BRACKETS;
+        Sheet sheet = workbook.createSheet(sheetName);
+        // 创建titleRow
+        Row titleRow = sheet.createRow(0);
+        String[] titles = new String[]{"Id\n序号", "Name\n名字", "Comment\n描述", "Content\n内容"};
+        for (int i = 0; i < titles.length; i++) {
+            Cell cell = titleRow.createCell(i);
+            cell.setCellStyle(cellStyle);
+            cell.setCellValue(titles[i]);
+        }
+        Field[] fields = configures.getClass().getDeclaredFields();
+        for (int i = 0; i < fields.length; i++) {
+            Field field = fields[i];
+            String fieldName = field.getName();
+            Row row = sheet.createRow(i + 1);
+            Cell indexCell = row.createCell(0);
+            Cell nameCell = row.createCell(1);
+            Cell commentCell = row.createCell(2);
+            Cell contentCell = row.createCell(3);
+            indexCell.setCellStyle(cellStyle);
+            nameCell.setCellStyle(cellStyle);
+            commentCell.setCellStyle(cellStyle);
+            contentCell.setCellStyle(cellStyle);
+            indexCell.setCellValue(i + 1);
+            nameCell.setCellValue(fieldName);
+            commentCell.setCellValue(getConfigValue(configures, fieldName));
+            contentCell.setCellValue("");
+        }
+        // 宽度在非精确的情况下设置就是width * 256
+        sheet.setColumnWidth(1, 25 * 256);
+        sheet.setColumnWidth(2, 25 * 256);
+        sheet.setColumnWidth(3, 80 * 256);
     }
 }

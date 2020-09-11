@@ -60,3 +60,18 @@ classname:
   informationCompare: 信息对比
   elementCompare: Android元素对比
   common: 公共函数
+  configure: 配置
+
+configures:
+  maxDisplay: 最大支持的显示屏的个数
+  maxVoltage: 最大支持的电压值
+  minVoltage: 最小支持的电压值
+  SocPort: SOC串口号
+  SocBaudRate: SOC串口波特率
+  McuPort: MCU串口号
+  McuBaudRate: MCU串口波特率
+  maxWidth: 显示屏宽
+  maxHeight: 显示屏高
+  screenShotTempPath: 临时图片存放路径
+  templateImagePath: 模板图片存放路径
+  dbcFile: CAN的DBC文件绝对路径

@@ -1,8 +1,10 @@
 package com.chinatsp.code.reader;
 
 import com.chinatsp.code.BaseTestUtils;
+import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.testcase.TestCase;
+import com.philosophy.base.common.Pair;
 import com.philosophy.base.util.ClazzUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -34,11 +36,11 @@ class ReaderTest {
 
 
     @Test
-    void readEntity() {
+    void readTestCase() {
         List<String> classes = ClazzUtils.getClazzName(PACKAGE_NAME, true);
         Path path = Paths.get(BaseTestUtils.getFileFolder(), "template.xlsx");
-        Map<String, List<BaseEntity>> map = reader.readEntity(path);
-        for (Map.Entry<String, List<BaseEntity>> entry : map.entrySet()) {
+        Pair<Map<String, List<BaseEntity>>, Configure> pair = reader.readTestCase(path);
+        for (Map.Entry<String, List<BaseEntity>> entry : pair.getFirst().entrySet()) {
             String className = entry.getKey();
             Class<?> clazz = BaseTestUtils.getClass(classes, className);
             List<BaseEntity> entities = entry.getValue();
@@ -46,11 +48,5 @@ class ReaderTest {
                 log.info("object = {}", clazz.cast(baseEntity));
             });
         }
-//        List<BaseEntity> testcases = map.get("testCase");
-//        testcases.forEach(baseEntity -> {
-//            System.out.println((TestCase)baseEntity);
-//        });
     }
-
-
 }

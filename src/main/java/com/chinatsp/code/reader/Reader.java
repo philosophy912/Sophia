@@ -1,6 +1,7 @@
 package com.chinatsp.code.reader;
 
 import com.chinatsp.code.beans.ClassNames;
+import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.enumeration.AndroidLocatorTypeEnum;
 import com.chinatsp.code.utils.ConvertUtils;
@@ -16,6 +17,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -246,6 +248,10 @@ public class Reader {
             log.trace("handle boolean type");
             boolean flag = cellValue.equalsIgnoreCase(YES) || cellValue.equalsIgnoreCase(CHINESE_YES);
             field.set(object, flag);
+        } else if (clazz.equals(Float.class)) {
+            log.trace("handle float type");
+            Float value = Float.parseFloat(cellValue);
+            field.set(object, value);
         } else if (clazz.equals(Long.class)) {
             log.trace("handle long type");
             try {
@@ -365,12 +371,11 @@ public class Reader {
     /**
      * 从文件读取实体
      *
-     * @param path 文件路径
+     * @param sheetMap Excel读取出来的Sheet
      * @return 实体字典
      */
-    public Map<String, List<BaseEntity>> readEntity(Path path) {
+    private Map<String, List<BaseEntity>> readEntity(Map<String, Sheet> sheetMap) {
         Map<String, List<BaseEntity>> map = new HashMap<>(10);
-        Map<String, Sheet> sheetMap = readExcel(path);
         log.debug("sheetMap size is {}", sheetMap.size());
         for (Map.Entry<String, Sheet> entry : sheetMap.entrySet()) {
             String className = entry.getKey();
@@ -381,6 +386,60 @@ public class Reader {
             map.put(className, classes);
         }
         return map;
+    }
+
+
+    @SneakyThrows
+    private Configure readConfigure(Sheet sheet) {
+        Configure configure = new Configure();
+        // 去掉标题栏
+        sheet.removeRow(sheet.getRow(0));
+        for (Row row : sheet) {
+            String name = excelUtils.getCellValue(row.getCell(1));
+            String content = excelUtils.getCellValue(row.getCell(3));
+            Field[] fields = configure.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                String fieldName = field.getName();
+                Class<?> type = field.getType();
+                field.setAccessible(true);
+                if (fieldName.equalsIgnoreCase(name)) {
+                    if (type.equals(String.class)) {
+                        field.set(configure, content);
+                    } else if (type.equals(Integer.class)) {
+                        try {
+                            Integer value = convertUtils.convertInteger(content);
+                            field.set(configure, value);
+                        } catch (Exception e) {
+                            String error = "第" + (row.getRowNum() + 1) + "行填写错误，当前值仅支持Integer类型，请检查值" + content;
+                            throw new RuntimeException(error);
+                        }
+                    } else if (type.equals(Double.class)) {
+                        try {
+                            Double value = Double.parseDouble(content);
+                            field.set(configure, value);
+                        } catch (Exception e) {
+                            String error = "第" + (row.getRowNum() + 1) + "行填写错误，当前值仅支持Double类型，请检查值" + content;
+                            throw new RuntimeException(error);
+                        }
+                    }
+                }
+            }
+        }
+        return configure;
+    }
+
+    /**
+     * 读取Excel所有内容
+     *
+     * @param path Excel所在位置
+     * @return Excel对应的Sheet对象
+     */
+    public Pair<Map<String, List<BaseEntity>>, Configure> readTestCase(Path path) {
+        String configure = "configure";
+        Map<String, Sheet> sheetMap = readExcel(path);
+        Sheet configureSheet = sheetMap.get(configure);
+        sheetMap.remove(configure);
+        return new Pair<>(readEntity(sheetMap), readConfigure(configureSheet));
     }
 
 }

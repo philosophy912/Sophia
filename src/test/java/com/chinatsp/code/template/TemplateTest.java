@@ -11,6 +11,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 /**
@@ -26,8 +28,9 @@ class TemplateTest {
     @SneakyThrows
     @Test
     void createTemplateExcelFile() {
-        Path path = Paths.get("template.xlsx");
-        if(Files.exists(path)){
+        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhhssmm"));
+        Path path = Paths.get("template" + time + ".xlsx");
+        if (Files.exists(path)) {
             FilesUtils.deleteFiles(path);
         }
         template.createTemplateExcelFile(path);
