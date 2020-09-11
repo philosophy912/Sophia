@@ -168,4 +168,9 @@ class ValidationTest {
             validation.checkSimilarity(baseEntity.getSimilarity(), i + 1, className);
         }
     }
+
+    @Test
+    void checkConfigure() {
+        validation.checkConfigure(configure);
+    }
 }

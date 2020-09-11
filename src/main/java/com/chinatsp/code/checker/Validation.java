@@ -1,5 +1,6 @@
 package com.chinatsp.code.checker;
 
+import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.utils.CheckUtils;
 import com.chinatsp.code.utils.ConvertUtils;
 import com.chinatsp.dbc.entity.Message;
@@ -10,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -281,5 +284,24 @@ public class Validation {
             String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，相似度在0-100间， 当前值为" + similarity;
             throw new RuntimeException(error);
         }
+    }
+
+    /**
+     * 检查configure是否正确
+     *
+     * @param configure 配置
+     */
+    public void checkConfigure(Configure configure) {
+        String templateImagePath = configure.getTemplateImagePath();
+        if (!Files.exists(Paths.get(templateImagePath))){
+            String error = templateImagePath+ "路径不存在，请检查";
+            throw new RuntimeException(error);
+        }
+        String dbdFile = configure.getDbcFile();
+        if (!Files.exists(Paths.get(dbdFile))){
+            String error = dbdFile+ "文件不存在，请检查";
+            throw new RuntimeException(error);
+        }
+
     }
 }
