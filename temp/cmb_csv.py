@@ -12,16 +12,16 @@ import xlwings as xw
 
 
 def read_cmd(file: str) -> list:
-    with open(file, "r", encoding="utf-8") as f:
+    with open(file, "r", encoding="gbk") as f:
         return f.readlines()
 
 
 def filter_data(contents: list) -> list:
     contents = list(map(lambda x: x.replace("\n", ""), contents))
     # 去除多余的内容
-    contents = list(filter(lambda x: len(x.split(" ")) == 6, contents))
+    # contents = list(filter(lambda x: len(x.split(" ")) == 6, contents))
     # 只保留具体内容
-    contents = list(filter(lambda x: "/" in x, contents))
+    # contents = list(filter(lambda x: "/" in x, contents))
     # 去掉支付宝
     contents = list(filter(lambda x: "支付宝" not in x and "年费" not in x, contents))
     return contents
@@ -31,25 +31,27 @@ def split_contents(contents: list) -> list:
     exchanges = []
     # 交易类型	日期	分类	子分类	账户1	账户2	金额	成员	商家	项目	备注
     for content in contents:
-        details = content.split(" ")
-        date = details[0].replace("/", "-")
-        pay_data = f"2020-{date}"
-        pay_amount = details[3]
-        pay_detail = details[2]
-        pay_type = "支出"
-        category = "购物消费"
-        sub_category = "电子数码"
-        account = "招行信用卡P"
-        if "7FRESH" in content or "四季优选" in content:
-            category = "食品酒水"
-            sub_category = "超市购物"
-        elif "餐饮" in content:
-            category = "食品酒水"
-            sub_category = "外出美食"
-        elif "虾仁水饺" in content:
-            category = "食品酒水"
-            sub_category = "中餐"
-        exchanges.append((pay_type, pay_data, category, sub_category, account, "", pay_amount, "", "", "", pay_detail))
+        if "交易日期" not in content:
+            details = content.replace("\t", "").split(",")
+            print(details)
+            pay_data = details[0]
+            pay_type = "支出"
+            category = "购物消费"
+            sub_category = "电子数码"
+            account = "招行信用卡P"
+            pay_amount = details[6].replace("\"", "")
+            pay_detail = details[2]
+            if "7FRESH" in content or "四季优选" in content:
+                category = "食品酒水"
+                sub_category = "超市购物"
+            elif "餐饮" in content:
+                category = "食品酒水"
+                sub_category = "外出美食"
+            elif "美团支付" in content:
+                category = "食品酒水"
+                sub_category = "中餐"
+            exchanges.append(
+                (pay_type, pay_data, category, sub_category, account, "", pay_amount, "", "", "", pay_detail))
     return exchanges
 
 
@@ -72,5 +74,4 @@ def run(file: str):
     write_excel(contents)
 
 
-run(r"D:\Workspace\code\temp\cmb\creditCard20200708.txt")
-
+run(r"D:\Workspace\code\temp\cmb\userdata.csv")

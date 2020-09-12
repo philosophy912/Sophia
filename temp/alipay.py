@@ -87,7 +87,7 @@ def get_category(pay_detail: str, pay_amount: str) -> tuple:
     out_eat = "金翠河烧鹅餐厅", "马帮冒菜", "实惠啤酒鸭", "麦当劳", "食其家", "正反面", "青羊区东方宫牛肉拉面店", "成都港九餐饮", \
               "八二私房水饺", "鱼吖吖（武侯店）", "口味鲜面庄", "叶抄手", "雷四孃小吃", "朱记蛙三", "火舞凉山西昌原生烧烤", \
               "万州烤鱼", "肯德基", "巴山豆花饭成都", "卡萨马可", "老北京炸酱面", "禾木烤肉", "峨眉山周记烧烤", "青年火锅店", \
-              "茵赫餐饮管理", "汉堡王", "热恋冰淇淋"
+              "茵赫餐饮管理", "汉堡王", "热恋冰淇淋", "初壹饺子"
     drink = "书亦烧仙草", "星巴克", "书亦燒仙草", "Mii Coffee", "茶百道", "瑞幸咖啡", "GREYBOX COFFEE"
     super_market = "成都市北城天街店", "成都荆竹中路店", "麦德龙", "欧尚成都市高新店", "谊品生鲜", "高新店", "成都盒马", \
                    "成都中营贸易", "招商雍华府店", "万家V+南区", "银犁冷藏"
@@ -191,7 +191,7 @@ def handle_in_come(in_come: list) -> list:
 
 
 def write_excel(pay: list, in_come: list):
-    app = xw.App(visible=False, add_book=False)
+    app = xw.App(visible=True, add_book=False)
     wb = app.books.open("template.xls")
     pay_sht = wb.sheets["支出"]
     in_come_sht = wb.sheets["收入"]
@@ -200,6 +200,7 @@ def write_excel(pay: list, in_come: list):
     file = f"template_{Utils.get_time_as_string()}.xls"
     wb.save(file)
     wb.close()
+    app.quit()
 
 
 def run(file: str):
@@ -213,4 +214,4 @@ def run(file: str):
 
 
 if __name__ == '__main__':
-    run("alipay_record_20200904_1020_1.csv")
+    run(r"D:\Workspace\code\temp\alipay\alipay_record_20200912_1632_1.csv")
