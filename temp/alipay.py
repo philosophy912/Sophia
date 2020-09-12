@@ -10,6 +10,9 @@
 from automotive import logger, Utils
 import xlwings as xw
 
+# 区分人
+people = False
+
 
 def read_alipay(file: str) -> list:
     with open(file, "r", encoding="gbk") as f:
@@ -45,11 +48,13 @@ def handle_data(contents: list) -> list:
 
 def __filter_condition(x: tuple) -> list:
     condition1 = ("蚂蚁财富" not in x[2])
-    condition2 = ("李小花" not in x[2])
+    condition2 = ("李小花" not in x[2]) if people else ("李哲" not in x[2])
     condition3 = ("医保消费" not in x[2])
     condition4 = ("理财买入" not in x[2])
     condition5 = ("大药房连锁" not in x[2])
-    return condition1 and condition2 and condition3 and condition4 and condition5
+    condition6 = ("基金申购" not in x[2])
+    condition7 = ("基金销售" not in x[2])
+    return condition1 and condition2 and condition3 and condition4 and condition5 and condition6 and condition7
 
 
 def separate_type(contents: list) -> tuple:
@@ -68,10 +73,13 @@ def check_detail(pay_detail: str, check_list: (list, tuple)) -> bool:
 
 def get_category(pay_detail: str, pay_amount: str) -> tuple:
     alipay = "商品", "亲情卡"
-    if check_detail(pay_detail, alipay):
-        account = "支付宝P"
+    if people:
+        if check_detail(pay_detail, alipay):
+            account = "支付宝P"
+        else:
+            account = "招行信用卡P"
     else:
-        account = "招行信用卡P"
+        account = "花呗S"
     # 类别
     category = "食品酒水"
     sub_category = "早餐"
@@ -87,12 +95,12 @@ def get_category(pay_detail: str, pay_amount: str) -> tuple:
     out_eat = "金翠河烧鹅餐厅", "马帮冒菜", "实惠啤酒鸭", "麦当劳", "食其家", "正反面", "青羊区东方宫牛肉拉面店", "成都港九餐饮", \
               "八二私房水饺", "鱼吖吖（武侯店）", "口味鲜面庄", "叶抄手", "雷四孃小吃", "朱记蛙三", "火舞凉山西昌原生烧烤", \
               "万州烤鱼", "肯德基", "巴山豆花饭成都", "卡萨马可", "老北京炸酱面", "禾木烤肉", "峨眉山周记烧烤", "青年火锅店", \
-              "茵赫餐饮管理", "汉堡王", "热恋冰淇淋", "初壹饺子"
-    drink = "书亦烧仙草", "星巴克", "书亦燒仙草", "Mii Coffee", "茶百道", "瑞幸咖啡", "GREYBOX COFFEE"
+              "茵赫餐饮管理", "汉堡王", "热恋冰淇淋", "初壹饺子", "点都德"
+    drink = "书亦烧仙草", "星巴克", "书亦燒仙草", "Mii Coffee", "茶百道", "瑞幸咖啡", "GREYBOX COFFEE", "可口可乐", "日记咖啡馆"
     super_market = "成都市北城天街店", "成都荆竹中路店", "麦德龙", "欧尚成都市高新店", "谊品生鲜", "高新店", "成都盒马", \
                    "成都中营贸易", "招商雍华府店", "万家V+南区", "银犁冷藏"
     snacks = "永辉(成都市银泰城店)", "面包新语(银泰城店)", "雪糕批发"
-    pets = "鸡胸肉鲜", "猫", "伍德氏", "激光笔", "瑞爱康宠物医院"
+    pets = "鸡胸肉鲜", "猫", "伍德氏", "激光笔", "瑞爱康宠物医院", "猫砂"
     treat = "先生的酒桌"
     if check_detail(pay_detail, outsource):
         sub_category = "外购凉菜"
@@ -117,15 +125,15 @@ def get_category(pay_detail: str, pay_amount: str) -> tuple:
         sub_category = "中餐"
     elif check_detail(pay_detail, drink):
         sub_category = "饮料"
-    elif "相互宝" in pay_detail:
+    elif check_detail(pay_detail, ("众安在线", "相互宝")):
         category = "金融保险"
         sub_category = "人身保险"
     elif "成都地铁运营有限公司" in pay_detail:
         category = "行车交通"
         sub_category = "地铁"
-    elif "天府通APP" in pay_detail:
+    elif "天府通APP" in pay_detail or "公共交通" in pay_detail:
         category = "行车交通"
-        if pay_amount == "1.80":
+        if pay_amount <= "1.80" or pay_amount == "2.00":
             sub_category = "公交"
         else:
             sub_category = "地铁"
@@ -150,7 +158,7 @@ def get_category(pay_detail: str, pay_amount: str) -> tuple:
     elif "火车票" in pay_detail:
         category = "行车交通"
         sub_category = "火车"
-    elif "中国电信官方旗舰店" in pay_detail:
+    elif check_detail(pay_detail, ("中国移动", "中国电信")):
         category = "交流通讯"
         sub_category = "手机费"
     elif check_detail(pay_detail, ("重庆华宇", "物业管理费")):
@@ -193,10 +201,11 @@ def handle_in_come(in_come: list) -> list:
 def write_excel(pay: list, in_come: list):
     app = xw.App(visible=True, add_book=False)
     wb = app.books.open("template.xls")
+    if people:
+        in_come_sht = wb.sheets["收入"]
+        in_come_sht.range("A2").value = in_come
     pay_sht = wb.sheets["支出"]
-    in_come_sht = wb.sheets["收入"]
     pay_sht.range("A2").value = pay
-    in_come_sht.range("A2").value = in_come
     file = f"template_{Utils.get_time_as_string()}.xls"
     wb.save(file)
     wb.close()
@@ -214,4 +223,4 @@ def run(file: str):
 
 
 if __name__ == '__main__':
-    run(r"D:\Workspace\code\temp\alipay\alipay_record_20200912_1632_1.csv")
+    run(r"D:\Workspace\code\temp\resources\alipay_record_20200912_1639_1.csv")
