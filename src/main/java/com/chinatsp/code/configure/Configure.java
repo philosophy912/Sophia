@@ -21,6 +21,10 @@ public class Configure {
      */
     private Double maxVoltage;
     /**
+     * 最大支持的继电器通道
+     */
+    private Integer maxRelayChannel;
+    /**
      * 最小支持的电压值
      */
     private Double minVoltage;

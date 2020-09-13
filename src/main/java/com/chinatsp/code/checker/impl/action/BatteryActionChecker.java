@@ -26,10 +26,14 @@ public class BatteryActionChecker extends BaseChecker implements IEntityChecker 
 
     @Override
     public void check(List<BaseEntity> entities, Configure configure) {
+        double maxVoltage = configure.getMaxVoltage();
+        double minVoltage = configure.getMinVoltage();
         for (int i = 0; i < entities.size(); i++) {
+            int index = i + 1;
             BatteryAction batteryAction = (BatteryAction) entities.get(i);
-            checkUtils.checkBatteryOperator(batteryAction.getValues(), i, batteryAction.getName(), configure.getMinVoltage(), configure.getMaxVoltage());
-            checkUtils.checkPythonFunction(batteryAction.getName(), i, batteryAction.getName());
+            String name = batteryAction.getClass().getName();
+            checkUtils.checkBatteryOperator(batteryAction.getValues(), index, name, minVoltage, maxVoltage);
+            checkUtils.checkPythonFunction(batteryAction.getName(), index, name);
         }
     }
 

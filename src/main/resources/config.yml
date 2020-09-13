@@ -64,6 +64,7 @@ classname:
 
 configures:
   maxDisplay: 最大支持的显示屏的个数
+  maxRelayChannel: 最大支持的继电器通道
   maxVoltage: 最大支持的电压值
   minVoltage: 最小支持的电压值
   SocPort: SOC串口号
