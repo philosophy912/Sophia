@@ -3,10 +3,8 @@ package com.chinatsp.code.reader;
 import com.chinatsp.code.BaseTestUtils;
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
-import com.chinatsp.code.entity.testcase.TestCase;
 import com.philosophy.base.common.Pair;
 import com.philosophy.base.util.ClazzUtils;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.chinatsp.code.utils.Constant.PACKAGE_NAME;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author lizhe
@@ -44,9 +41,7 @@ class ReaderTest {
             String className = entry.getKey();
             Class<?> clazz = BaseTestUtils.getClass(classes, className);
             List<BaseEntity> entities = entry.getValue();
-            entities.forEach(baseEntity -> {
-                log.info("object = {}", clazz.cast(baseEntity));
-            });
+            entities.forEach(baseEntity -> log.info("object = {}", clazz.cast(baseEntity)));
         }
     }
 }

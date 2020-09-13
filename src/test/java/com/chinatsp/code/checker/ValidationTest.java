@@ -30,8 +30,6 @@ import java.util.Map;
 class ValidationTest {
 
     @Autowired
-    private Validation validation;
-    @Autowired
     private Reader reader;
     @Autowired
     private DbcParser dbcParser;
