@@ -27,6 +27,7 @@ public class TestCase extends BaseEntity {
      * 前置条件描述
      */
     private String preConditionDescription;
+
     /**
      * 执行步骤描述
      */

@@ -36,8 +36,8 @@ public class ClassNames {
     private String batteryAction;
     @Value("${information}")
     private String information;
-    @Value("${can}")
-    private String can;
+    @Value("${canAction}")
+    private String canAction;
     @Value("${element}")
     private String element;
     @Value("${canCompare}")

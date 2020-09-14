@@ -26,10 +26,6 @@ class TemplateTest {
     @Autowired
     private Template template;
 
-    @Test
-    void test111() {
-        System.out.println(this.getClass().getSimpleName());
-    }
 
     @SneakyThrows
     @Test

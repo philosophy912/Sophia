@@ -7,9 +7,7 @@ import com.chinatsp.code.reader.Reader;
 import com.chinatsp.dbc.entity.Message;
 import com.chinatsp.dbc.impl.DbcParser;
 import com.philosophy.base.common.Pair;
-import com.philosophy.base.util.ClazzUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -22,8 +20,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-import static com.chinatsp.code.utils.Constant.PACKAGE_NAME;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author lizhe

@@ -53,7 +53,7 @@ classname:
   relayAction: 继电器操作
   batteryAction: 电源操作
   information: 信息保存
-  can: Can信号
+  canAction: Can信号
   element: 安卓元素
   canCompare: CAN信号对比
   imageCompare: 图片对比

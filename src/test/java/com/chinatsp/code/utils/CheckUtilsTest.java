@@ -6,7 +6,7 @@ import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.actions.BatteryAction;
 import com.chinatsp.code.entity.actions.RelayAction;
 import com.chinatsp.code.entity.actions.ScreenOperationAction;
-import com.chinatsp.code.entity.collection.Can;
+import com.chinatsp.code.entity.actions.CanAction;
 import com.chinatsp.code.entity.compare.CanCompare;
 import com.chinatsp.code.entity.compare.ImageCompare;
 import com.chinatsp.code.reader.Reader;
@@ -136,7 +136,7 @@ class CheckUtilsTest {
         String className = "Can";
         List<BaseEntity> entities = map.get(CharUtils.lowerCase(className));
         for (int i = 0; i < entities.size(); i++) {
-            Can baseEntity = (Can) entities.get(i);
+            CanAction baseEntity = (CanAction) entities.get(i);
             checkUtils.checkSignals(baseEntity.getSignals(), messages, i + 1, className);
         }
     }

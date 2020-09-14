@@ -1,4 +1,4 @@
-package com.chinatsp.code.entity.collection;
+package com.chinatsp.code.entity.actions;
 
 import com.chinatsp.code.entity.BaseEntity;
 import com.philosophy.base.common.Pair;
@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @Getter
 @ToString
-public class Can extends BaseEntity {
+public class CanAction extends BaseEntity {
     /**
      * CAN信号名和值，允许有多个
      */
