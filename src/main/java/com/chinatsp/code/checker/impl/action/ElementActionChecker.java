@@ -7,7 +7,6 @@ import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.actions.ElementAction;
 import com.chinatsp.code.entity.collection.Element;
 import com.chinatsp.dbc.entity.Message;
-import com.philosophy.character.util.CharUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -26,11 +25,13 @@ public class ElementActionChecker extends BaseChecker implements IChecker {
         for (int i = 0; i < entities.size(); i++) {
             int index = i + 1;
             ElementAction elementAction = (ElementAction) entities.get(i);
-            String name = elementAction.getClass().getName();
+            String name = elementAction.getClass().getSimpleName();
             // 检查名字是否符合python命名规范
             checkUtils.checkPythonFunction(elementAction.getName(), index, name);
             // 检查element名字是否存在于Sheet(Element)中
             checkUtils.checkElementExist(elementAction.getElement(), index, name, elements);
         }
+        // 检查函数名是否有重名
+        checkUtils.findDuplicate(entities, ElementAction.class.getSimpleName());
     }
 }

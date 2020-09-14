@@ -6,8 +6,8 @@ import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.reader.api.ClassTypeFactory;
 import com.chinatsp.code.reader.api.IClassType;
 import com.chinatsp.code.utils.ConvertUtils;
+import com.chinatsp.code.utils.ReaderUtils;
 import com.philosophy.base.common.Pair;
-import com.philosophy.base.util.ClazzUtils;
 import com.philosophy.excel.utils.ExcelUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +16,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
@@ -35,7 +36,7 @@ import static com.chinatsp.code.utils.Constant.SPLIT_RIGHT_BRACKETS;
  * @author lizhe
  * @date 2020/8/28 11:00
  **/
-@Component
+@Service
 @Slf4j
 public class Reader {
     @Resource
@@ -46,6 +47,8 @@ public class Reader {
     private ConvertUtils convertUtils;
     @Resource
     private ClassTypeFactory classTypeFactory;
+    @Resource
+    private ReaderUtils readerUtils;
 
 
     /**
@@ -78,23 +81,6 @@ public class Reader {
         return map;
     }
 
-    /**
-     * 根据sheet名字获取全包名
-     *
-     * @param sheetName sheet的名字
-     * @return sheet对应的实体类的全包名
-     */
-    private String getFullClassName(String sheetName) {
-        List<String> classes = ClazzUtils.getClazzName(PACKAGE_NAME, true);
-        for (String className : classes) {
-            String[] names = className.split(SPLIT_POINT);
-            String name = names[names.length - 1];
-            if (name.equalsIgnoreCase(sheetName)) {
-                return className;
-            }
-        }
-        throw new RuntimeException("can not found sheetName in " + PACKAGE_NAME);
-    }
 
     /**
      * 把title行转换成为对应的列号和名字
@@ -150,7 +136,7 @@ public class Reader {
         log.debug("now handle sheet [{}]", sheetName);
         List<BaseEntity> entities = new ArrayList<>();
         // 获取当前Sheet对应的对象值
-        String fullClassName = getFullClassName(sheetName);
+        String fullClassName = readerUtils.getFullClassName(sheetName, PACKAGE_NAME);
         Class<?> clazz = Class.forName(fullClassName);
         // 获取第一行即表头
         Row titleRow = sheet.getRow(0);
@@ -206,7 +192,7 @@ public class Reader {
         String[] classNames = className.split(SPLIT_POINT);
         className = "类[" + classNames[classNames.length - 1] + "]的属性[" + fieldName + "]";
         IClassType classType = classTypeFactory.getClassType(clazz);
-        if (null!=classType) {
+        if (null != classType) {
             classType.setValue(object, field, clazz, className, cellValue, index);
         }
     }

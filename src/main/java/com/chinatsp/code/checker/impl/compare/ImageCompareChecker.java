@@ -4,10 +4,8 @@ import com.chinatsp.code.checker.api.BaseChecker;
 import com.chinatsp.code.checker.api.IChecker;
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
-import com.chinatsp.code.entity.compare.CanCompare;
 import com.chinatsp.code.entity.compare.ImageCompare;
 import com.chinatsp.dbc.entity.Message;
-import com.philosophy.character.util.CharUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,7 +23,7 @@ public class ImageCompareChecker extends BaseChecker implements IChecker {
         for (int i = 0; i < entities.size(); i++) {
             int index = i + 1;
             ImageCompare imageCompare = (ImageCompare) entities.get(i);
-            String name = imageCompare.getClass().getName();
+            String name = imageCompare.getClass().getSimpleName();
             // 检查名字是否符合python命名规范
             checkUtils.checkPythonFunction(imageCompare.getName(), index, name);
             // 检查图片是否符合要求
@@ -40,5 +38,7 @@ public class ImageCompareChecker extends BaseChecker implements IChecker {
             checkUtils.checkTemplateImage(imageCompare.getTemplateDark(), index, name);
             checkUtils.checkTemplateImage(imageCompare.getTemplateLight(), index, name);
         }
+        // 检查函数名是否有重名
+        checkUtils.findDuplicate(entities, ImageCompare.class.getSimpleName());
     }
 }

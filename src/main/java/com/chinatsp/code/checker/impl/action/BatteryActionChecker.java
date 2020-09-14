@@ -7,10 +7,10 @@ import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.actions.BatteryAction;
 import com.chinatsp.code.enumeration.BatteryOperationTypeEnum;
 import com.chinatsp.dbc.entity.Message;
-import com.philosophy.character.util.CharUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -36,12 +36,13 @@ public class BatteryActionChecker extends BaseChecker implements IChecker {
         for (int i = 0; i < entities.size(); i++) {
             int index = i + 1;
             BatteryAction batteryAction = (BatteryAction) entities.get(i);
-            String name = batteryAction.getClass().getName();
+            String name = batteryAction.getClass().getSimpleName();
             // 检查操作是否符合要求
             // 若为设置电压电流则为单个数字
             // 若调节电压则以-分割，如12-18-0.1-5
             BatteryOperationTypeEnum type = batteryAction.getBatteryOperationType();
             Double[] doubles = batteryAction.getValues();
+            log.debug("adjust voltage is " + Arrays.toString(doubles));
             if (type == BatteryOperationTypeEnum.SET_VOLTAGE || type == BatteryOperationTypeEnum.SET_CURRENT) {
                 checkUtils.checkBatteryValue(doubles, index, name, minVoltage, maxVoltage);
             } else if (type == BatteryOperationTypeEnum.ADJUST_VOLTAGE) {
@@ -50,6 +51,8 @@ public class BatteryActionChecker extends BaseChecker implements IChecker {
             // 检查名字是否符合python命名规范
             checkUtils.checkPythonFunction(batteryAction.getName(), index, name);
         }
+        // 检查函数名是否有重名
+        checkUtils.findDuplicate(entities, BatteryAction.class.getSimpleName());
     }
 
 

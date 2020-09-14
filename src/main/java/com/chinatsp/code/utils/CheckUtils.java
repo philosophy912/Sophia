@@ -7,11 +7,11 @@ import com.chinatsp.dbc.entity.Message;
 import com.chinatsp.dbc.entity.Signal;
 import com.philosophy.base.common.Pair;
 import com.philosophy.character.util.CharUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,12 +23,6 @@ import java.util.Map;
 @Component
 public class CheckUtils {
 
-    private ConvertUtils convertUtils;
-
-    @Autowired
-    public void setConvertUtils(ConvertUtils convertUtils) {
-        this.convertUtils = convertUtils;
-    }
 
     /**
      * 函数名检查是否正确（python）
@@ -74,7 +68,7 @@ public class CheckUtils {
      */
     private boolean isFullImageNameCorrect(String name) {
         int max = 100;
-        String regex = "^[a-zA-Z]+[a-zA-Z_]*[^_](.)((?!)bmp)|((?!)jpg)|((?!)png)$";
+        String regex = "^[a-zA-Z]+[a-zA-Z_]*[^_](.)((bmp)|(jpg)|(png))$";
         boolean isMatch = name.matches(regex);
         if (name.length() > max) {
             return false;
@@ -261,7 +255,7 @@ public class CheckUtils {
         }
         Double startVoltage = voltages[0];
         if (startVoltage < minValue || startVoltage > maxValue) {
-            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压" + startVoltage + "超过了[" + minValue + "," + maxValue + "]";
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压" + startVoltage + "超过了[" + minValue + ", " + maxValue + "]";
             throw new RuntimeException(error);
         }
     }
@@ -277,24 +271,27 @@ public class CheckUtils {
      */
     public void checkBatteryAdjust(Double[] voltages, int index, String className, double minValue, double maxValue) {
         if (voltages.length != 4) {
-            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，电压调节设置模式为其实起始电压-终止电压-步进值-间隔时间";
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
+                    "电压调节设置模式为其实起始电压-终止电压-步进值-间隔时间, 当前值为" + Arrays.toString(voltages);
             throw new RuntimeException(error);
         }
         Double startVoltage = voltages[0];
         Double endVoltage = voltages[1];
         Double step = voltages[2];
-        // Double intervalTime = values[3];
         Double maxStep = maxValue - minValue;
         if (startVoltage < minValue || startVoltage > maxValue) {
-            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压" + startVoltage + "超过了[" + minValue + "," + maxValue + "]";
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
+                    "设置电压" + startVoltage + "超过了[" + minValue + "," + maxValue + "]";
             throw new RuntimeException(error);
         }
         if (endVoltage < minValue || endVoltage > maxValue) {
-            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压" + startVoltage + "超过了[" + minValue + "," + maxValue + "]";
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
+                    "设置电压" + startVoltage + "超过了[" + minValue + "," + maxValue + "]";
             throw new RuntimeException(error);
         }
         if (step > maxStep) {
-            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，步长不能超过" + maxStep + "V";
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
+                    "步长不能超过" + maxStep + "V";
             throw new RuntimeException(error);
         }
     }
@@ -317,7 +314,7 @@ public class CheckUtils {
                 throw new RuntimeException(error);
             } else {
                 try {
-                    checkCanValue(index, className, signalName, signal.getSignalSize(), convertUtils.convertLong(value));
+                    checkCanValue(index, className, signalName, signal.getSignalSize(), ConvertUtils.convertLong(value));
                 } catch (NumberFormatException e) {
                     String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，信号值填写错误[" + e.getMessage() + "]";
                     throw new RuntimeException(error);
@@ -338,7 +335,8 @@ public class CheckUtils {
     public void checkExpectMessage(Long messageId, String signalName, Long expectValue, List<Message> messages, int index, String className) {
         Message message = getMessage(messages, messageId);
         if (null == message) {
-            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，CAN的消息ID[" + messageId + "]找不到";
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
+                    "CAN的消息ID[" + messageId + "]找不到";
             throw new RuntimeException(error);
         } else {
             Signal signal = null;
@@ -348,7 +346,8 @@ public class CheckUtils {
                 }
             }
             if (null == signal) {
-                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，CAN矩阵表中信号[" + messageId + "]找不到[" + signalName + "]信号";
+                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
+                        "CAN矩阵表中信号[" + messageId + "]找不到[" + signalName + "]信号";
                 throw new RuntimeException(error);
             }
             checkCanValue(index, className, signalName, signal.getSignalSize(), expectValue);
@@ -364,7 +363,8 @@ public class CheckUtils {
      */
     public void checkSimilarity(Float similarity, int index, String className) {
         if (similarity < 0 || similarity > 100) {
-            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，相似度在0-100间， 当前值为" + similarity;
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
+                    "相似度在0-100间， 当前值为" + similarity;
             throw new RuntimeException(error);
         }
     }
@@ -378,7 +378,8 @@ public class CheckUtils {
      */
     public void checkThreshold(Integer threshold, int index, String className) {
         if (threshold < 0 || threshold > 255) {
-            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，相似度在0-255间， 当前值为" + threshold;
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
+                    "相似度在0-255间， 当前值为" + threshold;
             throw new RuntimeException(error);
         }
     }
@@ -426,24 +427,20 @@ public class CheckUtils {
     }
 
 
-    public void findDuplicateString(List<BaseEntity> entities) {
-        Map<String, String> map = new HashMap<>(12);
-        entities.forEach(baseEntity -> {
-            String key = baseEntity.getName();
-            String old = map.get(key);
-            if (old != null) {
-                map.put(key, old + " & " + key);
+    public void findDuplicate(List<BaseEntity> entities, String className) {
+        Map<String, BaseEntity> map = new HashMap<>(12);
+        for (int i = 0; i < entities.size(); i++) {
+            int index = i + 1;
+            BaseEntity baseEntity = entities.get(i);
+            String name = baseEntity.getName();
+            if (map.containsKey(baseEntity.getName())) {
+                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据" + name + "有重复，请检查";
+                throw new RuntimeException(error);
             } else {
-                map.put(key, "" + key);
-            }
-        });
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            if (value.contains("&")) {
-                throw new RuntimeException("期望结果函数名[" + key + "]在[" + value + "]中有重名，请仔细检查");
+                map.put(name, baseEntity);
             }
         }
+
     }
 
 

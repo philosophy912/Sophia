@@ -6,7 +6,6 @@ import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.actions.RelayAction;
 import com.chinatsp.dbc.entity.Message;
-import com.philosophy.character.util.CharUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -23,14 +22,16 @@ public class RelayActionChecker extends BaseChecker implements IChecker {
         List<BaseEntity> entities = getEntity(map, RelayAction.class);
         Integer maxChannel = configure.getMaxRelayChannel();
         for (int i = 0; i < entities.size(); i++) {
-            int index = i+1;
+            int index = i + 1;
             RelayAction relayAction = (RelayAction) entities.get(i);
-            String name = relayAction.getClass().getName();
+            String name = relayAction.getClass().getSimpleName();
             // 检查名字是否符合python命名规范
             checkUtils.checkPythonFunction(relayAction.getName(), index, name);
             // 检查继电器通道设置是否符合要求
             checkUtils.checkRelayChannel(relayAction.getChannelIndex(), index, name, maxChannel);
         }
+        // 检查函数名是否有重名
+        checkUtils.findDuplicate(entities, RelayAction.class.getSimpleName());
     }
 
 

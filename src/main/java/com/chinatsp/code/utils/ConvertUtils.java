@@ -32,7 +32,7 @@ public class ConvertUtils {
      * @param value 元格中的数据
      * @return Map<String, String>集合
      */
-    public List<Map<AndroidLocatorTypeEnum, String>> convertMapStringString(String value) {
+    public static List<Map<AndroidLocatorTypeEnum, String>> convertMapStringString(String value) {
         List<String> strings = convertStrings(value);
         List<Map<AndroidLocatorTypeEnum, String>> mapList = new LinkedList<>();
         strings.forEach(s -> {
@@ -54,7 +54,7 @@ public class ConvertUtils {
      * @param split 分隔符
      * @return Pair集合
      */
-    public List<Pair<String, String>> convertPairStringString(String value, String split) {
+    public static List<Pair<String, String>> convertPairStringString(String value, String split) {
         List<String> strings = convertStrings(value);
         List<Pair<String, String>> pairs = new LinkedList<>();
         strings.forEach(s -> {
@@ -71,7 +71,7 @@ public class ConvertUtils {
      * @param split 分隔符
      * @return Pair集合
      */
-    public List<Pair<Integer, Integer>> convertPairIntegerInteger(String value, String split) {
+    public static List<Pair<Integer, Integer>> convertPairIntegerInteger(String value, String split) {
         List<String> strings = convertStrings(value);
         List<Pair<Integer, Integer>> pairs = new LinkedList<>();
         strings.forEach(s -> {
@@ -87,7 +87,7 @@ public class ConvertUtils {
      * @param value 单元格中的数据
      * @return String集合
      */
-    public List<String> convertStrings(String value) {
+    public static List<String> convertStrings(String value) {
         log.trace("cell value is {}", value);
         String[] values = value.split(LINUX_NEXT_LINE);
         return new LinkedList<>(Arrays.asList(values));
@@ -99,7 +99,7 @@ public class ConvertUtils {
      * @param value 单元格中的数据
      * @return Double集合
      */
-    public List<Double> convertDoubles(String value) {
+    public static List<Double> convertDoubles(String value) {
         List<String> values = convertStrings(value);
         List<Double> doubles = new LinkedList<>();
         values.forEach(s -> doubles.add(Double.parseDouble(s)));
@@ -112,7 +112,7 @@ public class ConvertUtils {
      * @param value 单元格中的数据
      * @return Double数组
      */
-    public Double[] convertDoubleArrays(String value, String split) {
+    public static Double[] convertDoubleArrays(String value, String split) {
         if (Strings.isEmpty(value)) {
             return null;
         }
@@ -131,7 +131,7 @@ public class ConvertUtils {
      * @param split 分隔符
      * @return Integer数组集合
      */
-    public List<Integer[]> convertIntegerArrays(String value, String split) {
+    public static List<Integer[]> convertIntegerArrays(String value, String split) {
         List<String> values = convertStrings(value);
         List<Integer[]> integerLists = new LinkedList<>();
         values.forEach(s -> {
@@ -152,7 +152,7 @@ public class ConvertUtils {
      * @param cellValue 单元格中的数据
      * @return Integer
      */
-    public Integer convertInteger(String cellValue) {
+    public static Integer convertInteger(String cellValue) {
         cellValue = cellValue.toLowerCase();
         if (cellValue.contains("x")) {
             cellValue = cellValue.split("x")[1];
@@ -169,7 +169,7 @@ public class ConvertUtils {
      * @param cellValue 单元格中的数据
      * @return Long
      */
-    public Long convertLong(String cellValue) {
+    public static Long convertLong(String cellValue) {
         cellValue = cellValue.toLowerCase();
         if (cellValue.contains("x")) {
             cellValue = cellValue.split("x")[1];

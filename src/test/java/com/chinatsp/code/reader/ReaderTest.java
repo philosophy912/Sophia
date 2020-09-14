@@ -3,6 +3,7 @@ package com.chinatsp.code.reader;
 import com.chinatsp.code.BaseTestUtils;
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.utils.CheckUtils;
 import com.philosophy.base.common.Pair;
 import com.philosophy.base.util.ClazzUtils;
 import lombok.extern.slf4j.Slf4j;

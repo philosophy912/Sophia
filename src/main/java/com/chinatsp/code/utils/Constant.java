@@ -7,12 +7,14 @@ package com.chinatsp.code.utils;
 public interface Constant {
     // 基本包名
     String PACKAGE_NAME = "com.chinatsp.code.entity";
+    // 检查者的包名
+    String CHECKER_PACKAGE_NAME = "com.chinatsp.code.checker.impl";
     // 抽象基础实体类
     String BASE_ENTITY = PACKAGE_NAME + ".BaseEntity";
     // 英文的是
     String YES = "yes";
     // 中文的是
-    String CHINESE_YES ="是";
+    String CHINESE_YES = "是";
     // 逗号
     String COMMA = ",";
     // 等号

@@ -6,7 +6,6 @@ import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.actions.ScreenOperationAction;
 import com.chinatsp.dbc.entity.Message;
-import com.philosophy.character.util.CharUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -26,12 +25,14 @@ public class ScreenOperationActionChecker extends BaseChecker implements IChecke
         for (int i = 0; i < entities.size(); i++) {
             int index = i + 1;
             ScreenOperationAction screenOperationAction = (ScreenOperationAction) entities.get(i);
-            String name = screenOperationAction.getClass().getName();
+            String name = screenOperationAction.getClass().getSimpleName();
             // 检查名字是否符合python命名规范
             checkUtils.checkPythonFunction(screenOperationAction.getName(), index, name);
             // 检查屏幕的高宽
             checkUtils.checkClickPoints(screenOperationAction.getPoints(), index, name, maxWidth, maxHeight);
         }
+        // 检查函数名是否有重名
+        checkUtils.findDuplicate(entities, ScreenOperationAction.class.getSimpleName());
     }
 
 

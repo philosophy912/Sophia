@@ -21,9 +21,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddressList;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -50,37 +50,25 @@ import static com.chinatsp.code.utils.Constant.RIGHT_BRACKETS;
 @Slf4j
 public class Template {
 
+    @Resource
     private EnumUtils enumUtils;
+    @Resource
     private ExcelUtils excelUtils;
+    @Resource
     private ClassAttributes classAttributes;
+    @Resource
     private ClassNames classNames;
+    @Resource
     private Configures configures;
 
-    @Autowired
-    public void setEnumUtils(EnumUtils enumUtils) {
-        this.enumUtils = enumUtils;
-    }
 
-    @Autowired
-    public void setExcelUtils(ExcelUtils excelUtils) {
-        this.excelUtils = excelUtils;
-    }
-
-    @Autowired
-    public void setClassAttributes(ClassAttributes classAttributes) {
-        this.classAttributes = classAttributes;
-    }
-
-    @Autowired
-    public void setClassNames(ClassNames classNames) {
-        this.classNames = classNames;
-    }
-
-    @Autowired
-    public void setConfigures(Configures configures) {
-        this.configures = configures;
-    }
-
+    /**
+     * 获取对象中某个值的内容
+     *
+     * @param object 对象
+     * @param name   名字
+     * @return 内容
+     */
     @SneakyThrows
     private String getConfigValue(Object object, String name) {
         name = CharUtils.lowerCase(name);
