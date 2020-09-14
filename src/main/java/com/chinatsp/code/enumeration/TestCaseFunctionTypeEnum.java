@@ -8,17 +8,18 @@ import lombok.Setter;
  * @date 2020/9/14 17:16
  **/
 public enum TestCaseFunctionTypeEnum {
-    BATTERY_ACTION("电源操作"),
-    ELEMENT_ACTION("元素操作"),
-    RELAY_ACTION("继电器操作"),
-    SCREEN_OPERATION_ACTION("屏幕操作"),
-    SCREEN_SHOT_ACTION("截图操作"),
-    COMMON("公共函数"),
-    CAN_COMPARE("CAN信号对比"),
-    ELEMENT_COMPARE("Android元素对比"),
-    IMAGE_COMPARE("图片对比"),
-    INFORMATION_COMPARE("信息对比"),
-    INFORMATION("信息保存");
+    BATTERY_ACTION("BatteryAction"),
+    ELEMENT_ACTION("ElementAction"),
+    RELAY_ACTION("RelayAction"),
+    SCREEN_OPERATION_ACTION("ScreenOperationAction"),
+    SCREEN_SHOT_ACTION("ScreenShotAction"),
+    CAN_ACTION("CanAction"),
+    COMMON("Common"),
+    CAN_COMPARE("CanCompare"),
+    ELEMENT_COMPARE("ElementCompare"),
+    IMAGE_COMPARE("ImageCompare"),
+    INFORMATION_COMPARE("InformationCompare"),
+    INFORMATION("Information");
 
 
     @Setter

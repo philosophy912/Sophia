@@ -1,8 +1,9 @@
 package com.chinatsp.code.reader.impl;
 
 import com.chinatsp.code.enumeration.AndroidLocatorTypeEnum;
-import com.chinatsp.code.reader.api.BaseType;
+import com.chinatsp.code.enumeration.TestCaseFunctionTypeEnum;
 import com.chinatsp.code.reader.api.IClassType;
+import com.chinatsp.code.utils.ConvertUtils;
 import com.philosophy.base.common.Pair;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,7 @@ import static com.chinatsp.code.utils.Constant.LINE;
 
 @Slf4j
 @Component
-public class ListType extends BaseType implements IClassType {
+public class ListType implements IClassType {
     @SneakyThrows
     @Override
     public void setValue(Object object, Field field, Class<?> clazz, String className, String cellValue, int index) {
@@ -42,16 +43,26 @@ public class ListType extends BaseType implements IClassType {
         if (typeName.contains(Pair.class.getName())) {
             // 特别注意Pair有两个方式，一个是全Integer，一个是全String
             if (typeName.contains("String")) {
-                try {
-                    List<Pair<String, String>> pairs = convertUtils.convertPairStringString(cellValue, EQUAL);
-                    field.set(object, pairs);
-                } catch (Exception e) {
-                    String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
-                    throw new RuntimeException(error);
+                if (typeName.contains("TestCaseFunctionTypeEnum")) {
+                    try {
+                        List<Pair<TestCaseFunctionTypeEnum, String>> pairs = ConvertUtils.convertPairTestCaseFunctionTypeString(cellValue, EQUAL);
+                        field.set(object, pairs);
+                    } catch (Exception e) {
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
+                        throw new RuntimeException(error);
+                    }
+                } else {
+                    try {
+                        List<Pair<String, String>> pairs = ConvertUtils.convertPairStringString(cellValue, EQUAL);
+                        field.set(object, pairs);
+                    } catch (Exception e) {
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
+                        throw new RuntimeException(error);
+                    }
                 }
             } else if (typeName.contains("Integer")) {
                 try {
-                    List<Pair<Integer, Integer>> pairs = convertUtils.convertPairIntegerInteger(cellValue, LINE);
+                    List<Pair<Integer, Integer>> pairs = ConvertUtils.convertPairIntegerInteger(cellValue, LINE);
                     field.set(object, pairs);
                 } catch (Exception e) {
                     String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
@@ -64,7 +75,7 @@ public class ListType extends BaseType implements IClassType {
         } else if (typeName.contains(Map.class.getName())) {
             if (typeName.contains("String")) {
                 try {
-                    List<Map<AndroidLocatorTypeEnum, String>> mapList = convertUtils.convertMapStringString(cellValue);
+                    List<Map<AndroidLocatorTypeEnum, String>> mapList = ConvertUtils.convertMapStringString(cellValue);
                     field.set(object, mapList);
                 } catch (Exception e) {
                     String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
@@ -80,7 +91,7 @@ public class ListType extends BaseType implements IClassType {
             if (genericClazz.isEnum()) {
                 // 此处的o是枚举
                 Method method = genericClazz.getMethod("fromValue", String.class);
-                List<String> strings = convertUtils.convertStrings(cellValue);
+                List<String> strings = ConvertUtils.convertStrings(cellValue);
                 List<Object> lists = new LinkedList<>();
                 try {
                     // 遍历获取枚举
@@ -95,7 +106,7 @@ public class ListType extends BaseType implements IClassType {
             } else if (genericClazz == String.class) {
                 List<String> strings;
                 try {
-                    strings = convertUtils.convertStrings(cellValue);
+                    strings = ConvertUtils.convertStrings(cellValue);
                 } catch (Exception e) {
                     String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
                     throw new RuntimeException(error);
@@ -104,7 +115,7 @@ public class ListType extends BaseType implements IClassType {
             } else if (genericClazz == Integer[].class) {
                 List<Integer[]> integers;
                 try {
-                    integers = convertUtils.convertIntegerArrays(cellValue, LINE);
+                    integers = ConvertUtils.convertIntegerArrays(cellValue, LINE);
                 } catch (Exception e) {
                     String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
                     throw new RuntimeException(error);

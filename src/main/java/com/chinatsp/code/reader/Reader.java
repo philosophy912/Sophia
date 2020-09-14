@@ -15,7 +15,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,8 +42,6 @@ public class Reader {
     private ExcelUtils excelUtils;
     @Resource
     private ClassNames classNames;
-    @Resource
-    private ConvertUtils convertUtils;
     @Resource
     private ClassTypeFactory classTypeFactory;
     @Resource
@@ -236,7 +233,7 @@ public class Reader {
                         field.set(configure, content);
                     } else if (type.equals(Integer.class)) {
                         try {
-                            Integer value = convertUtils.convertInteger(content);
+                            Integer value = ConvertUtils.convertInteger(content);
                             field.set(configure, value);
                         } catch (Exception e) {
                             String error = "第" + (row.getRowNum() + 1) + "行填写错误，当前值仅支持Integer类型，请检查值" + content;

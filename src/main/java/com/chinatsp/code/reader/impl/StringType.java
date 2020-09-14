@@ -1,6 +1,5 @@
 package com.chinatsp.code.reader.impl;
 
-import com.chinatsp.code.reader.api.BaseType;
 import com.chinatsp.code.reader.api.IClassType;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +9,7 @@ import java.lang.reflect.Field;
 
 @Slf4j
 @Component
-public class StringType extends BaseType implements IClassType {
+public class StringType implements IClassType {
     @SneakyThrows
     @Override
     public void setValue(Object object, Field field, Class<?> clazz, String className, String cellValue, int index) {

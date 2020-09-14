@@ -1,6 +1,7 @@
 package com.chinatsp.code.utils;
 
 import com.chinatsp.code.enumeration.AndroidLocatorTypeEnum;
+import com.chinatsp.code.enumeration.TestCaseFunctionTypeEnum;
 import com.philosophy.base.common.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -40,7 +41,7 @@ public class ConvertUtils {
             String[] locators = s.split(COMMA);
             for (String locator : locators) {
                 String[] keyValue = locator.split(EQUAL);
-                map.put(AndroidLocatorTypeEnum.fromValue(keyValue[0]), keyValue[1]);
+                map.put(AndroidLocatorTypeEnum.fromValue(keyValue[0].trim()), keyValue[1].trim());
             }
             mapList.add(map);
         });
@@ -59,7 +60,7 @@ public class ConvertUtils {
         List<Pair<String, String>> pairs = new LinkedList<>();
         strings.forEach(s -> {
             String[] values = s.split(split);
-            pairs.add(new Pair<>(values[0], values[1]));
+            pairs.add(new Pair<>(values[0].trim(), values[1].trim()));
         });
         return pairs;
     }
@@ -76,7 +77,7 @@ public class ConvertUtils {
         List<Pair<Integer, Integer>> pairs = new LinkedList<>();
         strings.forEach(s -> {
             String[] values = s.split(split);
-            pairs.add(new Pair<>(Integer.parseInt(values[0]), Integer.parseInt(values[1])));
+            pairs.add(new Pair<>(Integer.parseInt(values[0].trim()), Integer.parseInt(values[1].trim())));
         });
         return pairs;
     }
@@ -93,18 +94,6 @@ public class ConvertUtils {
         return new LinkedList<>(Arrays.asList(values));
     }
 
-    /**
-     * 将CellValue转换成Double集合
-     *
-     * @param value 单元格中的数据
-     * @return Double集合
-     */
-    public static List<Double> convertDoubles(String value) {
-        List<String> values = convertStrings(value);
-        List<Double> doubles = new LinkedList<>();
-        values.forEach(s -> doubles.add(Double.parseDouble(s)));
-        return doubles;
-    }
 
     /**
      * 将CellValue转换成Double数组
@@ -119,7 +108,7 @@ public class ConvertUtils {
         String[] values = value.split(split);
         Double[] doubles = new Double[values.length];
         for (int i = 0; i < values.length; i++) {
-            doubles[i] = Double.parseDouble(values[i]);
+            doubles[i] = Double.parseDouble(values[i].trim());
         }
         return doubles;
     }
@@ -138,7 +127,7 @@ public class ConvertUtils {
             Integer[] integers = new Integer[4];
             String[] strings = s.split(split);
             for (int i = 0; i < strings.length; i++) {
-                integers[i] = Integer.parseInt(strings[i]);
+                integers[i] = Integer.parseInt(strings[i].trim());
             }
             integerLists.add(integers);
         });
@@ -155,7 +144,7 @@ public class ConvertUtils {
     public static Integer convertInteger(String cellValue) {
         cellValue = cellValue.toLowerCase();
         if (cellValue.contains("x")) {
-            cellValue = cellValue.split("x")[1];
+            cellValue = cellValue.split("x")[1].trim();
             return Integer.parseInt(cellValue, 16);
         } else {
             return Integer.parseInt(cellValue);
@@ -172,11 +161,27 @@ public class ConvertUtils {
     public static Long convertLong(String cellValue) {
         cellValue = cellValue.toLowerCase();
         if (cellValue.contains("x")) {
-            cellValue = cellValue.split("x")[1];
+            cellValue = cellValue.split("x")[1].trim();
             return Long.parseLong(cellValue, 16);
         } else {
             return Long.parseLong(cellValue);
         }
     }
 
+    /**
+     * 将CellValue转换成Pair对象
+     *
+     * @param value 单元格中的数据
+     * @param split 分隔符
+     * @return List<Pair < TestCaseFunctionTypeEnum, String>>
+     */
+    public static List<Pair<TestCaseFunctionTypeEnum, String>> convertPairTestCaseFunctionTypeString(String value, String split) {
+        List<String> strings = convertStrings(value);
+        List<Pair<TestCaseFunctionTypeEnum, String>> pairs = new LinkedList<>();
+        strings.forEach(s -> {
+            String[] values = s.split(split);
+            pairs.add(new Pair<>(TestCaseFunctionTypeEnum.fromValue(values[0].trim()), values[1].trim()));
+        });
+        return pairs;
+    }
 }

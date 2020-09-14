@@ -1,6 +1,5 @@
 package com.chinatsp.code.reader.impl;
 
-import com.chinatsp.code.reader.api.BaseType;
 import com.chinatsp.code.reader.api.IClassType;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,7 @@ import static com.chinatsp.code.utils.Constant.YES;
 
 @Slf4j
 @Component
-public class BooleanType extends BaseType implements IClassType {
+public class BooleanType implements IClassType {
     @SneakyThrows
     @Override
     public void setValue(Object object, Field field, Class<?> clazz, String className, String cellValue, int index) {
