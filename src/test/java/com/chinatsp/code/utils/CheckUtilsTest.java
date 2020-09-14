@@ -121,7 +121,7 @@ class CheckUtilsTest {
             BatteryAction baseEntity = (BatteryAction) entities.get(i);
             Double[] doubles = baseEntity.getValues();
             if (doubles != null) {
-                checkUtils.checkBatteryOperator(doubles, i + 1, className, 0, 20);
+                checkUtils.checkBatteryValue(doubles, i + 1, className, 0, 20);
             } else {
                 String file = baseEntity.getCurveFile();
                 if (Strings.isEmpty(file)) {
@@ -148,7 +148,7 @@ class CheckUtilsTest {
         List<BaseEntity> entities = map.get(CharUtils.lowerCase(className));
         for (int i = 0; i < entities.size(); i++) {
             CanCompare baseEntity = (CanCompare) entities.get(i);
-            checkUtils.checkMessageId(baseEntity.getMessageId(), baseEntity.getSignalName(), baseEntity.getExpectValue(), messages, i + 1, className);
+            checkUtils.checkExpectMessage(baseEntity.getMessageId(), baseEntity.getSignalName(), baseEntity.getExpectValue(), messages, i + 1, className);
         }
     }
 

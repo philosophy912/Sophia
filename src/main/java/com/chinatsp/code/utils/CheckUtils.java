@@ -2,6 +2,7 @@ package com.chinatsp.code.utils;
 
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.entity.collection.Element;
 import com.chinatsp.dbc.entity.Message;
 import com.chinatsp.dbc.entity.Signal;
 import com.philosophy.base.common.Pair;
@@ -38,6 +39,42 @@ public class CheckUtils {
     private boolean isFunctionCorrect(String name) {
         int max = 255;
         String regex = "[a-zA-Z]+[a-zA-Z0-9_]*";
+        boolean isMatch = name.matches(regex);
+        if (name.length() > max) {
+            return false;
+        } else {
+            return isMatch;
+        }
+    }
+
+    /**
+     * 函数名是否正确
+     * 仅支持长度小于100的英文字符和下划线组成的图片名且后缀不能带_
+     *
+     * @param name 函数名
+     * @return true：正确 false：不正确
+     */
+    private boolean isImageNameCorrect(String name) {
+        int max = 100;
+        String regex = "^[a-zA-Z]+[a-zA-Z_]*[^_]$";
+        boolean isMatch = name.matches(regex);
+        if (name.length() > max) {
+            return false;
+        } else {
+            return isMatch;
+        }
+    }
+
+    /**
+     * 图片全名是否正确
+     * 仅支持长度小于100的英文字符和下划线组成的JPG、PNG、BMP图片
+     *
+     * @param name 图片名
+     * @return true：正确 false：不正确
+     */
+    private boolean isFullImageNameCorrect(String name) {
+        int max = 100;
+        String regex = "^[a-zA-Z]+[a-zA-Z_]*[^_](.)((?!)bmp)|((?!)jpg)|((?!)png)$";
         boolean isMatch = name.matches(regex);
         if (name.length() > max) {
             return false;
@@ -97,6 +134,7 @@ public class CheckUtils {
         }
     }
 
+
     /**
      * 检查实体类中的某个属性的值是否符合python对于函数的命名规范
      *
@@ -106,10 +144,34 @@ public class CheckUtils {
      */
     public void checkPythonFunction(String name, int index, String className) {
         if (!isFunctionCorrect(name)) {
-            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，必须符合python命名规则";
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
+                    "必须符合python命名规则， 当前名字是" + name;
             throw new RuntimeException(error);
         }
     }
+
+    /**
+     * 检查截图名称，仅支持英文+下划线方式，不支持数字已经.jpg类似的格式
+     */
+    public void checkScreenshotName(String name, int index, String className) {
+        if (!isImageNameCorrect(name)) {
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
+                    "图片名只能是小于100个字符的英文字符或者下划线且不能以下划线结尾, 当前图片名为" + name;
+            throw new RuntimeException(error);
+        }
+    }
+
+    /**
+     * 检查截图名称，图片名必须是完整的图片名，且图片仅支持英文字符和下划线方式命名的JPG、BMG、PNG图片
+     */
+    public void checkTemplateImage(String name, int index, String className) {
+        if (!isFullImageNameCorrect(name)) {
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
+                    "图片名必须是完整的图片名，且图片仅支持英文字符和下划线方式命名的JPG、BMG、PNG图片, 当前图片名为" + name;
+            throw new RuntimeException(error);
+        }
+    }
+
 
     /**
      * 检查点击的点是否在屏幕范围内
@@ -184,7 +246,28 @@ public class CheckUtils {
     }
 
     /**
-     * 检查电源操作的值是否符合要求
+     * 检查电源操作的电流电压值是否符合要求
+     *
+     * @param voltages  电流电压值
+     * @param index     行号
+     * @param className 类名
+     * @param maxValue  最大值
+     * @param minValue  最小值
+     */
+    public void checkBatteryValue(Double[] voltages, int index, String className, double minValue, double maxValue) {
+        if (voltages.length != 1) {
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，电流或电压只能设置一个值";
+            throw new RuntimeException(error);
+        }
+        Double startVoltage = voltages[0];
+        if (startVoltage < minValue || startVoltage > maxValue) {
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压" + startVoltage + "超过了[" + minValue + "," + maxValue + "]";
+            throw new RuntimeException(error);
+        }
+    }
+
+    /**
+     * 检查电源操作的调节值是否符合要求
      *
      * @param voltages  电源集合
      * @param index     行号
@@ -192,33 +275,26 @@ public class CheckUtils {
      * @param maxValue  最大值
      * @param minValue  最小值
      */
-    public void checkBatteryOperator(Double[] voltages, int index, String className, double minValue, double maxValue) {
-        if (voltages.length == 1) {
-            Double startVoltage = voltages[0];
-            if (startVoltage < minValue || startVoltage > maxValue) {
-                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压" + startVoltage + "超过了[" + minValue + "," + maxValue + "]";
-                throw new RuntimeException(error);
-            }
-        } else if (voltages.length == 4) {
-            Double startVoltage = voltages[0];
-            Double endVoltage = voltages[1];
-            Double step = voltages[2];
-            // Double intervalTime = values[3];
-            Double maxStep = maxValue - minValue;
-            if (startVoltage < minValue || startVoltage > maxValue) {
-                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压" + startVoltage + "超过了[" + minValue + "," + maxValue + "]";
-                throw new RuntimeException(error);
-            }
-            if (endVoltage < minValue || endVoltage > maxValue) {
-                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压" + startVoltage + "超过了[" + minValue + "," + maxValue + "]";
-                throw new RuntimeException(error);
-            }
-            if (step > maxStep) {
-                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，步长不能超过" + maxStep + "V";
-                throw new RuntimeException(error);
-            }
-        } else {
-            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压或者初始电压-截止电压-步长-间隔时间";
+    public void checkBatteryAdjust(Double[] voltages, int index, String className, double minValue, double maxValue) {
+        if (voltages.length != 4) {
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，电压调节设置模式为其实起始电压-终止电压-步进值-间隔时间";
+            throw new RuntimeException(error);
+        }
+        Double startVoltage = voltages[0];
+        Double endVoltage = voltages[1];
+        Double step = voltages[2];
+        // Double intervalTime = values[3];
+        Double maxStep = maxValue - minValue;
+        if (startVoltage < minValue || startVoltage > maxValue) {
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压" + startVoltage + "超过了[" + minValue + "," + maxValue + "]";
+            throw new RuntimeException(error);
+        }
+        if (endVoltage < minValue || endVoltage > maxValue) {
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，设置电压" + startVoltage + "超过了[" + minValue + "," + maxValue + "]";
+            throw new RuntimeException(error);
+        }
+        if (step > maxStep) {
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，步长不能超过" + maxStep + "V";
             throw new RuntimeException(error);
         }
     }
@@ -259,7 +335,7 @@ public class CheckUtils {
      * @param index     行号
      * @param className 类名
      */
-    public void checkMessageId(Long messageId, String signalName, Long expectValue, List<Message> messages, int index, String className) {
+    public void checkExpectMessage(Long messageId, String signalName, Long expectValue, List<Message> messages, int index, String className) {
         Message message = getMessage(messages, messageId);
         if (null == message) {
             String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，CAN的消息ID[" + messageId + "]找不到";
@@ -294,6 +370,44 @@ public class CheckUtils {
     }
 
     /**
+     * 检查图片对比中的相似度是否正确
+     *
+     * @param threshold 灰度二值化值
+     * @param index     行号
+     * @param className 类名
+     */
+    public void checkThreshold(Integer threshold, int index, String className) {
+        if (threshold < 0 || threshold > 255) {
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，相似度在0-255间， 当前值为" + threshold;
+            throw new RuntimeException(error);
+        }
+    }
+
+    /**
+     * 检查定义的element是否能够找到
+     *
+     * @param elementName 其他表中定义的element
+     * @param index       行号
+     * @param className   类名
+     * @param elements    Sheet【element】读取出来内容
+     */
+    public void checkElementExist(String elementName, int index, String className, List<BaseEntity> elements) {
+        boolean flag = false;
+        for (BaseEntity baseEntity : elements) {
+            Element element = (Element) baseEntity;
+            if (element.getName().equalsIgnoreCase(elementName)) {
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) {
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
+                    "" + elementName + "在Element表格中找不到";
+            throw new RuntimeException(error);
+        }
+    }
+
+    /**
      * 检查configure是否正确
      *
      * @param configure 配置
@@ -311,7 +425,8 @@ public class CheckUtils {
         }
     }
 
-    public void findDuplicateString(List<BaseEntity> entities){
+
+    public void findDuplicateString(List<BaseEntity> entities) {
         Map<String, String> map = new HashMap<>(12);
         entities.forEach(baseEntity -> {
             String key = baseEntity.getName();
@@ -330,5 +445,6 @@ public class CheckUtils {
             }
         }
     }
+
 
 }
