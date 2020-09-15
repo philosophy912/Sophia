@@ -182,8 +182,14 @@ public class CheckUtils {
         for (Pair<Integer, Integer> pair : points) {
             int x = pair.getFirst();
             int y = pair.getSecond();
-            if (x <= 0 || x >= maxWidth || y <= 0 || y >= maxHeight) {
-                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，请检查高宽填写是否符合要求";
+            if (x <= 0 || x >= maxWidth) {
+                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
+                        x + "必须在小于等于" + maxWidth;
+                throw new RuntimeException(error);
+            }
+            if (y <= 0 || y >= maxHeight) {
+                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
+                        y + "必须在小于等于" + maxHeight;
                 throw new RuntimeException(error);
             }
         }

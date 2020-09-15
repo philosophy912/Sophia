@@ -4,6 +4,7 @@ import com.chinatsp.code.BaseTestUtils;
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.reader.Reader;
+import com.chinatsp.code.service.ReaderService;
 import com.chinatsp.dbc.entity.Message;
 import com.chinatsp.dbc.impl.DbcParser;
 import com.philosophy.base.common.Pair;
@@ -33,8 +34,6 @@ class CheckerTest {
     private Reader reader;
     @Autowired
     private Checker checker;
-    @Autowired
-    private DbcParser dbcParser;
 
     private Map<String, List<BaseEntity>> map;
 
@@ -44,8 +43,6 @@ class CheckerTest {
 
     @BeforeEach
     void beforeTest() {
-        Path dbc = Paths.get(BaseTestUtils.getFileFolder(), "HiFire_B31CP_Info_HU_CAN_V2.0.dbc");
-        messages = dbcParser.parse(dbc);
         Path path = Paths.get(BaseTestUtils.getFileFolder(), "template.xlsx");
         Pair<Map<String, List<BaseEntity>>, Configure> pair = reader.readTestCase(path);
         map = pair.getFirst();
@@ -55,6 +52,6 @@ class CheckerTest {
 
     @Test
     void check() {
-        checker.check(map, messages, configure);
+        checker.check(map, configure);
     }
 }
