@@ -3,6 +3,8 @@ package com.chinatsp.code.utils;
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.collection.Element;
+import com.chinatsp.code.entity.testcase.TestCase;
+import com.chinatsp.code.enumeration.TestCaseFunctionTypeEnum;
 import com.chinatsp.dbc.entity.Message;
 import com.chinatsp.dbc.entity.Signal;
 import com.philosophy.base.common.Pair;
@@ -444,4 +446,23 @@ public class CheckUtils {
     }
 
 
+    public void checkAction(List<Pair<TestCaseFunctionTypeEnum, String>> pairs, int index, String name, Map<String, List<BaseEntity>> map) {
+        for (Pair<TestCaseFunctionTypeEnum, String> pair : pairs) {
+            TestCaseFunctionTypeEnum typeEnum = pair.getFirst();
+            String functionName = pair.getSecond();
+            List<BaseEntity> entities = map.get((CharUtils.lowerCase(typeEnum.getValue())));
+            boolean flag = false;
+            for (BaseEntity baseEntity : entities) {
+                if (baseEntity.getName().equalsIgnoreCase(functionName)) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) {
+                String error = "Sheet[TestCase]的第" + index + "行数据在[" + CharUtils.upperCase(typeEnum.getValue()) +
+                        "]中找不到方法" + functionName;
+                throw new RuntimeException(error);
+            }
+        }
+    }
 }

@@ -4,6 +4,7 @@ import com.chinatsp.code.checker.api.BaseChecker;
 import com.chinatsp.code.checker.api.IChecker;
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.entity.testcase.TestCase;
 import com.chinatsp.dbc.entity.Message;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +36,19 @@ public class TestCaseChecker extends BaseChecker implements IChecker {
                     }
                 }
             }
+        }
+        // 单独检查test case
+        List<BaseEntity> entities = getEntity(map, TestCase.class);
+        for (int i = 0; i < entities.size(); i++) {
+            int index = i + 1;
+            TestCase testCase = (TestCase) entities.get(i);
+            String name = testCase.getClass().getName();
+            // 检查名字是否符合python命名规范
+            checkUtils.checkPythonFunction(testCase.getName(), index, name);
+            // 检查操作是否都定义了
+            checkUtils.checkAction(testCase.getPreCondition(), index, name, map);
+            checkUtils.checkAction(testCase.getSteps(), index, name, map);
+            checkUtils.checkAction(testCase.getExpect(), index, name, map);
         }
     }
 }
