@@ -2,6 +2,7 @@ package com.chinatsp.code.entity.actions;
 
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.enumeration.DeviceTpeEnum;
+import com.chinatsp.code.enumeration.ScreenShotTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,7 +18,11 @@ public class ScreenShotAction extends BaseEntity {
     /**
      * 截图类型，目前只支持DeviceTpeEnum描述的类型
      */
-    private DeviceTpeEnum deviceTpeEnum;
+    private ScreenShotTypeEnum screenShotType;
+    /**
+     * 屏幕编号
+     */
+    private Integer displayId;
     /**
      * 截图张数
      */
@@ -26,8 +31,4 @@ public class ScreenShotAction extends BaseEntity {
      * 截图名字，不需要包含后缀名
      */
     private String imageName;
-    /**
-     * todo 是否区域截图，暂不启用
-     */
-    private Boolean isArea;
 }

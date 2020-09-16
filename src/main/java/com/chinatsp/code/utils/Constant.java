@@ -23,10 +23,8 @@ public interface Constant {
     String LINE = "-";
     // 分割点
     String SPLIT_POINT = "\\.";
-    // 回车换行
-    String NEXT_LINE = "\r\n";
     // 换行
-    String LINUX_NEXT_LINE = "\n";
+    String NEXT_LINE = "\n";
     // 左括号（英文)
     String LEFT_BRACKETS = "(";
     // 右括号（英文)

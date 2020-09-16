@@ -19,9 +19,7 @@ public enum TestCaseFunctionTypeEnum {
     ELEMENT_COMPARE("ElementCompare"),
     IMAGE_COMPARE("ImageCompare"),
     INFORMATION_COMPARE("InformationCompare"),
-    INFORMATION("Information"),
-    PASS("pass"),
-    YEILD("yeild");
+    INFORMATION("Information");
 
 
     @Setter

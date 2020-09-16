@@ -4,6 +4,7 @@ import com.chinatsp.code.checker.api.BaseChecker;
 import com.chinatsp.code.checker.api.IChecker;
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.entity.actions.ScreenShotAction;
 import com.chinatsp.code.entity.compare.ImageCompare;
 import com.chinatsp.dbc.entity.Message;
 import org.springframework.stereotype.Component;

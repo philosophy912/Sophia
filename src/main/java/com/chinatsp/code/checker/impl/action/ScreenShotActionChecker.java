@@ -4,6 +4,7 @@ import com.chinatsp.code.checker.api.BaseChecker;
 import com.chinatsp.code.checker.api.IChecker;
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.entity.actions.ScreenOpsAction;
 import com.chinatsp.code.entity.actions.ScreenShotAction;
 import com.chinatsp.dbc.entity.Message;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +29,12 @@ public class ScreenShotActionChecker extends BaseChecker implements IChecker {
             checkUtils.checkPythonFunction(screenShotAction.getName(), index, name);
             // 检查截图名是否符合要求
             checkUtils.checkScreenshotName(screenShotAction.getImageName(), index, name);
+            // 检查屏幕是否符合要求
+            checkUtils.checkDisplay(screenShotAction.getDisplayId(), index, name, configure.getMaxDisplay());
         }
         // 检查函数名是否有重名
         checkUtils.findDuplicate(entities, ScreenShotAction.class.getSimpleName());
+        // 检查截图名称是否有重名
+        checkUtils.findImageNameDuplicate(entities, ScreenOpsAction.class.getSimpleName());
     }
 }

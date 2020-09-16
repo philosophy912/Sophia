@@ -15,7 +15,7 @@ import java.util.Map;
 
 import static com.chinatsp.code.utils.Constant.COMMA;
 import static com.chinatsp.code.utils.Constant.EQUAL;
-import static com.chinatsp.code.utils.Constant.LINUX_NEXT_LINE;
+import static com.chinatsp.code.utils.Constant.NEXT_LINE;
 
 /**
  * @author lizhe
@@ -90,7 +90,7 @@ public class ConvertUtils {
      */
     public static List<String> convertStrings(String value) {
         log.trace("cell value is {}", value);
-        String[] values = value.split(LINUX_NEXT_LINE);
+        String[] values = value.split(NEXT_LINE);
         return new LinkedList<>(Arrays.asList(values));
     }
 
@@ -180,12 +180,7 @@ public class ConvertUtils {
         List<Pair<TestCaseFunctionTypeEnum, String>> pairs = new LinkedList<>();
         strings.forEach(s -> {
             String[] values = s.split(split);
-            TestCaseFunctionTypeEnum typeEnum = TestCaseFunctionTypeEnum.fromValue(values[0].trim());
-            String pairValue = null;
-            if (values.length >= 2) {
-                pairValue = values[1].trim();
-            }
-            pairs.add(new Pair<>(typeEnum, pairValue));
+            pairs.add(new Pair<>(TestCaseFunctionTypeEnum.fromValue(values[0].trim()), values[1].trim()));
         });
         return pairs;
     }

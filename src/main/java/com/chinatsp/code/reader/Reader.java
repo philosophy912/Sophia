@@ -1,6 +1,6 @@
 package com.chinatsp.code.reader;
 
-import com.chinatsp.code.beans.ClassNames;
+import com.chinatsp.code.beans.ExcelProperty;
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.reader.api.ClassTypeFactory;
@@ -25,10 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.chinatsp.code.utils.Constant.LINUX_NEXT_LINE;
+import static com.chinatsp.code.utils.Constant.NEXT_LINE;
 import static com.chinatsp.code.utils.Constant.PACKAGE_NAME;
 import static com.chinatsp.code.utils.Constant.SPLIT_LEFT_BRACKETS;
-import static com.chinatsp.code.utils.Constant.SPLIT_POINT;
 import static com.chinatsp.code.utils.Constant.SPLIT_RIGHT_BRACKETS;
 
 /**
@@ -39,9 +38,9 @@ import static com.chinatsp.code.utils.Constant.SPLIT_RIGHT_BRACKETS;
 @Slf4j
 public class Reader {
     @Resource
-    private ExcelUtils excelUtils;
+    private ExcelProperty excelProperty;
     @Resource
-    private ClassNames classNames;
+    private ExcelUtils excelUtils;
     @Resource
     private ClassTypeFactory classTypeFactory;
     @Resource
@@ -58,9 +57,9 @@ public class Reader {
     private Map<String, Sheet> readExcel(Path path) {
         Map<String, Sheet> map = new HashMap<>(12);
         Workbook workbook = excelUtils.openWorkbook(path);
-        Field[] fields = classNames.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            String fieldName = field.getName();
+        Map<String, String> classMap = excelProperty.getClassname();
+        for (Map.Entry<String, String> entry : classMap.entrySet()) {
+            String fieldName = entry.getKey();
             log.debug("field name is {}", fieldName);
             for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
                 Sheet sheet = workbook.getSheetAt(i);
@@ -110,12 +109,15 @@ public class Reader {
     private void handleFields(Row titleRow, Map<String, Integer> map, Field[] fields) {
         for (Field field : fields) {
             String fieldName = field.getName();
+            log.trace("handle filed [{}]", fieldName);
             for (int i = 0; i < titleRow.getPhysicalNumberOfCells(); i++) {
                 Cell cell = titleRow.getCell(i);
                 String cellValue = excelUtils.getCellValue(cell);
-                String value = cellValue.split(LINUX_NEXT_LINE)[0];
+                String value = cellValue.split(NEXT_LINE)[0];
+                log.trace("the filename value [{}] and cellValue =[{}]", value, cellValue);
                 if (value.equalsIgnoreCase(fieldName)) {
                     map.put(fieldName, i);
+                    break;
                 }
             }
         }
@@ -146,30 +148,47 @@ public class Reader {
         return entities;
     }
 
+    /**
+     * 处理每行的数据
+     *
+     * @param entities  实体类集合
+     * @param row       行数据
+     * @param clazz     类
+     * @param entityMap 属性与列对应关系字典
+     * @param rowNo     列号
+     */
     @SneakyThrows
     private void handleRow(List<BaseEntity> entities, Row row, Class<?> clazz, Map<String, Integer> entityMap, int rowNo) {
         // 实例化对象，属于BaseEntity的子类
         Object o = clazz.newInstance();
+        log.debug("class name is [{}]", o.getClass().getSimpleName());
         Field[] fields = clazz.getSuperclass().getDeclaredFields();
-        for (Field field : fields) {
-            // 属性名
-            String name = field.getName();
-            Integer index = entityMap.get(name);
-            String cellValue = excelUtils.getCellValue(row.getCell(index));
-            // 设置属性值
-            setAttributeValue(o, field, cellValue, rowNo);
-        }
+        setFieldValue(row, entityMap, rowNo, o, fields);
         fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
-            // 属性名
-            String name = field.getName();
-            Integer index = entityMap.get(name);
-            String cellValue = excelUtils.getCellValue(row.getCell(index));
-            // 设置属性值
-            setAttributeValue(o, field, cellValue, rowNo);
-        }
+        setFieldValue(row, entityMap, rowNo, o, fields);
         // 强行转换成BaseEntity类型，后续使用的时候根据实际情况做强制转换
         entities.add((BaseEntity) o);
+    }
+
+    /**
+     * 根据属性值读取excel每列的内容并填到对象中
+     *
+     * @param row       行
+     * @param entityMap 属性与列对应关系字典
+     * @param rowNo     列号
+     * @param o         对象
+     * @param fields    属性数组
+     */
+    private void setFieldValue(Row row, Map<String, Integer> entityMap, int rowNo, Object o, Field[] fields) {
+        for (Field field : fields) {
+            // 属性名
+            String name = field.getName();
+            Integer index = entityMap.get(name);
+            log.debug("handle row[{}] index = [{}]", name, index);
+            String cellValue = excelUtils.getCellValue(row.getCell(index));
+            // 设置属性值
+            setAttributeValue(o, field, cellValue, rowNo);
+        }
     }
 
     /**
@@ -185,9 +204,8 @@ public class Reader {
         log.debug("file name is = {}", fieldName);
         field.setAccessible(true);
         Class<?> clazz = field.getType();
-        String className = object.getClass().getName();
-        String[] classNames = className.split(SPLIT_POINT);
-        className = "类[" + classNames[classNames.length - 1] + "]的属性[" + fieldName + "]";
+        String className = object.getClass().getSimpleName();
+        className = "类[" + className + "]的属性[" + fieldName + "]";
         IClassType classType = classTypeFactory.getClassType(clazz);
         if (null != classType) {
             classType.setValue(object, field, clazz, className, cellValue, index);
@@ -228,6 +246,7 @@ public class Reader {
                 String fieldName = field.getName();
                 Class<?> type = field.getType();
                 field.setAccessible(true);
+                log.debug("field name is {}", fieldName);
                 if (fieldName.equalsIgnoreCase(name)) {
                     if (type.equals(String.class)) {
                         field.set(configure, content);

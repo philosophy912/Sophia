@@ -17,11 +17,11 @@ import java.util.List;
 @Setter
 @Getter
 @ToString
-public class ScreenOperationAction extends BaseEntity {
+public class ScreenOpsAction extends BaseEntity {
     /**
      * 屏幕类型, 只支持DeviceTpeEnum描述的类型
      */
-    private DeviceTpeEnum deviceTpeEnum;
+    private DeviceTpeEnum deviceType;
     /**
      * 操作类型OperationActionTypeEnum支持的操作类型
      */

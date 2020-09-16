@@ -2,6 +2,8 @@ package com.chinatsp.code.utils;
 
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.entity.actions.ScreenOpsAction;
+import com.chinatsp.code.entity.actions.ScreenShotAction;
 import com.chinatsp.code.entity.collection.Element;
 import com.chinatsp.code.entity.testcase.TestCase;
 import com.chinatsp.code.enumeration.TestCaseFunctionTypeEnum;
@@ -453,7 +455,27 @@ public class CheckUtils {
                 map.put(name, baseEntity);
             }
         }
+    }
 
+    /**
+     * 查找重复的函数名
+     *
+     * @param entities  实体清单
+     * @param className 类名
+     */
+    public void findImageNameDuplicate(List<BaseEntity> entities, String className) {
+        Map<String, BaseEntity> map = new HashMap<>(12);
+        for (int i = 0; i < entities.size(); i++) {
+            int index = i + 1;
+            ScreenShotAction screenShotAction = (ScreenShotAction) entities.get(i);
+            String name = screenShotAction.getImageName();
+            if (map.containsKey(screenShotAction.getImageName())) {
+                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据" + name + "有重复，请检查";
+                throw new RuntimeException(error);
+            } else {
+                map.put(name, screenShotAction);
+            }
+        }
     }
 
     /**

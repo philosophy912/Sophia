@@ -1,8 +1,6 @@
 package com.chinatsp.code.template;
 
-import com.chinatsp.code.beans.ClassAttributes;
-import com.chinatsp.code.beans.ClassNames;
-import com.chinatsp.code.beans.Configures;
+import com.chinatsp.code.beans.ExcelProperty;
 import com.philosophy.base.util.ClazzUtils;
 import com.philosophy.base.util.EnumUtils;
 import com.philosophy.base.util.ParseUtils;
@@ -25,11 +23,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,27 +52,24 @@ public class Template {
     @Resource
     private ExcelUtils excelUtils;
     @Resource
-    private ClassAttributes classAttributes;
-    @Resource
-    private ClassNames classNames;
-    @Resource
-    private Configures configures;
+    private ExcelProperty excelProperty;
 
 
     /**
      * 获取对象中某个值的内容
      *
-     * @param object 对象
-     * @param name   名字
+     * @param map  对象
+     * @param name 名字
      * @return 内容
      */
     @SneakyThrows
-    private String getConfigValue(Object object, String name) {
-        log.debug("object name is " + object.getClass().getSimpleName() + " and name is " + name);
-        name = CharUtils.lowerCase(name);
-        Method method = object.getClass().getMethod("get" + CharUtils.upperCase(name));
-        String value = (String) method.invoke(object);
-        return new String(value.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+    private String getConfigValue(Map<String, String> map, String name) {
+//        log.debug("object name is " + object.getClass().getSimpleName() + " and name is " + name);
+//        name = CharUtils.lowerCase(name);
+//        Method method = object.getClass().getMethod("get" + CharUtils.upperCase(name));
+//        String value = (String) method.invoke(object);
+//        return new String(value.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+        return map.get(CharUtils.lowerCase(name));
     }
 
 
@@ -104,7 +98,7 @@ public class Template {
             String name = field.getName();
             String upperName = CharUtils.upperCase(name);
             log.trace("field name is {}", name);
-            String chinese = getConfigValue(classAttributes, name);
+            String chinese = getConfigValue(excelProperty.getAttribute(), name);
             titles.add(upperName + "\n" + chinese);
         }
     }
@@ -136,12 +130,14 @@ public class Template {
      * @param className 类名
      */
     private void setSheet(Sheet sheet, CellStyle cellStyle, String className) {
+        log.debug("handle sheet {}", className);
         Row row = sheet.createRow(0);
         List<String> titles = getTitles(className);
         Map<Integer, String[]> enums = getEnums(className);
         for (int i = 0; i < titles.size(); i++) {
             Cell cell = row.createCell(i);
             String content = titles.get(i);
+            log.debug("the column [{}] value is [{}]", i + 1, content);
             cell.setCellValue(content);
             cell.setCellStyle(cellStyle);
             sheet.setColumnWidth(i, getWidth(content));
@@ -154,6 +150,7 @@ public class Template {
             for (Map.Entry<Integer, String[]> entry : enums.entrySet()) {
                 Integer index = entry.getKey();
                 String[] values = entry.getValue();
+                log.trace("Combo box value is [{}]", Arrays.toString(values));
                 DataValidationHelper helper = sheet.getDataValidationHelper();
                 DataValidationConstraint constraint = helper.createExplicitListConstraint(values);
                 CellRangeAddressList cellRangeAddressList = new CellRangeAddressList(i, i, index, index);
@@ -181,6 +178,7 @@ public class Template {
      */
     @SneakyThrows
     private Map<Integer, String[]> getEnums(String className) {
+        log.trace("handle enum class which name is {}", className);
         Map<Integer, String[]> enums = new HashMap<>();
         Class<?> clazz = Class.forName(className);
         Object object = clazz.newInstance();
@@ -197,14 +195,64 @@ public class Template {
 
 
     /**
+     * 创建ConfigureSheet
+     *
+     * @param workbook  workbook
+     * @param cellStyle 单元格样式
+     */
+    @SneakyThrows
+    private void setConfigureSheet(Workbook workbook, CellStyle cellStyle) {
+        String configure = "configure";
+        Map<String, String> map = excelProperty.getClassname();
+        String chinese = getConfigValue(map, configure);
+        String sheetName = CharUtils.upperCase(chinese) + LEFT_BRACKETS + CharUtils.upperCase(configure) + RIGHT_BRACKETS;
+        Sheet sheet = workbook.createSheet(sheetName);
+        // 创建titleRow
+        Row titleRow = sheet.createRow(0);
+        String[] titles = new String[]{"Id\n序号", "Name\n名字", "Comment\n描述", "Content\n内容"};
+        for (int i = 0; i < titles.length; i++) {
+            Cell cell = titleRow.createCell(i);
+            cell.setCellStyle(cellStyle);
+            cell.setCellValue(titles[i]);
+        }
+        map = excelProperty.getConfigures();
+        int i = 1;
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            String fieldName = entry.getKey();
+            String comment = entry.getValue();
+            Row row = sheet.createRow(i);
+            Cell indexCell = row.createCell(0);
+            Cell nameCell = row.createCell(1);
+            Cell commentCell = row.createCell(2);
+            Cell contentCell = row.createCell(3);
+            indexCell.setCellStyle(cellStyle);
+            nameCell.setCellStyle(cellStyle);
+            commentCell.setCellStyle(cellStyle);
+            contentCell.setCellStyle(cellStyle);
+            indexCell.setCellValue(i);
+            nameCell.setCellValue(fieldName);
+            commentCell.setCellValue(comment);
+            contentCell.setCellValue("");
+            i++;
+
+        }
+        // 宽度在非精确的情况下设置就是width * 256
+        sheet.setColumnWidth(1, 25 * 256);
+        sheet.setColumnWidth(2, 25 * 256);
+        sheet.setColumnWidth(3, 80 * 256);
+    }
+
+    /**
      * 创建automotive的模板文件
      *
-     * @param path 文件
+     * @param path 要创建的文件
      */
     @SneakyThrows
     public void createTemplateExcelFile(Path path) {
+        log.debug("open workbook {}", path.toAbsolutePath());
         Workbook workbook = excelUtils.openWorkbook(path);
         List<String> classes = ClazzUtils.getClazzName(PACKAGE_NAME, true);
+        log.trace("class names is {}", Arrays.toString(ParseUtils.toArray(classes)));
         // 去掉了抽象类
         classes.remove(BASE_ENTITY);
         // 设置单元格内容自动换行、四周边框以及居中显示
@@ -218,60 +266,18 @@ public class Template {
         for (String className : classes) {
             String[] splits = className.split("\\.");
             String sheetName = splits[splits.length - 1];
-            log.trace("sheetName = {}", sheetName);
             sheetName = CharUtils.upperCase(sheetName);
-            String chinese = getConfigValue(classNames, sheetName);
-            log.trace("chinese name is = {}", chinese);
+            // Sheet英文就等于Entity的名字
+            log.trace("english sheetName = {}", sheetName);
+            String chinese = getConfigValue(excelProperty.getClassname(), sheetName);
+            log.trace("chinese sheetName is = {}", chinese);
             sheetName = CharUtils.upperCase(chinese) + LEFT_BRACKETS + sheetName + RIGHT_BRACKETS;
+            log.debug("real sheet name is {}", sheetName);
             Sheet sheet = workbook.createSheet(sheetName);
             setSheet(sheet, cellStyle, className);
         }
         setConfigureSheet(workbook, cellStyle);
         workbook.write(Files.newOutputStream(path));
         excelUtils.close(workbook);
-    }
-
-    /**
-     * 创建ConfigureSheet
-     *
-     * @param workbook  workbook
-     * @param cellStyle 单元格样式
-     */
-    @SneakyThrows
-    private void setConfigureSheet(Workbook workbook, CellStyle cellStyle) {
-        String configure = "configure";
-        String chinese = getConfigValue(classNames, configure);
-        String sheetName = CharUtils.upperCase(chinese) + LEFT_BRACKETS + CharUtils.upperCase(configure) + RIGHT_BRACKETS;
-        Sheet sheet = workbook.createSheet(sheetName);
-        // 创建titleRow
-        Row titleRow = sheet.createRow(0);
-        String[] titles = new String[]{"Id\n序号", "Name\n名字", "Comment\n描述", "Content\n内容"};
-        for (int i = 0; i < titles.length; i++) {
-            Cell cell = titleRow.createCell(i);
-            cell.setCellStyle(cellStyle);
-            cell.setCellValue(titles[i]);
-        }
-        Field[] fields = configures.getClass().getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
-            String fieldName = field.getName();
-            Row row = sheet.createRow(i + 1);
-            Cell indexCell = row.createCell(0);
-            Cell nameCell = row.createCell(1);
-            Cell commentCell = row.createCell(2);
-            Cell contentCell = row.createCell(3);
-            indexCell.setCellStyle(cellStyle);
-            nameCell.setCellStyle(cellStyle);
-            commentCell.setCellStyle(cellStyle);
-            contentCell.setCellStyle(cellStyle);
-            indexCell.setCellValue(i + 1);
-            nameCell.setCellValue(fieldName);
-            commentCell.setCellValue(getConfigValue(configures, fieldName));
-            contentCell.setCellValue("");
-        }
-        // 宽度在非精确的情况下设置就是width * 256
-        sheet.setColumnWidth(1, 25 * 256);
-        sheet.setColumnWidth(2, 25 * 256);
-        sheet.setColumnWidth(3, 80 * 256);
     }
 }

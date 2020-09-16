@@ -5,7 +5,7 @@ import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.actions.BatteryAction;
 import com.chinatsp.code.entity.actions.RelayAction;
-import com.chinatsp.code.entity.actions.ScreenOperationAction;
+import com.chinatsp.code.entity.actions.ScreenOpsAction;
 import com.chinatsp.code.entity.actions.CanAction;
 import com.chinatsp.code.entity.compare.CanCompare;
 import com.chinatsp.code.entity.compare.ImageCompare;
@@ -74,7 +74,7 @@ class CheckUtilsTest {
         String className = "ScreenOperationAction";
         List<BaseEntity> entities = map.get(CharUtils.lowerCase(className));
         for (int i = 0; i < entities.size(); i++) {
-            ScreenOperationAction baseEntity = (ScreenOperationAction) entities.get(i);
+            ScreenOpsAction baseEntity = (ScreenOpsAction) entities.get(i);
             checkUtils.checkClickPoints(baseEntity.getPoints(), i + 1, className, width, height);
         }
     }
@@ -97,7 +97,7 @@ class CheckUtilsTest {
         String className = "ScreenOperationAction";
         List<BaseEntity> entities = map.get(CharUtils.lowerCase(className));
         for (int i = 0; i < entities.size(); i++) {
-            ScreenOperationAction baseEntity = (ScreenOperationAction) entities.get(i);
+            ScreenOpsAction baseEntity = (ScreenOpsAction) entities.get(i);
             checkUtils.checkDisplay(baseEntity.getScreenIndex(), i + 1, className, maxDisplay);
         }
     }

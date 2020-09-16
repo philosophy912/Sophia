@@ -2,3 +2,91 @@ logging:
   level:
     root: info
     com.chinatsp.code.*: info
+
+
+
+config:
+  attribute:
+    id: 序号
+    name: 名字/函数名/模块名
+    comment: 描述
+    batteryType: 电源类型
+    batteryOperationType: 电源操作类型
+    values: 电源操作值
+    repeatTimes: 重复次数
+    curveFile: 电压曲线文件
+    element: 元素名
+    slideTimes: 滑动次数
+    relayOperationType: 继电器操作类型
+    channelIndex: 继电器通道
+    operationActionType: 操作类型
+    screenShotType: 截图类型
+    screenIndex: 屏幕序号
+    points: 坐标点
+    continueTimes: 持续时间
+    deviceType: 屏幕类型
+    count: 截图张数
+    imageName: 截图名称
+    isArea: 是否区域截图
+    signals: 信号名与值
+    locators: 元素定位符
+    params: 函数参数
+    messageId: 信号ID
+    signalName: 信号名
+    expectValue: 期望值
+    exact: 是否精确对比
+    elementCompareType: 元素对比类型
+    timeout: 超时时间
+    compareType: 图片对比方式
+    templateLight: 模板亮图
+    templateDark: 模板暗图
+    positions: 比较区域
+    similarity: 相似度
+    isGray: 是否灰度对比
+    threshold: 灰度二值化阈值
+    origin: 原始信息
+    target: 目标信息
+    elementAttributes: 元素属性
+    testCaseType: 测试用例类型
+    moduleName: 模块名
+    preConditionDescription: 前置条件描述
+    stepsDescription: 操作步骤描述
+    expectDescription: 期望结果描述
+    appearCount: 出现次数
+    functions: 函数执行前
+    suites: 套件执行前
+    preCondition: 前置条件
+    steps: 操作步骤
+    expect: 期望结果
+    displayId: 屏幕序号
+  classname:
+    testCase: 测试用例
+    screenShotAction: 截图操作
+    screenOpsAction: 屏幕操作
+    elementAction: 元素操作
+    relayAction: 继电器操作
+    batteryAction: 电源操作
+    information: 信息保存
+    canAction: Can信号
+    element: 安卓元素
+    canCompare: CAN信号对比
+    imageCompare: 图片对比
+    informationCompare: 信息对比
+    elementCompare: Android元素对比
+    common: 公共函数
+    configure: 配置
+    testCaseSetUp: 测试用例前置条件
+  configures:
+    maxDisplay: 最大支持的显示屏的个数
+    maxRelayChannel: 最大支持的继电器通道
+    maxVoltage: 最大支持的电压值
+    minVoltage: 最小支持的电压值
+    SocPort: SOC串口号
+    SocBaudRate: SOC串口波特率
+    McuPort: MCU串口号
+    McuBaudRate: MCU串口波特率
+    maxWidth: 显示屏宽
+    maxHeight: 显示屏高
+    screenShotTempPath: 临时图片存放路径
+    templateImagePath: 模板图片存放路径
+    dbcFile: CAN的DBC文件绝对路径
