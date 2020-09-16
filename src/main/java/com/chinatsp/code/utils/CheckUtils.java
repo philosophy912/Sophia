@@ -434,7 +434,12 @@ public class CheckUtils {
         }
     }
 
-
+    /**
+     * 查找重复的函数名
+     *
+     * @param entities  实体清单
+     * @param className 类名
+     */
     public void findDuplicate(List<BaseEntity> entities, String className) {
         Map<String, BaseEntity> map = new HashMap<>(12);
         for (int i = 0; i < entities.size(); i++) {
@@ -451,8 +456,14 @@ public class CheckUtils {
 
     }
 
-
-    public void checkAction(List<Pair<TestCaseFunctionTypeEnum, String>> pairs, int index, String name, Map<String, List<BaseEntity>> map) {
+    /**
+     * 检查测试用例中的执行部分，即BatteryAction=battery_test1
+     *
+     * @param pairs 前置条件/操作步骤/期望结果的部分
+     * @param index 序号
+     * @param map   所有Sheet的集合
+     */
+    public void checkAction(List<Pair<TestCaseFunctionTypeEnum, String>> pairs, int index, Map<String, List<BaseEntity>> map) {
         for (Pair<TestCaseFunctionTypeEnum, String> pair : pairs) {
             TestCaseFunctionTypeEnum typeEnum = pair.getFirst();
             String functionName = pair.getSecond();
@@ -469,6 +480,30 @@ public class CheckUtils {
                         "]中找不到方法" + functionName;
                 throw new RuntimeException(error);
             }
+        }
+    }
+
+    /**
+     * 检查测试用例前置条件的模块是否在测试用例模块中能找到
+     *
+     * @param moduleName 模块名
+     * @param index      序号
+     * @param className  类名
+     * @param entities   实体清单
+     */
+    public void checkModule(String moduleName, int index, String className, List<BaseEntity> entities) {
+        boolean flag = false;
+        for (BaseEntity baseEntity : entities) {
+            TestCase testCase = (TestCase) baseEntity;
+            if (testCase.getModuleName().equalsIgnoreCase(moduleName)) {
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) {
+            String error = "Sheet[" + className + "]的第" + index + "行的类型" + moduleName + "在TestCase中找不到";
+            throw new RuntimeException(error);
+
         }
     }
 }

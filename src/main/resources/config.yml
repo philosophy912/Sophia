@@ -1,6 +1,6 @@
 attribute:
   id: 序号
-  name: 名字/函数名
+  name: 名字/函数名/模块名
   comment: 描述
   batteryType: 电源类型
   batteryOperationType: 电源操作类型
@@ -44,6 +44,11 @@ attribute:
   stepsDescription: 操作步骤描述
   expectDescription: 期望结果描述
   appearCount: 出现次数
+  functions: 函数执行前
+  suites: 套件执行前
+  preCondition: 前置条件
+  steps: 操作步骤
+  expect: 期望结果
 
 classname:
   testCase: 测试用例
@@ -61,6 +66,7 @@ classname:
   elementCompare: Android元素对比
   common: 公共函数
   configure: 配置
+  testCaseSetUp: 测试用例前置条件
 
 configures:
   maxDisplay: 最大支持的显示屏的个数

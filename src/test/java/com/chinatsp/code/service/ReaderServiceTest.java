@@ -3,6 +3,7 @@ package com.chinatsp.code.service;
 import com.chinatsp.code.BaseTestUtils;
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.service.api.IReadService;
 import com.philosophy.base.common.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
@@ -28,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 class ReaderServiceTest {
     @Autowired
-    private ReaderService readerService;
+    private IReadService readerService;
 
     @Test
     void read() {

@@ -109,5 +109,14 @@ public class ClassAttributes {
     private String expectDescription;
     @Value("${appearCount}")
     private String appearCount;
-
+    @Value(("${functions}"))
+    private String functions;
+    @Value(("${suites}"))
+    private String suites;
+    @Value(("${preCondition}"))
+    private String preCondition;
+    @Value(("${steps}"))
+    private String steps;
+    @Value(("${expect}"))
+    private String expect;
 }

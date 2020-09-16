@@ -180,7 +180,12 @@ public class ConvertUtils {
         List<Pair<TestCaseFunctionTypeEnum, String>> pairs = new LinkedList<>();
         strings.forEach(s -> {
             String[] values = s.split(split);
-            pairs.add(new Pair<>(TestCaseFunctionTypeEnum.fromValue(values[0].trim()), values[1].trim()));
+            TestCaseFunctionTypeEnum typeEnum = TestCaseFunctionTypeEnum.fromValue(values[0].trim());
+            String pairValue = null;
+            if (values.length >= 2) {
+                pairValue = values[1].trim();
+            }
+            pairs.add(new Pair<>(typeEnum, pairValue));
         });
         return pairs;
     }

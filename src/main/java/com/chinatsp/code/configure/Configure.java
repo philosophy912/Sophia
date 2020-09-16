@@ -31,19 +31,19 @@ public class Configure {
     /**
      * SOC串口号
      */
-    private String SocPort;
+    private String socPort;
     /**
      * SOC串口波特率
      */
-    private Integer SocBaudRate;
+    private Integer socBaudRate;
     /**
      * MCU串口号
      */
-    private String McuPort;
+    private String mcuPort;
     /**
      * MCU串口波特率
      */
-    private String McuBaudRate;
+    private String mcuBaudRate;
     /**
      * 显示屏宽
      */

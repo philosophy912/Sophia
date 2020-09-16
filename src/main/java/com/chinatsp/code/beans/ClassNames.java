@@ -52,5 +52,6 @@ public class ClassNames {
     private String common;
     @Value(("${configure}"))
     private String configure;
-
+    @Value(("${testCaseSetUp}"))
+    private String testCaseSetUp;
 }

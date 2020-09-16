@@ -46,9 +46,9 @@ public class TestCaseChecker extends BaseChecker implements IChecker {
             // 检查名字是否符合python命名规范
             checkUtils.checkPythonFunction(testCase.getName(), index, name);
             // 检查操作是否都定义了
-            checkUtils.checkAction(testCase.getPreCondition(), index, name, map);
-            checkUtils.checkAction(testCase.getSteps(), index, name, map);
-            checkUtils.checkAction(testCase.getExpect(), index, name, map);
+            checkUtils.checkAction(testCase.getPreCondition(), index, map);
+            checkUtils.checkAction(testCase.getSteps(), index, map);
+            checkUtils.checkAction(testCase.getExpect(), index, map);
         }
     }
 }

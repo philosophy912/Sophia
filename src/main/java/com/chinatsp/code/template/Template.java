@@ -71,6 +71,7 @@ public class Template {
      */
     @SneakyThrows
     private String getConfigValue(Object object, String name) {
+        log.debug("object name is " + object.getClass().getSimpleName() + " and name is " + name);
         name = CharUtils.lowerCase(name);
         Method method = object.getClass().getMethod("get" + CharUtils.upperCase(name));
         String value = (String) method.invoke(object);
