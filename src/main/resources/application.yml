@@ -90,3 +90,4 @@ config:
     screenShotTempPath: 临时图片存放路径
     templateImagePath: 模板图片存放路径
     dbcFile: CAN的DBC文件绝对路径
+    dbcJson: 生成的DBC的JSON文件

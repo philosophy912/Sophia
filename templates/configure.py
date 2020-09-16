@@ -30,5 +30,7 @@ screen_shot_temp_path = r"D:\Workspace\screenshot"
 template_image_path = r"D:\Workspace\template"
 # CAN的DBC文件绝对路径
 dbc_file = r"D:\Workspace\github\code\file\HiFire_B31CP_Info_HU_CAN_V2.0.dbc"
+# CAN的dbc文件转换成json文件
+dbcJson = None
 # 最大支持的继电器通道
 max_relay_channel = 8

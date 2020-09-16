@@ -64,5 +64,9 @@ public class Configure {
      * CAN的DBC文件绝对路径
      */
     private String dbcFile;
+    /**
+     * CAN的dbc文件转换成json文件
+     */
+    private String dbcJson;
 
 }
