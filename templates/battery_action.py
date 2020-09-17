@@ -7,11 +7,3 @@
 # @Author:      lizhe
 # @Created:     2020/9/15 - 16:28
 # --------------------------------------------------------
-
-
-
-class BatteryAction(object):
-
-    def battery_test1(self):
-        # test1
-        pass

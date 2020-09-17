@@ -2,9 +2,9 @@ package com.chinatsp.code.utils;
 
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
-import com.chinatsp.code.entity.actions.ScreenOpsAction;
 import com.chinatsp.code.entity.actions.ScreenShotAction;
 import com.chinatsp.code.entity.collection.Element;
+import com.chinatsp.code.entity.storage.Information;
 import com.chinatsp.code.entity.testcase.TestCase;
 import com.chinatsp.code.enumeration.TestCaseFunctionTypeEnum;
 import com.chinatsp.dbc.entity.Message;
@@ -524,6 +524,30 @@ public class CheckUtils {
         }
         if (!flag) {
             String error = "Sheet[" + className + "]的第" + index + "行的类型" + moduleName + "在TestCase中找不到";
+            throw new RuntimeException(error);
+
+        }
+    }
+
+    /**
+     * 检查要保存的信息是否在Information中能找到
+     *
+     * @param origin    函数名
+     * @param index     序号
+     * @param className 类名
+     * @param entities  实体清单
+     */
+    public void checkInformation(String origin, int index, String className, List<BaseEntity> entities) {
+        boolean flag = false;
+        for (BaseEntity baseEntity : entities) {
+            Information information = (Information) baseEntity;
+            if (origin.equals(information.getName())) {
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) {
+            String error = "Sheet[" + className + "]的第" + index + "行的原始信息" + origin + "在Information中找不到";
             throw new RuntimeException(error);
 
         }

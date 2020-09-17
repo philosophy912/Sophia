@@ -23,7 +23,7 @@ public class Information extends BaseEntity {
     /**
      * 要保存的属性值内容
      */
-    private List<ElementAttributeEnum> elementAttributes;
+    private ElementAttributeEnum elementAttribute;
 
 
 }
