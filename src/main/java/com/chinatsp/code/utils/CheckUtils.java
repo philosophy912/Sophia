@@ -84,16 +84,14 @@ public class CheckUtils {
     /**
      * 根据名字获取signal
      *
-     * @param messages   can消息列表
+     * @param message    can消息列表
      * @param signalName 信号名
      * @return 信号对象
      */
-    private Signal getSignal(List<Message> messages, String signalName) {
-        for (Message message : messages) {
-            for (Signal signal : message.getSignals()) {
-                if (signal.getName().equals(signalName)) {
-                    return signal;
-                }
+    private Signal getSignal(Message message, String signalName) {
+        for (Signal signal : message.getSignals()) {
+            if (signal.getName().equals(signalName)) {
+                return signal;
             }
         }
         return null;
@@ -309,28 +307,36 @@ public class CheckUtils {
     /**
      * 检查signal的名字和值是否正确
      *
+     * @param messageId 信号ID
      * @param signals   信号
      * @param messages  消息集合
      * @param index     行号
      * @param className 类名
      */
-    public void checkSignals(List<Pair<String, String>> signals, List<Message> messages, int index, String className) {
-        for (Pair<String, String> pair : signals) {
-            String signalName = pair.getFirst();
-            String value = pair.getSecond();
-            Signal signal = getSignal(messages, signalName);
-            if (null == signal) {
-                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，CAN矩阵表中找不到" + signalName + "信号";
-                throw new RuntimeException(error);
-            } else {
-                try {
-                    checkCanValue(index, className, signalName, signal.getSignalSize(), ConvertUtils.convertLong(value));
-                } catch (NumberFormatException e) {
-                    String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，信号值填写错误[" + e.getMessage() + "]";
+    public void checkSignals(Long messageId, List<Pair<String, String>> signals, List<Message> messages, int index, String className) {
+        Message message = getMessage(messages, messageId);
+        if (message == null) {
+            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，找不到信号[" + messageId + "]";
+            throw new RuntimeException(error);
+        } else {
+            for (Pair<String, String> pair : signals) {
+                String signalName = pair.getFirst();
+                String value = pair.getSecond();
+                Signal signal = getSignal(message, signalName);
+                if (null == signal) {
+                    String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，CAN矩阵表中找不到" + signalName + "信号";
                     throw new RuntimeException(error);
+                } else {
+                    try {
+                        checkCanValue(index, className, signalName, signal.getSignalSize(), ConvertUtils.convertLong(value));
+                    } catch (NumberFormatException e) {
+                        String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，信号值填写错误[" + e.getMessage() + "]";
+                        throw new RuntimeException(error);
+                    }
                 }
             }
         }
+
     }
 
 

@@ -17,6 +17,10 @@ import java.util.List;
 @ToString
 public class CanAction extends BaseEntity {
     /**
+     * 信号ID
+     */
+    private Long messageId;
+    /**
      * CAN信号名和值，允许有多个
      */
     private List<Pair<String, String>> signals;

@@ -137,7 +137,7 @@ class CheckUtilsTest {
         List<BaseEntity> entities = map.get(CharUtils.lowerCase(className));
         for (int i = 0; i < entities.size(); i++) {
             CanAction baseEntity = (CanAction) entities.get(i);
-            checkUtils.checkSignals(baseEntity.getSignals(), messages, i + 1, className);
+            checkUtils.checkSignals(baseEntity.getMessageId(), baseEntity.getSignals(), messages, i + 1, className);
         }
     }
 

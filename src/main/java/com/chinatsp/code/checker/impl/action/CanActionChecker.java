@@ -26,7 +26,8 @@ public class CanActionChecker extends BaseChecker implements IChecker {
             // 检查名字是否符合python命名规范
             checkUtils.checkPythonFunction(can.getName(), index, name);
             // 检查CAN的Signals的信号和值是否符合要求
-            checkUtils.checkSignals(can.getSignals(), messages, index, name);
+            checkUtils.checkSignals(can.getMessageId(), can.getSignals(), messages, index, name);
+
         }
         // 检查函数名是否有重名
         checkUtils.findDuplicate(entities, CanAction.class.getSimpleName());

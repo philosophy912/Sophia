@@ -23,7 +23,7 @@ public class InformationChecker extends BaseChecker implements IChecker {
         for (int i = 0; i < entities.size(); i++) {
             int index = i + 1;
             Information information = (Information) entities.get(i);
-            String name = information.getClass().getName();
+            String name = information.getClass().getSimpleName();
             // 检查名字是否符合python命名规范
             checkUtils.checkPythonFunction(information.getName(), index, name);
             // 检查element名字是否存在于Sheet(Element)中
