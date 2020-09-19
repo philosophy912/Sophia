@@ -8,8 +8,7 @@ import lombok.Setter;
  * @date 2020/8/27 11:26
  **/
 public enum  BatteryOperationTypeEnum {
-    SET_VOLTAGE("设置电压"),
-    SET_CURRENT("设置电流"),
+    SET_VOLTAGE_CURRENT("设置电压电流"),
     ADJUST_VOLTAGE("调节电压"),
     CURVE("电压曲线");
     @Setter

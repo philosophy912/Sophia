@@ -6,7 +6,9 @@ import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.actions.BatteryAction;
 import com.chinatsp.code.enumeration.BatteryOperationTypeEnum;
+import com.chinatsp.code.enumeration.BatteryTypeEnum;
 import com.chinatsp.dbc.entity.Message;
+import com.philosophy.character.util.CharUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -43,10 +45,16 @@ public class BatteryActionChecker extends BaseChecker implements IChecker {
             BatteryOperationTypeEnum type = batteryAction.getBatteryOperationType();
             Double[] doubles = batteryAction.getValues();
             log.debug("adjust voltage is " + Arrays.toString(doubles));
-            if (type == BatteryOperationTypeEnum.SET_VOLTAGE || type == BatteryOperationTypeEnum.SET_CURRENT) {
+            if (type == BatteryOperationTypeEnum.SET_VOLTAGE_CURRENT) {
                 checkUtils.checkBatteryValue(doubles, index, name, minVoltage, maxVoltage);
             } else if (type == BatteryOperationTypeEnum.ADJUST_VOLTAGE) {
-                checkUtils.checkBatteryAdjust(doubles, index, name, minVoltage, maxVoltage);
+                BatteryTypeEnum batteryType = batteryAction.getBatteryType();
+                if (batteryType != BatteryTypeEnum.KONSTANTER) {
+                    String error = "Sheet[" + CharUtils.upperCase(name) + "]的第" + index + "行数据填写错误，电压曲线仅支持KONSTANTER电源";
+                    throw new RuntimeException(error);
+                }else{
+                    checkUtils.checkBatteryAdjust(doubles, index, name, minVoltage, maxVoltage);
+                }
             }
             // 检查名字是否符合python命名规范
             checkUtils.checkPythonFunction(batteryAction.getName(), index, name);

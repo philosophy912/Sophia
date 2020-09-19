@@ -9,22 +9,23 @@
 # --------------------------------------------------------
 from selenium.webdriver.remote.webelement import WebElement
 from uiautomator2 import UiObject
+from automotive import AndroidService
 
 
 class Element(object):
 
-    def __init__(self):
-        self.android_service = None
+    def __init__(self, android_service: AndroidService):
+        self.android = android_service
 
     def element_kkk1(self) -> (WebElement, UiObject):
         """
         kkk2
         """
-        return self.android_service.get_element({"resourceId": "a", "text": "b"})
+        return self.android.get_element({"resourceId": "a", "text": "b"})
 
     def element_kkk2(self) -> (WebElement, UiObject):
         """
         kkk3
         """
-        element = self.android_service.get_element({"resourceId": "a", "text": "b"})
-        return self.android_service.get_child_element(element, {"text": "c"})
+        element = self.android.get_element({"resourceId": "a", "text": "b"})
+        return self.android.get_child_element(element, {"text": "c"})
