@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +36,12 @@ public class Checker {
 
     @SneakyThrows
     public void check(Map<String, List<BaseEntity>> map, Configure configure) {
+        String dbcFile = configure.getDbcFile();
+        Path dbcPath = Paths.get(dbcFile);
+        if (!Files.exists(dbcPath)) {
+            String error = "DBC文件[" + dbcFile + "]不存在，请检查配置的路径是否正确";
+            throw new RuntimeException(error);
+        }
         List<Message> messages = dbcParser.parse(Paths.get(configure.getDbcFile()));
         for (Map.Entry<String, List<BaseEntity>> entry : map.entrySet()) {
             String name = entry.getKey();

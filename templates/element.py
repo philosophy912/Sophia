@@ -7,25 +7,18 @@
 # @Author:      lizhe
 # @Created:     2020/9/17 - 17:27
 # --------------------------------------------------------
-from selenium.webdriver.remote.webelement import WebElement
-from uiautomator2 import UiObject
 from automotive import AndroidService
 
 
-class Element(object):
+def element_kkk1() -> (dict, tuple):
+    """
+    kkk2
+    """
+    return {"resourceId": "a", "text": "b"}
 
-    def __init__(self, android_service: AndroidService):
-        self.android = android_service
 
-    def element_kkk1(self) -> (WebElement, UiObject):
-        """
-        kkk2
-        """
-        return self.android.get_element({"resourceId": "a", "text": "b"})
-
-    def element_kkk2(self) -> (WebElement, UiObject):
-        """
-        kkk3
-        """
-        element = self.android.get_element({"resourceId": "a", "text": "b"})
-        return self.android.get_child_element(element, {"text": "c"})
+def element_kkk2() -> (dict, tuple):
+    """
+    kkk3
+    """
+    return {"resourceId": "a", "text": "b"}, {"text": "c"}

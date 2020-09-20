@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 /**
  * @author lizhe
  * @date 2020/8/27 10:54
@@ -22,7 +24,7 @@ public class ElementAction extends BaseEntity {
     /**
      * 要操作的元素名
      */
-    private String element;
+    private List<String> elements;
     /**
      * 滑动次数，仅对滑动有效
      */

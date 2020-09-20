@@ -2,10 +2,12 @@ package com.chinatsp.code.utils;
 
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.entity.actions.ElementAction;
 import com.chinatsp.code.entity.actions.ScreenShotAction;
 import com.chinatsp.code.entity.collection.Element;
 import com.chinatsp.code.entity.storage.Information;
 import com.chinatsp.code.entity.testcase.TestCase;
+import com.chinatsp.code.enumeration.OperationActionTypeEnum;
 import com.chinatsp.code.enumeration.TestCaseFunctionTypeEnum;
 import com.chinatsp.dbc.entity.Message;
 import com.chinatsp.dbc.entity.Signal;
@@ -403,6 +405,21 @@ public class CheckUtils {
     /**
      * 检查定义的element是否能够找到
      *
+     * @param elementsName 其他表定义的element集合
+     * @param index        行号
+     * @param className    类名
+     * @param elements     Sheet【element】读取出来内容
+     */
+    public void checkElementsExist(List<String> elementsName, int index, String className, List<BaseEntity> elements) {
+        for (String elementName : elementsName) {
+            checkElementExist(elementName, index, className, elements);
+        }
+    }
+
+
+    /**
+     * 检查定义的element是否能够找到
+     *
      * @param elementName 其他表中定义的element
      * @param index       行号
      * @param className   类名
@@ -556,6 +573,40 @@ public class CheckUtils {
             String error = "Sheet[" + className + "]的第" + index + "行的原始信息" + origin + "在Information中找不到";
             throw new RuntimeException(error);
 
+        }
+    }
+
+    /**
+     * 检查elements的数量是否符合element的操作
+     *
+     * @param elementAction element操作
+     * @param index         序号
+     * @param className     类名
+     */
+    public void checkElementOperation(ElementAction elementAction, int index, String className) {
+        OperationActionTypeEnum type = elementAction.getOperationActionType();
+        int size = elementAction.getElements().size();
+        int slideTimes = elementAction.getSlideTimes();
+        if (type == OperationActionTypeEnum.SLIDE) {
+            if (size != 2) {
+                String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作元素必须等于2个";
+                throw new RuntimeException(error);
+            }
+            if (slideTimes == 0) {
+                String error = "Sheet[" + className + "]的第" + index + "行的滑动次数必须大于0";
+                throw new RuntimeException(error);
+            }
+        } else if (type == OperationActionTypeEnum.SLIDE_RIGHT || type == OperationActionTypeEnum.SLIDE_LEFT
+                || type == OperationActionTypeEnum.SLIDE_UP || type == OperationActionTypeEnum.SLIDE_DOWN) {
+            if (size != 2) {
+                String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作元素必须等于1个";
+                throw new RuntimeException(error);
+            }
+        } else {
+            if (size != 1) {
+                String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作元素必须等于1个";
+                throw new RuntimeException(error);
+            }
         }
     }
 }

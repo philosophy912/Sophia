@@ -29,7 +29,9 @@ public class ElementActionChecker extends BaseChecker implements IChecker {
             // 检查名字是否符合python命名规范
             checkUtils.checkPythonFunction(elementAction.getName(), index, name);
             // 检查element名字是否存在于Sheet(Element)中
-            checkUtils.checkElementExist(elementAction.getElement(), index, name, elements);
+            checkUtils.checkElementsExist(elementAction.getElements(), index, name, elements);
+            // 检查element操作是否正确
+            checkUtils.checkElementOperation(elementAction, index, name);
         }
         // 检查函数名是否有重名
         checkUtils.findDuplicate(entities, ElementAction.class.getSimpleName());

@@ -7,15 +7,19 @@
 # @Author:      lizhe
 # @Created:     2020/9/19 - 20:43
 # --------------------------------------------------------
-from .element import Element
+from .element import *
+from automotive import *
 
 
-class ElementAction(Element):
+class ElementAction(object):
+
+    def __init__(self, android_service: AndroidService):
+        self.android = android_service
 
     def element_test1(self):
         """
         test1
         """
-        element1 = self.element_kkk1()
-        element2 = self.element_kkk2()
+        element1 = element_kkk1()
+        element2 = element_kkk2()
         self.android.swipe_element(element1, element2)

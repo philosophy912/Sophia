@@ -45,15 +45,14 @@ public class BatteryActionChecker extends BaseChecker implements IChecker {
             BatteryOperationTypeEnum type = batteryAction.getBatteryOperationType();
             Double[] doubles = batteryAction.getValues();
             log.debug("adjust voltage is " + Arrays.toString(doubles));
-            if (type == BatteryOperationTypeEnum.SET_VOLTAGE_CURRENT) {
+            if (type == BatteryOperationTypeEnum.SET_CURRENT || type == BatteryOperationTypeEnum.SET_VOLTAGE) {
                 checkUtils.checkBatteryValue(doubles, index, name, minVoltage, maxVoltage);
             } else if (type == BatteryOperationTypeEnum.ADJUST_VOLTAGE) {
-                BatteryTypeEnum batteryType = batteryAction.getBatteryType();
-                if (batteryType != BatteryTypeEnum.KONSTANTER) {
+                checkUtils.checkBatteryAdjust(doubles, index, name, minVoltage, maxVoltage);
+            } else if (type == BatteryOperationTypeEnum.CURVE) {
+                if (batteryAction.getBatteryType() != BatteryTypeEnum.KONSTANTER) {
                     String error = "Sheet[" + CharUtils.upperCase(name) + "]的第" + index + "行数据填写错误，电压曲线仅支持KONSTANTER电源";
                     throw new RuntimeException(error);
-                }else{
-                    checkUtils.checkBatteryAdjust(doubles, index, name, minVoltage, maxVoltage);
                 }
             }
             // 检查名字是否符合python命名规范

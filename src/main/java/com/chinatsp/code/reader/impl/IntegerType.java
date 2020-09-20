@@ -19,8 +19,11 @@ public class IntegerType implements IClassType {
         try {
             field.set(object, ConvertUtils.convertInteger(cellValue));
         } catch (Exception e) {
-            // 忽略ElementAction中的SlideTimes
-            if (className.toLowerCase().contains("ElementAction".toLowerCase())) {
+            // 忽略ElementAction中的SlideTimes以及BatteryAction中的RepeatTimes
+            String lowerClassName = className.toLowerCase();
+            boolean ignoreElementAction = lowerClassName.contains("ElementAction".toLowerCase());
+            boolean ignoreBatteryAction = lowerClassName.contains("BatteryAction".toLowerCase());
+            if (ignoreElementAction || ignoreBatteryAction) {
                 field.set(object, 0);
             } else {
                 String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";

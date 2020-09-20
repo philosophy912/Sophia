@@ -15,7 +15,7 @@ config:
     values: 电源操作值
     repeatTimes: 重复次数
     curveFile: 电压曲线文件
-    element: 元素名
+    elements: 元素名
     slideTimes: 滑动次数
     relayOperationType: 继电器操作类型
     channelIndex: 继电器通道
