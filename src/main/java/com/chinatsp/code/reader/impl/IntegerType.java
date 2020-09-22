@@ -23,7 +23,8 @@ public class IntegerType implements IClassType {
             String lowerClassName = className.toLowerCase();
             boolean ignoreElementAction = lowerClassName.contains("ElementAction".toLowerCase());
             boolean ignoreBatteryAction = lowerClassName.contains("BatteryAction".toLowerCase());
-            if (ignoreElementAction || ignoreBatteryAction) {
+            boolean ignoreRelayAction = lowerClassName.contains("RelayAction".toLowerCase());
+            if (ignoreElementAction || ignoreBatteryAction || ignoreRelayAction) {
                 field.set(object, 0);
             } else {
                 String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";

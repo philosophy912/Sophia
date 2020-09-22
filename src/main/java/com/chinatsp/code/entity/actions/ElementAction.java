@@ -1,8 +1,7 @@
 package com.chinatsp.code.entity.actions;
 
 import com.chinatsp.code.entity.BaseEntity;
-import com.chinatsp.code.entity.collection.Element;
-import com.chinatsp.code.enumeration.OperationActionTypeEnum;
+import com.chinatsp.code.enumeration.ElementOperationTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,7 +19,7 @@ public class ElementAction extends BaseEntity {
     /**
      * 操作类型OperationActionTypeEnum支持的操作类型
      */
-    private OperationActionTypeEnum operationActionType;
+    private ElementOperationTypeEnum operationActionType;
     /**
      * 要操作的元素名
      */

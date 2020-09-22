@@ -7,7 +7,7 @@ import lombok.Setter;
  * @author lizhe
  * @date 2020/8/27 10:12
  **/
-public enum OperationActionTypeEnum {
+public enum ElementOperationTypeEnum {
     SLIDE("滑动"),
     CLICK("点击"),
     PRESS("长按"),
@@ -25,7 +25,7 @@ public enum OperationActionTypeEnum {
     @Getter
     private String value;
 
-    OperationActionTypeEnum(String value) {
+    ElementOperationTypeEnum(String value) {
         this.value = value;
     }
 
@@ -35,8 +35,8 @@ public enum OperationActionTypeEnum {
      * @param value 枚举类型的值
      * @return 枚举类型
      */
-    public static OperationActionTypeEnum fromValue(String value) {
-        for (OperationActionTypeEnum type : values()) {
+    public static ElementOperationTypeEnum fromValue(String value) {
+        for (ElementOperationTypeEnum type : values()) {
             if (type.value.trim().equalsIgnoreCase(value)) {
                 return type;
             }

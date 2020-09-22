@@ -3,11 +3,16 @@ package com.chinatsp.code.utils;
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.actions.ElementAction;
+import com.chinatsp.code.entity.actions.RelayAction;
+import com.chinatsp.code.entity.actions.ScreenOpsAction;
 import com.chinatsp.code.entity.actions.ScreenShotAction;
 import com.chinatsp.code.entity.collection.Element;
 import com.chinatsp.code.entity.storage.Information;
 import com.chinatsp.code.entity.testcase.TestCase;
-import com.chinatsp.code.enumeration.OperationActionTypeEnum;
+import com.chinatsp.code.enumeration.DeviceTpeEnum;
+import com.chinatsp.code.enumeration.ElementOperationTypeEnum;
+import com.chinatsp.code.enumeration.RelayOperationTypeEnum;
+import com.chinatsp.code.enumeration.ScreenOperationTypeEnum;
 import com.chinatsp.code.enumeration.TestCaseFunctionTypeEnum;
 import com.chinatsp.dbc.entity.Message;
 import com.chinatsp.dbc.entity.Signal;
@@ -237,15 +242,23 @@ public class CheckUtils {
     /**
      * 检查继电器通道数量是否符合要求
      *
-     * @param channel    通道数
-     * @param index      行号
-     * @param className  类名
-     * @param maxChannel 最多的通道
+     * @param relayAction 继电器操作
+     * @param index       行号
+     * @param className   类名
+     * @param maxChannel  最多的通道
      */
-    public void checkRelayChannel(int channel, int index, String className, int maxChannel) {
-        if (channel <= 0 || channel > maxChannel) {
-            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，继电器通道数必须小于" + channel + "个";
-            throw new RuntimeException(error);
+    public void checkRelayChannel(RelayAction relayAction, int index, String className, int maxChannel) {
+        RelayOperationTypeEnum type = relayAction.getRelayOperationType();
+        if (type == RelayOperationTypeEnum.OFF || type == RelayOperationTypeEnum.ON) {
+            int channel = relayAction.getChannelIndex();
+            if (channel == 0) {
+                String error = "Sheet[" + className + "]的第" + index + "行的操作为[" + type.getValue() + "]，该操作必须填写继电器通道号";
+                throw new RuntimeException(error);
+            }
+            if (channel <= 0 || channel > maxChannel) {
+                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，继电器通道数必须小于等于" + maxChannel + "个";
+                throw new RuntimeException(error);
+            }
         }
     }
 
@@ -512,18 +525,21 @@ public class CheckUtils {
         for (Pair<TestCaseFunctionTypeEnum, String> pair : pairs) {
             TestCaseFunctionTypeEnum typeEnum = pair.getFirst();
             String functionName = pair.getSecond();
-            List<BaseEntity> entities = map.get((CharUtils.lowerCase(typeEnum.getValue())));
-            boolean flag = false;
-            for (BaseEntity baseEntity : entities) {
-                if (baseEntity.getName().equalsIgnoreCase(functionName)) {
-                    flag = true;
-                    break;
+            if (!(typeEnum == TestCaseFunctionTypeEnum.SLEEP || typeEnum == TestCaseFunctionTypeEnum.YEILD
+                    || typeEnum == TestCaseFunctionTypeEnum.PASS)) {
+                List<BaseEntity> entities = map.get((CharUtils.lowerCase(typeEnum.getValue())));
+                boolean flag = false;
+                for (BaseEntity baseEntity : entities) {
+                    if (baseEntity.getName().equalsIgnoreCase(functionName)) {
+                        flag = true;
+                        break;
+                    }
                 }
-            }
-            if (!flag) {
-                String error = "Sheet[TestCase]的第" + index + "行数据在[" + CharUtils.upperCase(typeEnum.getValue()) +
-                        "]中找不到方法" + functionName;
-                throw new RuntimeException(error);
+                if (!flag) {
+                    String error = "Sheet[TestCase]的第" + index + "行数据在[" + CharUtils.upperCase(typeEnum.getValue()) +
+                            "]中找不到方法" + functionName;
+                    throw new RuntimeException(error);
+                }
             }
         }
     }
@@ -584,22 +600,28 @@ public class CheckUtils {
      * @param className     类名
      */
     public void checkElementOperation(ElementAction elementAction, int index, String className) {
-        OperationActionTypeEnum type = elementAction.getOperationActionType();
+        ElementOperationTypeEnum type = elementAction.getOperationActionType();
         int size = elementAction.getElements().size();
         int slideTimes = elementAction.getSlideTimes();
-        if (type == OperationActionTypeEnum.SLIDE) {
+        if (type.getValue().contains("滑")) {
             if (size != 2) {
                 String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作元素必须等于2个";
                 throw new RuntimeException(error);
             }
-            if (slideTimes == 0) {
-                String error = "Sheet[" + className + "]的第" + index + "行的滑动次数必须大于0";
+            if (type == ElementOperationTypeEnum.SLIDE_RIGHT || type == ElementOperationTypeEnum.SLIDE_LEFT
+                    || type == ElementOperationTypeEnum.SLIDE_UP || type == ElementOperationTypeEnum.SLIDE_DOWN) {
+                if (slideTimes == 0) {
+                    String error = "Sheet[" + className + "]的第" + index + "行的滑动次数必须大于0";
+                    throw new RuntimeException(error);
+                }
+            }
+        } else if (type == ElementOperationTypeEnum.PRESS) {
+            if (size != 1) {
+                String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作元素必须等于1个";
                 throw new RuntimeException(error);
             }
-        } else if (type == OperationActionTypeEnum.SLIDE_RIGHT || type == OperationActionTypeEnum.SLIDE_LEFT
-                || type == OperationActionTypeEnum.SLIDE_UP || type == OperationActionTypeEnum.SLIDE_DOWN) {
-            if (size != 2) {
-                String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作元素必须等于1个";
+            if (slideTimes == 0) {
+                String error = "Sheet[" + className + "]的第" + index + "行的长按时间必须大于0";
                 throw new RuntimeException(error);
             }
         } else {
@@ -608,5 +630,44 @@ public class CheckUtils {
                 throw new RuntimeException(error);
             }
         }
+    }
+
+    /**
+     * 检查操作是否合规
+     *
+     * @param screenOpsAction 操作
+     * @param index           序号
+     * @param className       类名
+     */
+    public void checkOpsType(ScreenOpsAction screenOpsAction, int index, String className) {
+        ScreenOperationTypeEnum type = screenOpsAction.getScreenOperationType();
+        List<Pair<Integer, Integer>> points = screenOpsAction.getPoints();
+        double continueTime = screenOpsAction.getContinueTimes();
+        if (type == ScreenOperationTypeEnum.SLIDE) {
+            if (screenOpsAction.getDeviceType() == DeviceTpeEnum.ANDROID) {
+                String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作设备仅支持QNX设备";
+                throw new RuntimeException(error);
+            }
+            if (points.size() != 2) {
+                String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作坐标点必须为2组";
+                throw new RuntimeException(error);
+            }
+            if (continueTime <= 0) {
+                String error = "Sheet[" + className + "]的第" + index + "行的操作持续时间填写不正确";
+                throw new RuntimeException(error);
+            }
+        } else {
+            if (points.size() != 1) {
+                String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作坐标点必须为1组";
+                throw new RuntimeException(error);
+            }
+            if (type == ScreenOperationTypeEnum.PRESS) {
+                if (continueTime <= 0) {
+                    String error = "Sheet[" + className + "]的第" + index + "行的操作持续时间填写不正确";
+                    throw new RuntimeException(error);
+                }
+            }
+        }
+
     }
 }

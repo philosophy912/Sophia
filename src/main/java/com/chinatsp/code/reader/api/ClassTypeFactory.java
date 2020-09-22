@@ -8,13 +8,14 @@ import com.chinatsp.code.reader.impl.FloatType;
 import com.chinatsp.code.reader.impl.IntegerType;
 import com.chinatsp.code.reader.impl.ListType;
 import com.chinatsp.code.reader.impl.LongType;
+import com.chinatsp.code.reader.impl.MapType;
 import com.chinatsp.code.reader.impl.StringType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
-
+import java.util.Map;
 
 
 @Component
@@ -38,6 +39,8 @@ public class ClassTypeFactory {
     private LongType longType;
     @Resource
     private StringType stringType;
+    @Resource
+    private MapType mapType;
 
 
     public IClassType getClassType(Class<?> clazz) {
@@ -59,6 +62,8 @@ public class ClassTypeFactory {
             return doublesType;
         } else if (clazz.equals(List.class)) {
             return listType;
+        } else if (clazz.equals(Map.class)) {
+            return mapType;
         }
         String error = "can not support class type[" + clazz.getName() + "]";
         log.debug(error);

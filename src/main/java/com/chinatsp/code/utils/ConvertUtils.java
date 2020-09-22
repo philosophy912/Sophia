@@ -171,17 +171,45 @@ public class ConvertUtils {
     /**
      * 将CellValue转换成Pair对象
      *
-     * @param value 单元格中的数据
-     * @param split 分隔符
+     * @param cellValue 单元格中的数据
+     * @param split     分隔符
      * @return List<Pair < TestCaseFunctionTypeEnum, String>>
      */
-    public static List<Pair<TestCaseFunctionTypeEnum, String>> convertPairTestCaseFunctionTypeString(String value, String split) {
-        List<String> strings = convertStrings(value);
+    public static List<Pair<TestCaseFunctionTypeEnum, String>> convertPairTestCaseFunctionTypeString(String cellValue, String split) {
+        List<String> strings = convertStrings(cellValue);
         List<Pair<TestCaseFunctionTypeEnum, String>> pairs = new LinkedList<>();
         strings.forEach(s -> {
             String[] values = s.split(split);
-            pairs.add(new Pair<>(TestCaseFunctionTypeEnum.fromValue(values[0].trim()), values[1].trim()));
+            if (values.length == 2) {
+                pairs.add(new Pair<>(TestCaseFunctionTypeEnum.fromValue(values[0].trim()), values[1].trim()));
+            } else {
+                pairs.add(new Pair<>(TestCaseFunctionTypeEnum.fromValue(values[0].trim()), null));
+            }
+
         });
         return pairs;
+    }
+
+    /**
+     * 将CellValue转换成Map对象
+     *
+     * @param cellValue 单元格中的数据
+     * @return Map<AndroidLocatorTypeEnum, String> ，对应就是element表格中的locators
+     */
+    public static Map<AndroidLocatorTypeEnum, String> convertAndroidLocatorTypeString(String cellValue) {
+        Map<AndroidLocatorTypeEnum, String> map = new HashMap<>();
+        List<String> strings = convertStrings(cellValue);
+        if (strings.size() != 1) {
+            String error = "locator only support one line, but two line found";
+            throw new RuntimeException(error);
+        }
+        String[] lines = strings.get(0).split(COMMA);
+        for (String s : lines) {
+            String[] keyValue = s.split(EQUAL);
+            String key = keyValue[0].trim();
+            String value = keyValue[1].trim();
+            map.put(AndroidLocatorTypeEnum.fromValue(key), value);
+        }
+        return map;
     }
 }

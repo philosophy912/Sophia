@@ -7,3 +7,13 @@
 # @Author:      lizhe
 # @Created:     2020/9/21 - 15:19
 # --------------------------------------------------------
+from .context import Action
+
+
+class Common(Action):
+
+    def clear_stack(self):
+        """
+        common4
+        """
+        self.can_service.clear_stack_data()

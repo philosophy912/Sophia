@@ -28,7 +28,7 @@ public class RelayActionChecker extends BaseChecker implements IChecker {
             // 检查名字是否符合python命名规范
             checkUtils.checkPythonFunction(relayAction.getName(), index, name);
             // 检查继电器通道设置是否符合要求
-            checkUtils.checkRelayChannel(relayAction.getChannelIndex(), index, name, maxChannel);
+            checkUtils.checkRelayChannel(relayAction, index, name, maxChannel);
         }
         // 检查函数名是否有重名
         checkUtils.findDuplicate(entities, RelayAction.class.getSimpleName());

@@ -16,10 +16,11 @@ config:
     repeatTimes: 重复次数
     curveFile: 电压曲线文件
     elements: 元素名
-    slideTimes: 滑动次数
+    slideTimes: 滑动次数/持续时间
     relayOperationType: 继电器操作类型
     channelIndex: 继电器通道
     operationActionType: 操作类型
+    screenOperationType: 操作类型
     screenShotType: 截图类型
     screenIndex: 屏幕序号
     points: 坐标点
@@ -59,6 +60,7 @@ config:
     steps: 操作步骤
     expect: 期望结果
     displayId: 屏幕序号
+    commonType: 模块类型
   classname:
     testCase: 测试用例
     screenShotAction: 截图操作

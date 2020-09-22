@@ -30,6 +30,8 @@ public class ScreenOpsActionChecker extends BaseChecker implements IChecker {
             checkUtils.checkPythonFunction(screenOpsAction.getName(), index, name);
             // 检查屏幕的高宽
             checkUtils.checkClickPoints(screenOpsAction.getPoints(), index, name, maxWidth, maxHeight);
+            // 检查操作是否合规
+            checkUtils.checkOpsType(screenOpsAction, index, name);
         }
         // 检查函数名是否有重名
         checkUtils.findDuplicate(entities, ScreenOpsAction.class.getSimpleName());

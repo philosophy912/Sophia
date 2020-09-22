@@ -9,16 +9,9 @@
 # --------------------------------------------------------
 from automotive import AndroidService
 
-
-def element_kkk1() -> (dict, tuple):
-    """
-    kkk2
-    """
-    return {"resourceId": "a", "text": "b"}
-
-
-def element_kkk2() -> (dict, tuple):
-    """
-    kkk3
-    """
-    return {"resourceId": "a", "text": "b"}, {"text": "c"}
+# kkk2
+element_kkk1 = {"resourceId": "a", "text": "b"}
+# kkk3
+element_kkk2 = {"text": "c"}
+# kkk4
+element_kkk3 = {"resourceId": "a", "text": "b"}

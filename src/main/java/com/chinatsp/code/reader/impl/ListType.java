@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static com.chinatsp.code.utils.Constant.COMMA;
 import static com.chinatsp.code.utils.Constant.EQUAL;
 import static com.chinatsp.code.utils.Constant.LINE;
 
@@ -115,7 +116,7 @@ public class ListType implements IClassType {
             } else if (genericClazz == Integer[].class) {
                 List<Integer[]> integers;
                 try {
-                    integers = ConvertUtils.convertIntegerArrays(cellValue, LINE);
+                    integers = ConvertUtils.convertIntegerArrays(cellValue, COMMA);
                 } catch (Exception e) {
                     String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
                     throw new RuntimeException(error);

@@ -109,7 +109,7 @@ class CheckUtilsTest {
         List<BaseEntity> entities = map.get(CharUtils.lowerCase(className));
         for (int i = 0; i < entities.size(); i++) {
             RelayAction baseEntity = (RelayAction) entities.get(i);
-            checkUtils.checkRelayChannel(baseEntity.getChannelIndex(), i + 1, className, maxDisplay);
+            checkUtils.checkRelayChannel(baseEntity, i + 1, className, maxDisplay);
         }
     }
 

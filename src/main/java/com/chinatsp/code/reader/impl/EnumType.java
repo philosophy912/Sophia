@@ -25,6 +25,4 @@ public class EnumType implements IClassType {
             throw new RuntimeException(error);
         }
     }
-
-
 }

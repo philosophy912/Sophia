@@ -8,18 +8,26 @@
 # @Created:     2020/9/19 - 20:43
 # --------------------------------------------------------
 from .element import *
-from automotive import *
+from .context import Action
 
 
-class ElementAction(object):
+class ElementAction(Action):
 
-    def __init__(self, android_service: AndroidService):
-        self.android = android_service
 
     def element_test1(self):
         """
         test1
         """
-        element1 = element_kkk1()
-        element2 = element_kkk2()
-        self.android.swipe_element(element1, element2)
+        self.android_service.swipe_element(element_kkk1, element_kkk2)
+
+    def element_test2(self):
+        """
+        test2
+        """
+        self.android_service.click(element_kkk2)
+
+    def element_test3(self):
+        """
+        test3
+        """
+        self.android_service.press(element_kkk3, 2)

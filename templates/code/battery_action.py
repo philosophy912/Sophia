@@ -7,16 +7,11 @@
 # @Author:      lizhe
 # @Created:     2020/9/15 - 16:28
 # --------------------------------------------------------
-from automotive import It6831Actions, KonstanterActions, Curve
+from automotive import Curve
+from .context import Action
 
 
-class BatteryAction(object):
-
-    def __init__(self, it6831: It6831Actions = None, konstanter: KonstanterActions = None):
-        if it6831:
-            self.it6831 = it6831
-        if konstanter:
-            self.konstanter = konstanter
+class BatteryAction(Action):
 
     def battery_test1(self):
         """
