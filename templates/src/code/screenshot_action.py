@@ -7,8 +7,7 @@
 # @Author:      lizhe
 # @Created:     2020/9/21 - 15:03
 # --------------------------------------------------------
-from .configure import *
-from .context import Action
+from src.code.context import Action
 
 interval_time = 0.5
 
@@ -26,5 +25,5 @@ class ScreenShotAction(Action):
         oooo2
         """
         for i in range(2):
-            self.android_service.adb.screen_shot(remote_file=f"{android_screenshot_path}/testq__{i + 1}", display_id=2,
-                                                 device_id=android_device_id)
+            self.android_service.adb.screen_shot(remote_file=f"{self.android_screenshot_path}/testq__{i + 1}", display_id=2,
+                                                 device_id=self.android_device_id)

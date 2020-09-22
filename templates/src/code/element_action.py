@@ -7,8 +7,8 @@
 # @Author:      lizhe
 # @Created:     2020/9/19 - 20:43
 # --------------------------------------------------------
-from .element import *
-from .context import Action
+from src.code.element import *
+from src.code.context import Action
 
 
 class ElementAction(Action):

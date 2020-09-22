@@ -7,7 +7,7 @@
 # @Author:      lizhe
 # @Created:     2020/9/21 - 15:19
 # --------------------------------------------------------
-from .context import Action
+from src.code.context import Action
 
 
 class Common(Action):

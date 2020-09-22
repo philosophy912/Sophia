@@ -2,16 +2,18 @@
 # --------------------------------------------------------
 # Copyright (C), 2016-2020, China TSP, All rights reserved
 # --------------------------------------------------------
-# @Name:        element.py
+# @Name:        info_compare.py
 # @Purpose:     todo
 # @Author:      lizhe
-# @Created:     2020/9/17 - 17:27
+# @Created:     2020/9/22 - 22:25
 # --------------------------------------------------------
-from automotive import AndroidService
+from src.code.information import *
 
-# kkk2
-element_kkk1 = {"resourceId": "a", "text": "b"}
-# kkk3
-element_kkk2 = {"text": "c"}
-# kkk4
-element_kkk3 = {"resourceId": "a", "text": "b"}
+
+class InformationCompare(Information):
+
+    def info1(self):
+        """
+        info1
+        """
+        return self.infomation2() == self.infomation1()

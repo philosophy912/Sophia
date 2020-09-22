@@ -8,7 +8,7 @@
 # @Created:     2020/9/15 - 16:28
 # --------------------------------------------------------
 from automotive import Curve
-from .context import Action
+from src.code.context import Action
 
 
 class BatteryAction(Action):

@@ -7,8 +7,7 @@
 # @Author:      lizhe
 # @Created:     2020/9/21 - 15:40
 # --------------------------------------------------------
-
-from .context import Action
+from src.code.context import Action
 
 
 class CanCompare(Action):

@@ -7,7 +7,7 @@
 # @Author:      lizhe
 # @Created:     2020/9/17 - 14:23
 # --------------------------------------------------------
-from .context import Action
+from src.code.context import Action
 
 
 class CanAction(Action):

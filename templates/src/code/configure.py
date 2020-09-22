@@ -45,3 +45,5 @@ android_app_package = "com.chinatsp.settings"
 android_app_activity = ".SettingsActivity"
 # android 版本号
 android_platform_version = "8.1.0"
+# 测试类型
+test_case_type = "cluster"

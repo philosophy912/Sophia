@@ -7,8 +7,7 @@
 # @Author:      lizhe
 # @Created:     2020/9/21 - 13:11
 # --------------------------------------------------------
-from .context import Action
-from .context import android_device_id
+from src.code.context import Action
 
 
 class ScreenshotOpsAction(Action):
@@ -23,7 +22,7 @@ class ScreenshotOpsAction(Action):
         """
         tttt1
         """
-        self.android_service.adb.click(x=12, y=18, display_id=2, device_id=android_device_id)
+        self.android_service.adb.click(x=12, y=18, display_id=2, device_id=self.android_device_id)
 
     def screen_operation_teset3(self):
         """

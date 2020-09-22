@@ -7,7 +7,7 @@
 # @Author:      lizhe
 # @Created:     2020/9/21 - 10:55
 # --------------------------------------------------------
-from .context import Action
+from src.code.context import Action
 
 
 class RelayAction(Action):
