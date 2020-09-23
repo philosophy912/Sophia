@@ -7,10 +7,25 @@
 # @Author:      lizhe
 # @Created:     2020/9/21 - 10:55
 # --------------------------------------------------------
+from automotive import *
 from src.code.context import Action
+from src.code.configure import *
 
 
 class RelayAction(Action):
+
+    def __init__(self):
+        super().__init__()
+        if max_relay_channel:
+            self.relay = RelayActions()
+
+    def open(self):
+        if self.relay:
+            self.relay.open()
+
+    def close(self):
+        if self.relay:
+            self.relay.close()
 
     def relay_test1(self):
         """

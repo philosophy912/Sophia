@@ -7,10 +7,25 @@
 # @Author:      lizhe
 # @Created:     2020/9/21 - 13:11
 # --------------------------------------------------------
+from automotive import *
 from src.code.context import Action
+from src.code.configure import *
 
 
 class ScreenshotOpsAction(Action):
+
+    def __init__(self):
+        super().__init__()
+        if test_case_type == "cluster" and qnx_serial:
+            self.airCondition = AirCondition(qnx_screenshot_path, qnx_serial[0])
+
+    def open(self):
+        if self.airCondition:
+            self.airCondition.connect()
+
+    def close(self):
+        if self.airCondition:
+            self.airCondition.disconnect()
 
     def screen_operation_teset1(self):
         """

@@ -7,11 +7,31 @@
 # @Author:      lizhe
 # @Created:     2020/9/15 - 16:28
 # --------------------------------------------------------
-from automotive import Curve
+from automotive import *
 from src.code.context import Action
+from src.code.configure import it6831_serial, konstanter_serial
 
 
 class BatteryAction(Action):
+
+    def __init__(self):
+        super().__init__()
+        if it6831_serial:
+            self.it6831 = It6831Actions(port=it6831_serial[0], baud_rate=it6831_serial[1])
+        if konstanter_serial:
+            self.konstanter = KonstanterActions(port=konstanter_serial[0], baud_rate=konstanter_serial[1])
+
+    def open(self):
+        if self.it6831:
+            self.it6831.open()
+        if self.konstanter:
+            self.konstanter.open()
+
+    def close(self):
+        if self.it6831:
+            self.it6831.close()
+        if self.konstanter:
+            self.konstanter.close()
 
     def battery_test1(self):
         """

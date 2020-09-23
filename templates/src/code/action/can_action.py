@@ -7,10 +7,24 @@
 # @Author:      lizhe
 # @Created:     2020/9/17 - 14:23
 # --------------------------------------------------------
+from automotive import *
 from src.code.context import Action
+from src.code.configure import *
 
 
 class CanAction(Action):
+    def __init__(self):
+        super().__init__()
+        if dbc_json_file:
+            self.can_service = CANService(dbc_json_file)
+
+    def open(self):
+        if self.can_service:
+            self.can_service.open_can()
+
+    def close(self):
+        if self.can_service:
+            self.can_service.close_can()
 
     def can_test1(self):
         """

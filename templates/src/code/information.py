@@ -8,7 +8,7 @@
 # @Created:     2020/9/22 - 22:17
 # --------------------------------------------------------
 from src.code.context import Action
-from src.code.element import *
+from code.collections.element import *
 from automotive import ElementAttributeEnum
 
 
@@ -39,4 +39,5 @@ class Information(Action):
         """
         infomation10
         """
-        self._save_data["infomation10"] = self.android_service.get_text(element_kkk1)
+        attr = ElementAttributeEnum.from_value("TEXT")
+        self._save_data["infomation10"] = self.android_service.get_element_attribute(element_kkk1)[attr]

@@ -12,7 +12,17 @@ from src.code.context import Action
 interval_time = 0.5
 
 
-class ScreenShotAction(Action):
+class ScreenShotAction(ElementAction, ):
+
+    def __init__(self):
+        super().__init__()
+
+
+    def open(self):
+        pass
+
+    def close(self):
+        pass
 
     def screenshot_tttt1(self):
         """

@@ -8,7 +8,7 @@
 # @Created:     2020/9/21 - 15:51
 # --------------------------------------------------------
 from .context import Action
-from .element import *
+from code.collections.element import *
 
 
 class ElementCompare(Action):
