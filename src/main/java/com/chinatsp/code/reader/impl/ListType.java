@@ -116,7 +116,7 @@ public class ListType implements IClassType {
             } else if (genericClazz == Integer[].class) {
                 List<Integer[]> integers;
                 try {
-                    integers = ConvertUtils.convertIntegerArrays(cellValue, COMMA);
+                    integers = ConvertUtils.convertIntegerArrays(cellValue, LINE);
                 } catch (Exception e) {
                     String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
                     throw new RuntimeException(error);

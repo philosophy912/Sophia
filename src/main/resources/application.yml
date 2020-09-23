@@ -45,7 +45,7 @@ config:
     similarity: 相似度
     isGray: 是否灰度对比
     threshold: 灰度二值化阈值
-    origin: 原始信息
+    element: 元素
     target: 目标信息
     elementAttribute: 元素属性
     testCaseType: 测试用例类型

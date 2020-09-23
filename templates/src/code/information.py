@@ -34,3 +34,9 @@ class Information(Action):
         """
         attr = ElementAttributeEnum.from_value("ENABLED")
         self._save_data["infomation3"] = self.android_service.get_element_attribute(element_kkk1)[attr]
+
+    def infomation10(self):
+        """
+        infomation10
+        """
+        self._save_data["infomation10"] = self.android_service.get_text(element_kkk1)

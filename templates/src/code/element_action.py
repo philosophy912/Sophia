@@ -13,7 +13,6 @@ from src.code.context import Action
 
 class ElementAction(Action):
 
-
     def element_test1(self):
         """
         test1
@@ -31,3 +30,4 @@ class ElementAction(Action):
         test3
         """
         self.android_service.press(element_kkk3, 2)
+

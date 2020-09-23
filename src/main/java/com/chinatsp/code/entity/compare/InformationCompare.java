@@ -18,7 +18,7 @@ public class InformationCompare extends BaseEntity {
     /**
      * 原始元素信息
      */
-    private String origin;
+    private String element;
     /**
      * 目标元素信息
      */

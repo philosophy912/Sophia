@@ -7,7 +7,7 @@
 # @Author:      lizhe
 # @Created:     2020/9/22 - 22:25
 # --------------------------------------------------------
-from src.code.information import *
+from src.code.information import Information
 
 
 class InformationCompare(Information):
@@ -16,4 +16,5 @@ class InformationCompare(Information):
         """
         info1
         """
+        
         return self.infomation2() == self.infomation1()
