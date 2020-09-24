@@ -6,6 +6,7 @@ import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.actions.ScreenShotAction;
 import com.chinatsp.code.entity.compare.ImageCompare;
+import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.dbc.entity.Message;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +18,13 @@ public class ImageCompareChecker extends BaseChecker implements IChecker {
 
 
     @Override
-    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Configure configure) {
+    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String[]> configure) {
         List<BaseEntity> entities = getEntity(map, ImageCompare.class);
-        int maxWidth = configure.getMaxWidth();
-        int maxHeight = configure.getMaxHeight();
+        int[] resolutions = getResolution(configure);
+        int qnxWidth = resolutions[0];
+        int qnxHeight = resolutions[1];
+        int androidWidth = resolutions[2];
+        int androidHeight = resolutions[3];
         for (int i = 0; i < entities.size(); i++) {
             int index = i + 1;
             ImageCompare imageCompare = (ImageCompare) entities.get(i);
@@ -34,7 +38,7 @@ public class ImageCompareChecker extends BaseChecker implements IChecker {
             // 检查灰度二值化值
             checkUtils.checkThreshold(imageCompare.getThreshold(), index, name);
             // 检查比较区域
-            checkUtils.checkClickPositions(imageCompare.getPositions(), index, name, maxWidth, maxHeight);
+            checkUtils.checkClickPositions(imageCompare, index, name, qnxWidth, qnxHeight, androidWidth, androidHeight);
             // 检查模板图片
             checkUtils.checkTemplateImage(imageCompare.getTemplateDark(), index, name);
             checkUtils.checkTemplateImage(imageCompare.getTemplateLight(), index, name);

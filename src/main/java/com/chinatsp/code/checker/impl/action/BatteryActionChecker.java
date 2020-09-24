@@ -2,11 +2,11 @@ package com.chinatsp.code.checker.impl.action;
 
 import com.chinatsp.code.checker.api.BaseChecker;
 import com.chinatsp.code.checker.api.IChecker;
-import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.actions.BatteryAction;
 import com.chinatsp.code.enumeration.BatteryOperationTypeEnum;
 import com.chinatsp.code.enumeration.BatteryTypeEnum;
+import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.dbc.entity.Message;
 import com.philosophy.character.util.CharUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -31,10 +31,11 @@ public class BatteryActionChecker extends BaseChecker implements IChecker {
 
 
     @Override
-    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Configure configure) {
+    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String[]> configure) {
         List<BaseEntity> entities = getEntity(map, BatteryAction.class);
-        double maxVoltage = configure.getMaxVoltage();
-        double minVoltage = configure.getMinVoltage();
+        String[] values = configure.get(ConfigureTypeEnum.VOLTAGE_RANGE);
+        double maxVoltage = Double.parseDouble(values[0]);
+        double minVoltage = Double.parseDouble(values[1]);
         for (int i = 0; i < entities.size(); i++) {
             int index = i + 1;
             BatteryAction batteryAction = (BatteryAction) entities.get(i);

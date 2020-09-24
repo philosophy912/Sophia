@@ -36,6 +36,5 @@ class ReaderServiceTest {
         Path path = Paths.get(BaseTestUtils.getFileFolder(), "template.xlsx");
         Pair<Map<String, List<BaseEntity>>, Configure> content = readerService.read(path);
         Assert.assertNotNull(content);
-
     }
 }

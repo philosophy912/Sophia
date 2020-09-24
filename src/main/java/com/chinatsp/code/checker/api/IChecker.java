@@ -2,6 +2,7 @@ package com.chinatsp.code.checker.api;
 
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.dbc.entity.Message;
 
 import java.util.List;
@@ -20,5 +21,5 @@ public interface IChecker {
      * @param messages  消息列表
      * @param configure 表中读取出来的配置文件
      */
-    void check(Map<String, List<BaseEntity>> map, List<Message> messages, Configure configure);
+    void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String[]> configure);
 }

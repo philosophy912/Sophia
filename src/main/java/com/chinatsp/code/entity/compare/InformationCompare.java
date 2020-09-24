@@ -2,6 +2,7 @@ package com.chinatsp.code.entity.compare;
 
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.storage.Information;
+import com.chinatsp.code.enumeration.ElementAttributeEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,5 +24,9 @@ public class InformationCompare extends BaseEntity {
      * 目标元素信息
      */
     private String target;
+    /**
+     * 元素属性
+     */
+    private ElementAttributeEnum elementAttribute;
 
 }

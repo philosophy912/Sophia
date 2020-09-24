@@ -7,6 +7,7 @@ import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.storage.Information;
 import com.chinatsp.code.entity.testcase.TestCase;
 import com.chinatsp.code.entity.testcase.TestCaseSetUp;
+import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.dbc.entity.Message;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,7 @@ import java.util.Map;
 public class TestCaseSetUpChecker extends BaseChecker implements IChecker {
 
     @Override
-    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Configure configure) {
+    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String[]> configure) {
         List<BaseEntity> entities = getEntity(map, TestCaseSetUp.class);
         List<BaseEntity> testCaseEntities = getEntity(map, TestCase.class);
         for (int i = 0; i < entities.size(); i++) {

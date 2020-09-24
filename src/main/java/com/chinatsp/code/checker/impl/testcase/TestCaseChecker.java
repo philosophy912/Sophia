@@ -5,6 +5,7 @@ import com.chinatsp.code.checker.api.IChecker;
 import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.testcase.TestCase;
+import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.dbc.entity.Message;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ public class TestCaseChecker extends BaseChecker implements IChecker {
 
 
     @Override
-    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Configure configure) {
+    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String[]> configure) {
         // 检查TestCase中的是否有重复的情况发生
         Map<String, BaseEntity> duplicateMap = new HashMap<>(12);
         for (Map.Entry<String, List<BaseEntity>> entry : map.entrySet()) {

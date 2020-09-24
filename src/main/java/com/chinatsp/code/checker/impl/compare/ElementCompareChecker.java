@@ -6,6 +6,7 @@ import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.collection.Element;
 import com.chinatsp.code.entity.compare.ElementCompare;
+import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.dbc.entity.Message;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ public class ElementCompareChecker extends BaseChecker implements IChecker {
 
 
     @Override
-    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Configure configure) {
+    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String[]> configure) {
         List<BaseEntity> entities = getEntity(map, ElementCompare.class);
         List<BaseEntity> elements = getEntity(map, Element.class);
         for (int i = 0; i < entities.size(); i++) {

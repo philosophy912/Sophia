@@ -2,6 +2,7 @@ package com.chinatsp.code.entity.compare;
 
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.enumeration.CompareTypeEnum;
+import com.chinatsp.code.enumeration.DeviceTpeEnum;
 import com.chinatsp.code.enumeration.PositionEnum;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,10 @@ import java.util.Map;
 @Getter
 @ToString
 public class ImageCompare extends BaseEntity {
+    /**
+     * 屏幕类型
+     */
+    private DeviceTpeEnum deviceTpe;
     /**
      * 图片对比类型
      * 仅支持CompareTypeEnum描述的类型

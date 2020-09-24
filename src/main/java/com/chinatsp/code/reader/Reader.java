@@ -2,7 +2,9 @@ package com.chinatsp.code.reader;
 
 import com.chinatsp.code.beans.ExcelProperty;
 import com.chinatsp.code.configure.Configure;
+import com.chinatsp.code.configure.ProjectConfig;
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.code.reader.api.ClassTypeFactory;
 import com.chinatsp.code.reader.api.IClassType;
 import com.chinatsp.code.utils.ConvertUtils;
@@ -25,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.chinatsp.code.utils.Constant.COMMA;
 import static com.chinatsp.code.utils.Constant.NEXT_LINE;
 import static com.chinatsp.code.utils.Constant.PACKAGE_NAME;
 import static com.chinatsp.code.utils.Constant.SPLIT_LEFT_BRACKETS;
@@ -271,6 +274,19 @@ public class Reader {
             }
         }
         return configure;
+    }
+
+    private Map<ConfigureTypeEnum, String[]> readConfig(Sheet sheet) {
+        Map<ConfigureTypeEnum, String[]> map = new HashMap<>();
+        // 去掉标题栏
+        sheet.removeRow(sheet.getRow(0));
+        for (Row row : sheet) {
+            String description = excelUtils.getCellValue(row.getCell(2));
+            String content = excelUtils.getCellValue(row.getCell(3));
+            String[] contents = content.split(COMMA);
+            map.put(ConfigureTypeEnum.fromValue(description), contents);
+        }
+        return map;
     }
 
     /**

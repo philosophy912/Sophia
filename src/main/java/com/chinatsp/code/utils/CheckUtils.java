@@ -7,6 +7,7 @@ import com.chinatsp.code.entity.actions.RelayAction;
 import com.chinatsp.code.entity.actions.ScreenOpsAction;
 import com.chinatsp.code.entity.actions.ScreenShotAction;
 import com.chinatsp.code.entity.collection.Element;
+import com.chinatsp.code.entity.compare.ImageCompare;
 import com.chinatsp.code.entity.storage.Information;
 import com.chinatsp.code.entity.testcase.TestCase;
 import com.chinatsp.code.enumeration.DeviceTpeEnum;
@@ -179,16 +180,29 @@ public class CheckUtils {
     /**
      * 检查点击的点是否在屏幕范围内
      *
-     * @param points    点击位置
-     * @param index     行号
-     * @param className 类名
-     * @param maxWidth  最大的宽
-     * @param maxHeight 最大的高
+     * @param screenOpsAction 截屏对象
+     * @param index           行号
+     * @param className       类名
+     * @param qnxWidth        qnx的宽
+     * @param qnxHeight       qnx的高
+     * @param androidWidth    android的宽
+     * @param androidHeight   android的高
      */
-    public void checkClickPoints(List<Pair<Integer, Integer>> points, int index, String className, int maxWidth, int maxHeight) {
+    public void checkClickPoints(ScreenOpsAction screenOpsAction, int index, String className,
+                                 int qnxWidth, int qnxHeight, int androidWidth, int androidHeight) {
+        List<Pair<Integer, Integer>> points = screenOpsAction.getPoints();
         for (Pair<Integer, Integer> pair : points) {
             int x = pair.getFirst();
             int y = pair.getSecond();
+            int maxWidth = -1;
+            int maxHeight = -1;
+            if (screenOpsAction.getDeviceType() == DeviceTpeEnum.QNX) {
+                maxWidth = qnxWidth;
+                maxHeight = qnxHeight;
+            } else {
+                maxWidth = androidWidth;
+                maxHeight = androidHeight;
+            }
             if (x <= 0 || x >= maxWidth) {
                 String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
                         x + "必须在小于等于" + maxWidth;
@@ -205,18 +219,33 @@ public class CheckUtils {
     /**
      * 检查点击的点是否在屏幕范围内
      *
-     * @param positions 点击位置
-     * @param index     行号
-     * @param className 类名
-     * @param maxWidth  最大的宽
-     * @param maxHeight 最大的高
+     * @param imageCompare  图片对比
+     * @param index         行号
+     * @param className     类名
+     * @param qnxWidth      qnx的宽
+     * @param qnxHeight     qnx的高
+     * @param androidWidth  android的宽
+     * @param androidHeight android的高
      */
-    public void checkClickPositions(List<Integer[]> positions, int index, String className, int maxWidth, int maxHeight) {
+    public void checkClickPositions(ImageCompare imageCompare, int index, String className,
+                                    int qnxWidth, int qnxHeight, int androidWidth, int androidHeight) {
+        List<Integer[]> positions = imageCompare.getPositions();
+        DeviceTpeEnum type = imageCompare.getDeviceTpe();
+        int maxWidth = -1;
+        int maxHeight = -1;
+        if (type == DeviceTpeEnum.QNX) {
+            maxWidth = qnxWidth;
+            maxHeight = qnxHeight;
+        } else {
+            maxWidth = androidWidth;
+            maxHeight = androidHeight;
+        }
         for (Integer[] position : positions) {
             int x = position[0];
             int y = position[1];
             int width = position[2];
             int height = position[3];
+
             if (x <= 0 || x >= maxWidth || y <= 0 || y >= maxHeight || x + width > maxWidth || y + height >= maxHeight) {
                 String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，请检查坐标点以及高宽填写是否符合要求";
                 throw new RuntimeException(error);
