@@ -1,12 +1,10 @@
 package com.chinatsp.code.checker;
 
 import com.chinatsp.code.BaseTestUtils;
-import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.code.reader.Reader;
-import com.chinatsp.code.service.ReaderService;
 import com.chinatsp.dbc.entity.Message;
-import com.chinatsp.dbc.impl.DbcParser;
 import com.philosophy.base.common.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,14 +35,14 @@ class CheckerTest {
 
     private Map<String, List<BaseEntity>> map;
 
-    private Configure configure;
+    private Map<ConfigureTypeEnum, String[]> configure;
 
     private List<Message> messages;
 
     @BeforeEach
     void beforeTest() {
         Path path = Paths.get(BaseTestUtils.getFileFolder(), "template.xlsx");
-        Pair<Map<String, List<BaseEntity>>, Configure> pair = reader.readTestCase(path);
+        Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String[]>> pair = reader.readTestCase(path);
         map = pair.getFirst();
         configure = pair.getSecond();
     }

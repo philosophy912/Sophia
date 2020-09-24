@@ -78,18 +78,3 @@ config:
     common: 公共函数
     configure: 配置
     testCaseSetUp: 测试用例前置条件
-  configures:
-    maxDisplay: 最大支持的显示屏的个数
-    maxRelayChannel: 最大支持的继电器通道
-    maxVoltage: 最大支持的电压值
-    minVoltage: 最小支持的电压值
-    SocPort: SOC串口号
-    SocBaudRate: SOC串口波特率
-    McuPort: MCU串口号
-    McuBaudRate: MCU串口波特率
-    maxWidth: 显示屏宽
-    maxHeight: 显示屏高
-    screenShotTempPath: 临时图片存放路径
-    templateImagePath: 模板图片存放路径
-    dbcFile: CAN的DBC文件绝对路径
-    dbcJson: 生成的DBC的JSON文件

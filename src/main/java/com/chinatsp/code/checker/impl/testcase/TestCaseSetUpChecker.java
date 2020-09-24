@@ -2,9 +2,7 @@ package com.chinatsp.code.checker.impl.testcase;
 
 import com.chinatsp.code.checker.api.BaseChecker;
 import com.chinatsp.code.checker.api.IChecker;
-import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
-import com.chinatsp.code.entity.storage.Information;
 import com.chinatsp.code.entity.testcase.TestCase;
 import com.chinatsp.code.entity.testcase.TestCaseSetUp;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;

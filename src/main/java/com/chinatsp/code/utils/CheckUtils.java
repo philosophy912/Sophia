@@ -1,6 +1,5 @@
 package com.chinatsp.code.utils;
 
-import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.actions.ElementAction;
 import com.chinatsp.code.entity.actions.RelayAction;
@@ -19,10 +18,9 @@ import com.chinatsp.dbc.entity.Message;
 import com.chinatsp.dbc.entity.Signal;
 import com.philosophy.base.common.Pair;
 import com.philosophy.character.util.CharUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +31,7 @@ import java.util.Map;
  * @date 2020/9/7 13:22
  **/
 @Component
+@Slf4j
 public class CheckUtils {
 
 
@@ -194,8 +193,8 @@ public class CheckUtils {
         for (Pair<Integer, Integer> pair : points) {
             int x = pair.getFirst();
             int y = pair.getSecond();
-            int maxWidth = -1;
-            int maxHeight = -1;
+            int maxWidth;
+            int maxHeight;
             if (screenOpsAction.getDeviceType() == DeviceTpeEnum.QNX) {
                 maxWidth = qnxWidth;
                 maxHeight = qnxHeight;
@@ -230,9 +229,9 @@ public class CheckUtils {
     public void checkClickPositions(ImageCompare imageCompare, int index, String className,
                                     int qnxWidth, int qnxHeight, int androidWidth, int androidHeight) {
         List<Integer[]> positions = imageCompare.getPositions();
-        DeviceTpeEnum type = imageCompare.getDeviceTpe();
-        int maxWidth = -1;
-        int maxHeight = -1;
+        DeviceTpeEnum type = imageCompare.getDeviceType();
+        int maxWidth;
+        int maxHeight;
         if (type == DeviceTpeEnum.QNX) {
             maxWidth = qnxWidth;
             maxHeight = qnxHeight;
@@ -301,6 +300,7 @@ public class CheckUtils {
      * @param minValue  最小值
      */
     public void checkBatteryValue(Double[] voltages, int index, String className, double minValue, double maxValue) {
+        log.debug("minValue = {}, maxValue = {}", minValue, maxValue);
         if (voltages.length != 1) {
             String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，电流或电压只能设置一个值";
             throw new RuntimeException(error);
@@ -483,23 +483,6 @@ public class CheckUtils {
         }
     }
 
-    /**
-     * 检查configure是否正确
-     *
-     * @param configure 配置
-     */
-    public void checkConfigure(Configure configure) {
-        String templateImagePath = configure.getTemplateImagePath();
-        if (!Files.exists(Paths.get(templateImagePath))) {
-            String error = templateImagePath + "路径不存在，请检查";
-            throw new RuntimeException(error);
-        }
-        String dbdFile = configure.getDbcFile();
-        if (!Files.exists(Paths.get(dbdFile))) {
-            String error = dbdFile + "文件不存在，请检查";
-            throw new RuntimeException(error);
-        }
-    }
 
     /**
      * 查找重复的函数名

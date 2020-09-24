@@ -34,8 +34,8 @@ public class BatteryActionChecker extends BaseChecker implements IChecker {
     public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String[]> configure) {
         List<BaseEntity> entities = getEntity(map, BatteryAction.class);
         String[] values = configure.get(ConfigureTypeEnum.VOLTAGE_RANGE);
-        double maxVoltage = Double.parseDouble(values[0]);
-        double minVoltage = Double.parseDouble(values[1]);
+        double minVoltage = Double.parseDouble(values[0]);
+        double maxVoltage = Double.parseDouble(values[1]);
         for (int i = 0; i < entities.size(); i++) {
             int index = i + 1;
             BatteryAction batteryAction = (BatteryAction) entities.get(i);

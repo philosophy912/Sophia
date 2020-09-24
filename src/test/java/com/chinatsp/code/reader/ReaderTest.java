@@ -1,9 +1,8 @@
 package com.chinatsp.code.reader;
 
 import com.chinatsp.code.BaseTestUtils;
-import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
-import com.chinatsp.code.utils.CheckUtils;
+import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.philosophy.base.common.Pair;
 import com.philosophy.base.util.ClazzUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +36,7 @@ class ReaderTest {
     void readTestCase() {
         List<String> classes = ClazzUtils.getClazzName(PACKAGE_NAME, true);
         Path path = Paths.get(BaseTestUtils.getFileFolder(), "template.xlsx");
-        Pair<Map<String, List<BaseEntity>>, Configure> pair = reader.readTestCase(path);
+        Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String[]>> pair = reader.readTestCase(path);
         for (Map.Entry<String, List<BaseEntity>> entry : pair.getFirst().entrySet()) {
             String className = entry.getKey();
             Class<?> clazz = BaseTestUtils.getClass(classes, className);

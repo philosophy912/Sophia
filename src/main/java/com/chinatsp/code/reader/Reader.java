@@ -1,15 +1,13 @@
 package com.chinatsp.code.reader;
 
 import com.chinatsp.code.beans.ExcelProperty;
-import com.chinatsp.code.configure.Configure;
-import com.chinatsp.code.configure.ProjectConfig;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.code.reader.api.ClassTypeFactory;
 import com.chinatsp.code.reader.api.IClassType;
-import com.chinatsp.code.utils.ConvertUtils;
 import com.chinatsp.code.utils.ReaderUtils;
 import com.philosophy.base.common.Pair;
+import com.philosophy.base.util.StringsUtils;
 import com.philosophy.excel.utils.ExcelUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -145,6 +143,7 @@ public class Reader {
         Map<String, Integer> entityMap = getEntityAttributeMap(titleRow, clazz);
         // 移出第一行便于后续的遍历
         sheet.removeRow(titleRow);
+        log.debug("sheet name is {}", sheetName);
         for (Row row : sheet) {
             handleRow(entities, row, clazz, entityMap, row.getRowNum());
         }
@@ -236,55 +235,63 @@ public class Reader {
     }
 
 
-    @SneakyThrows
-    private Configure readConfigure(Sheet sheet) {
-        Configure configure = new Configure();
-        // 去掉标题栏
-        sheet.removeRow(sheet.getRow(0));
-        for (Row row : sheet) {
-            String name = excelUtils.getCellValue(row.getCell(1));
-            String content = excelUtils.getCellValue(row.getCell(3));
-            Field[] fields = configure.getClass().getDeclaredFields();
-            for (Field field : fields) {
-                String fieldName = field.getName();
-                Class<?> type = field.getType();
-                field.setAccessible(true);
-                log.debug("field name is {}", fieldName);
-                if (fieldName.equalsIgnoreCase(name)) {
-                    if (type.equals(String.class)) {
-                        field.set(configure, content);
-                    } else if (type.equals(Integer.class)) {
-                        try {
-                            Integer value = ConvertUtils.convertInteger(content);
-                            field.set(configure, value);
-                        } catch (Exception e) {
-                            String error = "第" + (row.getRowNum() + 1) + "行填写错误，当前值仅支持Integer类型，请检查值" + content;
-                            throw new RuntimeException(error);
-                        }
-                    } else if (type.equals(Double.class)) {
-                        try {
-                            Double value = Double.parseDouble(content);
-                            field.set(configure, value);
-                        } catch (Exception e) {
-                            String error = "第" + (row.getRowNum() + 1) + "行填写错误，当前值仅支持Double类型，请检查值" + content;
-                            throw new RuntimeException(error);
-                        }
-                    }
-                }
-            }
-        }
-        return configure;
-    }
-
+    /**
+     * 根据Configure表格读取数据
+     *
+     * @param sheet 表格sheet
+     * @return 根据枚举列举数据
+     */
     private Map<ConfigureTypeEnum, String[]> readConfig(Sheet sheet) {
         Map<ConfigureTypeEnum, String[]> map = new HashMap<>();
         // 去掉标题栏
         sheet.removeRow(sheet.getRow(0));
         for (Row row : sheet) {
+            String index = excelUtils.getCellValue(row.getCell(0));
+            String name = excelUtils.getCellValue(row.getCell(1)).toLowerCase();
             String description = excelUtils.getCellValue(row.getCell(2));
             String content = excelUtils.getCellValue(row.getCell(3));
             String[] contents = content.split(COMMA);
-            map.put(ConfigureTypeEnum.fromValue(description), contents);
+            String[] values = new String[contents.length];
+            for (int i = 0; i < contents.length; i++) {
+                values[i] = contents[i].trim();
+            }
+            if (!(values.length == 1 && StringsUtils.isEmpty(content))) {
+                if (name.contains("serial")) {
+                    // 允许不填任何内容
+
+                    if (values.length != 2) {
+                        String error = "第" + Integer.parseInt(index) + "行填写错误，串口需要写串口号和波特率, 当前填写的是" + content;
+                        throw new RuntimeException(error);
+                    }
+                    String baudRate = values[1].trim();
+                    try {
+                        Integer.parseInt(baudRate);
+                    } catch (NumberFormatException e) {
+                        String error = "第" + Integer.parseInt(index) + "行填写错误，波特率填写错误，当前填写的是" + baudRate;
+                        throw new RuntimeException(error);
+                    }
+                } else if (name.contains("resolution")) {
+                    if (values.length != 2) {
+                        String error = "第" + Integer.parseInt(index) + "行填写错误，分辨率需要填写高宽, 当前填写的是" + content;
+                        throw new RuntimeException(error);
+                    }
+                    String width = values[0].trim();
+                    String height = values[1].trim();
+                    try {
+                        Integer.parseInt(width);
+                    } catch (NumberFormatException e) {
+                        String error = "第" + Integer.parseInt(index) + "行填写错误，宽度填写错误，当前填写的是" + width;
+                        throw new RuntimeException(error);
+                    }
+                    try {
+                        Integer.parseInt(height);
+                    } catch (NumberFormatException e) {
+                        String error = "第" + Integer.parseInt(index) + "行填写错误，高度填写错误，当前填写的是" + height;
+                        throw new RuntimeException(error);
+                    }
+                }
+            }
+            map.put(ConfigureTypeEnum.fromValue(description), values);
         }
         return map;
     }
@@ -295,12 +302,12 @@ public class Reader {
      * @param path Excel所在位置
      * @return Excel对应的Sheet对象
      */
-    public Pair<Map<String, List<BaseEntity>>, Configure> readTestCase(Path path) {
+    public Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String[]>> readTestCase(Path path) {
         String configure = "configure";
         Map<String, Sheet> sheetMap = readExcel(path);
         Sheet configureSheet = sheetMap.get(configure);
         sheetMap.remove(configure);
-        return new Pair<>(readEntity(sheetMap), readConfigure(configureSheet));
+        return new Pair<>(readEntity(sheetMap), readConfig(configureSheet));
     }
 
 }

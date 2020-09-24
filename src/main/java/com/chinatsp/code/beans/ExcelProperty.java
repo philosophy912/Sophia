@@ -28,8 +28,4 @@ public class ExcelProperty {
      * 实体类名以及Sheet中文相关
      */
     private Map<String, String> classname = new HashMap<>();
-    /**
-     * 表配置内容以及中文相关
-     */
-    private Map<String, String> configures = new HashMap<>();
 }

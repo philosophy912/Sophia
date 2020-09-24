@@ -1,6 +1,5 @@
 package com.chinatsp.code.checker.api;
 
-import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.dbc.entity.Message;

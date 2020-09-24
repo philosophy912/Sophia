@@ -1,7 +1,7 @@
 package com.chinatsp.code.service.api;
 
-import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.philosophy.base.common.Pair;
 
 import java.nio.file.Path;
@@ -19,5 +19,5 @@ public interface IReadService {
      * @param excel excel文档
      * @return 生成的对象
      */
-    Pair<Map<String, List<BaseEntity>>, Configure> read(Path excel);
+    Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String[]>> read(Path excel);
 }

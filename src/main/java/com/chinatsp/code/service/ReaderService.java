@@ -1,8 +1,8 @@
 package com.chinatsp.code.service;
 
 import com.chinatsp.code.checker.Checker;
-import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.code.reader.Reader;
 import com.chinatsp.code.service.api.IReadService;
 import com.philosophy.base.common.Pair;
@@ -28,8 +28,8 @@ public class ReaderService implements IReadService {
 
 
     @Override
-    public Pair<Map<String, List<BaseEntity>>, Configure> read(Path path) {
-        Pair<Map<String, List<BaseEntity>>, Configure> pair = reader.readTestCase(path);
+    public Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String[]>> read(Path path) {
+        Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String[]>> pair = reader.readTestCase(path);
         checker.check(pair.getFirst(), pair.getSecond());
         return pair;
     }

@@ -1,8 +1,8 @@
 package com.chinatsp.code.service;
 
 import com.chinatsp.code.BaseTestUtils;
-import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.code.service.api.IReadService;
 import com.philosophy.base.common.Pair;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author lizhe
@@ -34,7 +33,8 @@ class ReaderServiceTest {
     @Test
     void read() {
         Path path = Paths.get(BaseTestUtils.getFileFolder(), "template.xlsx");
-        Pair<Map<String, List<BaseEntity>>, Configure> content = readerService.read(path);
+        Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String[]>> content = readerService.read(path);
+        System.out.println(content);
         Assert.assertNotNull(content);
     }
 }

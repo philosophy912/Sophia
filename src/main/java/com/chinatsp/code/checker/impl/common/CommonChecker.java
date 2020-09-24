@@ -3,7 +3,6 @@ package com.chinatsp.code.checker.impl.common;
 import com.chinatsp.code.checker.api.BaseChecker;
 
 import com.chinatsp.code.checker.api.IChecker;
-import com.chinatsp.code.configure.Configure;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.common.Common;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;

@@ -1,6 +1,7 @@
 package com.chinatsp.code.template;
 
 import com.chinatsp.code.beans.ExcelProperty;
+import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.philosophy.base.util.ClazzUtils;
 import com.philosophy.base.util.EnumUtils;
 import com.philosophy.base.util.ParseUtils;
@@ -64,11 +65,6 @@ public class Template {
      */
     @SneakyThrows
     private String getConfigValue(Map<String, String> map, String name) {
-//        log.debug("object name is " + object.getClass().getSimpleName() + " and name is " + name);
-//        name = CharUtils.lowerCase(name);
-//        Method method = object.getClass().getMethod("get" + CharUtils.upperCase(name));
-//        String value = (String) method.invoke(object);
-//        return new String(value.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
         return map.get(CharUtils.lowerCase(name));
     }
 
@@ -215,6 +211,11 @@ public class Template {
             cell.setCellStyle(cellStyle);
             cell.setCellValue(titles[i]);
         }
+        ConfigureTypeEnum[] types = ConfigureTypeEnum.values();
+        for(ConfigureTypeEnum type: types){
+
+        }
+        // 这部分应该是需要遍历枚举然后填内容
         map = excelProperty.getConfigures();
         int i = 1;
         for (Map.Entry<String, String> entry : map.entrySet()) {

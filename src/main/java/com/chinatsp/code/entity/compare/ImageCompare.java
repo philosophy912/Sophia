@@ -22,7 +22,7 @@ public class ImageCompare extends BaseEntity {
     /**
      * 屏幕类型
      */
-    private DeviceTpeEnum deviceTpe;
+    private DeviceTpeEnum deviceType;
     /**
      * 图片对比类型
      * 仅支持CompareTypeEnum描述的类型
