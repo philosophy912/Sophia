@@ -212,15 +212,8 @@ public class Template {
             cell.setCellValue(titles[i]);
         }
         ConfigureTypeEnum[] types = ConfigureTypeEnum.values();
-        for(ConfigureTypeEnum type: types){
-
-        }
-        // 这部分应该是需要遍历枚举然后填内容
-        map = excelProperty.getConfigures();
-        int i = 1;
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            String fieldName = entry.getKey();
-            String comment = entry.getValue();
+        for (int i = 1; i < types.length; i++) {
+            ConfigureTypeEnum type = types[i];
             Row row = sheet.createRow(i);
             Cell indexCell = row.createCell(0);
             Cell nameCell = row.createCell(1);
@@ -231,11 +224,9 @@ public class Template {
             commentCell.setCellStyle(cellStyle);
             contentCell.setCellStyle(cellStyle);
             indexCell.setCellValue(i);
-            nameCell.setCellValue(fieldName);
-            commentCell.setCellValue(comment);
+            nameCell.setCellValue(type.getName());
+            commentCell.setCellValue(type.getValue());
             contentCell.setCellValue("");
-            i++;
-
         }
         // 宽度在非精确的情况下设置就是width * 256
         sheet.setColumnWidth(1, 25 * 256);
