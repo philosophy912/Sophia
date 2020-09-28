@@ -17,7 +17,7 @@ public class InformationChecker extends BaseChecker implements IChecker {
 
 
     @Override
-    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String[]> configure) {
+    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String> configure) {
         List<BaseEntity> entities = getEntity(map, Information.class);
         List<BaseEntity> elements = getEntity(map, Element.class);
         for (int i = 0; i < entities.size(); i++) {

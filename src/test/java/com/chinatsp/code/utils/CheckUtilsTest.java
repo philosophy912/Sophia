@@ -40,16 +40,16 @@ class CheckUtilsTest {
 
 
     private Map<String, List<BaseEntity>> map;
-    private Map<ConfigureTypeEnum, String[]> configure;
+    private Map<ConfigureTypeEnum, String> configure;
     private List<Message> messages;
 
     @BeforeEach
     void setup() {
         Path path = Paths.get(BaseTestUtils.getFileFolder(), "template.xlsx");
-        Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String[]>> pair = reader.readTestCase(path);
+        Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> pair = reader.readTestCase(path);
         map = pair.getFirst();
         configure = pair.getSecond();
-        Path dbc = Paths.get(configure.get(ConfigureTypeEnum.DBC_FILE)[0]);
+        Path dbc = Paths.get(configure.get(ConfigureTypeEnum.DBC_FILE));
         messages = dbcParser.parse(dbc);
     }
 

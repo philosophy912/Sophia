@@ -20,7 +20,7 @@ import java.util.Map;
 public class TestCaseSetUpChecker extends BaseChecker implements IChecker {
 
     @Override
-    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String[]> configure) {
+    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String> configure) {
         List<BaseEntity> entities = getEntity(map, TestCaseSetUp.class);
         List<BaseEntity> testCaseEntities = getEntity(map, TestCase.class);
         for (int i = 0; i < entities.size(); i++) {

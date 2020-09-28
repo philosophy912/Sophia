@@ -19,5 +19,5 @@ public interface IReadService {
      * @param excel excel文档
      * @return 生成的对象
      */
-    Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String[]>> read(Path excel);
+    Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> read(Path excel);
 }

@@ -46,7 +46,7 @@ import static com.chinatsp.code.utils.Constant.RIGHT_BRACKETS;
  **/
 @Component
 @Slf4j
-public class Template {
+public class TestCaseTemplate {
 
     @Resource
     private EnumUtils enumUtils;
@@ -212,9 +212,9 @@ public class Template {
             cell.setCellValue(titles[i]);
         }
         ConfigureTypeEnum[] types = ConfigureTypeEnum.values();
-        for (int i = 1; i < types.length; i++) {
+        for (int i = 0; i < types.length; i++) {
             ConfigureTypeEnum type = types[i];
-            Row row = sheet.createRow(i);
+            Row row = sheet.createRow(i + 1);
             Cell indexCell = row.createCell(0);
             Cell nameCell = row.createCell(1);
             Cell commentCell = row.createCell(2);
@@ -229,8 +229,8 @@ public class Template {
             contentCell.setCellValue("");
         }
         // 宽度在非精确的情况下设置就是width * 256
-        sheet.setColumnWidth(1, 25 * 256);
-        sheet.setColumnWidth(2, 25 * 256);
+        sheet.setColumnWidth(1, 30 * 256);
+        sheet.setColumnWidth(2, 30 * 256);
         sheet.setColumnWidth(3, 80 * 256);
     }
 

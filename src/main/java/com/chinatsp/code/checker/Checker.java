@@ -35,8 +35,8 @@ public class Checker {
 
 
     @SneakyThrows
-    public void check(Map<String, List<BaseEntity>> map, Map<ConfigureTypeEnum, String[]> configure) {
-        String dbcFile = configure.get(ConfigureTypeEnum.DBC_FILE)[0];
+    public void check(Map<String, List<BaseEntity>> map, Map<ConfigureTypeEnum, String> configure) {
+        String dbcFile = configure.get(ConfigureTypeEnum.DBC_FILE);
         Path dbcPath = Paths.get(dbcFile);
         if (!Files.exists(dbcPath)) {
             String error = "DBC文件[" + dbcFile + "]不存在，请检查配置的路径是否正确";

@@ -1,7 +1,7 @@
 package com.chinatsp.code.service;
 
 import com.chinatsp.code.service.api.ITemplateService;
-import com.chinatsp.code.template.Template;
+import com.chinatsp.code.template.TestCaseTemplate;
 import com.philosophy.base.util.FilesUtils;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.nio.file.Path;
 @Service
 public class TemplateService implements ITemplateService {
     @Resource
-    private Template template;
+    private TestCaseTemplate template;
 
 
     @SneakyThrows

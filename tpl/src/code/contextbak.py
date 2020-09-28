@@ -29,7 +29,7 @@ class Tester(object):
         top_folder = os.path.dirname(os.getcwd())
         resource = "\\".join([top_folder, "resources"])
         # DBC解析出来的文件的路径
-        self.dbc = "\\".join([resource, "dbc", dbc_json_file])
+        self.dbc = "\\".join([resource, "dbc", dbc_json])
         # 模板图片存放路径
         self.templates = "\\".join([resource, "templates"])
         # 截图图片存放路径
@@ -39,21 +39,21 @@ class Tester(object):
 
         self.image_compare = ImageCompare()
 
-        if it6831_serial:
-            self.it6831 = It6831Actions(port=it6831_serial[0], baud_rate=it6831_serial[1])
-        if konstanter_serial:
-            self.konstanter = KonstanterActions(port=konstanter_serial[0], baud_rate=konstanter_serial[1])
-        if dbc_json_file:
-            self.can_service = CANService(dbc_json_file)
-        if android_type:
-            self.android_service = AndroidService(ToolTypeEnum.from_value(android_type))
+        if it6831_serial_baud_rate and it6831_serial_port:
+            self.it6831 = It6831Actions(port=it6831_serial_baud_rate, baud_rate=it6831_serial_port)
+        if konstanter_serial_port and konstanter_serial_baud_rate:
+            self.konstanter = KonstanterActions(port=konstanter_serial_port, baud_rate=konstanter_serial_baud_rate)
+        if dbc_json:
+            self.can_service = CANService(self.dbc)
+        if android_automation_type:
+            self.android_service = AndroidService(ToolTypeEnum.from_value(android_automation_type))
         if max_relay_channel:
             self.relay = RelayActions()
-        if test_case_type == "cluster" and qnx_serial:
-            self.airCondition = AirCondition(qnx_screenshot_path, qnx_serial[0])
-        if soc_serial:
+        if test_case_type == "cluster" and air_condition_port and air_condition_baud_rate:
+            self.airCondition = AirCondition(qnx_screen_shot_path, air_condition_port)
+        if soc_serial_port and soc_serial_baud_rate:
             self.soc = SerialPort()
-        if mcu_serial:
+        if mcu_serial_port and mcu_serial_baud_rate:
             self.mcu = SerialPort()
 
     def open_device(self):
@@ -62,10 +62,10 @@ class Tester(object):
         if self.konstanter:
             self.konstanter.open()
         if self.android_service:
-            if android_type == "appium":
+            if android_automation_type == "appium":
                 capability = {
                     "deviceName": android_device_id,
-                    "platformVersion": android_platform_version,
+                    "platformVersion": android_version,
                     "platformName": "Android",
                     "automationName": "UiAutomator2",
                     "appPackage": android_app_package,
@@ -81,9 +81,9 @@ class Tester(object):
         if self.airCondition:
             self.airCondition.connect()
         if self.mcu:
-            self.mcu.connect(mcu_serial[0], mcu_serial[1])
+            self.mcu.connect(mcu_serial_port, mcu_serial_baud_rate)
         if self.soc:
-            self.soc.connect(soc_serial[0], soc_serial[1])
+            self.soc.connect(soc_serial_port, soc_serial_baud_rate)
 
     def close_device(self):
         if self.it6831:
@@ -203,7 +203,7 @@ class Tester(object):
         oooo2
         """
         for i in range(2):
-            self.android_service.adb.screen_shot(remote_file=f"{android_screenshot_path}/testq__{i + 1}",
+            self.android_service.adb.screen_shot(remote_file=f"{android_screen_shot_path}/testq__{i + 1}",
                                                  display_id=2,
                                                  device_id=android_device_id)
 

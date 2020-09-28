@@ -16,7 +16,7 @@ public class ImageCompareChecker extends BaseChecker implements IChecker {
 
 
     @Override
-    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String[]> configure) {
+    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String> configure) {
         List<BaseEntity> entities = getEntity(map, ImageCompare.class);
         int[] resolutions = getResolution(configure);
         int qnxWidth = resolutions[0];

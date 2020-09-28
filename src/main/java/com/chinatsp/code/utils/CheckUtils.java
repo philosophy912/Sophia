@@ -13,6 +13,7 @@ import com.chinatsp.code.enumeration.DeviceTpeEnum;
 import com.chinatsp.code.enumeration.ElementOperationTypeEnum;
 import com.chinatsp.code.enumeration.RelayOperationTypeEnum;
 import com.chinatsp.code.enumeration.ScreenOperationTypeEnum;
+import com.chinatsp.code.enumeration.ScreenShotTypeEnum;
 import com.chinatsp.code.enumeration.TestCaseFunctionTypeEnum;
 import com.chinatsp.dbc.entity.Message;
 import com.chinatsp.dbc.entity.Signal;
@@ -255,16 +256,29 @@ public class CheckUtils {
     /**
      * 检查屏幕数量是否符合要求
      *
-     * @param displayId  屏幕序号
-     * @param index      行号
-     * @param className  类名
-     * @param maxDisplay 最多的屏幕数量
+     * @param screenShotAction  ScreenShotAction表格
+     * @param index             行号
+     * @param className         类名
+     * @param maxAndroidDisplay 最多的安卓屏幕数量
+     * @param maxQnxDisplay     最多的QNX屏幕数量
      */
-    public void checkDisplay(int displayId, int index, String className, int maxDisplay) {
-        if (displayId <= 0 || displayId > maxDisplay) {
-            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，屏幕数量必须小于" + maxDisplay + "个";
-            throw new RuntimeException(error);
+    public void checkDisplay(ScreenShotAction screenShotAction, int index, String className, int maxAndroidDisplay, int maxQnxDisplay) {
+        ScreenShotTypeEnum type = screenShotAction.getScreenShotType();
+        int displayId = screenShotAction.getDisplayId();
+        if (type == ScreenShotTypeEnum.ANDROID_DISPLAY) {
+            if (displayId <= 0 || displayId > maxAndroidDisplay) {
+                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
+                        "屏幕数量必须小于" + maxAndroidDisplay + "个";
+                throw new RuntimeException(error);
+            }
+        } else if (type == ScreenShotTypeEnum.QNX_DISPLAY) {
+            if (displayId <= 0 || displayId > maxQnxDisplay) {
+                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
+                        "屏幕数量必须小于" + maxQnxDisplay + "个";
+                throw new RuntimeException(error);
+            }
         }
+
     }
 
     /**

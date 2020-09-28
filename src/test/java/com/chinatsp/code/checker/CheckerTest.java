@@ -35,14 +35,14 @@ class CheckerTest {
 
     private Map<String, List<BaseEntity>> map;
 
-    private Map<ConfigureTypeEnum, String[]> configure;
+    private Map<ConfigureTypeEnum, String> configure;
 
     private List<Message> messages;
 
     @BeforeEach
     void beforeTest() {
         Path path = Paths.get(BaseTestUtils.getFileFolder(), "template.xlsx");
-        Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String[]>> pair = reader.readTestCase(path);
+        Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> pair = reader.readTestCase(path);
         map = pair.getFirst();
         configure = pair.getSecond();
     }

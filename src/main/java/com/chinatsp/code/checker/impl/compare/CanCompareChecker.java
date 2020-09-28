@@ -17,7 +17,7 @@ public class CanCompareChecker extends BaseChecker implements IChecker {
 
 
     @Override
-    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String[]> configure) {
+    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String> configure) {
         List<BaseEntity> entities = map.get(CharUtils.lowerCase(this.getClass().getSimpleName().replace("Checker", "")));
         for (int i = 0; i < entities.size(); i++) {
             int index = i + 1;

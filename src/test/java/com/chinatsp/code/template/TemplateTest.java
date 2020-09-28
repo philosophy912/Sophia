@@ -2,7 +2,6 @@ package com.chinatsp.code.template;
 
 import com.philosophy.base.util.FilesUtils;
 import lombok.SneakyThrows;
-import lombok.ToString;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ import java.time.format.DateTimeFormatter;
 @SpringBootTest
 class TemplateTest {
     @Autowired
-    private Template template;
+    private TestCaseTemplate template;
 
 
     @SneakyThrows

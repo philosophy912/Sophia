@@ -20,5 +20,5 @@ public interface IChecker {
      * @param messages  消息列表
      * @param configure 表中读取出来的配置文件
      */
-    void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String[]> configure);
+    void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String> configure);
 }

@@ -11,10 +11,12 @@ import com.philosophy.base.util.StringsUtils;
 import com.philosophy.excel.utils.ExcelUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.util.StringUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -241,8 +243,8 @@ public class Reader {
      * @param sheet 表格sheet
      * @return 根据枚举列举数据
      */
-    private Map<ConfigureTypeEnum, String[]> readConfig(Sheet sheet) {
-        Map<ConfigureTypeEnum, String[]> map = new HashMap<>();
+    private Map<ConfigureTypeEnum, String> readConfig(Sheet sheet) {
+        Map<ConfigureTypeEnum, String> map = new HashMap<>();
         // 去掉标题栏
         sheet.removeRow(sheet.getRow(0));
         for (Row row : sheet) {
@@ -250,48 +252,36 @@ public class Reader {
             String name = excelUtils.getCellValue(row.getCell(1)).toLowerCase();
             String description = excelUtils.getCellValue(row.getCell(2));
             String content = excelUtils.getCellValue(row.getCell(3));
-            String[] contents = content.split(COMMA);
-            String[] values = new String[contents.length];
-            for (int i = 0; i < contents.length; i++) {
-                values[i] = contents[i].trim();
-            }
-            if (!(values.length == 1 && StringsUtils.isEmpty(content))) {
-                if (name.contains("serial")) {
-                    // 允许不填任何内容
-
-                    if (values.length != 2) {
-                        String error = "第" + Integer.parseInt(index) + "行填写错误，串口需要写串口号和波特率, 当前填写的是" + content;
+            if (!StringsUtils.isEmpty(content)){
+                if (name.contains("port")) {
+                    if (!content.toLowerCase().startsWith("com")) {
+                        String error = "第" + Integer.parseInt(index) + "行填写错误，端口号填写错误，当前填写的是" + content;
                         throw new RuntimeException(error);
                     }
-                    String baudRate = values[1].trim();
+                } else if (name.contains("baud_rate")) {
                     try {
-                        Integer.parseInt(baudRate);
+                        Integer.parseInt(content);
                     } catch (NumberFormatException e) {
-                        String error = "第" + Integer.parseInt(index) + "行填写错误，波特率填写错误，当前填写的是" + baudRate;
+                        String error = "第" + Integer.parseInt(index) + "行填写错误，波特率填写错误，当前填写的是" + content;
                         throw new RuntimeException(error);
                     }
                 } else if (name.contains("resolution")) {
-                    if (values.length != 2) {
-                        String error = "第" + Integer.parseInt(index) + "行填写错误，分辨率需要填写高宽, 当前填写的是" + content;
+                    try {
+                        Integer.parseInt(content);
+                    } catch (NumberFormatException e) {
+                        String error = "第" + Integer.parseInt(index) + "行填写错误，分辨率填写错误，当前填写的是" + content;
                         throw new RuntimeException(error);
                     }
-                    String width = values[0].trim();
-                    String height = values[1].trim();
+                } else if (name.contains("voltage")) {
                     try {
-                        Integer.parseInt(width);
+                        Double.parseDouble(content);
                     } catch (NumberFormatException e) {
-                        String error = "第" + Integer.parseInt(index) + "行填写错误，宽度填写错误，当前填写的是" + width;
-                        throw new RuntimeException(error);
-                    }
-                    try {
-                        Integer.parseInt(height);
-                    } catch (NumberFormatException e) {
-                        String error = "第" + Integer.parseInt(index) + "行填写错误，高度填写错误，当前填写的是" + height;
+                        String error = "第" + Integer.parseInt(index) + "行填写错误，电压填写错误，当前填写的是" + content;
                         throw new RuntimeException(error);
                     }
                 }
             }
-            map.put(ConfigureTypeEnum.fromValue(description), values);
+            map.put(ConfigureTypeEnum.fromValue(description), content);
         }
         return map;
     }
@@ -302,7 +292,7 @@ public class Reader {
      * @param path Excel所在位置
      * @return Excel对应的Sheet对象
      */
-    public Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String[]>> readTestCase(Path path) {
+    public Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> readTestCase(Path path) {
         String configure = "configure";
         Map<String, Sheet> sheetMap = readExcel(path);
         Sheet configureSheet = sheetMap.get(configure);

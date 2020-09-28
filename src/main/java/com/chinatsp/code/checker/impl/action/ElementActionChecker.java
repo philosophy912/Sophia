@@ -19,7 +19,7 @@ public class ElementActionChecker extends BaseChecker implements IChecker {
 
 
     @Override
-    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String[]> configure) {
+    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String> configure) {
         List<BaseEntity> elements = getEntity(map, Element.class);
         List<BaseEntity> entities = getEntity(map, ElementAction.class);
         for (int i = 0; i < entities.size(); i++) {
