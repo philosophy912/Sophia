@@ -1,6 +1,7 @@
 package com.chinatsp.code.writer;
 
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.entity.actions.BatteryAction;
 import com.chinatsp.code.entity.collection.Element;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.code.utils.WriterUtils;
@@ -59,6 +60,7 @@ public class FreeMarkerWriter extends BaseWriter {
         String name = getClassName(Element.class);
         List<BaseEntity> elements = entityMap.get(name);
         map.put(name, writerUtils.convertElements(elements));
+
         writeToFile(template, map, contextPath);
     }
 

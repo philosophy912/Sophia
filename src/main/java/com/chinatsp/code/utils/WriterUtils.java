@@ -17,7 +17,11 @@ import java.util.Map;
  **/
 @Component
 public class WriterUtils {
-
+    /**
+     * 转换element对象到适合于freemarker写入的数据
+     * @param entities element集合
+     * @return 每行数据
+     */
     public List<Triple<String, String, List<Pair<String, String>>>> convertElements(List<BaseEntity> entities) {
         List<Triple<String, String, List<Pair<String, String>>>> triples = new ArrayList<>();
         for (BaseEntity entity : entities) {

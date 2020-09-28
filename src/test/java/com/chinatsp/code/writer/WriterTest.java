@@ -47,13 +47,13 @@ class WriterTest {
 
     @Test
     void writeConfigure() {
-        Path path = Paths.get("D:\\Workspace\\github\\code\\tpl\\src\\code", "configure.py");
+        Path path = Paths.get(BaseTestUtils.getCodeFolder(), "configure.py");
         freeMarkerWriter.writeConfigure(map, path);
     }
 
     @Test
     void writeEntity() {
-        Path path = Paths.get("D:\\Workspace\\github\\code\\tpl\\src\\code", "context.py");
+        Path path = Paths.get(BaseTestUtils.getCodeFolder(), "context.py");
         freeMarkerWriter.writeEntity(entities, path);
     }
 }

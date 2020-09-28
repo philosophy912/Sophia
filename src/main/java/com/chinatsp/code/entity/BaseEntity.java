@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 /**
  * @author lizhe
  * @date 2020/8/27 10:00
@@ -25,5 +27,5 @@ public abstract class BaseEntity {
     /**
      * 备注
      */
-    private String comment;
+    private List<String> comments;
 }

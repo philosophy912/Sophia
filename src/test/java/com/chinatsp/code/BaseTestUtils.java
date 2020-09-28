@@ -20,6 +20,10 @@ public class BaseTestUtils {
         return FilesUtils.getCurrentPath() + "\\file";
     }
 
+    public static String getCodeFolder(){
+        return FilesUtils.getCurrentPath() +"\\tpl\\src\\code";
+    }
+
     @SneakyThrows
     public static Class getClass(List<String> classes, String className) {
         for (String s : classes) {

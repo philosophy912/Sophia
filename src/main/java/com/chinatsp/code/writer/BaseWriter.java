@@ -53,7 +53,6 @@ public abstract class BaseWriter {
      */
     @SneakyThrows
     private String getTemplateFolder() {
-        String freemarkerFolder;
         // 以当前文件夹下面的templates优先查找
         String folder = FilesUtils.getCurrentPath() + File.separator + TEMPLATES;
         if (Files.exists(Paths.get(folder))) {
