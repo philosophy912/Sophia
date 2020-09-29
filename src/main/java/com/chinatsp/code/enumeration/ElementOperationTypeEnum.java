@@ -8,25 +8,29 @@ import lombok.Setter;
  * @date 2020/8/27 10:12
  **/
 public enum ElementOperationTypeEnum {
-    SLIDE("滑动"),
-    CLICK("点击"),
-    PRESS("长按"),
-    DOUBLE_CLICK("双击"),
-    SLIDE_UP("上滑"),
-    SLIDE_DOWN("下滑"),
-    SLIDE_LEFT("左滑"),
-    SLIDE_RIGHT("右滑"),
-    SLIDE_UP_END("上滑到顶"),
-    SLIDE_DOWN_END("下滑到底"),
-    SLIDE_LEFT_END("左滑到头"),
-    SLIDE_RIGHT_END("右滑到头");
+    SLIDE("滑动", "swipe"),
+    CLICK("点击","click"),
+    PRESS("长按","press"),
+    DOUBLE_CLICK("双击","double_click"),
+    SLIDE_UP("上滑","swipe_up"),
+    SLIDE_DOWN("下滑","swipe_down"),
+    SLIDE_LEFT("左滑", "swipe_left"),
+    SLIDE_RIGHT("右滑","swipe_right"),
+    SLIDE_UP_END("上滑到顶","swipe_up"),
+    SLIDE_DOWN_END("下滑到底", "swipe_down"),
+    SLIDE_LEFT_END("左滑到头", "swipe_left"),
+    SLIDE_RIGHT_END("右滑到头", "swipe_right");
 
     @Setter
     @Getter
     private String value;
+    @Getter
+    @Setter
+    private String name;
 
-    ElementOperationTypeEnum(String value) {
+    ElementOperationTypeEnum(String value, String name) {
         this.value = value;
+        this.name = name;
     }
 
     /**

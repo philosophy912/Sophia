@@ -8,16 +8,20 @@ import lombok.Setter;
  * @date 2020/9/16 13:44
  **/
 public enum ScreenShotTypeEnum {
-    QNX_DISPLAY("QNX屏"),
-    ANDROID_DISPLAY("安卓屏"),
-    CLUSTER_DISPLAY("仪表屏");
+    QNX_DISPLAY("QNX屏", "airCondition"),
+    ANDROID_DISPLAY("安卓屏", "android_service"),
+    CLUSTER_DISPLAY("仪表屏","android_service");
 
     @Setter
     @Getter
     private String value;
+    @Setter
+    @Getter
+    private String name;
 
-    ScreenShotTypeEnum(String value) {
+    ScreenShotTypeEnum(String value, String name) {
         this.value = value;
+        this.name = name;
     }
 
     /**

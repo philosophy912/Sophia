@@ -8,16 +8,20 @@ import lombok.Setter;
  * @date 2020/8/27 10:12
  **/
 public enum ScreenOperationTypeEnum {
-    SLIDE("滑动"),
-    CLICK("点击"),
-    PRESS("长按");
+    SLIDE("滑动", "swipe"),
+    CLICK("点击","click"),
+    PRESS("长按","press");
 
     @Setter
     @Getter
     private String value;
+    @Setter
+    @Getter
+    private String name;
 
-    ScreenOperationTypeEnum(String value) {
+    ScreenOperationTypeEnum(String value, String name) {
         this.value = value;
+        this.name = name;
     }
 
     /**

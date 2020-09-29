@@ -2,6 +2,11 @@ package com.chinatsp.code.writer;
 
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.actions.BatteryAction;
+import com.chinatsp.code.entity.actions.CanAction;
+import com.chinatsp.code.entity.actions.ElementAction;
+import com.chinatsp.code.entity.actions.RelayAction;
+import com.chinatsp.code.entity.actions.ScreenOpsAction;
+import com.chinatsp.code.entity.actions.ScreenShotAction;
 import com.chinatsp.code.entity.collection.Element;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.code.utils.WriterUtils;
@@ -58,9 +63,26 @@ public class FreeMarkerWriter extends BaseWriter {
         String fileName = FilesUtils.getFileNameAndExtension(contextPath).getFirst();
         Map<String, Object> map = createMap(fileName);
         String name = getClassName(Element.class);
-        List<BaseEntity> elements = entityMap.get(name);
-        map.put(name, writerUtils.convertElements(elements));
-
+        List<BaseEntity> entities = entityMap.get(name);
+        map.put(name, writerUtils.convertElements(entities));
+        name = getClassName(BatteryAction.class);
+        entities = entityMap.get(name);
+        map.put(name, writerUtils.convertBatteryAction(entities));
+        name = getClassName(ElementAction.class);
+        entities = entityMap.get(name);
+        map.put(name, writerUtils.convertElementAction(entities));
+        name = getClassName(RelayAction.class);
+        entities = entityMap.get(name);
+        map.put(name, writerUtils.convertRelayAction(entities));
+        name = getClassName(ScreenOpsAction.class);
+        entities = entityMap.get(name);
+        map.put(name, writerUtils.convertScreenOpsAction(entities));
+        name = getClassName(ScreenShotAction.class);
+        entities = entityMap.get(name);
+        map.put(name, writerUtils.convertScreenShotAction(entities));
+        name = getClassName(CanAction.class);
+        entities = entityMap.get(name);
+        map.put(name, writerUtils.convertCanAction(entities));
         writeToFile(template, map, contextPath);
     }
 

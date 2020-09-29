@@ -8,15 +8,19 @@ import lombok.Setter;
  * @date 2020/8/27 11:25
  **/
 public enum BatteryTypeEnum {
-    IT6831("IT6831"),
-    KONSTANTER("KONSTANTER");
+    IT6831("IT6831", "it6831"),
+    KONSTANTER("KONSTANTER", "konstanter");
 
     @Setter
     @Getter
     private String value;
+    @Setter
+    @Getter
+    private String name;
 
-    BatteryTypeEnum(String value) {
+    BatteryTypeEnum(String value, String name) {
         this.value = value;
+        this.name = name;
     }
 
     /**

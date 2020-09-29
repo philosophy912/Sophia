@@ -8,15 +8,19 @@ import lombok.Setter;
  * @date 2020/8/27 10:07
  **/
 public enum DeviceTpeEnum {
-    QNX("QNX"),
-    ANDROID("ANDROID");
+    QNX("QNX", "airCondition"),
+    ANDROID("ANDROID", "android_service");
 
     @Setter
     @Getter
     private String value;
+    @Setter
+    @Getter
+    private String name;
 
-    DeviceTpeEnum(String value) {
+    DeviceTpeEnum(String value, String name) {
         this.value = value;
+        this.name = name;
     }
 
     /**

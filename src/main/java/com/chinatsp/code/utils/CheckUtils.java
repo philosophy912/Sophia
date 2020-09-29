@@ -669,28 +669,35 @@ public class CheckUtils {
         ScreenOperationTypeEnum type = screenOpsAction.getScreenOperationType();
         List<Pair<Integer, Integer>> points = screenOpsAction.getPoints();
         double continueTime = screenOpsAction.getContinueTimes();
-        if (type == ScreenOperationTypeEnum.SLIDE) {
-            if (screenOpsAction.getDeviceType() == DeviceTpeEnum.ANDROID) {
+        if (screenOpsAction.getDeviceType() == DeviceTpeEnum.ANDROID) {
+            if (type != ScreenOperationTypeEnum.CLICK) {
                 String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作设备仅支持QNX设备";
                 throw new RuntimeException(error);
             }
-            if (points.size() != 2) {
-                String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作坐标点必须为2组";
-                throw new RuntimeException(error);
-            }
-            if (continueTime <= 0) {
-                String error = "Sheet[" + className + "]的第" + index + "行的操作持续时间填写不正确";
-                throw new RuntimeException(error);
-            }
-        } else {
             if (points.size() != 1) {
                 String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作坐标点必须为1组";
                 throw new RuntimeException(error);
             }
-            if (type == ScreenOperationTypeEnum.PRESS) {
+        } else {
+            if (type == ScreenOperationTypeEnum.SLIDE) {
+                if (points.size() != 2) {
+                    String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作坐标点必须为2组";
+                    throw new RuntimeException(error);
+                }
                 if (continueTime <= 0) {
                     String error = "Sheet[" + className + "]的第" + index + "行的操作持续时间填写不正确";
                     throw new RuntimeException(error);
+                }
+            } else {
+                if (points.size() != 1) {
+                    String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作坐标点必须为1组";
+                    throw new RuntimeException(error);
+                }
+                if (type == ScreenOperationTypeEnum.PRESS) {
+                    if (continueTime <= 0) {
+                        String error = "Sheet[" + className + "]的第" + index + "行的操作持续时间填写不正确";
+                        throw new RuntimeException(error);
+                    }
                 }
             }
         }

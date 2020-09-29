@@ -11,12 +11,16 @@ from src.code.configure import *
 
 ########################################################################################################################
 #                                                                                                                      #
-#                                           用于生成表格-->安卓元素(Element)                                               #
+#                                           用于生成表格 --> 安卓元素(Element)                                           #
 #                                                                                                                      #
 ########################################################################################################################
 
 <#list element as e>
-# ${e.second}
+"""
+<#list e.second as line>
+${line}
+</#list>
+"""
 ${e.first} = {<#list e.third as locators><#noparse>"</#noparse>${locators.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${locators.second}<#noparse>"</#noparse><#if locators_index != e.third?size -1>, </#if></#list>}
 </#list>
 
@@ -27,6 +31,7 @@ class Tester(object):
     def __init__(self):
         # 用于存放保存的内容
         self.save_data = dict()
+        self.curve = Curve()
         top_folder = os.path.dirname(os.getcwd())
         resource = "\\".join([top_folder, "resources"])
         # DBC解析出来的文件的路径
@@ -102,7 +107,110 @@ class Tester(object):
 
 ########################################################################################################################
 #                                                                                                                      #
-#                                           用于生成表格-->电源操作(BatteryAction)                                         #
+#                                           用于生成表格 --> 电源操作(BatteryAction)                                     #
 #                                                                                                                      #
 ########################################################################################################################
+<#list batteryAction as battery>
 
+    def ${battery.first[0]}(self):
+        """
+        <#list battery.second as line>
+        ${line}
+        </#list>
+        """
+        <#if battery.first[2] == "adjust_voltage_by_curve">
+        voltage_list = self.curve.get_voltage_by_csv(r<#noparse>"</#noparse>${battery.first[4]}<#noparse>"</#noparse>)
+        for i in range(${battery.first[3]}):
+            self.${battery.first[1]}.${battery.first[2]}(voltage_list)
+        <#else>
+        self.${battery.first[1]}.${battery.first[2]}(<#list battery.third as param>${param}<#if param_index != battery.third?size -1>, </#if></#list>)
+        </#if>
+</#list>
+
+########################################################################################################################
+#                                                                                                                      #
+#                                           用于生成表格 --> 元素操作(ElementAction)                                      #
+#                                                                                                                      #
+########################################################################################################################
+<#list elementAction as element>
+
+    def ${element.first[0]}(self):
+        """
+        <#list element.second as line>
+        ${line}
+        </#list>
+        """
+        self.${element.first[1]}.${element.first[2]}(<#list element.third as param>${param}<#if param_index != element.third?size -1>, </#if></#list><#if element.first[3]!="0">, ${element.first[3]}</#if>)
+</#list>
+
+########################################################################################################################
+#                                                                                                                      #
+#                                           用于生成表格 --> 继电器操作(RelayAction)                                      #
+#                                                                                                                      #
+########################################################################################################################
+<#list relayAction as relay>
+
+    def ${relay.first[0]}(self):
+        """
+        <#list relay.second as line>
+        ${line}
+        </#list>
+        """
+        self.${relay.first[1]}.${relay.first[2]}(<#if relay.first[3]!="0">${relay.first[3]}</#if>)
+</#list>
+
+########################################################################################################################
+#                                                                                                                      #
+#                                           用于生成表格 --> 屏幕操作(ScreenOpsAction)                                   #
+#                                                                                                                      #
+########################################################################################################################
+<#list screenOpsAction as ops>
+
+    def ${ops.first[0]}(self):
+        """
+        <#list ops.second as line>
+        ${line}
+        </#list>
+        """
+        self.${ops.first[1]}.${ops.first[2]}(<#list ops.third as param>${param}<#if param_index != ops.third?size -1>, </#if></#list>)
+</#list>
+
+########################################################################################################################
+#                                                                                                                      #
+#                                           用于生成表格 --> 截图操作(ScreenShotAction)                                  #
+#                                                                                                                      #
+########################################################################################################################
+<#list screenShotAction as ops>
+
+    def ${ops.first[0]}(self):
+        """
+        <#list ops.second as line>
+        ${line}
+        </#list>
+        """
+    <#if ops.first[1] == "airCondition">
+        image_name = f<#noparse>"</#noparse>${ops.first[3]}<#noparse>"</#noparse>
+        self.${ops.first[1]}.${ops.first[2]}(<#list ops.third as param>${param}<#if param_index != ops.third?size -1>, </#if></#list>)
+    <#else>
+        image_name = f<#noparse>"</#noparse>${r'{android_screen_shot_path}'}/${ops.first[3]}__<#noparse>"</#noparse>
+        for i in range(${ops.first[4]}):
+            self.${ops.first[1]}.${ops.first[2]}(remote_file=f<#noparse>"</#noparse>${r'{'}image_name${r'}'}${r'{'}i + 1${r'}'}<#noparse>"</#noparse>, ${ops.third[0]},
+                                                 ${ops.third[1]})
+    </#if>
+</#list>
+
+########################################################################################################################
+#                                                                                                                      #
+#                                           用于生成表格 --> Can信号(CanAction)                                          #
+#                                                                                                                      #
+########################################################################################################################
+<#list canAction as ops>
+
+    def ${ops.first[0]}(self):
+        """
+        <#list ops.second as line>
+        ${line}
+        </#list>
+        """
+        self.${ops.first[1]}.${ops.first[2]}(${ops.third.first}, ${r'{'}<#list ops.third.second as signal><#noparse>"</#noparse>${signal.first}<#noparse>"</#noparse>: ${signal.second}<#if signal_index != ops.third.second?size -1>, </#if></#list>${r'}'})
+</#list>

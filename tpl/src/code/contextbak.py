@@ -12,7 +12,9 @@ import os
 from automotive import *
 from src.code.configure import *
 
-# kkk2
+"""
+kkk3
+"""
 element_kkk1 = {"resourceId": "a", "text": "b"}
 # kkk3
 element_kkk2 = {"text": "c"}
@@ -26,6 +28,7 @@ class Tester(object):
     def __init__(self):
         # 用于存放保存的内容
         self.save_data = dict()
+        self.curve = Curve()
         top_folder = os.path.dirname(os.getcwd())
         resource = "\\".join([top_folder, "resources"])
         # DBC解析出来的文件的路径
@@ -121,8 +124,7 @@ class Tester(object):
         """
         test1
         """
-        curve = Curve()
-        voltage_list = curve.get_voltage_by_csv(r"d:\a.csv")
+        voltage_list = self.curve.get_voltage_by_csv(r"d:\a.csv")
         for i in range(3):
             self.konstanter.adjust_voltage_by_curve(voltage_list)
 
