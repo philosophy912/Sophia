@@ -9,6 +9,8 @@ public interface Constant {
     String PACKAGE_NAME = "com.chinatsp.code.entity";
     // 检查者的包名
     String CHECKER_PACKAGE_NAME = "com.chinatsp.code.checker.impl";
+    // Freemarker生成类的包名
+    String WRITER_PACKAGE_NAME = "com.chinatsp.code.writer.impl";
     // 抽象基础实体类
     String BASE_ENTITY = PACKAGE_NAME + ".BaseEntity";
     // 英文的是

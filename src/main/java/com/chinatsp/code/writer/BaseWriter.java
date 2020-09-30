@@ -1,14 +1,11 @@
 package com.chinatsp.code.writer;
 
-import com.chinatsp.code.utils.WriterUtils;
 import com.philosophy.base.util.FilesUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import lombok.SneakyThrows;
-import org.springframework.util.ResourceUtils;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -28,8 +25,6 @@ import static com.chinatsp.dbc.api.IConstant.UTF8;
  * @date 2020/9/28 11:03
  **/
 public abstract class BaseWriter {
-    @Resource
-    protected WriterUtils writerUtils;
 
     String TEMPLATES = "templates";
     String FTLH = ".ftlh";

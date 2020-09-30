@@ -270,15 +270,15 @@ class Tester(object):
         compareaaaa1
         """
         compare_property = CompareProperty()
-        compare_property.set_value("screen_shot",
-                                   "亮图",
-                                   self.screenshot,
-                                   "\\".join([self.templates, "template_light.jpg"]),
-                                   "\\".join([self.templates, "template_dark.bmp"]),
-                                   [(1, 2, 3, 4)],
-                                   9.9,
-                                   True,
-                                   240)
+        compare_property.set_value(name="screen_shot",
+                                   compare_type="亮图",
+                                   screen_shot_images_path=self.screenshot,
+                                   light_template="\\".join([self.templates, "template_light.jpg"]),
+                                   dark_template="\\".join([self.templates, "template_dark.bmp"]),
+                                   positions=[(1, 2, 3, 4)],
+                                   similarity=9.9,
+                                   gray=True,
+                                   gray_threshold=240)
         result = self.image_compare.compare(compare_property)
         files = self.image_compare.handle_images(compare_property, self.temp)
         return result, files, compare_property.type, compare_property.light_template, compare_property.dark_template

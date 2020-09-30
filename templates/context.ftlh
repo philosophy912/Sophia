@@ -15,13 +15,13 @@ from src.code.configure import *
 #                                                                                                                      #
 ########################################################################################################################
 
-<#list element as e>
+<#list element as freemarker>
 """
-<#list e.second as line>
+<#list freemarker.comment as line>
 ${line}
 </#list>
 """
-${e.first} = {<#list e.third as locators><#noparse>"</#noparse>${locators.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${locators.second}<#noparse>"</#noparse><#if locators_index != e.third?size -1>, </#if></#list>}
+${freemarker.info[0]} = {<#list freemarker.pairs as locators><#noparse>"</#noparse>${locators.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${locators.second}<#noparse>"</#noparse><#if locators_index != freemarker.pairs?size -1>, </#if></#list>}
 </#list>
 
 interval_time = 0.5
@@ -110,20 +110,20 @@ class Tester(object):
 #                                           用于生成表格 --> 电源操作(BatteryAction)                                     #
 #                                                                                                                      #
 ########################################################################################################################
-<#list batteryAction as battery>
+<#list batteryAction as freemarker>
 
-    def ${battery.first[0]}(self):
+    def ${freemarker.info[0]}(self):
         """
-        <#list battery.second as line>
+        <#list freemarker.comment as line>
         ${line}
         </#list>
         """
-        <#if battery.first[2] == "adjust_voltage_by_curve">
-        voltage_list = self.curve.get_voltage_by_csv(r<#noparse>"</#noparse>${battery.first[4]}<#noparse>"</#noparse>)
-        for i in range(${battery.first[3]}):
-            self.${battery.first[1]}.${battery.first[2]}(voltage_list)
+        <#if freemarker.info[2] == "adjust_voltage_by_curve">
+        voltage_list = self.curve.get_voltage_by_csv(r<#noparse>"</#noparse>${freemarker.info[4]}<#noparse>"</#noparse>)
+        for i in range(${freemarker.info[3]}):
+            self.${freemarker.info[1]}.${freemarker.info[2]}(voltage_list)
         <#else>
-        self.${battery.first[1]}.${battery.first[2]}(<#list battery.third as param>${param}<#if param_index != battery.third?size -1>, </#if></#list>)
+        self.${freemarker.info[1]}.${freemarker.info[2]}(<#list freemarker.params as param>${param}<#if param_index != freemarker.params?size -1>, </#if></#list>)
         </#if>
 </#list>
 
@@ -132,15 +132,15 @@ class Tester(object):
 #                                           用于生成表格 --> 元素操作(ElementAction)                                      #
 #                                                                                                                      #
 ########################################################################################################################
-<#list elementAction as element>
+<#list elementAction as freemarker>
 
-    def ${element.first[0]}(self):
+    def ${freemarker.info[0]}(self):
         """
-        <#list element.second as line>
+        <#list freemarker.comment as line>
         ${line}
         </#list>
         """
-        self.${element.first[1]}.${element.first[2]}(<#list element.third as param>${param}<#if param_index != element.third?size -1>, </#if></#list><#if element.first[3]!="0">, ${element.first[3]}</#if>)
+        self.${freemarker.info[1]}.${freemarker.info[2]}(<#list freemarker.params as param>${param}<#if param_index != freemarker.params?size -1>, </#if></#list><#if freemarker.info[3]!="0">, ${freemarker.info[3]}</#if>)
 </#list>
 
 ########################################################################################################################
@@ -148,15 +148,15 @@ class Tester(object):
 #                                           用于生成表格 --> 继电器操作(RelayAction)                                      #
 #                                                                                                                      #
 ########################################################################################################################
-<#list relayAction as relay>
+<#list relayAction as freemarker>
 
-    def ${relay.first[0]}(self):
+    def ${freemarker.info[0]}(self):
         """
-        <#list relay.second as line>
+        <#list freemarker.comment as line>
         ${line}
         </#list>
         """
-        self.${relay.first[1]}.${relay.first[2]}(<#if relay.first[3]!="0">${relay.first[3]}</#if>)
+        self.${freemarker.info[1]}.${freemarker.info[2]}(<#if freemarker.info[3]!="0">${freemarker.info[3]}</#if>)
 </#list>
 
 ########################################################################################################################
@@ -164,15 +164,15 @@ class Tester(object):
 #                                           用于生成表格 --> 屏幕操作(ScreenOpsAction)                                   #
 #                                                                                                                      #
 ########################################################################################################################
-<#list screenOpsAction as ops>
+<#list screenOpsAction as freemarker>
 
-    def ${ops.first[0]}(self):
+    def ${freemarker.info[0]}(self):
         """
-        <#list ops.second as line>
+        <#list freemarker.comment as line>
         ${line}
         </#list>
         """
-        self.${ops.first[1]}.${ops.first[2]}(<#list ops.third as param>${param}<#if param_index != ops.third?size -1>, </#if></#list>)
+        self.${freemarker.info[1]}.${freemarker.info[2]}(<#list freemarker.params as param>${param}<#if param_index != freemarker.params?size -1>, </#if></#list>)
 </#list>
 
 ########################################################################################################################
@@ -180,22 +180,21 @@ class Tester(object):
 #                                           用于生成表格 --> 截图操作(ScreenShotAction)                                  #
 #                                                                                                                      #
 ########################################################################################################################
-<#list screenShotAction as ops>
+<#list screenShotAction as freemarker>
 
-    def ${ops.first[0]}(self):
+    def ${freemarker.info[0]}(self):
         """
-        <#list ops.second as line>
+        <#list freemarker.comment as line>
         ${line}
         </#list>
         """
-    <#if ops.first[1] == "airCondition">
-        image_name = f<#noparse>"</#noparse>${ops.first[3]}<#noparse>"</#noparse>
-        self.${ops.first[1]}.${ops.first[2]}(<#list ops.third as param>${param}<#if param_index != ops.third?size -1>, </#if></#list>)
+    <#if freemarker.info[1] == "airCondition">
+        image_name = f<#noparse>"</#noparse>${freemarker.info[3]}<#noparse>"</#noparse>
+        self.${freemarker.info[1]}.${freemarker.info[2]}(<#list freemarker.params as param>${param}<#if param_index != freemarker.params?size -1>, </#if></#list>)
     <#else>
-        image_name = f<#noparse>"</#noparse>${r'{android_screen_shot_path}'}/${ops.first[3]}__<#noparse>"</#noparse>
-        for i in range(${ops.first[4]}):
-            self.${ops.first[1]}.${ops.first[2]}(remote_file=f<#noparse>"</#noparse>${r'{'}image_name${r'}'}${r'{'}i + 1${r'}'}<#noparse>"</#noparse>, ${ops.third[0]},
-                                                 ${ops.third[1]})
+        image_name = f<#noparse>"</#noparse>${r'{android_screen_shot_path}'}/${freemarker.info[3]}__<#noparse>"</#noparse>
+        for i in range(${freemarker.info[4]}):
+            self.${freemarker.info[1]}.${freemarker.info[2]}(remote_file=f<#noparse>"</#noparse>${r'{'}image_name${r'}'}${r'{'}i + 1${r'}'}<#noparse>"</#noparse>, ${freemarker.params[0]}, ${freemarker.params[1]})
     </#if>
 </#list>
 
@@ -204,13 +203,78 @@ class Tester(object):
 #                                           用于生成表格 --> Can信号(CanAction)                                          #
 #                                                                                                                      #
 ########################################################################################################################
-<#list canAction as ops>
+<#list canAction as freemarker>
 
-    def ${ops.first[0]}(self):
+    def ${freemarker.info[0]}(self):
         """
-        <#list ops.second as line>
+        <#list freemarker.comment as line>
         ${line}
         </#list>
         """
-        self.${ops.first[1]}.${ops.first[2]}(${ops.third.first}, ${r'{'}<#list ops.third.second as signal><#noparse>"</#noparse>${signal.first}<#noparse>"</#noparse>: ${signal.second}<#if signal_index != ops.third.second?size -1>, </#if></#list>${r'}'})
+        self.${freemarker.info[1]}.${freemarker.info[2]}(${freemarker.info[3]}, ${r'{'}<#list freemarker.pairs as signal><#noparse>"</#noparse>${signal.first}<#noparse>"</#noparse>: ${signal.second}<#if signal_index != freemarker.pairs?size -1>, </#if></#list>${r'}'})
 </#list>
+
+########################################################################################################################
+#                                                                                                                      #
+#                                           用于生成表格 --> CAN信号对比(CanCompare)                                      #
+#                                                                                                                      #
+########################################################################################################################
+<#list canCompare as freemarker>
+
+    def ${freemarker.info[0]}(self, stack) -> tuple:
+        """
+        <#list freemarker.comment as line>
+        ${line}
+        </#list>
+        """
+        return self.${freemarker.info[1]}.${freemarker.info[2]}(sig_name=<#noparse>"</#noparse>${freemarker.info[3]}<#noparse>"</#noparse>, <#list freemarker.params as param>${param}<#if param_index != freemarker.params?size -1>, </#if></#list>),
+</#list>
+
+########################################################################################################################
+#                                                                                                                      #
+#                                           用于生成表格 --> Android元素对比(ElementCompare)                             #
+#                                                                                                                      #
+########################################################################################################################
+<#list elementCompare as freemarker>
+
+    def ${freemarker.info[0]}(self) -> tuple:
+        """
+        <#list freemarker.comment as line>
+        ${line}
+        </#list>
+        """
+        return <#if freemarker.info[3] == "1">not </#if>self.${freemarker.info[1]}.${freemarker.info[2]}(<#list freemarker.params as param>${param}<#if param_index != freemarker.params?size -1>, </#if></#list>),
+</#list>
+
+########################################################################################################################
+#                                                                                                                      #
+#                                           用于生成表格 --> 图片对比(ImageCompare)                                       #
+#                                                                                                                      #
+########################################################################################################################
+<#list imageCompare as freemarker>
+
+    def ${freemarker.info[0]}(self) -> tuple:
+        """
+        <#list freemarker.comment as line>
+            ${line}
+        </#list>
+        """
+        compare_property = CompareProperty()
+        compare_property.set_value(name=<#noparse>"</#noparse>${freemarker.params[0]}<#noparse>"</#noparse>,
+                                   compare_type=<#noparse>"</#noparse>${freemarker.params[1]}<#noparse>"</#noparse>,
+                                   screen_shot_images_path=self.screenshot,
+                                   light_template=<#noparse>"</#noparse>\\<#noparse>"</#noparse>.join([self.templates, <#noparse>"</#noparse>${freemarker.params[2]}<#noparse>"</#noparse>]),
+                                   dark_template=<#noparse>"</#noparse>\\<#noparse>"</#noparse>.join([self.templates, <#noparse>"</#noparse>${freemarker.params[3]}<#noparse>"</#noparse>]),
+                                   positions=[${freemarker.params[4]}],
+                                   similarity=${freemarker.params[5]},
+                                   gray=${freemarker.params[6]},
+                                   gray_threshold=${freemarker.params[7]})
+        result = self.image_compare.compare(compare_property)
+        files = self.image_compare.handle_images(compare_property, self.temp)
+        return result, files, compare_property.type, compare_property.light_template, compare_property.dark_template
+</#list>
+########################################################################################################################
+#                                                                                                                      #
+#                                           用于生成表格 --> 信息对比(InformationCompare)                                 #
+#                                                                                                                      #
+########################################################################################################################

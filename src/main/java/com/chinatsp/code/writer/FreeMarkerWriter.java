@@ -1,16 +1,8 @@
 package com.chinatsp.code.writer;
 
 import com.chinatsp.code.entity.BaseEntity;
-import com.chinatsp.code.entity.actions.BatteryAction;
-import com.chinatsp.code.entity.actions.CanAction;
-import com.chinatsp.code.entity.actions.ElementAction;
-import com.chinatsp.code.entity.actions.RelayAction;
-import com.chinatsp.code.entity.actions.ScreenOpsAction;
-import com.chinatsp.code.entity.actions.ScreenShotAction;
-import com.chinatsp.code.entity.collection.Element;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;
-import com.chinatsp.code.utils.WriterUtils;
-import com.philosophy.base.common.Pair;
+import com.chinatsp.code.utils.ReaderUtils;
 import com.philosophy.base.common.Triple;
 import com.philosophy.base.util.FilesUtils;
 import com.philosophy.character.util.CharUtils;
@@ -18,10 +10,15 @@ import freemarker.template.Template;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static com.chinatsp.code.utils.Constant.WRITER_PACKAGE_NAME;
+
 
 /**
  * @author lizhe
@@ -29,6 +26,8 @@ import java.util.Map;
  **/
 @Component
 public class FreeMarkerWriter extends BaseWriter {
+    @Resource
+    private ReaderUtils readerUtils;
 
     private List<Triple<String, String, String>> convert(Map<ConfigureTypeEnum, String> configureMap) {
         List<Triple<String, String, String>> pairs = new ArrayList<>();
@@ -40,10 +39,6 @@ public class FreeMarkerWriter extends BaseWriter {
             pairs.add(new Triple<>(comment, functionName, values));
         }
         return pairs;
-    }
-
-    private String getClassName(Class<?> clazz){
-        return CharUtils.lowerCase(clazz.getSimpleName());
     }
 
 
@@ -62,27 +57,19 @@ public class FreeMarkerWriter extends BaseWriter {
         Template template = getTemplate("context");
         String fileName = FilesUtils.getFileNameAndExtension(contextPath).getFirst();
         Map<String, Object> map = createMap(fileName);
-        String name = getClassName(Element.class);
-        List<BaseEntity> entities = entityMap.get(name);
-        map.put(name, writerUtils.convertElements(entities));
-        name = getClassName(BatteryAction.class);
-        entities = entityMap.get(name);
-        map.put(name, writerUtils.convertBatteryAction(entities));
-        name = getClassName(ElementAction.class);
-        entities = entityMap.get(name);
-        map.put(name, writerUtils.convertElementAction(entities));
-        name = getClassName(RelayAction.class);
-        entities = entityMap.get(name);
-        map.put(name, writerUtils.convertRelayAction(entities));
-        name = getClassName(ScreenOpsAction.class);
-        entities = entityMap.get(name);
-        map.put(name, writerUtils.convertScreenOpsAction(entities));
-        name = getClassName(ScreenShotAction.class);
-        entities = entityMap.get(name);
-        map.put(name, writerUtils.convertScreenShotAction(entities));
-        name = getClassName(CanAction.class);
-        entities = entityMap.get(name);
-        map.put(name, writerUtils.convertCanAction(entities));
+        for (Map.Entry<String, List<BaseEntity>> entry : entityMap.entrySet()) {
+            String name = entry.getKey();
+            List<BaseEntity> entities = entry.getValue();
+            try {
+                String fullName = readerUtils.getFullClassName(CharUtils.upperCase(name) + "Writer", WRITER_PACKAGE_NAME);
+                Class<?> clazz = Class.forName(fullName);
+                Object object = clazz.newInstance();
+                Method method = clazz.getDeclaredMethod("convert", List.class);
+                Object o = method.invoke(object, entities);
+                map.put(name, o);
+            } catch (RuntimeException ignored) {
+            }
+        }
         writeToFile(template, map, contextPath);
     }
 
