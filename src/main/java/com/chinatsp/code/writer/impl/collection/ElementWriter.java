@@ -9,6 +9,7 @@ import com.philosophy.base.common.Pair;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,10 +22,10 @@ public class ElementWriter implements IFreeMarkerWriter {
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             Element element = (Element) entity;
-            String functionName = element.getName();
             List<String> comment = element.getComments();
-            String[] info = new String[2];
-            info[0] = functionName;
+            freeMarker.setComment(comment);
+            Map<String, String> map = new HashMap<>();
+            map.put(FUNCTION_NAME, element.getName());
             List<Pair<String, String>> pairs = new ArrayList<>();
             Map<AndroidLocatorTypeEnum, String> locators = element.getLocators();
             for (Map.Entry<AndroidLocatorTypeEnum, String> entry : locators.entrySet()) {
@@ -32,8 +33,7 @@ public class ElementWriter implements IFreeMarkerWriter {
                 String value = entry.getValue();
                 pairs.add(new Pair<>(type, value));
             }
-            freeMarker.setInfo(info);
-            freeMarker.setComment(comment);
+            freeMarker.setParams(map);
             freeMarker.setPairs(pairs);
             freeMarkers.add(freeMarker);
         }

@@ -5,16 +5,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Map;
 
 @Setter
 @Getter
 public class FreeMarker {
 
-    private String[] info;
-
     private List<String> comment;
 
     private List<Pair<String, String>> pairs;
 
-    private List<String> params;
+    private Map<String, String> params;
 }

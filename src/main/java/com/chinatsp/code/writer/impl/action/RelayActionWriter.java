@@ -7,7 +7,9 @@ import com.chinatsp.code.writer.api.IFreeMarkerWriter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class RelayActionWriter implements IFreeMarkerWriter {
@@ -17,20 +19,14 @@ public class RelayActionWriter implements IFreeMarkerWriter {
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             RelayAction relayAction = (RelayAction) entity;
-            String functionName = relayAction.getName();
             List<String> comments = relayAction.getComments();
-            // python操作句柄
-            String handleName = "relay";
-            // 操作的函数
-            String handleFunction = relayAction.getRelayOperationType().getName();
-            int channelIndex = relayAction.getChannelIndex();
-            String[] info = new String[4];
-            info[0] = functionName;
-            info[1] = handleName;
-            info[2] = handleFunction;
-            info[3] = String.valueOf(channelIndex);
-            freeMarker.setInfo(info);
             freeMarker.setComment(comments);
+            Map<String, String> map = new HashMap<>();
+            map.put(FUNCTION_NAME, relayAction.getName());
+            map.put(HANDLE_NAME, "relay");
+            map.put(HANDLE_FUNCTION, relayAction.getRelayOperationType().getName());
+            map.put(CHANNEL_INDEX, String.valueOf(relayAction.getChannelIndex()));
+            freeMarker.setParams(map);
             freeMarkers.add(freeMarker);
         }
         return freeMarkers;

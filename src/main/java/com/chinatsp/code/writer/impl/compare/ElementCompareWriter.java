@@ -8,8 +8,10 @@ import com.chinatsp.code.writer.api.IFreeMarkerWriter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lizhe
@@ -24,24 +26,16 @@ public class ElementCompareWriter implements IFreeMarkerWriter {
         for (BaseEntity baseEntity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             ElementCompare elementCompare = (ElementCompare) baseEntity;
-            String functionName = elementCompare.getName();
             List<String> comments = elementCompare.getComments();
-            // python操作句柄
-            String handleName = "android_service";
-            // 操作的函数
-            String handleFunction = "exist";
-            String[] info = new String[4];
-            info[0] = functionName;
-            info[1] = handleName;
-            info[2] = handleFunction;
-            info[3] = elementCompare.getElementCompareType() == ElementCompareTypeEnum.NOT_EXIST ? "1" : "0";
-            double timeout = elementCompare.getTimeout();
-            List<String> params = new LinkedList<>();
-            params.add("locator=" + elementCompare.getElement());
-            params.add("timeout=" + timeout);
-            freeMarker.setInfo(info);
             freeMarker.setComment(comments);
-            freeMarker.setParams(params);
+            Map<String, String> map = new HashMap<>();
+            map.put(FUNCTION_NAME, elementCompare.getName());
+            map.put(HANDLE_NAME, "android_service");
+            map.put(HANDLE_FUNCTION, "exist");
+            map.put(EXIST, elementCompare.getElementCompareType() == ElementCompareTypeEnum.NOT_EXIST ? "1" : "0");
+            map.put(TIMEOUT, String.valueOf(elementCompare.getTimeout()));
+            map.put(LOCATOR, elementCompare.getElement());
+            freeMarker.setParams(map);
             freeMarkers.add(freeMarker);
         }
         return freeMarkers;

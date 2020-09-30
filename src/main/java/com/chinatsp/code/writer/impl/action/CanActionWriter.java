@@ -8,7 +8,9 @@ import com.philosophy.base.common.Pair;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class CanActionWriter implements IFreeMarkerWriter {
@@ -17,22 +19,16 @@ public class CanActionWriter implements IFreeMarkerWriter {
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
+            Map<String, String> map = new HashMap<>();
             CanAction canAction = (CanAction) entity;
-            String functionName = canAction.getName();
             List<String> comments = canAction.getComments();
-            // python操作句柄
-            String handleName = "can_service";
-            // 操作的函数
-            String handleFunction = "send_can_signal_message";
-            Long msgId = canAction.getMessageId();
-            String[] info = new String[4];
-            info[0] = functionName;
-            info[1] = handleName;
-            info[2] = handleFunction;
-            info[3] = String.valueOf(msgId);
-            List<Pair<String, String>> signals = canAction.getSignals();
-            freeMarker.setInfo(info);
             freeMarker.setComment(comments);
+            map.put(FUNCTION_NAME, canAction.getName());
+            map.put(HANDLE_NAME, "can_service");
+            map.put(HANDLE_FUNCTION, "send_can_signal_message");
+            map.put(MESSAGE_ID, String.valueOf(canAction.getMessageId()));
+            freeMarker.setParams(map);
+            List<Pair<String, String>> signals = canAction.getSignals();
             freeMarker.setPairs(signals);
             freeMarkers.add(freeMarker);
         }

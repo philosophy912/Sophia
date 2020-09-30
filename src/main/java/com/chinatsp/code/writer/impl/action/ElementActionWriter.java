@@ -7,7 +7,9 @@ import com.chinatsp.code.writer.api.IFreeMarkerWriter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class ElementActionWriter implements IFreeMarkerWriter {
@@ -17,22 +19,18 @@ public class ElementActionWriter implements IFreeMarkerWriter {
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             ElementAction elementAction = (ElementAction) entity;
-            String functionName = elementAction.getName();
             List<String> comments = elementAction.getComments();
-            // python操作句柄
-            String handleName = "android_service";
-            // 操作的函数
-            String handleFunction = elementAction.getOperationActionType().getName();
-            int slideTimes = elementAction.getSlideTimes();
-            List<String> params = elementAction.getElements();
-            String[] info = new String[4];
-            info[0] = functionName;
-            info[1] = handleName;
-            info[2] = handleFunction;
-            info[3] = String.valueOf(slideTimes);
-            freeMarker.setInfo(info);
             freeMarker.setComment(comments);
-            freeMarker.setParams(params);
+            Map<String, String> map = new HashMap<>();
+            map.put(FUNCTION_NAME, elementAction.getName());
+            map.put(HANDLE_NAME, "android_service");
+            map.put(HANDLE_FUNCTION, elementAction.getOperationActionType().getName());
+            map.put(SLIDE_TIMES, String.valueOf(elementAction.getSlideTimes()));
+            List<String> elements = elementAction.getElements();
+            for (int i = 0; i < elements.size(); i++) {
+                map.put(ELEMENT + (i + 1), elements.get(i));
+            }
+            freeMarker.setParams(map);
             freeMarkers.add(freeMarker);
         }
         return freeMarkers;

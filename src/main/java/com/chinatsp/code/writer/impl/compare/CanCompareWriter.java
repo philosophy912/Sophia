@@ -8,7 +8,9 @@ import com.chinatsp.dbc.entity.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lizhe
@@ -23,30 +25,18 @@ public class CanCompareWriter implements IFreeMarkerWriter {
         for (BaseEntity baseEntity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             CanCompare canCompare = (CanCompare) baseEntity;
-            String functionName = canCompare.getName();
             List<String> comments = canCompare.getComments();
-            // python操作句柄
-            String handleName = "can_service";
-            // 操作的函数
-            String handleFunction = "check_signal_value";
-            String sigName = canCompare.getSignalName();
-            List<String> params = new ArrayList<>();
-            String[] info = new String[9];
-            info[0] = functionName;
-            info[1] = handleName;
-            info[2] = handleFunction;
-            info[3] = sigName;
-            params.add("stack=stack");
-            params.add("msg_id=" + canCompare.getMessageId());
-            params.add("expect_value=" + canCompare.getExpectValue());
-            int appearCount = canCompare.getAppearCount();
-            if (appearCount > 0) {
-                params.add("count=" + canCompare.getAppearCount());
-            }
-            params.add("exact=" + (canCompare.getExact() ? "True" : "False"));
-            freeMarker.setInfo(info);
             freeMarker.setComment(comments);
-            freeMarker.setParams(params);
+            Map<String, String> map = new HashMap<>();
+            map.put(FUNCTION_NAME, canCompare.getName());
+            map.put(HANDLE_NAME, "can_service");
+            map.put(HANDLE_FUNCTION, "check_signal_value");
+            map.put(SIGNAL_NAME, canCompare.getSignalName());
+            map.put(MESSAGE_ID, String.valueOf(canCompare.getMessageId()));
+            map.put(EXPECT_VALUE, String.valueOf(canCompare.getExpectValue()));
+            map.put(COUNT, String.valueOf(canCompare.getAppearCount()));
+            map.put(EXACT, canCompare.getExact() ? "True" : "False");
+            freeMarker.setParams(map);
             freeMarkers.add(freeMarker);
         }
         return freeMarkers;
