@@ -21,7 +21,7 @@ from src.code.configure import *
 ${line}
 </#list>
 """
-${freemarker.info[0]} = {<#list freemarker.pairs as locators><#noparse>"</#noparse>${locators.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${locators.second}<#noparse>"</#noparse><#if locators_index != freemarker.pairs?size -1>, </#if></#list>}
+${freemarker.params["functionName"]} = {<#list freemarker.pairs as locators><#noparse>"</#noparse>${locators.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${locators.second}<#noparse>"</#noparse><#if locators_index != freemarker.pairs?size -1>, </#if></#list>}
 </#list>
 
 interval_time = 0.5
@@ -112,18 +112,22 @@ class Tester(object):
 ########################################################################################################################
 <#list batteryAction as freemarker>
 
-    def ${freemarker.info[0]}(self):
+    def ${freemarker.params["functionName"]}(self):
         """
         <#list freemarker.comment as line>
         ${line}
         </#list>
         """
-        <#if freemarker.info[2] == "adjust_voltage_by_curve">
-        voltage_list = self.curve.get_voltage_by_csv(r<#noparse>"</#noparse>${freemarker.info[4]}<#noparse>"</#noparse>)
-        for i in range(${freemarker.info[3]}):
-            self.${freemarker.info[1]}.${freemarker.info[2]}(voltage_list)
+        <#if freemarker.params["handleFunction"] == "adjust_voltage_by_curve">
+        voltage_list = self.curve.get_voltage_by_csv(csv_file=r<#noparse>"</#noparse>${freemarker.params["curve"]}<#noparse>"</#noparse>)
+        for i in range(${freemarker.params["cycleTime"]}):
+            self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(curve=voltage_list)
+        <#elseif freemarker.params["handleFunction"] == "change_voltage">
+        self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(start=${freemarker.params["start"]}, end=${freemarker.params["end"]}, step=${freemarker.params["step"]}, interval=${freemarker.params["interval"]})
+        <#elseif freemarker.params["handleFunction"] == "set_voltage">
+        self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(voltage=${freemarker.params["voltage"]})
         <#else>
-        self.${freemarker.info[1]}.${freemarker.info[2]}(<#list freemarker.params as param>${param}<#if param_index != freemarker.params?size -1>, </#if></#list>)
+        self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(current=${freemarker.params["current"]})
         </#if>
 </#list>
 
@@ -134,147 +138,37 @@ class Tester(object):
 ########################################################################################################################
 <#list elementAction as freemarker>
 
-    def ${freemarker.info[0]}(self):
+    def ${freemarker.params["functionName"]}(self):
         """
         <#list freemarker.comment as line>
         ${line}
         </#list>
         """
-        self.${freemarker.info[1]}.${freemarker.info[2]}(<#list freemarker.params as param>${param}<#if param_index != freemarker.params?size -1>, </#if></#list><#if freemarker.info[3]!="0">, ${freemarker.info[3]}</#if>)
+        <#if freemarker.params["handleFunction"] == "swipe_element">
+        self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(from_element=${freemarker.params["element1"]}, to_element=${freemarker.params["element2"]})
+        <#elseif freemarker.params["handleFunction"] == "click">
+        self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(locator=${freemarker.params["element1"]})
+        <#elseif freemarker.params["handleFunction"] == "press">
+        self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(locator=${freemarker.params["element1"]}, duration=${freemarker.params["slideTimes"]})
+        <#elseif freemarker.params["handleFunction"] == "double_click">
+        self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(locator=${freemarker.params["element1"]})
+        <#else>
+        self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(swipe_element=${freemarker.params["element1"]}, locator=${freemarker.params["element2"]}<#if freemarker.params["slideTimes"]!="0">, swipe_time=${freemarker.params["slideTimes"]}</#if>)
+        </#if>
 </#list>
 
 ########################################################################################################################
 #                                                                                                                      #
-#                                           用于生成表格 --> 继电器操作(RelayAction)                                      #
+#                                           用于生成表格 --> 继电器操作(RelayAction)                                       #
 #                                                                                                                      #
 ########################################################################################################################
 <#list relayAction as freemarker>
 
-    def ${freemarker.info[0]}(self):
+    def ${freemarker.params["functionName"]}(self):
         """
         <#list freemarker.comment as line>
         ${line}
         </#list>
         """
-        self.${freemarker.info[1]}.${freemarker.info[2]}(<#if freemarker.info[3]!="0">${freemarker.info[3]}</#if>)
+        self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(<#if freemarker.params["channelIndex"]!="0">channel=${freemarker.params["channelIndex"]}</#if>)
 </#list>
-
-########################################################################################################################
-#                                                                                                                      #
-#                                           用于生成表格 --> 屏幕操作(ScreenOpsAction)                                   #
-#                                                                                                                      #
-########################################################################################################################
-<#list screenOpsAction as freemarker>
-
-    def ${freemarker.info[0]}(self):
-        """
-        <#list freemarker.comment as line>
-        ${line}
-        </#list>
-        """
-        self.${freemarker.info[1]}.${freemarker.info[2]}(<#list freemarker.params as param>${param}<#if param_index != freemarker.params?size -1>, </#if></#list>)
-</#list>
-
-########################################################################################################################
-#                                                                                                                      #
-#                                           用于生成表格 --> 截图操作(ScreenShotAction)                                  #
-#                                                                                                                      #
-########################################################################################################################
-<#list screenShotAction as freemarker>
-
-    def ${freemarker.info[0]}(self):
-        """
-        <#list freemarker.comment as line>
-        ${line}
-        </#list>
-        """
-    <#if freemarker.info[1] == "airCondition">
-        image_name = f<#noparse>"</#noparse>${freemarker.info[3]}<#noparse>"</#noparse>
-        self.${freemarker.info[1]}.${freemarker.info[2]}(<#list freemarker.params as param>${param}<#if param_index != freemarker.params?size -1>, </#if></#list>)
-    <#else>
-        image_name = f<#noparse>"</#noparse>${r'{android_screen_shot_path}'}/${freemarker.info[3]}__<#noparse>"</#noparse>
-        for i in range(${freemarker.info[4]}):
-            self.${freemarker.info[1]}.${freemarker.info[2]}(remote_file=f<#noparse>"</#noparse>${r'{'}image_name${r'}'}${r'{'}i + 1${r'}'}<#noparse>"</#noparse>, ${freemarker.params[0]}, ${freemarker.params[1]})
-    </#if>
-</#list>
-
-########################################################################################################################
-#                                                                                                                      #
-#                                           用于生成表格 --> Can信号(CanAction)                                          #
-#                                                                                                                      #
-########################################################################################################################
-<#list canAction as freemarker>
-
-    def ${freemarker.info[0]}(self):
-        """
-        <#list freemarker.comment as line>
-        ${line}
-        </#list>
-        """
-        self.${freemarker.info[1]}.${freemarker.info[2]}(${freemarker.info[3]}, ${r'{'}<#list freemarker.pairs as signal><#noparse>"</#noparse>${signal.first}<#noparse>"</#noparse>: ${signal.second}<#if signal_index != freemarker.pairs?size -1>, </#if></#list>${r'}'})
-</#list>
-
-########################################################################################################################
-#                                                                                                                      #
-#                                           用于生成表格 --> CAN信号对比(CanCompare)                                      #
-#                                                                                                                      #
-########################################################################################################################
-<#list canCompare as freemarker>
-
-    def ${freemarker.info[0]}(self, stack) -> tuple:
-        """
-        <#list freemarker.comment as line>
-        ${line}
-        </#list>
-        """
-        return self.${freemarker.info[1]}.${freemarker.info[2]}(sig_name=<#noparse>"</#noparse>${freemarker.info[3]}<#noparse>"</#noparse>, <#list freemarker.params as param>${param}<#if param_index != freemarker.params?size -1>, </#if></#list>),
-</#list>
-
-########################################################################################################################
-#                                                                                                                      #
-#                                           用于生成表格 --> Android元素对比(ElementCompare)                             #
-#                                                                                                                      #
-########################################################################################################################
-<#list elementCompare as freemarker>
-
-    def ${freemarker.info[0]}(self) -> tuple:
-        """
-        <#list freemarker.comment as line>
-        ${line}
-        </#list>
-        """
-        return <#if freemarker.info[3] == "1">not </#if>self.${freemarker.info[1]}.${freemarker.info[2]}(<#list freemarker.params as param>${param}<#if param_index != freemarker.params?size -1>, </#if></#list>),
-</#list>
-
-########################################################################################################################
-#                                                                                                                      #
-#                                           用于生成表格 --> 图片对比(ImageCompare)                                       #
-#                                                                                                                      #
-########################################################################################################################
-<#list imageCompare as freemarker>
-
-    def ${freemarker.info[0]}(self) -> tuple:
-        """
-        <#list freemarker.comment as line>
-            ${line}
-        </#list>
-        """
-        compare_property = CompareProperty()
-        compare_property.set_value(name=<#noparse>"</#noparse>${freemarker.params[0]}<#noparse>"</#noparse>,
-                                   compare_type=<#noparse>"</#noparse>${freemarker.params[1]}<#noparse>"</#noparse>,
-                                   screen_shot_images_path=self.screenshot,
-                                   light_template=<#noparse>"</#noparse>\\<#noparse>"</#noparse>.join([self.templates, <#noparse>"</#noparse>${freemarker.params[2]}<#noparse>"</#noparse>]),
-                                   dark_template=<#noparse>"</#noparse>\\<#noparse>"</#noparse>.join([self.templates, <#noparse>"</#noparse>${freemarker.params[3]}<#noparse>"</#noparse>]),
-                                   positions=[${freemarker.params[4]}],
-                                   similarity=${freemarker.params[5]},
-                                   gray=${freemarker.params[6]},
-                                   gray_threshold=${freemarker.params[7]})
-        result = self.image_compare.compare(compare_property)
-        files = self.image_compare.handle_images(compare_property, self.temp)
-        return result, files, compare_property.type, compare_property.light_template, compare_property.dark_template
-</#list>
-########################################################################################################################
-#                                                                                                                      #
-#                                           用于生成表格 --> 信息对比(InformationCompare)                                 #
-#                                                                                                                      #
-########################################################################################################################

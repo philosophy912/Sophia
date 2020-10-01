@@ -25,8 +25,6 @@ public class CanCompareWriter implements IFreeMarkerWriter {
         for (BaseEntity baseEntity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             CanCompare canCompare = (CanCompare) baseEntity;
-            List<String> comments = canCompare.getComments();
-            freeMarker.setComment(comments);
             Map<String, String> map = new HashMap<>();
             map.put(FUNCTION_NAME, canCompare.getName());
             map.put(HANDLE_NAME, "can_service");
@@ -37,6 +35,7 @@ public class CanCompareWriter implements IFreeMarkerWriter {
             map.put(COUNT, String.valueOf(canCompare.getAppearCount()));
             map.put(EXACT, canCompare.getExact() ? "True" : "False");
             freeMarker.setParams(map);
+            freeMarker.setComment(canCompare.getComments());
             freeMarkers.add(freeMarker);
         }
         return freeMarkers;

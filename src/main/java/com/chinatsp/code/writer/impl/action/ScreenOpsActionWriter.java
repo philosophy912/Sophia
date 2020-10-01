@@ -22,8 +22,6 @@ public class ScreenOpsActionWriter implements IFreeMarkerWriter {
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             ScreenOpsAction screenOpsAction = (ScreenOpsAction) entity;
-            List<String> comments = screenOpsAction.getComments();
-            freeMarker.setComment(comments);
             DeviceTpeEnum deviceType = screenOpsAction.getDeviceType();
             ScreenOperationTypeEnum type = screenOpsAction.getScreenOperationType();
             Map<String, String> map = new HashMap<>();
@@ -50,6 +48,7 @@ public class ScreenOpsActionWriter implements IFreeMarkerWriter {
                 map.put(Y, String.valueOf(pair.getSecond()));
             }
             freeMarker.setParams(map);
+            freeMarker.setComment(screenOpsAction.getComments());
             freeMarkers.add(freeMarker);
         }
         return freeMarkers;

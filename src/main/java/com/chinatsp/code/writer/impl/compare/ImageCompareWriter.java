@@ -42,8 +42,6 @@ public class ImageCompareWriter implements IFreeMarkerWriter {
         for (BaseEntity baseEntity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             ImageCompare imageCompare = (ImageCompare) baseEntity;
-            List<String> comments = imageCompare.getComments();
-            freeMarker.setComment(comments);
             Map<String, String> map = new HashMap<>();
             map.put(FUNCTION_NAME, imageCompare.getName());
             map.put(HANDLE_NAME, "image_compare");
@@ -58,6 +56,7 @@ public class ImageCompareWriter implements IFreeMarkerWriter {
             map.put(GRAY, imageCompare.getIsGray() ? "True" : "False");
             map.put(THRESHOLD, String.valueOf(imageCompare.getThreshold()));
             freeMarker.setParams(map);
+            freeMarker.setComment(imageCompare.getComments());
             freeMarkers.add(freeMarker);
         }
         return freeMarkers;

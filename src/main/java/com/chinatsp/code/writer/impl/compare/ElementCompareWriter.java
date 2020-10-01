@@ -26,8 +26,6 @@ public class ElementCompareWriter implements IFreeMarkerWriter {
         for (BaseEntity baseEntity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             ElementCompare elementCompare = (ElementCompare) baseEntity;
-            List<String> comments = elementCompare.getComments();
-            freeMarker.setComment(comments);
             Map<String, String> map = new HashMap<>();
             map.put(FUNCTION_NAME, elementCompare.getName());
             map.put(HANDLE_NAME, "android_service");
@@ -36,6 +34,7 @@ public class ElementCompareWriter implements IFreeMarkerWriter {
             map.put(TIMEOUT, String.valueOf(elementCompare.getTimeout()));
             map.put(LOCATOR, elementCompare.getElement());
             freeMarker.setParams(map);
+            freeMarker.setComment(elementCompare.getComments());
             freeMarkers.add(freeMarker);
         }
         return freeMarkers;

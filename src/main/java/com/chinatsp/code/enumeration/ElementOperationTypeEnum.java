@@ -8,7 +8,7 @@ import lombok.Setter;
  * @date 2020/8/27 10:12
  **/
 public enum ElementOperationTypeEnum {
-    SLIDE("滑动", "swipe"),
+    SLIDE("滑动", "swipe_element"),
     CLICK("点击","click"),
     PRESS("长按","press"),
     DOUBLE_CLICK("双击","double_click"),

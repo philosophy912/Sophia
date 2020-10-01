@@ -21,8 +21,6 @@ public class BatteryActionWriter implements IFreeMarkerWriter {
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             BatteryAction batteryAction = (BatteryAction) entity;
-            List<String> comments = batteryAction.getComments();
-            freeMarker.setComment(comments);
             BatteryOperationTypeEnum type = batteryAction.getBatteryOperationType();
             Double[] values = batteryAction.getValues();
             Map<String, String> map = new HashMap<>();
@@ -43,6 +41,7 @@ public class BatteryActionWriter implements IFreeMarkerWriter {
                 map.put(CURVE, batteryAction.getCurveFile());
             }
             freeMarker.setParams(map);
+            freeMarker.setComment(batteryAction.getComments());
             freeMarkers.add(freeMarker);
         }
         return freeMarkers;

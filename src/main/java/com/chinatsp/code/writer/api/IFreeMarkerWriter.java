@@ -44,6 +44,7 @@ public interface IFreeMarkerWriter {
     String SIMILARITY = "similarity";
     String GRAY = "gray";
     String THRESHOLD = "threshold";
+    String ELEMENT_ATTRIBUTE = "elementAttribute";
 
 
     /**

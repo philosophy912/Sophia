@@ -19,8 +19,6 @@ public class ElementActionWriter implements IFreeMarkerWriter {
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             ElementAction elementAction = (ElementAction) entity;
-            List<String> comments = elementAction.getComments();
-            freeMarker.setComment(comments);
             Map<String, String> map = new HashMap<>();
             map.put(FUNCTION_NAME, elementAction.getName());
             map.put(HANDLE_NAME, "android_service");
@@ -31,6 +29,7 @@ public class ElementActionWriter implements IFreeMarkerWriter {
                 map.put(ELEMENT + (i + 1), elements.get(i));
             }
             freeMarker.setParams(map);
+            freeMarker.setComment(elementAction.getComments());
             freeMarkers.add(freeMarker);
         }
         return freeMarkers;

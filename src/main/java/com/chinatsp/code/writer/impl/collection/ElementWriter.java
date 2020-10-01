@@ -22,8 +22,6 @@ public class ElementWriter implements IFreeMarkerWriter {
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             Element element = (Element) entity;
-            List<String> comment = element.getComments();
-            freeMarker.setComment(comment);
             Map<String, String> map = new HashMap<>();
             map.put(FUNCTION_NAME, element.getName());
             List<Pair<String, String>> pairs = new ArrayList<>();
@@ -35,6 +33,7 @@ public class ElementWriter implements IFreeMarkerWriter {
             }
             freeMarker.setParams(map);
             freeMarker.setPairs(pairs);
+            freeMarker.setComment(element.getComments());
             freeMarkers.add(freeMarker);
         }
         return freeMarkers;

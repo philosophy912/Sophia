@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +20,6 @@ public class ScreenShotActionWriter implements IFreeMarkerWriter {
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             ScreenShotAction screenShotAction = (ScreenShotAction) entity;
-            List<String> comments = screenShotAction.getComments();
-            freeMarker.setComment(comments);
             ScreenShotTypeEnum type = screenShotAction.getScreenShotType();
             Map<String, String> map = new HashMap<>();
             map.put(FUNCTION_NAME, screenShotAction.getName());
@@ -36,6 +33,7 @@ public class ScreenShotActionWriter implements IFreeMarkerWriter {
             map.put(DISPLAY_ID, String.valueOf(screenShotAction.getDisplayId()));
             map.put(COUNT, String.valueOf(screenShotAction.getCount()));
             freeMarker.setParams(map);
+            freeMarker.setComment(screenShotAction.getComments());
             freeMarkers.add(freeMarker);
         }
         return freeMarkers;

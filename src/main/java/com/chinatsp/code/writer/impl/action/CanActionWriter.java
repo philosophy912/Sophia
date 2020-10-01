@@ -21,8 +21,6 @@ public class CanActionWriter implements IFreeMarkerWriter {
             FreeMarker freeMarker = new FreeMarker();
             Map<String, String> map = new HashMap<>();
             CanAction canAction = (CanAction) entity;
-            List<String> comments = canAction.getComments();
-            freeMarker.setComment(comments);
             map.put(FUNCTION_NAME, canAction.getName());
             map.put(HANDLE_NAME, "can_service");
             map.put(HANDLE_FUNCTION, "send_can_signal_message");
@@ -30,6 +28,7 @@ public class CanActionWriter implements IFreeMarkerWriter {
             freeMarker.setParams(map);
             List<Pair<String, String>> signals = canAction.getSignals();
             freeMarker.setPairs(signals);
+            freeMarker.setComment(canAction.getComments());
             freeMarkers.add(freeMarker);
         }
         return freeMarkers;
