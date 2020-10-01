@@ -26,6 +26,7 @@ public class InformationCompareWriter implements IFreeMarkerWriter {
             map.put(HANDLE_FUNCTION, "get_element_attribute");
             map.put(LOCATOR, informationCompare.getElement());
             map.put(ELEMENT_ATTRIBUTE, informationCompare.getElementAttribute().getValue());
+            map.put(TARGET,informationCompare.getTarget());
             freeMarker.setParams(map);
             freeMarker.setComment(informationCompare.getComments());
             freeMarkers.add(freeMarker);

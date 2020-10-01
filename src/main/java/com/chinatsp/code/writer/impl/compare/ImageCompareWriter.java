@@ -45,7 +45,7 @@ public class ImageCompareWriter implements IFreeMarkerWriter {
             Map<String, String> map = new HashMap<>();
             map.put(FUNCTION_NAME, imageCompare.getName());
             map.put(HANDLE_NAME, "image_compare");
-            map.put(HANDLE_FUNCTION, "image_compare");
+            map.put(HANDLE_FUNCTION, "compare");
             map.put(HANDLE_FUNCTION_SUB, "handle_images");
             map.put(IMAGE_NAME, imageCompare.getImageName());
             map.put(COMPARE_TYPE, imageCompare.getCompareType().getValue());

@@ -25,7 +25,8 @@ public class IntegerType implements IClassType {
             boolean ignoreBatteryAction = lowerClassName.contains("BatteryAction".toLowerCase());
             boolean ignoreRelayAction = lowerClassName.contains("RelayAction".toLowerCase());
             boolean ignoreImageCompare = lowerClassName.contains("ImageCompare".toLowerCase());
-            if (ignoreElementAction || ignoreBatteryAction || ignoreRelayAction || ignoreImageCompare) {
+            boolean ignoreCanCompare = lowerClassName.contains("CanCompare".toLowerCase());
+            if (ignoreElementAction || ignoreBatteryAction || ignoreRelayAction || ignoreImageCompare || ignoreCanCompare) {
                 field.set(object, 0);
             } else {
                 String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
