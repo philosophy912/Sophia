@@ -61,6 +61,10 @@ config:
     expect: 期望结果
     displayId: 屏幕序号
     commonType: 模块类型
+    functionsBefore: 函数执行前描述
+    functionsAfter: 函数执行后描述
+    suitesBefore: 套件执行前描述
+    suitesAfter: 套件执行后描述
   classname:
     testCase: 测试用例
     screenShotAction: 截图操作

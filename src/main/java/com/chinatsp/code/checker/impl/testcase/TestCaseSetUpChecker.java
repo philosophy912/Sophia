@@ -28,8 +28,9 @@ public class TestCaseSetUpChecker extends BaseChecker implements IChecker {
             TestCaseSetUp testCaseSetUp = (TestCaseSetUp) entities.get(i);
             String name = testCaseSetUp.getClass().getSimpleName();
             // 检查名字是否符合python命名规范
-           checkUtils.checkModule(testCaseSetUp.getName(), index, name, testCaseEntities);
-            // 检查element名字是否存在于Sheet(Element)中
+            checkUtils.checkModule(testCaseSetUp.getName(), index, name, testCaseEntities);
+            //TODO 检查module是否有重复
+            // TODO 检查module中是否符合规范
         }
     }
 }

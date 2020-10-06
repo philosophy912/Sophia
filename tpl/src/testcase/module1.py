@@ -58,10 +58,10 @@ class TestModule1(object):
         # 执行步骤
         with allure.step('操作步骤'):
             tester.can_test1()
-            tester.clear_stack()
+            tester.can_service.clear_stack()
         # 期望结果
         with allure.step('期望结果'):
-            stack = tester.get_stack()
+            stack = tester.can_service.get_stack()
             result = tester.can_compare_test1(stack)
             if len(result) > 1:
                 result, images, compare_type, dark, light = result
