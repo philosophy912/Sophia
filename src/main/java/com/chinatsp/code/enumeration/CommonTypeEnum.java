@@ -8,21 +8,20 @@ import lombok.Setter;
  * @date 2020/9/21 15:20
  **/
 public enum CommonTypeEnum {
-    PYTHON("python内置"),
-    KONSTANTER("konstanter可编程电源"),
-    SERIAL("串口类"),
-    IT6831("IT6831可编程电源"),
-    RELAY("继电器"),
-    ANDROID("Android类"),
-    AIR_CONDITION("空调模块"),
-    CAN("Can类");
+    SWIPE_FIND_ELEMENT("滑动查找元素", "swipe_find_element"),
+    CLEAR_TEXT("清空编辑框中的文字", "clear_text"),
+    INPUT_TEXT("输入文本框中的文字", "input_text");
 
     @Setter
     @Getter
     private String value;
+    @Setter
+    @Getter
+    private String name;
 
-    CommonTypeEnum(String value) {
+    CommonTypeEnum(String value, String name) {
         this.value = value;
+        this.name = name;
     }
 
     /**

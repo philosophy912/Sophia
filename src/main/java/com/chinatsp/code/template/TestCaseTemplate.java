@@ -139,7 +139,7 @@ public class TestCaseTemplate {
             sheet.setColumnWidth(i, getWidth(content));
         }
         // 生成的测试用例模板数量
-        int TEMPLATE_SIZE = 200;
+        int TEMPLATE_SIZE = 10;
         for (int i = 1; i < TEMPLATE_SIZE + 1; i++) {
             row = sheet.createRow(i);
             // 设置单元格为下拉式的菜单，其中数据的值根据枚举中的value确定

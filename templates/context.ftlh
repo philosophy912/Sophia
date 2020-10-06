@@ -340,13 +340,11 @@ class Tester(object):
 ########################################################################################################################
 <#list common as freemarker>
 
-    def ${freemarker.params["functionName"]}(self) -> tuple:
+    def ${freemarker.params["functionName"]}(self):
         """
         <#list freemarker.comment as line>
         ${line}
         </#list>
         """
-        attr = ElementAttributeEnum.from_value(<#noparse>"</#noparse>${freemarker.params["elementAttribute"]}<#noparse>"</#noparse>)
-        info = self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(${freemarker.params["locator"]})[attr]
-        return self.${freemarker.params["target"]}() == info,
+        self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(<#if freemarker.locator??>locator={<#list freemarker.locator as param><#noparse>"</#noparse>${param.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${param.second}<#noparse>"</#noparse><#if param_index != freemarker.locator?size -1>, </#if>}</#list><#if freemarker.swipeElement??>, swipe_element={<#list freemarker.swipeElement as param><#noparse>"</#noparse>${param.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${param.second}<#noparse>"</#noparse><#if param_index != freemarker.swipeElement?size -1>, </#if></#list>}</#if></#if><#if freemarker.pairs??>, <#list freemarker.pairs as param>${param.first}=<#if param.first == "text"><#noparse>"</#noparse>${param.second}<#noparse>"</#noparse><#else>${param.second}</#if><#if param_index != freemarker.pairs?size -1>, </#if></#list></#if>)
 </#list>

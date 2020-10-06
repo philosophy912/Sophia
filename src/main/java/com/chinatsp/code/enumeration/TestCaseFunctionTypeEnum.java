@@ -22,6 +22,7 @@ public enum TestCaseFunctionTypeEnum {
     INFORMATION("Information"),
     PASS("pass"),
     SLEEP("sleep"),
+    STACK("stack"),
     YEILD("yeild");
 
 

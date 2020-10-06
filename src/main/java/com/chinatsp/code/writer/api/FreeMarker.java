@@ -16,4 +16,8 @@ public class FreeMarker {
     private List<Pair<String, String>> pairs;
 
     private Map<String, String> params;
+
+    private List<Pair<String, String>> swipeElement;
+
+    private List<Pair<String, String>> locator;
 }

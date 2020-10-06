@@ -9,7 +9,7 @@ config:
   attribute:
     id: 序号
     name: 名字/函数名/模块名
-    comment: 描述
+    comments: 描述
     batteryType: 电源类型
     batteryOperationType: 电源操作类型
     values: 电源操作值

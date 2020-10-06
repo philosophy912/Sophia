@@ -16,12 +16,14 @@ import java.util.List;
 @Getter
 @ToString
 public class Common extends BaseEntity {
+
+    /**
+     * 函数名
+     */
+    private CommonTypeEnum commonType;
     /**
      * 参数
      */
     private List<String> params;
-    /**
-     * 模块
-     */
-    private CommonTypeEnum commonType;
+
 }

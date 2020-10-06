@@ -8,6 +8,7 @@ import com.philosophy.base.util.FilesUtils;
 import com.philosophy.character.util.CharUtils;
 import freemarker.template.Template;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -24,6 +25,7 @@ import static com.chinatsp.code.utils.Constant.WRITER_PACKAGE_NAME;
  * @author lizhe
  * @date 2020/9/28 11:03
  **/
+@Slf4j
 @Component
 public class FreeMarkerWriter extends BaseWriter {
     @Resource

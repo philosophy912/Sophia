@@ -10,7 +10,8 @@ import lombok.Setter;
 public enum ScreenOperationTypeEnum {
     SLIDE("滑动", "swipe"),
     CLICK("点击","click"),
-    PRESS("长按","press");
+    PRESS("长按","press"),
+    DRAG("拖动", "drag");
 
     @Setter
     @Getter
