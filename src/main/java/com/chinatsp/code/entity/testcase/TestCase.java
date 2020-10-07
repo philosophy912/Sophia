@@ -19,6 +19,10 @@ import java.util.List;
 @ToString
 public class TestCase extends BaseEntity {
     /**
+     * 中文描述
+     */
+    private String description;
+    /**
      * 测试类型，目前仅支持TestCaseTypeEnum描述的类型
      */
     private TestCaseTypeEnum testCaseType;
@@ -30,7 +34,7 @@ public class TestCase extends BaseEntity {
     /**
      * 前置条件描述
      */
-    private String preConditionDescription;
+    private List<String> preConditionDescription;
     /**
      * 前置条件执行函数
      */
@@ -38,7 +42,7 @@ public class TestCase extends BaseEntity {
     /**
      * 执行步骤描述
      */
-    private String stepsDescription;
+    private List<String> stepsDescription;
     /**
      * 执行步骤执行函数
      */
@@ -46,7 +50,7 @@ public class TestCase extends BaseEntity {
     /**
      * 期望结果描述
      */
-    private String expectDescription;
+    private List<String> expectDescription;
     /**
      * 期望结果执行函数
      */

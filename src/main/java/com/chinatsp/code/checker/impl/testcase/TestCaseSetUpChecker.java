@@ -3,6 +3,7 @@ package com.chinatsp.code.checker.impl.testcase;
 import com.chinatsp.code.checker.api.BaseChecker;
 import com.chinatsp.code.checker.api.IChecker;
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.entity.storage.Information;
 import com.chinatsp.code.entity.testcase.TestCase;
 import com.chinatsp.code.entity.testcase.TestCaseSetUp;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;
@@ -29,8 +30,11 @@ public class TestCaseSetUpChecker extends BaseChecker implements IChecker {
             String name = testCaseSetUp.getClass().getSimpleName();
             // 检查名字是否符合python命名规范
             checkUtils.checkModule(testCaseSetUp.getName(), index, name, testCaseEntities);
-            //TODO 检查module是否有重复
-            // TODO 检查module中是否符合规范
+            //检查module是否有重复
+            checkUtils.findDuplicate(entities, TestCaseSetUp.class.getSimpleName());
+            //检查module中是否符合规范
+            checkUtils.checkRule(testCaseSetUp.getSuites(), index, name);
+            checkUtils.checkRule(testCaseSetUp.getFunctions(), index, name);
         }
     }
 }

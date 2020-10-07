@@ -3,7 +3,7 @@ package com.chinatsp.code.writer;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.code.utils.ReaderUtils;
-import com.chinatsp.code.writer.api.TestCaseFreeMarker;
+import com.chinatsp.code.writer.api.TestCaseFreeMarkers;
 import com.philosophy.base.common.Triple;
 import com.philosophy.base.util.FilesUtils;
 import com.philosophy.character.util.CharUtils;
@@ -77,7 +77,7 @@ public class FreeMarkerWriter extends BaseWriter {
     }
 
     @SneakyThrows
-    public void writeTestCase(TestCaseFreeMarker freeMarker, Path modulePath){
+    public void writeTestCase(TestCaseFreeMarkers freeMarker, Path modulePath){
         Template template = getTemplate("testcase");
         String fileName = FilesUtils.getFileNameAndExtension(modulePath).getFirst();
         Map<String, Object> map = createMap(fileName);

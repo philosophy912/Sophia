@@ -85,29 +85,64 @@ class Test${testcase.moduleName?cap_first}(object):
 <#list testcase.testcases as tc>
 
     @pytest.mark.usefixtures("function")
-    @allure.title("testcase1")
-    def test_${tc.second.first}(self):
+    @allure.title("${tc.description}")
+    def test_${tc.name}(self):
         """
         Description:
-            testcase1
+            <#list tc.comments as line>
+            ${line}
+            </#list>
         PreCondition:
-            condition1
+            <#list tc.preConditionDescription as line>
+            ${line}
+            </#list>
         Steps:
-            steps1
+            <#list tc.stepsDescription as line>
+            ${line}
+            </#list>
         Expect Result:
-            expect1
+            <#list tc.expectDescription as line>
+            ${line}
+            </#list>
         """
         # 前置条件
         with allure.step("前置条件"):
-            tester.battery_test1()
+        <#list tc.preCondition as line>
+            <#if line=="pass">
+            ${line}
+            <#elseif line=="stack">
+            stack = tester.can_service.get_stack()
+            <#elseif line?starts_with("sleep")>
+            ${line}
+            <#else>
+            tester.${line}
+            </#if>
+        </#list>
         # 执行步骤
         with allure.step('操作步骤'):
-            tester.can_test1()
-            tester.clear_stack()
+        <#list tc.steps as line>
+            <#if line=="pass">
+            ${line}
+            <#elseif line=="stack">
+            stack = tester.can_service.get_stack()
+            <#elseif line?starts_with("sleep")>
+            ${line}
+            <#else>
+            tester.${line}
+            </#if>
+        </#list>
         # 期望结果
         with allure.step('期望结果'):
-            stack = tester.get_stack()
-            result = tester.can_compare_test1(stack)
+        <#list tc.expect as line>
+            <#if line=="pass">
+            ${line}
+            <#elseif line=="stack">
+            stack = tester.can_service.get_stack()
+            <#elseif line?starts_with("sleep")>
+            ${line}
+            <#else>
+            result = tester.${line}
+            </#if>
             if len(result) > 1:
                 result, images, compare_type, dark, light = result
                 if compare_type == CompareTypeEnum.LIGHT:
@@ -124,4 +159,5 @@ class Test${testcase.moduleName?cap_first}(object):
                 assert result
             else:
                 assert result
+        </#list>
 </#list>

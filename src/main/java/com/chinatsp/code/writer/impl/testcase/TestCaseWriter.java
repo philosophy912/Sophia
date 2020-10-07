@@ -5,6 +5,7 @@ import com.chinatsp.code.entity.testcase.TestCase;
 import com.chinatsp.code.entity.testcase.TestCaseSetUp;
 import com.chinatsp.code.enumeration.TestCaseFunctionTypeEnum;
 import com.chinatsp.code.writer.api.TestCaseFreeMarker;
+import com.chinatsp.code.writer.api.TestCaseFreeMarkers;
 import com.philosophy.base.common.Pair;
 import com.philosophy.base.common.Triple;
 import com.philosophy.character.util.CharUtils;
@@ -48,7 +49,7 @@ public class TestCaseWriter {
             List<TestCase> testCaseList = new ArrayList<>();
             for (BaseEntity entity : testCases) {
                 TestCase testCase = (TestCase) entity;
-                if (testCase.getName().equalsIgnoreCase(module)) {
+                if (testCase.getModuleName().equalsIgnoreCase(module)) {
                     testCaseList.add(testCase);
                 }
             }
@@ -82,16 +83,17 @@ public class TestCaseWriter {
      *
      * @param type         类型
      * @param functionName 函数名
-     * @param collection   要添加到的集合
      */
-    private void addCollection(TestCaseFunctionTypeEnum type, String functionName, List<String> collection) {
+    private String getFunctionString(TestCaseFunctionTypeEnum type, String functionName) {
         if (functionName == null) {
-            collection.add(type.getValue());
+            return type.getValue();
         } else {
             if (type == TestCaseFunctionTypeEnum.SLEEP) {
-                collection.add(type.getValue() + "(" + functionName + ")");
+                return type.getValue() + "(" + functionName + ")";
+            } else if (type == TestCaseFunctionTypeEnum.CAN_COMPARE) {
+                return functionName + "(stack)";
             } else {
-                collection.add(functionName + "()");
+                return functionName + "()";
             }
 
         }
@@ -119,10 +121,10 @@ public class TestCaseWriter {
             }
             if (flag) {
                 // 加入到part1中
-                addCollection(type, functionName, part1);
+                part1.add(getFunctionString(type, functionName));
             } else {
                 // 加入到part2中
-                addCollection(type, functionName, part2);
+                part2.add(getFunctionString(type, functionName));
             }
         }
         return new Pair<>(part1, part2);
@@ -139,13 +141,36 @@ public class TestCaseWriter {
         for (Pair<TestCaseFunctionTypeEnum, String> pair : cells) {
             TestCaseFunctionTypeEnum type = pair.getFirst();
             String functionName = pair.getSecond();
-            if (functionName == null) {
-                strings.add(type.getValue());
-            } else {
-                strings.add(functionName);
-            }
+            strings.add(getFunctionString(type, functionName));
         }
         return strings;
+    }
+
+    /**
+     * 把TestCase转换成TestCaseFreeMarker
+     *
+     * @param testCase 读取出来的sheet
+     * @return 用于freemarker写入的对象
+     */
+    private TestCaseFreeMarker convert(TestCase testCase) {
+        TestCaseFreeMarker freeMarker = new TestCaseFreeMarker();
+        List<String> preCondition = parseCell(testCase.getPreCondition());
+        List<String> steps = parseCell(testCase.getSteps());
+        List<String> expect = parseCell(testCase.getExpect());
+        List<String> comments = testCase.getComments();
+        freeMarker.setId(testCase.getId());
+        freeMarker.setName(testCase.getName());
+        freeMarker.setComments(comments);
+        freeMarker.setTestCaseType(testCase.getTestCaseType());
+        freeMarker.setModuleName(testCase.getModuleName());
+        freeMarker.setPreCondition(preCondition);
+        freeMarker.setPreConditionDescription(testCase.getPreConditionDescription());
+        freeMarker.setSteps(steps);
+        freeMarker.setStepsDescription(testCase.getStepsDescription());
+        freeMarker.setExpect(expect);
+        freeMarker.setExpectDescription(testCase.getExpectDescription());
+        freeMarker.setDescription(testCase.getDescription());
+        return freeMarker;
     }
 
     /**
@@ -154,15 +179,15 @@ public class TestCaseWriter {
      * @param map 表格字典集合
      * @return 字典
      */
-    public Map<String, TestCaseFreeMarker> convert(Map<String, List<BaseEntity>> map) {
-        Map<String, TestCaseFreeMarker> resultMap = new HashMap<>();
+    public Map<String, TestCaseFreeMarkers> convert(Map<String, List<BaseEntity>> map) {
+        Map<String, TestCaseFreeMarkers> resultMap = new HashMap<>();
         List<BaseEntity> testCases = map.get(CharUtils.lowerCase(TestCase.class.getSimpleName()));
         List<BaseEntity> testCaseSetUps = map.get(CharUtils.lowerCase(TestCaseSetUp.class.getSimpleName()));
         Set<String> modules = getModuleNames(testCases);
         Map<String, TestCaseSetUp> moduleSetUpMap = convertSetup(modules, testCaseSetUps);
         Map<String, List<TestCase>> moduleTestCaseMap = convertTestCase(modules, testCases);
         for (String module : modules) {
-            TestCaseFreeMarker freeMarker = new TestCaseFreeMarker();
+            TestCaseFreeMarkers freeMarker = new TestCaseFreeMarkers();
             freeMarker.setModuleName(module);
             TestCaseSetUp testCaseSetUp = moduleSetUpMap.get(module);
             // 处理TestCaseSetUp中的setup
@@ -173,16 +198,12 @@ public class TestCaseWriter {
             freeMarker.setSuite(new Pair<>(suitePair, new Pair<>(testCaseSetUp.getSuitesBefore(), testCaseSetUp.getSuitesAfter())));
             freeMarker.setFunction(new Pair<>(functionPair, new Pair<>(testCaseSetUp.getFunctionsBefore(), testCaseSetUp.getFunctionsAfter())));
             // 处理TestCase的部分
-            List<Pair<Triple<List<String>, List<String>, List<String>>, Pair<String, List<String>>>> pairs = new ArrayList<>();
             List<TestCase> testCaseList = moduleTestCaseMap.get(module);
+            List<TestCaseFreeMarker> freeMarkers = new ArrayList<>();
             for (TestCase testCase : testCaseList) {
-                List<String> preCondition = parseCell(testCase.getPreCondition());
-                List<String> steps = parseCell(testCase.getSteps());
-                List<String> expect = parseCell(testCase.getExpect());
-                List<String> comments = testCase.getComments();
-                pairs.add(new Pair<>(new Triple<>(preCondition, steps, expect), new Pair<>(testCase.getName(), comments)));
+                freeMarkers.add(convert(testCase));
             }
-            freeMarker.setTestcases(pairs);
+            freeMarker.setTestcases(freeMarkers);
             resultMap.put(module, freeMarker);
         }
         return resultMap;

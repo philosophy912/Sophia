@@ -4,7 +4,7 @@ import com.chinatsp.code.BaseTestUtils;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.code.service.api.IReadService;
-import com.chinatsp.code.writer.api.TestCaseFreeMarker;
+import com.chinatsp.code.writer.api.TestCaseFreeMarkers;
 import com.chinatsp.code.writer.impl.testcase.TestCaseWriter;
 import com.philosophy.base.common.Pair;
 import lombok.extern.slf4j.Slf4j;
@@ -63,10 +63,10 @@ class WriterTest {
 
     @Test
     void writeTestCase() {
-        Map<String, TestCaseFreeMarker> map = testCaseWriter.convert(entities);
-        for (Map.Entry<String, TestCaseFreeMarker> entry : map.entrySet()) {
+        Map<String, TestCaseFreeMarkers> map = testCaseWriter.convert(entities);
+        for (Map.Entry<String, TestCaseFreeMarkers> entry : map.entrySet()) {
             String key = entry.getKey();
-            TestCaseFreeMarker freeMarker = entry.getValue();
+            TestCaseFreeMarkers freeMarker = entry.getValue();
             Path path = Paths.get(BaseTestUtils.getCodeFolder(), "test_" + key + ".py");
             freeMarkerWriter.writeTestCase(freeMarker, path);
         }

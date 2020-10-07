@@ -9,6 +9,7 @@ import com.chinatsp.code.entity.collection.Element;
 import com.chinatsp.code.entity.compare.ImageCompare;
 import com.chinatsp.code.entity.storage.Information;
 import com.chinatsp.code.entity.testcase.TestCase;
+import com.chinatsp.code.entity.testcase.TestCaseSetUp;
 import com.chinatsp.code.enumeration.DeviceTpeEnum;
 import com.chinatsp.code.enumeration.ElementOperationTypeEnum;
 import com.chinatsp.code.enumeration.RelayOperationTypeEnum;
@@ -552,7 +553,7 @@ public class CheckUtils {
             TestCaseFunctionTypeEnum typeEnum = pair.getFirst();
             String functionName = pair.getSecond();
             if (!(typeEnum == TestCaseFunctionTypeEnum.SLEEP || typeEnum == TestCaseFunctionTypeEnum.YEILD
-                    || typeEnum == TestCaseFunctionTypeEnum.PASS|| typeEnum == TestCaseFunctionTypeEnum.STACK)) {
+                    || typeEnum == TestCaseFunctionTypeEnum.PASS || typeEnum == TestCaseFunctionTypeEnum.STACK)) {
                 List<BaseEntity> entities = map.get((CharUtils.lowerCase(typeEnum.getValue())));
                 boolean flag = false;
                 for (BaseEntity baseEntity : entities) {
@@ -683,23 +684,23 @@ public class CheckUtils {
                     throw new RuntimeException(error);
                 }
             }
-            if(type == ScreenOperationTypeEnum.CLICK){
+            if (type == ScreenOperationTypeEnum.CLICK) {
                 if (points.size() != 1) {
                     String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作坐标点必须为1组";
                     throw new RuntimeException(error);
                 }
             }
         } else {
-            if(type == ScreenOperationTypeEnum.DRAG){
+            if (type == ScreenOperationTypeEnum.DRAG) {
                 String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作设备仅支持QNX设备";
                 throw new RuntimeException(error);
             }
-            if(type == ScreenOperationTypeEnum.CLICK){
+            if (type == ScreenOperationTypeEnum.CLICK) {
                 if (points.size() != 1) {
                     String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作坐标点必须为1组";
                     throw new RuntimeException(error);
                 }
-            }else{
+            } else {
                 if (type == ScreenOperationTypeEnum.SLIDE) {
                     if (points.size() != 2) {
                         String error = "Sheet[" + className + "]的第" + index + "行的操作为" + type.getValue() + "，该操作坐标点必须为2组";
@@ -724,5 +725,61 @@ public class CheckUtils {
             }
         }
 
+    }
+
+
+    /**
+     * 检查是否符合规则
+     * 1、必须有一个yield
+     * 2、yield前面必须要有一个函数，哪怕是pass
+     * 3、yield后面必须要有一个函数，哪怕是pass
+     *
+     * @param pairs     测试用例前置条件
+     * @param index     序号
+     * @param className 类名
+     */
+    public void checkRule(List<Pair<TestCaseFunctionTypeEnum, String>> pairs, int index, String className) {
+        boolean flag = false;
+        int size = pairs.size();
+        int yeildIndex = -1;
+        for (int i = 0; i < size; i++) {
+            Pair<TestCaseFunctionTypeEnum, String> pair = pairs.get(i);
+            if (pair.getFirst() == TestCaseFunctionTypeEnum.YEILD) {
+                flag = true;
+                yeildIndex = i;
+                if (i == 0 || i == size - 1) {
+                    String error = "Sheet[" + className + "]的第" + index + "行执行条件不正确，YIELD前后必须要有函数";
+                    throw new RuntimeException(error);
+                }
+            }
+        }
+        if (!flag) {
+            String error = "Sheet[" + className + "]的第" + index + "行执行条件不正确，必须要包含一个YIELD";
+            throw new RuntimeException(error);
+        }
+        boolean passFlag = false;
+        // 检查前面的部分
+        for (int i = 0; i < yeildIndex; i++) {
+            Pair<TestCaseFunctionTypeEnum, String> pair = pairs.get(i);
+            if (pair.getFirst() == TestCaseFunctionTypeEnum.PASS) {
+                passFlag = true;
+            }
+        }
+        if (yeildIndex > 1 && passFlag) {
+            String error = "Sheet[" + className + "]的第" + index + "行执行条件不正确，前半部分不能既有PASS，又有函数";
+            throw new RuntimeException(error);
+        }
+        passFlag = false;
+        // 检查后面的部分
+        for (int i = yeildIndex + 1; i < size; i++) {
+            Pair<TestCaseFunctionTypeEnum, String> pair = pairs.get(i);
+            if (pair.getFirst() == TestCaseFunctionTypeEnum.PASS) {
+                passFlag = true;
+            }
+        }
+        if (size - yeildIndex > 2 && passFlag) {
+            String error = "Sheet[" + className + "]的第" + index + "行执行条件不正确，后半部分不能既有PASS，又有函数";
+            throw new RuntimeException(error);
+        }
     }
 }

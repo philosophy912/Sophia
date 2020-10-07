@@ -11,12 +11,10 @@ import com.philosophy.base.util.StringsUtils;
 import com.philosophy.excel.utils.ExcelUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.util.StringUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.chinatsp.code.utils.Constant.COMMA;
 import static com.chinatsp.code.utils.Constant.NEXT_LINE;
 import static com.chinatsp.code.utils.Constant.PACKAGE_NAME;
 import static com.chinatsp.code.utils.Constant.SPLIT_LEFT_BRACKETS;

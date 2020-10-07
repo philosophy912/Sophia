@@ -3,6 +3,7 @@ package com.chinatsp.code.utils;
 import com.chinatsp.code.enumeration.AndroidLocatorTypeEnum;
 import com.chinatsp.code.enumeration.TestCaseFunctionTypeEnum;
 import com.philosophy.base.common.Pair;
+import com.philosophy.base.util.StringsUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Component;
@@ -84,14 +85,21 @@ public class ConvertUtils {
 
     /**
      * 将CellValue转换成String集合
+     * 自动去掉空行
      *
      * @param value 单元格中的数据
      * @return String集合
      */
     public static List<String> convertStrings(String value) {
         log.trace("cell value is {}", value);
+        List<String> strings = new LinkedList<>();
         String[] values = value.split(NEXT_LINE);
-        return new LinkedList<>(Arrays.asList(values));
+        for(String s: values){
+            if(!StringsUtils.isEmpty(s)){
+                strings.add(s);
+            }
+        }
+        return strings;
     }
 
 

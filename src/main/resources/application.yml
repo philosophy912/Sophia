@@ -65,6 +65,7 @@ config:
     functionsAfter: 函数执行后描述
     suitesBefore: 套件执行前描述
     suitesAfter: 套件执行后描述
+    description: 中文描述
   classname:
     testCase: 测试用例
     screenShotAction: 截图操作
