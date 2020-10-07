@@ -1,6 +1,7 @@
 package com.chinatsp.code.writer;
 
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.code.entity.testcase.TestCase;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.code.utils.ReaderUtils;
 import com.chinatsp.code.writer.api.TestCaseFreeMarkers;
@@ -62,22 +63,24 @@ public class FreeMarkerWriter extends BaseWriter {
         Map<String, Object> map = createMap(fileName);
         for (Map.Entry<String, List<BaseEntity>> entry : entityMap.entrySet()) {
             String name = entry.getKey();
-            List<BaseEntity> entities = entry.getValue();
-            try {
-                String fullName = readerUtils.getFullClassName(CharUtils.upperCase(name) + "Writer", WRITER_PACKAGE_NAME);
-                Class<?> clazz = Class.forName(fullName);
-                Object object = clazz.newInstance();
-                Method method = clazz.getDeclaredMethod("convert", List.class);
-                Object o = method.invoke(object, entities);
-                map.put(name, o);
-            } catch (RuntimeException ignored) {
+            if (!name.equalsIgnoreCase(TestCase.class.getSimpleName())) {
+                List<BaseEntity> entities = entry.getValue();
+                try {
+                    String fullName = readerUtils.getFullClassName(CharUtils.upperCase(name) + "Writer", WRITER_PACKAGE_NAME);
+                    Class<?> clazz = Class.forName(fullName);
+                    Object object = clazz.newInstance();
+                    Method method = clazz.getDeclaredMethod("convert", List.class);
+                    Object o = method.invoke(object, entities);
+                    map.put(name, o);
+                } catch (RuntimeException ignored) {
+                }
             }
         }
         writeToFile(template, map, contextPath);
     }
 
     @SneakyThrows
-    public void writeTestCase(TestCaseFreeMarkers freeMarker, Path modulePath){
+    public void writeTestCase(TestCaseFreeMarkers freeMarker, Path modulePath) {
         Template template = getTemplate("testcase");
         String fileName = FilesUtils.getFileNameAndExtension(modulePath).getFirst();
         Map<String, Object> map = createMap(fileName);
