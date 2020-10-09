@@ -223,7 +223,7 @@ public class TestCaseTemplate {
             nameCell.setCellStyle(cellStyle);
             commentCell.setCellStyle(cellStyle);
             contentCell.setCellStyle(cellStyle);
-            indexCell.setCellValue(i);
+            indexCell.setCellValue(i + 1);
             nameCell.setCellValue(type.getName());
             commentCell.setCellValue(type.getValue());
             contentCell.setCellValue("");

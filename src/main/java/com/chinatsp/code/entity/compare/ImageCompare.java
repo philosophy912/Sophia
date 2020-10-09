@@ -3,13 +3,11 @@ package com.chinatsp.code.entity.compare;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.enumeration.CompareTypeEnum;
 import com.chinatsp.code.enumeration.DeviceTpeEnum;
-import com.chinatsp.code.enumeration.PositionEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author lizhe

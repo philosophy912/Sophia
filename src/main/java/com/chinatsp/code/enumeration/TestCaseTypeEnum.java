@@ -8,16 +8,19 @@ import lombok.Setter;
  * @date 2020/8/27 10:03
  **/
 public enum TestCaseTypeEnum {
-    CLUSTER("仪表"),
-    ANDROID("中控"),
-    AIR_CONDITION("空调屏");
+    HALF("半自动", "half"),
+    FULL("全自动", "full");
 
     @Setter
     @Getter
     private String value;
+    @Setter
+    @Getter
+    private String name;
 
-    TestCaseTypeEnum(String value) {
+    TestCaseTypeEnum(String value, String name) {
         this.value = value;
+        this.name = name;
     }
 
     /**

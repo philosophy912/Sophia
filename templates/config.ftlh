@@ -7,16 +7,40 @@
 <#list configure as line>
 # ${line.first}
 <#if line.second?contains("baud")>
-${line.second} = ${line.third}
-<#elseif line.second?contains("display")>
-${line.second} = ${line.third}
-<#elseif line.second?contains("voltage")>
-${line.second} = ${line.third}
-<#elseif line.second?contains("resolution")>
-${line.second} = ${line.third}
-<#elseif line.second?contains("relay")>
+<#if line.third!="">
 ${line.second} = ${line.third}
 <#else>
+${line.second} = None
+</#if>
+<#elseif line.second?contains("display")>
+<#if line.third!="">
+${line.second} = ${line.third}
+<#else>
+${line.second} = None
+</#if>
+<#elseif line.second?contains("voltage")>
+<#if line.third!="">
+${line.second} = ${line.third}
+<#else>
+${line.second} = None
+</#if>
+<#elseif line.second?contains("resolution")>
+<#if line.third!="">
+${line.second} = ${line.third}
+<#else>
+${line.second} = None
+</#if>
+<#elseif line.second?contains("relay")>
+<#if line.third!="">
+${line.second} = ${line.third}
+<#else>
+${line.second} = None
+</#if>
+<#else>
+<#if line.third!="">
 ${line.second} = r<#noparse>"</#noparse>${line.third}<#noparse>"</#noparse>
+<#else>
+${line.second} = None
+</#if>
 </#if>
 </#list>

@@ -8,7 +8,7 @@ import lombok.Setter;
  * @date 2020/9/16 13:44
  **/
 public enum ScreenShotTypeEnum {
-    QNX_DISPLAY("QNX屏", "airCondition"),
+    QNX_DISPLAY("QNX屏", "air_condition"),
     ANDROID_DISPLAY("安卓屏", "android_service"),
     CLUSTER_DISPLAY("仪表屏","android_service");
 

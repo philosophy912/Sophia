@@ -552,8 +552,9 @@ public class CheckUtils {
         for (Pair<TestCaseFunctionTypeEnum, String> pair : pairs) {
             TestCaseFunctionTypeEnum typeEnum = pair.getFirst();
             String functionName = pair.getSecond();
-            if (!(typeEnum == TestCaseFunctionTypeEnum.SLEEP || typeEnum == TestCaseFunctionTypeEnum.YEILD
-                    || typeEnum == TestCaseFunctionTypeEnum.PASS || typeEnum == TestCaseFunctionTypeEnum.STACK)) {
+            if (!(typeEnum == TestCaseFunctionTypeEnum.SLEEP || typeEnum == TestCaseFunctionTypeEnum.YIELD
+                    || typeEnum == TestCaseFunctionTypeEnum.CLEAR || typeEnum == TestCaseFunctionTypeEnum.PASS
+                    || typeEnum == TestCaseFunctionTypeEnum.STACK)) {
                 List<BaseEntity> entities = map.get((CharUtils.lowerCase(typeEnum.getValue())));
                 boolean flag = false;
                 for (BaseEntity baseEntity : entities) {
@@ -744,7 +745,7 @@ public class CheckUtils {
         int yeildIndex = -1;
         for (int i = 0; i < size; i++) {
             Pair<TestCaseFunctionTypeEnum, String> pair = pairs.get(i);
-            if (pair.getFirst() == TestCaseFunctionTypeEnum.YEILD) {
+            if (pair.getFirst() == TestCaseFunctionTypeEnum.YIELD) {
                 flag = true;
                 yeildIndex = i;
                 if (i == 0 || i == size - 1) {

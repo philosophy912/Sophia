@@ -9,6 +9,7 @@ import os
 from automotive import *
 from src.code.configure import *
 
+<#if element??>
 ########################################################################################################################
 #                                                                                                                      #
 #                                           用于生成表格 --> 安卓元素(Element)                                             #
@@ -18,11 +19,12 @@ from src.code.configure import *
 <#list element as freemarker>
 """
 <#list freemarker.comment as line>
-${line}
+${line?lower_case}
 </#list>
 """
-${freemarker.params["functionName"]} = {<#list freemarker.pairs as locators><#noparse>"</#noparse>${locators.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${locators.second}<#noparse>"</#noparse><#if locators_index != freemarker.pairs?size -1>, </#if></#list>}
+${freemarker.params["functionName"]?lower_case} = {<#list freemarker.pairs as locators><#noparse>"</#noparse>${locators.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${locators.second}<#noparse>"</#noparse><#if locators_index != freemarker.pairs?size -1>, </#if></#list>}
 </#list>
+</#if>
 
 interval_time = 0.5
 
@@ -44,23 +46,39 @@ class Tester(object):
         self.temp = "\\".join([resource, "result", "screenshot"])
 
         self.image_compare = ImageCompare()
+        self.it6831 = None
+        self.konstanter = None
+        self.can_service = None
+        self.android_service = None
+        self.relay = None
+        self.air_condition = None
+        self.soc = None
+        self.mcu = None
 
         if it6831_serial_baud_rate and it6831_serial_port:
             self.it6831 = It6831Actions(port=it6831_serial_baud_rate, baud_rate=it6831_serial_port)
+            logger.info(f"it6831 is initialization")
         if konstanter_serial_port and konstanter_serial_baud_rate:
             self.konstanter = KonstanterActions(port=konstanter_serial_port, baud_rate=konstanter_serial_baud_rate)
+            logger.info(f"konstanter is initialization")
         if dbc_json:
             self.can_service = CANService(self.dbc)
+            logger.info(f"can_service is initialization")
         if android_automation_type:
             self.android_service = AndroidService(ToolTypeEnum.from_value(android_automation_type))
+            logger.info(f"android_service is initialization")
         if max_relay_channel:
             self.relay = RelayActions()
-        if test_case_type == "cluster" and air_condition_port and air_condition_baud_rate:
-            self.airCondition = AirCondition(qnx_screen_shot_path, air_condition_port)
+            logger.info(f"relay is initialization")
+        if test_case_type == "空调屏" and air_condition_port and air_condition_baud_rate:
+            self.air_condition = AirCondition(qnx_screen_shot_path, air_condition_port)
+            logger.info(f"air_condition is initialization")
         if soc_serial_port and soc_serial_baud_rate:
             self.soc = SerialPort()
+            logger.info(f"soc is initialization")
         if mcu_serial_port and mcu_serial_baud_rate:
             self.mcu = SerialPort()
+            logger.info(f"mcu is initialization")
 
     def open_device(self):
         if self.it6831:
@@ -84,8 +102,8 @@ class Tester(object):
             self.can_service.open_can()
         if self.relay:
             self.relay.open()
-        if self.airCondition:
-            self.airCondition.connect()
+        if self.air_condition:
+            self.air_condition.connect()
         if self.mcu:
             self.mcu.connect(mcu_serial_port, mcu_serial_baud_rate)
         if self.soc:
@@ -102,17 +120,18 @@ class Tester(object):
             self.can_service.close_can()
         if self.relay:
             self.relay.close()
-        if self.airCondition:
-            self.airCondition.disconnect()
+        if self.air_condition:
+            self.air_condition.disconnect()
+<#if batteryAction??>
 
     ####################################################################################################################
     #                                                                                                                  #
-    #                                           用于生成表格 --> 电源操作(BatteryAction)                                   #
+    #                                           用于生成表格 --> 电源操作(BatteryAction)                                  #
     #                                                                                                                  #
     ####################################################################################################################
 <#list batteryAction as freemarker>
 
-    def ${freemarker.params["functionName"]}(self):
+    def ${freemarker.params["functionName"]?lower_case}(self):
         """
         <#list freemarker.comment as line>
         ${line}
@@ -130,15 +149,17 @@ class Tester(object):
         self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(current=${freemarker.params["current"]})
         </#if>
 </#list>
+</#if>
+<#if elementAction??>
 
     ####################################################################################################################
     #                                                                                                                  #
-    #                                           用于生成表格 --> 元素操作(ElementAction)                                   #
+    #                                           用于生成表格 --> 元素操作(ElementAction)                                  #
     #                                                                                                                  #
     ####################################################################################################################
 <#list elementAction as freemarker>
 
-    def ${freemarker.params["functionName"]}(self):
+    def ${freemarker.params["functionName"]?lower_case}(self):
         """
         <#list freemarker.comment as line>
         ${line}
@@ -156,15 +177,17 @@ class Tester(object):
         self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(swipe_element=${freemarker.params["element1"]}, locator=${freemarker.params["element2"]}<#if freemarker.params["slideTimes"]!="0">, swipe_time=${freemarker.params["slideTimes"]}</#if>)
         </#if>
 </#list>
+</#if>
+<#if relayAction??>
 
     ####################################################################################################################
     #                                                                                                                  #
-    #                                           用于生成表格 --> 继电器操作(RelayAction)                                   #
+    #                                           用于生成表格 --> 继电器操作(RelayAction)                                  #
     #                                                                                                                  #
     ####################################################################################################################
 <#list relayAction as freemarker>
 
-    def ${freemarker.params["functionName"]}(self):
+    def ${freemarker.params["functionName"]?lower_case}(self):
         """
         <#list freemarker.comment as line>
         ${line}
@@ -172,21 +195,23 @@ class Tester(object):
         """
         self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(<#if freemarker.params["channelIndex"]!="0">channel=${freemarker.params["channelIndex"]}</#if>)
 </#list>
+</#if>
+<#if screenOpsAction??>
 
     ####################################################################################################################
     #                                                                                                                  #
-    #                                           用于生成表格 --> 屏幕操作(ScreenOpsAction)                                 #
+    #                                           用于生成表格 --> 屏幕操作(ScreenOpsAction)                                #
     #                                                                                                                  #
     ####################################################################################################################
 <#list screenOpsAction as freemarker>
 
-    def ${freemarker.params["functionName"]}(self):
+    def ${freemarker.params["functionName"]?lower_case}(self):
         """
         <#list freemarker.comment as line>
         ${line}
         </#list>
         """
-        <#if freemarker.params["handleName"] == "airCondition">
+        <#if freemarker.params["handleName"] == "air_condition">
             <#if freemarker.params["handleFunction"] == "swipe">
         self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(display=${freemarker.params["displayId"]}, start_x=${freemarker.params["startX"]}, start_y=${freemarker.params["startY"]}, end_x=${freemarker.params["endX"]}, end_y=${freemarker.params["endY"]}, continue_time=${freemarker.params["continueTimes"]})
             <#elseif freemarker.params["handleFunction"] == "click">
@@ -198,22 +223,24 @@ class Tester(object):
         self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(x=${freemarker.params["x"]}, y=${freemarker.params["y"]})
         </#if>
 </#list>
+</#if>
+<#if screenShotAction??>
 
     ####################################################################################################################
     #                                                                                                                  #
-    #                                           用于生成表格 --> 截图操作(ScreenShotAction)                                #
+    #                                           用于生成表格 --> 截图操作(ScreenShotAction)                               #
     #                                                                                                                  #
     ####################################################################################################################
 <#list screenShotAction as freemarker>
 
-    def ${freemarker.params["functionName"]}(self):
+    def ${freemarker.params["functionName"]?lower_case}(self):
         """
         <#list freemarker.comment as line>
         ${line}
         </#list>
         """
-        <#if freemarker.params["handleName"] == "airCondition">
-        image_name = f<#noparse>"</#noparse>${freemarker.params["imageName"]}<#noparse>"</#noparse>
+        <#if freemarker.params["handleName"] == "air_condition">
+        image_name = f<#noparse>"</#noparse>${freemarker.params["imageName"]?lower_case}<#noparse>"</#noparse>
         self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(image_name=image_name, count=${freemarker.params["count"]}, interval_time=interval_time, display=${freemarker.params["displayId"]})
         <#else>
         image_name = f<#noparse>"</#noparse>${r'{android_screen_shot_path}'}/${freemarker.params["imageName"]}__<#noparse>"</#noparse>
@@ -221,15 +248,17 @@ class Tester(object):
             self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(remote_file=f<#noparse>"</#noparse>${r'{'}image_name${r'}'}${r'{'}i + 1${r'}'}<#noparse>"</#noparse>, display=${freemarker.params["displayId"]}, device_id=android_device_id)
         </#if>
 </#list>
+</#if>
+<#if canAction??>
 
     ####################################################################################################################
     #                                                                                                                  #
-    #                                           用于生成表格 --> Can信号(CanAction)                                       #
+    #                                           用于生成表格 --> Can信号(CanAction)                                      #
     #                                                                                                                  #
     ####################################################################################################################
 <#list canAction as freemarker>
 
-    def ${freemarker.params["functionName"]}(self):
+    def ${freemarker.params["functionName"]?lower_case}(self):
         """
         <#list freemarker.comment as line>
         ${line}
@@ -237,15 +266,17 @@ class Tester(object):
         """
         self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(msg=${freemarker.params["messageId"]}, signal=${r'{'}<#list freemarker.pairs as signal><#noparse>"</#noparse>${signal.first}<#noparse>"</#noparse>: ${signal.second}<#if signal_index != freemarker.pairs?size -1>, </#if></#list>${r'}'})
 </#list>
+</#if>
+<#if canCompare??>
 
     ####################################################################################################################
     #                                                                                                                  #
-    #                                           用于生成表格 --> CAN信号对比(CanCompare)                                   #
+    #                                           用于生成表格 --> CAN信号对比(CanCompare)                                  #
     #                                                                                                                  #
     ####################################################################################################################
 <#list canCompare as freemarker>
 
-    def ${freemarker.params["functionName"]}(self, stack) -> tuple:
+    def ${freemarker.params["functionName"]?lower_case}(self, stack) -> tuple:
         """
         <#list freemarker.comment as line>
         ${line}
@@ -253,15 +284,17 @@ class Tester(object):
         """
         return self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(stack=stack, msg_id=${freemarker.params["messageId"]}, sig_name=<#noparse>"</#noparse>${freemarker.params["signalName"]}<#noparse>"</#noparse>, expect_value=${freemarker.params["expectValue"]}<#if freemarker.params["count"]!="0">, count=${freemarker.params["count"]}, exact=${freemarker.params["exact"]}</#if>),
 </#list>
+</#if>
+<#if elementCompare??>
 
     ####################################################################################################################
     #                                                                                                                  #
-    #                                           用于生成表格 --> Android元素对比(ElementCompare)                           #
+    #                                           用于生成表格 --> Android元素对比(ElementCompare)                          #
     #                                                                                                                  #
     ####################################################################################################################
 <#list elementCompare as freemarker>
 
-    def ${freemarker.params["functionName"]}(self) -> tuple:
+    def ${freemarker.params["functionName"]?lower_case}(self) -> tuple:
         """
         <#list freemarker.comment as line>
         ${line}
@@ -269,26 +302,32 @@ class Tester(object):
         """
         return <#if freemarker.params["exist"] == "1">not </#if>self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(locator=${freemarker.params["locator"]}, timeout=${freemarker.params["timeout"]}),
 </#list>
+</#if>
+<#if imageCompare??>
 
     ####################################################################################################################
     #                                                                                                                  #
-    #                                           用于生成表格 --> 图片对比(ImageCompare)                                    #
+    #                                           用于生成表格 --> 图片对比(ImageCompare)                                   #
     #                                                                                                                  #
     ####################################################################################################################
 <#list imageCompare as freemarker>
 
-    def ${freemarker.params["functionName"]}(self) -> tuple:
+    def ${freemarker.params["functionName"]?lower_case}(self) -> tuple:
         """
         <#list freemarker.comment as line>
         ${line}
         </#list>
         """
         compare_property = CompareProperty()
-        compare_property.set_value(name=<#noparse>"</#noparse>${freemarker.params["imageName"]}<#noparse>"</#noparse>,
-                                   compare_type=<#noparse>"</#noparse>${freemarker.params["compareType"]}<#noparse>"</#noparse>,
+        image_name = <#noparse>"</#noparse>${freemarker.params["imageName"]?lower_case}<#noparse>"</#noparse>
+        dark = <#noparse>"</#noparse>${freemarker.params["dark"]?lower_case}<#noparse>"</#noparse>
+        light = <#noparse>"</#noparse>${freemarker.params["light"]?lower_case}<#noparse>"</#noparse>
+        compare_type = <#noparse>"</#noparse>${freemarker.params["compareType"]}<#noparse>"</#noparse>
+        compare_property.set_value(name=image_name,
+                                   compare_type=compare_type,
                                    screen_shot_images_path=self.screenshot,
-                                   light_template=<#noparse>"</#noparse>\\<#noparse>"</#noparse>.join([self.templates, <#noparse>"</#noparse>${freemarker.params["light"]}<#noparse>"</#noparse>]),
-                                   dark_template=<#noparse>"</#noparse>\\<#noparse>"</#noparse>.join([self.templates, <#noparse>"</#noparse>${freemarker.params["dark"]}<#noparse>"</#noparse>]),
+                                   light_template=<#noparse>"</#noparse>\\<#noparse>"</#noparse>.join([self.templates, light]),
+                                   dark_template=<#noparse>"</#noparse>\\<#noparse>"</#noparse>.join([self.templates, dark]),
                                    positions=[${freemarker.params["position"]}],
                                    similarity=${freemarker.params["similarity"]},
                                    gray=${freemarker.params["gray"]},
@@ -297,14 +336,17 @@ class Tester(object):
         files = self.${freemarker.params["handleName"]}.${freemarker.params["handleFunctionSub"]}(compare_property, self.temp)
         return result, files, compare_property.type, compare_property.light_template, compare_property.dark_template
 </#list>
+</#if>
+<#if information??>
+
     ####################################################################################################################
     #                                                                                                                  #
-    #                                           用于生成表格 --> 信息保存(Information)                                     #
+    #                                           用于生成表格 --> 信息保存(Information)                                    #
     #                                                                                                                  #
     ####################################################################################################################
 <#list information as freemarker>
 
-    def ${freemarker.params["functionName"]}(self):
+    def ${freemarker.params["functionName"]?lower_case}(self):
         """
         <#list freemarker.comment as line>
         ${line}
@@ -314,15 +356,17 @@ class Tester(object):
         info = self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(${freemarker.params["locator"]})[attr]
         return info
 </#list>
+</#if>
+<#if informationCompare??>
 
     ####################################################################################################################
     #                                                                                                                  #
-    #                                           用于生成表格 --> 信息对比(InformationCompare)                              #
+    #                                           用于生成表格 --> 信息对比(InformationCompare)                             #
     #                                                                                                                  #
     ####################################################################################################################
 <#list informationCompare as freemarker>
 
-    def ${freemarker.params["functionName"]}(self) -> tuple:
+    def ${freemarker.params["functionName"]?lower_case}(self) -> tuple:
         """
         <#list freemarker.comment as line>
         ${line}
@@ -332,15 +376,17 @@ class Tester(object):
         info = self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(${freemarker.params["locator"]})[attr]
         return self.${freemarker.params["target"]}() == info,
 </#list>
+</#if>
+<#if common??>
 
     ####################################################################################################################
     #                                                                                                                  #
-    #                                           用于生成表格 --> 公共函数(Common)                                          #
+    #                                           用于生成表格 --> 公共函数(Common)                                         #
     #                                                                                                                  #
     ####################################################################################################################
 <#list common as freemarker>
 
-    def ${freemarker.params["functionName"]}(self):
+    def ${freemarker.params["functionName"]?lower_case}(self):
         """
         <#list freemarker.comment as line>
         ${line}
@@ -348,3 +394,4 @@ class Tester(object):
         """
         self.${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(<#if freemarker.locator??>locator={<#list freemarker.locator as param><#noparse>"</#noparse>${param.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${param.second}<#noparse>"</#noparse><#if param_index != freemarker.locator?size -1>, </#if>}</#list><#if freemarker.swipeElement??>, swipe_element={<#list freemarker.swipeElement as param><#noparse>"</#noparse>${param.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${param.second}<#noparse>"</#noparse><#if param_index != freemarker.swipeElement?size -1>, </#if></#list>}</#if></#if><#if freemarker.pairs??>, <#list freemarker.pairs as param>${param.first}=<#if param.first == "text"><#noparse>"</#noparse>${param.second}<#noparse>"</#noparse><#else>${param.second}</#if><#if param_index != freemarker.pairs?size -1>, </#if></#list></#if>)
 </#list>
+</#if>

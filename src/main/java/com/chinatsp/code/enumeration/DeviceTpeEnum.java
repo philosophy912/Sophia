@@ -8,7 +8,7 @@ import lombok.Setter;
  * @date 2020/8/27 10:07
  **/
 public enum DeviceTpeEnum {
-    QNX("QNX", "airCondition"),
+    QNX("QNX", "air_condition"),
     ANDROID("ANDROID", "android_service");
 
     @Setter

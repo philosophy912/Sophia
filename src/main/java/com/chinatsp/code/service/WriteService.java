@@ -34,7 +34,8 @@ public class WriteService implements IWriteService {
         freeMarkerWriter.writeEntity(entities, context);
         Map<String, TestCaseFreeMarkers> freeMarkersMap = testCaseWriter.convert(entities);
         for (Map.Entry<String, TestCaseFreeMarkers> entry : freeMarkersMap.entrySet()) {
-            String key = entry.getKey();
+            // 文件名小写
+            String key = entry.getKey().toLowerCase();
             TestCaseFreeMarkers freeMarker = entry.getValue();
             Path path = Paths.get(folderPath, "test_" + key + ".py");
             freeMarkerWriter.writeTestCase(freeMarker, path);

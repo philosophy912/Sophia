@@ -24,22 +24,26 @@ def suite():
     with allure.step("${testcase.suite.second.first}"):
 <#list testcase.suite.first.first as line>
     <#if line=="pass">
-        ${line}
+        ${line?lower_case}
+    <#elseif line=="open">
+        tester.open_device()
     <#elseif line?starts_with("sleep")>
-        ${line}
+        ${line?lower_case}
     <#else>
-        tester.${line}
+        tester.${line?lower_case}
     </#if>
 </#list>
     yield suite
     with allure.step("${testcase.suite.second.second}"):
 <#list testcase.suite.first.second as line>
     <#if line=="pass">
-        ${line}
+        ${line?lower_case}
     <#elseif line?starts_with("sleep")>
-        ${line}
+        ${line?lower_case}
+    <#elseif line=="close">
+        tester.close_device()
     <#else>
-        tester.${line}
+        tester.${line?lower_case}
     </#if>
 </#list>
 
@@ -54,22 +58,22 @@ def function():
     with allure.step("${testcase.function.second.first}"):
 <#list testcase.function.first.first as line>
     <#if line=="pass">
-        ${line}
+        ${line?lower_case}
     <#elseif line?starts_with("sleep")>
-        ${line}
+        ${line?lower_case}
     <#else>
-        tester.${line}
+        tester.${line?lower_case}
     </#if>
 </#list>
     yield
     with allure.step("${testcase.function.second.second}"):
 <#list testcase.function.first.second as line>
     <#if line=="pass">
-        ${line}
+        ${line?lower_case}
     <#elseif line?starts_with("sleep")>
-        ${line}
+        ${line?lower_case}
     <#else>
-        tester.${line}
+        tester.${line?lower_case}
     </#if>
 </#list>
 
@@ -84,9 +88,10 @@ def function():
 class Test${testcase.moduleName?cap_first}(object):
 <#list testcase.testcases as tc>
 
+    <#if tc.testCaseType =="full">
     @pytest.mark.usefixtures("function")
     @allure.title("${tc.description}")
-    def test_${tc.name}(self):
+    def test_${tc.name?lower_case}(self):
         """
         Description:
             <#list tc.comments as line>
@@ -109,40 +114,44 @@ class Test${testcase.moduleName?cap_first}(object):
         with allure.step("前置条件"):
         <#list tc.preCondition as line>
             <#if line=="pass">
-            ${line}
+            ${line?lower_case}
             <#elseif line=="stack">
             stack = tester.can_service.get_stack()
             <#elseif line?starts_with("sleep")>
-            ${line}
+            ${line?lower_case}
+            <#elseif line=="clear">
+            tester.can_service.clear_stack_data()
             <#else>
-            tester.${line}
+            tester.${line?lower_case}
             </#if>
         </#list>
         # 执行步骤
         with allure.step('操作步骤'):
         <#list tc.steps as line>
             <#if line=="pass">
-            ${line}
+            ${line?lower_case}
             <#elseif line=="stack">
             stack = tester.can_service.get_stack()
             <#elseif line?starts_with("sleep")>
-            ${line}
+            ${line?lower_case}
+            <#elseif line=="clear">
+            tester.can_service.clear_stack_data()
             <#else>
-            tester.${line}
+            tester.${line?lower_case}
             </#if>
         </#list>
         # 期望结果
         with allure.step('期望结果'):
         <#list tc.expect as line>
-            <#if line=="pass">
-            ${line}
-            <#elseif line=="stack">
+            <#if line=="stack">
             stack = tester.can_service.get_stack()
+            <#elseif line=="clear">
+            tester.can_service.clear_stack_data()
             <#elseif line?starts_with("sleep")>
-            ${line}
-            <#else>
-            result = tester.${line}
+            ${line?lower_case}
             </#if>
+            <#if line!="stack" && line!="pass" && line!="clear" && !line?starts_with("sleep")>
+            result = tester.${line?lower_case}
             if len(result) > 1:
                 result, images, compare_type, dark, light = result
                 if compare_type == CompareTypeEnum.LIGHT:
@@ -159,5 +168,121 @@ class Test${testcase.moduleName?cap_first}(object):
                 assert result
             else:
                 assert result
+            </#if>
         </#list>
+    <#else>
+    @pytest.mark.usefixtures("function")
+    @allure.title("${tc.description}")
+    def test_${tc.name?lower_case}(self):
+        """
+        Description:
+        <#list tc.comments as line>
+            ${line}
+        </#list>
+        PreCondition:
+        <#list tc.preConditionDescription as line>
+            ${line}
+        </#list>
+        Steps:
+        <#list tc.stepsDescription as line>
+            ${line}
+        </#list>
+        Expect Result:
+        <#list tc.expectDescription as line>
+            ${line}
+        </#list>
+        """
+        # 前置条件
+        with allure.step("前置条件"):
+        <#list tc.preCondition as line>
+        <#if line=="pass">
+            ${line?lower_case}
+        <#elseif line=="stack">
+            stack = tester.can_service.get_stack()
+        <#elseif line?starts_with("sleep")>
+            ${line?lower_case}
+        <#elseif line=="clear">
+            tester.can_service.clear_stack_data()
+        <#else>
+            tester.${line?lower_case}
+        </#if>
+        </#list>
+        # 执行步骤
+        with allure.step('操作步骤'):
+        <#list tc.steps as line>
+        <#if line=="pass">
+            ${line?lower_case}
+        <#elseif line=="stack">
+            stack = tester.can_service.get_stack()
+        <#elseif line?starts_with("sleep")>
+            ${line?lower_case}
+        <#elseif line=="clear">
+            tester.can_service.clear_stack_data()
+        <#else>
+            tester.${line?lower_case}
+        </#if>
+        </#list>
+        # 期望结果
+        with allure.step('期望结果'):
+            assert True
+
+    @pytest.mark.usefixtures("function")
+    @allure.title("${tc.description}")
+    def test_${tc.name?lower_case}(self):
+        """
+        Description:
+        <#list tc.comments as line>
+            ${line}
+        </#list>
+        PreCondition:
+        <#list tc.preConditionDescription as line>
+            ${line}
+        </#list>
+        Steps:
+        <#list tc.stepsDescription as line>
+            ${line}
+        </#list>
+        Expect Result:
+        <#list tc.expectDescription as line>
+            ${line}
+        </#list>
+        """
+        # 前置条件
+        with allure.step("前置条件"):
+            pass
+        # 执行步骤
+        with allure.step('操作步骤'):
+            pass
+        # 期望结果
+        with allure.step('期望结果'):
+        <#list tc.expect as line>
+        <#if line=="stack">
+            stack = tester.can_service.get_stack()
+        <#elseif line=="clear">
+            tester.can_service.clear_stack_data()
+        <#elseif line?starts_with("sleep")>
+            ${line?lower_case}
+        </#if>
+        <#if line!="stack" && line!="pass" && line!="clear" && !line?starts_with("sleep")>
+            result = tester.${line?lower_case}
+            if len(result) > 1:
+                result, images, compare_type, dark, light = result
+                if compare_type == CompareTypeEnum.LIGHT:
+                    allure.attach.file(light, '原图(亮图)', allure.attachment_type.BMP)
+                elif compare_type == CompareTypeEnum.DARK:
+                    allure.attach.file(dark, '原图(暗图)', allure.attachment_type.BMP)
+                elif compare_type == CompareTypeEnum.BLINK:
+                    allure.attach.file(light, '原图(亮图)', allure.attachment_type.BMP)
+                    allure.attach.file(dark, '原图(暗图)', allure.attachment_type.BMP)
+                result_str = "成功" if result else "失败"
+                for image in images:
+                    image_name = image.split("\\")[-1]
+                    allure.attach.file(image, f"{result_str}截图[{image_name}]", allure.attachment_type.BMP)
+                assert result
+            else:
+                assert result
+        </#if>
+        </#list>
+    </#if>
+
 </#list>

@@ -21,8 +21,20 @@ public class ScreenShotActionChecker extends BaseChecker implements IChecker {
     @Override
     public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String> configure) {
         List<BaseEntity> entities = getEntity(map, ScreenShotAction.class);
-        int maxAndroidDisplay = Integer.parseInt(configure.get(ConfigureTypeEnum.MAX_ANDROID_DISPLAY));
-        int maxQnxDisplay = Integer.parseInt(configure.get(ConfigureTypeEnum.MAX_QNX_DISPLAY));
+        int maxAndroidDisplay = -1;
+        int maxQnxDisplay = -1;
+        try{
+            maxAndroidDisplay = Integer.parseInt(configure.get(ConfigureTypeEnum.MAX_ANDROID_DISPLAY));
+        }catch (NumberFormatException e){
+            log.debug("no number input error ===> "+ e.getMessage());
+        }
+        try{
+            maxQnxDisplay = Integer.parseInt(configure.get(ConfigureTypeEnum.MAX_QNX_DISPLAY));
+        }catch (NumberFormatException e){
+            log.debug("no number input error ===> "+ e.getMessage());
+        }
+
+        log.debug("maxAndroidDisplay = [{}] and maxQnxDisplay = [{}]", maxAndroidDisplay, maxQnxDisplay);
         for (int i = 0; i < entities.size(); i++) {
             int index = i + 1;
             ScreenShotAction screenShotAction = (ScreenShotAction) entities.get(i);

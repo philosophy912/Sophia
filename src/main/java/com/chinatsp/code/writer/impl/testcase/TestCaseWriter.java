@@ -115,7 +115,7 @@ public class TestCaseWriter {
         for (Pair<TestCaseFunctionTypeEnum, String> pair : pairs) {
             TestCaseFunctionTypeEnum type = pair.getFirst();
             String functionName = pair.getSecond();
-            if (type == TestCaseFunctionTypeEnum.YEILD) {
+            if (type == TestCaseFunctionTypeEnum.YIELD) {
                 flag = false;
                 continue;
             }
@@ -161,7 +161,7 @@ public class TestCaseWriter {
         freeMarker.setId(testCase.getId());
         freeMarker.setName(testCase.getName());
         freeMarker.setComments(comments);
-        freeMarker.setTestCaseType(testCase.getTestCaseType());
+        freeMarker.setTestCaseType(testCase.getTestCaseType().getName());
         freeMarker.setModuleName(testCase.getModuleName());
         freeMarker.setPreCondition(preCondition);
         freeMarker.setPreConditionDescription(testCase.getPreConditionDescription());

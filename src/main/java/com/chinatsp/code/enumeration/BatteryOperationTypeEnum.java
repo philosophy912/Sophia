@@ -12,6 +12,7 @@ public enum BatteryOperationTypeEnum {
     SET_CURRENT("设置电流", "set_current"),
     ADJUST_VOLTAGE("调节电压", "change_voltage"),
     CURVE("电压曲线", "adjust_voltage_by_curve");
+
     @Setter
     @Getter
     private String value;

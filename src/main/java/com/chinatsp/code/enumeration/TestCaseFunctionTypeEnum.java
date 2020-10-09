@@ -11,7 +11,7 @@ public enum TestCaseFunctionTypeEnum {
     BATTERY_ACTION("BatteryAction"),
     ELEMENT_ACTION("ElementAction"),
     RELAY_ACTION("RelayAction"),
-    SCREEN_OPERATION_ACTION("ScreenOperationAction"),
+    SCREEN_OPS_ACTION("ScreenOpsAction"),
     SCREEN_SHOT_ACTION("ScreenShotAction"),
     CAN_ACTION("CanAction"),
     COMMON("Common"),
@@ -23,7 +23,10 @@ public enum TestCaseFunctionTypeEnum {
     PASS("pass"),
     SLEEP("sleep"),
     STACK("stack"),
-    YEILD("yeild");
+    CLEAR("clear"),
+    OPEN("open"),
+    CLOSE("close"),
+    YIELD("yield");
 
 
     @Setter

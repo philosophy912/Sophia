@@ -36,7 +36,9 @@ public enum ConfigureTypeEnum {
     ANDROID_APP_ACTIVITY("安卓的启动应用的activity", "android_app_activity"),
     ANDROID_VERSION("安卓系统版本号", "android_version"),
     ANDROID_DEVICE_ID("安卓设备号", "android_device_id"),
-    TEST_CASE_TYPE("测试类型", "test_case_type");
+    TEST_CASE_TYPE("测试类型", "test_case_type"),
+    USERNAME("用户名", "username"),
+    PASSWORD("密码", "password");
 
     @Setter
     @Getter

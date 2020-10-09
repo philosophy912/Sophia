@@ -30,7 +30,7 @@ public class TestCaseFreeMarker {
     /**
      * 测试类型，目前仅支持TestCaseTypeEnum描述的类型
      */
-    private TestCaseTypeEnum testCaseType;
+    private String testCaseType;
     /**
      * 模块名
      * 可以是安卓也可以是仪表的
