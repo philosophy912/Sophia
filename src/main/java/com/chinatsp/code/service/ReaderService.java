@@ -30,7 +30,7 @@ public class ReaderService implements IReadService {
     @Override
     public Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> read(Path path) {
         Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> pair = reader.readTestCase(path);
-        checker.check(pair.getFirst(), pair.getSecond());
+        checker.check(pair.getFirst(), pair.getSecond(), path.getParent().toAbsolutePath().toString());
         return pair;
     }
 }

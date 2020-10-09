@@ -175,6 +175,7 @@ public class TestCaseWriter {
 
     /**
      * 把测试用例集转换成每个模块拥有的测试用例字典
+     * todo 需要分开全自动测试用例和半自动测试用例
      *
      * @param map 表格字典集合
      * @return 字典
@@ -188,7 +189,7 @@ public class TestCaseWriter {
         Map<String, List<TestCase>> moduleTestCaseMap = convertTestCase(modules, testCases);
         for (String module : modules) {
             TestCaseFreeMarkers freeMarker = new TestCaseFreeMarkers();
-            freeMarker.setModuleName(module);
+            freeMarker.setModuleName(module.replace("_", ""));
             TestCaseSetUp testCaseSetUp = moduleSetUpMap.get(module);
             // 处理TestCaseSetUp中的setup
             List<Pair<TestCaseFunctionTypeEnum, String>> suites = testCaseSetUp.getSuites();

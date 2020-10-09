@@ -35,14 +35,14 @@ public class Checker {
 
 
     @SneakyThrows
-    public void check(Map<String, List<BaseEntity>> map, Map<ConfigureTypeEnum, String> configure) {
+    public void check(Map<String, List<BaseEntity>> map, Map<ConfigureTypeEnum, String> configure, String folder) {
         String dbcFile = configure.get(ConfigureTypeEnum.DBC_FILE);
-        Path dbcPath = Paths.get(dbcFile);
+        Path dbcPath = Paths.get(folder, dbcFile);
         if (!Files.exists(dbcPath)) {
             String error = "DBC文件[" + dbcFile + "]不存在，请检查配置的路径是否正确";
             throw new RuntimeException(error);
         }
-        List<Message> messages = dbcParser.parse(Paths.get(dbcFile));
+        List<Message> messages = dbcParser.parse(dbcPath);
         for (Map.Entry<String, List<BaseEntity>> entry : map.entrySet()) {
             String name = entry.getKey();
             String fullName = readerUtils.getFullClassName(CharUtils.upperCase(name) + "Checker", CHECKER_PACKAGE_NAME);

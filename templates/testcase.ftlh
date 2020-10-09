@@ -7,8 +7,8 @@
 import allure
 import pytest
 from time import sleep
-from automotive import *
-from src.code.context import Tester
+from src.code.context import Tester, compare
+
 
 tester = Tester()
 
@@ -87,8 +87,8 @@ def function():
 @pytest.mark.usefixtures("suite")
 class Test${testcase.moduleName?cap_first}(object):
 <#list testcase.testcases as tc>
-
     <#if tc.testCaseType =="full">
+
     @pytest.mark.usefixtures("function")
     @allure.title("${tc.description}")
     def test_${tc.name?lower_case}(self):
@@ -152,28 +152,14 @@ class Test${testcase.moduleName?cap_first}(object):
             </#if>
             <#if line!="stack" && line!="pass" && line!="clear" && !line?starts_with("sleep")>
             result = tester.${line?lower_case}
-            if len(result) > 1:
-                result, images, compare_type, dark, light = result
-                if compare_type == CompareTypeEnum.LIGHT:
-                    allure.attach.file(light, '原图(亮图)', allure.attachment_type.BMP)
-                elif compare_type == CompareTypeEnum.DARK:
-                    allure.attach.file(dark, '原图(暗图)', allure.attachment_type.BMP)
-                elif compare_type == CompareTypeEnum.BLINK:
-                    allure.attach.file(light, '原图(亮图)', allure.attachment_type.BMP)
-                    allure.attach.file(dark, '原图(暗图)', allure.attachment_type.BMP)
-                result_str = "成功" if result else "失败"
-                for image in images:
-                    image_name = image.split("\\")[-1]
-                    allure.attach.file(image, f"{result_str}截图[{image_name}]", allure.attachment_type.BMP)
-                assert result
-            else:
-                assert result
+            compare(result)
             </#if>
         </#list>
     <#else>
+
     @pytest.mark.usefixtures("function")
     @allure.title("${tc.description}")
-    def test_${tc.name?lower_case}(self):
+    def test_${tc.name?lower_case}_action(self):
         """
         Description:
         <#list tc.comments as line>
@@ -228,7 +214,7 @@ class Test${testcase.moduleName?cap_first}(object):
 
     @pytest.mark.usefixtures("function")
     @allure.title("${tc.description}")
-    def test_${tc.name?lower_case}(self):
+    def test_${tc.name?lower_case}_compare(self):
         """
         Description:
         <#list tc.comments as line>
@@ -265,24 +251,8 @@ class Test${testcase.moduleName?cap_first}(object):
         </#if>
         <#if line!="stack" && line!="pass" && line!="clear" && !line?starts_with("sleep")>
             result = tester.${line?lower_case}
-            if len(result) > 1:
-                result, images, compare_type, dark, light = result
-                if compare_type == CompareTypeEnum.LIGHT:
-                    allure.attach.file(light, '原图(亮图)', allure.attachment_type.BMP)
-                elif compare_type == CompareTypeEnum.DARK:
-                    allure.attach.file(dark, '原图(暗图)', allure.attachment_type.BMP)
-                elif compare_type == CompareTypeEnum.BLINK:
-                    allure.attach.file(light, '原图(亮图)', allure.attachment_type.BMP)
-                    allure.attach.file(dark, '原图(暗图)', allure.attachment_type.BMP)
-                result_str = "成功" if result else "失败"
-                for image in images:
-                    image_name = image.split("\\")[-1]
-                    allure.attach.file(image, f"{result_str}截图[{image_name}]", allure.attachment_type.BMP)
-                assert result
-            else:
-                assert result
+            compare(result)
         </#if>
         </#list>
     </#if>
-
 </#list>

@@ -50,6 +50,7 @@ class CheckerTest {
 
     @Test
     void check() {
-        checker.check(map, configure);
+        Path path = Paths.get(BaseTestUtils.getFileFolder(), "template.xlsx");
+        checker.check(map, configure, path.getParent().toAbsolutePath().toString());
     }
 }

@@ -5,9 +5,29 @@
 # Created:     ${createDate}
 # -------------------------------------------------------------------------------
 import os
-
+import allure
 from automotive import *
 from src.code.configure import *
+
+
+def compare(result: tuple):
+    if len(result) > 1:
+        result, images, compare_type, dark, light = result
+        if compare_type == CompareTypeEnum.LIGHT:
+            allure.attach.file(light, '原图(亮图)', allure.attachment_type.BMP)
+        elif compare_type == CompareTypeEnum.DARK:
+            allure.attach.file(dark, '原图(暗图)', allure.attachment_type.BMP)
+        elif compare_type == CompareTypeEnum.BLINK:
+            allure.attach.file(light, '原图(亮图)', allure.attachment_type.BMP)
+            allure.attach.file(dark, '原图(暗图)', allure.attachment_type.BMP)
+        result_str = "成功" if result else "失败"
+        for image in images:
+            image_name = image.split("\\")[-1]
+            allure.attach.file(image, f"{result_str}截图[{image_name}]", allure.attachment_type.BMP)
+        assert result
+    else:
+        assert result
+
 
 <#if element??>
 ########################################################################################################################
@@ -24,8 +44,9 @@ ${line?lower_case}
 """
 ${freemarker.params["functionName"]?lower_case} = {<#list freemarker.pairs as locators><#noparse>"</#noparse>${locators.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${locators.second}<#noparse>"</#noparse><#if locators_index != freemarker.pairs?size -1>, </#if></#list>}
 </#list>
-</#if>
 
+
+</#if>
 interval_time = 0.5
 
 
