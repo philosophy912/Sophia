@@ -7,10 +7,7 @@
 import allure
 import pytest
 from time import sleep
-from src.code.context import Tester, compare
-
-
-tester = Tester()
+from src.code.context import *
 
 
 ########################################################################################################################
@@ -26,11 +23,11 @@ def suite():
     <#if line=="pass">
         ${line?lower_case}
     <#elseif line=="open">
-        tester.open_device()
+        open_device()
     <#elseif line?starts_with("sleep")>
         ${line?lower_case}
     <#else>
-        tester.${line?lower_case}
+        ${line?lower_case}
     </#if>
 </#list>
     yield suite
@@ -41,9 +38,9 @@ def suite():
     <#elseif line?starts_with("sleep")>
         ${line?lower_case}
     <#elseif line=="close">
-        tester.close_device()
+        close_device()
     <#else>
-        tester.${line?lower_case}
+        ${line?lower_case}
     </#if>
 </#list>
 
@@ -62,7 +59,7 @@ def function():
     <#elseif line?starts_with("sleep")>
         ${line?lower_case}
     <#else>
-        tester.${line?lower_case}
+        ${line?lower_case}
     </#if>
 </#list>
     yield
@@ -73,7 +70,7 @@ def function():
     <#elseif line?starts_with("sleep")>
         ${line?lower_case}
     <#else>
-        tester.${line?lower_case}
+        ${line?lower_case}
     </#if>
 </#list>
 
@@ -116,13 +113,13 @@ class Test${testcase.moduleName?cap_first}(object):
             <#if line=="pass">
             ${line?lower_case}
             <#elseif line=="stack">
-            stack = tester.can_service.get_stack()
+            stack = can_service.get_stack()
             <#elseif line?starts_with("sleep")>
             ${line?lower_case}
             <#elseif line=="clear">
-            tester.can_service.clear_stack_data()
+            can_service.clear_stack_data()
             <#else>
-            tester.${line?lower_case}
+            ${line?lower_case}
             </#if>
         </#list>
         # 执行步骤
@@ -131,27 +128,27 @@ class Test${testcase.moduleName?cap_first}(object):
             <#if line=="pass">
             ${line?lower_case}
             <#elseif line=="stack">
-            stack = tester.can_service.get_stack()
+            stack = can_service.get_stack()
             <#elseif line?starts_with("sleep")>
             ${line?lower_case}
             <#elseif line=="clear">
-            tester.can_service.clear_stack_data()
+            can_service.clear_stack_data()
             <#else>
-            tester.${line?lower_case}
+            ${line?lower_case}
             </#if>
         </#list>
         # 期望结果
         with allure.step('期望结果'):
         <#list tc.expect as line>
             <#if line=="stack">
-            stack = tester.can_service.get_stack()
+            stack = can_service.get_stack()
             <#elseif line=="clear">
-            tester.can_service.clear_stack_data()
+            can_service.clear_stack_data()
             <#elseif line?starts_with("sleep")>
             ${line?lower_case}
             </#if>
             <#if line!="stack" && line!="pass" && line!="clear" && !line?starts_with("sleep")>
-            result = tester.${line?lower_case}
+            result = ${line?lower_case}
             compare(result)
             </#if>
         </#list>
@@ -184,13 +181,13 @@ class Test${testcase.moduleName?cap_first}(object):
         <#if line=="pass">
             ${line?lower_case}
         <#elseif line=="stack">
-            stack = tester.can_service.get_stack()
+            stack = can_service.get_stack()
         <#elseif line?starts_with("sleep")>
             ${line?lower_case}
         <#elseif line=="clear">
-            tester.can_service.clear_stack_data()
+            can_service.clear_stack_data()
         <#else>
-            tester.${line?lower_case}
+            ${line?lower_case}
         </#if>
         </#list>
         # 执行步骤
@@ -199,13 +196,13 @@ class Test${testcase.moduleName?cap_first}(object):
         <#if line=="pass">
             ${line?lower_case}
         <#elseif line=="stack">
-            stack = tester.can_service.get_stack()
+            stack = can_service.get_stack()
         <#elseif line?starts_with("sleep")>
             ${line?lower_case}
         <#elseif line=="clear">
-            tester.can_service.clear_stack_data()
+            can_service.clear_stack_data()
         <#else>
-            tester.${line?lower_case}
+            ${line?lower_case}
         </#if>
         </#list>
         # 期望结果
@@ -243,14 +240,14 @@ class Test${testcase.moduleName?cap_first}(object):
         with allure.step('期望结果'):
         <#list tc.expect as line>
         <#if line=="stack">
-            stack = tester.can_service.get_stack()
+            stack = can_service.get_stack()
         <#elseif line=="clear">
-            tester.can_service.clear_stack_data()
+            can_service.clear_stack_data()
         <#elseif line?starts_with("sleep")>
             ${line?lower_case}
         </#if>
         <#if line!="stack" && line!="pass" && line!="clear" && !line?starts_with("sleep")>
-            result = tester.${line?lower_case}
+            result = ${line?lower_case}
             compare(result)
         </#if>
         </#list>
