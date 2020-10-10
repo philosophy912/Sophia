@@ -4,6 +4,7 @@ import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.testcase.TestCase;
 import com.chinatsp.code.entity.testcase.TestCaseSetUp;
 import com.chinatsp.code.enumeration.TestCaseFunctionTypeEnum;
+import com.chinatsp.code.enumeration.TestCaseTypeEnum;
 import com.chinatsp.code.writer.api.TestCaseFreeMarker;
 import com.chinatsp.code.writer.api.TestCaseFreeMarkers;
 import com.philosophy.base.common.Pair;
@@ -18,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class TestCaseWriter {
@@ -180,32 +182,52 @@ public class TestCaseWriter {
      * @param map 表格字典集合
      * @return 字典
      */
-    public Map<String, TestCaseFreeMarkers> convert(Map<String, List<BaseEntity>> map) {
-        Map<String, TestCaseFreeMarkers> resultMap = new HashMap<>();
+    public Map<String, Pair<TestCaseFreeMarkers, TestCaseFreeMarkers>> convert(Map<String, List<BaseEntity>> map) {
+        Map<String, Pair<TestCaseFreeMarkers, TestCaseFreeMarkers>> resultMap = new HashMap<>();
         List<BaseEntity> testCases = map.get(CharUtils.lowerCase(TestCase.class.getSimpleName()));
         List<BaseEntity> testCaseSetUps = map.get(CharUtils.lowerCase(TestCaseSetUp.class.getSimpleName()));
         Set<String> modules = getModuleNames(testCases);
         Map<String, TestCaseSetUp> moduleSetUpMap = convertSetup(modules, testCaseSetUps);
         Map<String, List<TestCase>> moduleTestCaseMap = convertTestCase(modules, testCases);
         for (String module : modules) {
-            TestCaseFreeMarkers freeMarker = new TestCaseFreeMarkers();
-            freeMarker.setModuleName(module.replace("_", ""));
-            TestCaseSetUp testCaseSetUp = moduleSetUpMap.get(module);
+            TestCaseFreeMarkers fullFreeMarkers = new TestCaseFreeMarkers();
+            TestCaseFreeMarkers halfFreeMarkers = new TestCaseFreeMarkers();
+            String moduleName = module.replace("_", "");
+            fullFreeMarkers.setModuleName(moduleName);
+            halfFreeMarkers.setModuleName(moduleName);
             // 处理TestCaseSetUp中的setup
+            TestCaseSetUp testCaseSetUp = moduleSetUpMap.get(module);
             List<Pair<TestCaseFunctionTypeEnum, String>> suites = testCaseSetUp.getSuites();
             List<Pair<TestCaseFunctionTypeEnum, String>> functions = testCaseSetUp.getFunctions();
             Pair<List<String>, List<String>> suitePair = splitLines(suites);
             Pair<List<String>, List<String>> functionPair = splitLines(functions);
-            freeMarker.setSuite(new Pair<>(suitePair, new Pair<>(testCaseSetUp.getSuitesBefore(), testCaseSetUp.getSuitesAfter())));
-            freeMarker.setFunction(new Pair<>(functionPair, new Pair<>(testCaseSetUp.getFunctionsBefore(), testCaseSetUp.getFunctionsAfter())));
+            Pair<String, String> suiteText = new Pair<>(testCaseSetUp.getSuitesBefore(), testCaseSetUp.getSuitesAfter());
+            Pair<String, String> functionText = new Pair<>(testCaseSetUp.getFunctionsBefore(), testCaseSetUp.getFunctionsAfter());
+            fullFreeMarkers.setSuite(new Pair<>(suitePair, suiteText));
+            fullFreeMarkers.setFunction(new Pair<>(functionPair, functionText));
+            halfFreeMarkers.setSuite(new Pair<>(suitePair, suiteText));
+            halfFreeMarkers.setFunction(new Pair<>(functionPair, functionText));
             // 处理TestCase的部分
             List<TestCase> testCaseList = moduleTestCaseMap.get(module);
-            List<TestCaseFreeMarker> freeMarkers = new ArrayList<>();
-            for (TestCase testCase : testCaseList) {
-                freeMarkers.add(convert(testCase));
+            // 全自动部分
+            List<TestCase> full = testCaseList.stream()
+                    .filter(testCase -> testCase.getTestCaseType() == TestCaseTypeEnum.FULL)
+                    .collect(Collectors.toList());
+            // 半自动部分
+            List<TestCase> half = testCaseList.stream()
+                    .filter(testCase -> testCase.getTestCaseType() == TestCaseTypeEnum.HALF)
+                    .collect(Collectors.toList());
+            List<TestCaseFreeMarker> fullTestCaseFreeMarkerList = new ArrayList<>();
+            for (TestCase testCase : full) {
+                fullTestCaseFreeMarkerList.add(convert(testCase));
             }
-            freeMarker.setTestcases(freeMarkers);
-            resultMap.put(module, freeMarker);
+            List<TestCaseFreeMarker> halfTestCaseFreeMarkerList = new ArrayList<>();
+            for (TestCase testCase : half) {
+                halfTestCaseFreeMarkerList.add(convert(testCase));
+            }
+            fullFreeMarkers.setTestcases(fullTestCaseFreeMarkerList);
+            halfFreeMarkers.setTestcases(halfTestCaseFreeMarkerList);
+            resultMap.put(module, new Pair<>(fullFreeMarkers, halfFreeMarkers));
         }
         return resultMap;
 

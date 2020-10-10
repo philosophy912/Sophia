@@ -32,13 +32,16 @@ public class WriteService implements IWriteService {
         freeMarkerWriter.writeConfigure(map, configure);
         Path context = Paths.get(folderPath, "context.py");
         freeMarkerWriter.writeEntity(entities, context);
-        Map<String, TestCaseFreeMarkers> freeMarkersMap = testCaseWriter.convert(entities);
-        for (Map.Entry<String, TestCaseFreeMarkers> entry : freeMarkersMap.entrySet()) {
+        Map<String, Pair<TestCaseFreeMarkers, TestCaseFreeMarkers>> freeMarkersMap = testCaseWriter.convert(entities);
+        for (Map.Entry<String, Pair<TestCaseFreeMarkers, TestCaseFreeMarkers>> entry : freeMarkersMap.entrySet()) {
             // 文件名小写
             String key = entry.getKey().toLowerCase();
-            TestCaseFreeMarkers freeMarker = entry.getValue();
-            Path path = Paths.get(folderPath, "test_" + key + ".py");
-            freeMarkerWriter.writeTestCase(freeMarker, path);
+            Pair<TestCaseFreeMarkers, TestCaseFreeMarkers> freeMarkersPair = entry.getValue();
+            Path action = Paths.get(folderPath, "test_" + key + ".py");
+            freeMarkerWriter.writeTestCase(freeMarkersPair.getFirst(), action);
+            // todo 写入的话需要两次，一次写入action，一次写入compare
+            Path compare = Paths.get(folderPath, "test_" + key + "_compare.py");
+            freeMarkerWriter.writeTestCase(freeMarkersPair.getSecond(), compare);
         }
     }
 }
