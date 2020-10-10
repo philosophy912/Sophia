@@ -1,12 +1,10 @@
 package com.chinatsp.code.service;
 
-import com.alibaba.fastjson.JSON;
 import com.chinatsp.code.BaseTestUtils;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.code.service.api.IReadService;
 import com.chinatsp.code.service.api.IWriteService;
-import com.chinatsp.dbc.entity.Message;
 import com.chinatsp.dbc.impl.DbcParser;
 import com.philosophy.base.common.Pair;
 import com.philosophy.txt.util.TxtUtils;
@@ -23,7 +21,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

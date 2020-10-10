@@ -11,7 +11,7 @@ import allure
 import pytest
 from time import sleep
 from automotive import *
-from src.code.context import Tester
+from src.codes.context import Tester
 
 tester = Tester()
 

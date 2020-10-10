@@ -7,7 +7,7 @@
 import allure
 import pytest
 from time import sleep
-from src.code.context import *
+from src.codes.context import *
 
 
 ########################################################################################################################
@@ -148,8 +148,7 @@ class Test${testcase.moduleName?cap_first}(object):
             ${line?lower_case}
             </#if>
             <#if line!="stack" && line!="pass" && line!="clear" && !line?starts_with("sleep")>
-            result = ${line?lower_case}
-            compare(result)
+            compare(${line?lower_case})
             </#if>
         </#list>
     <#else>
@@ -247,8 +246,7 @@ class Test${testcase.moduleName?cap_first}(object):
             ${line?lower_case}
         </#if>
         <#if line!="stack" && line!="pass" && line!="clear" && !line?starts_with("sleep")>
-            result = ${line?lower_case}
-            compare(result)
+            compare(${line?lower_case})
         </#if>
         </#list>
     </#if>

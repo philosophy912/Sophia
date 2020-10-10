@@ -21,7 +21,7 @@ public class BaseTestUtils {
     }
 
     public static String getCodeFolder(){
-        return FilesUtils.getCurrentPath() +"\\tpl\\src\\code";
+        return FilesUtils.getCurrentPath() +"\\tpl\\src\\codes";
     }
 
     @SneakyThrows

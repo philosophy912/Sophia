@@ -7,7 +7,7 @@
 import os
 import allure
 from automotive import *
-from src.code.configure import *
+from src.codes.configure import *
 
 
 def compare(result: tuple):
@@ -130,6 +130,7 @@ def open_device():
     if soc:
         soc.connect(soc_serial_port, soc_serial_baud_rate)
 
+
 def close_device():
     if it6831:
         it6831.close()
@@ -144,7 +145,6 @@ def close_device():
     if air_condition:
         air_condition.disconnect()
 <#if batteryAction??>
-
     ####################################################################################################################
     #                                                                                                                  #
     #                                           用于生成表格 --> 电源操作(BatteryAction)                                  #

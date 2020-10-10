@@ -7,3 +7,6 @@
 # @Author:      lizhe
 # @Created:     2020/10/10 - 15:47
 # --------------------------------------------------------
+from src.codes.context import *
+
+compare(compare_rear_window_heating_status())
