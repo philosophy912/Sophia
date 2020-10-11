@@ -176,8 +176,53 @@ public class TestCaseWriter {
     }
 
     /**
+     * 根据传入的内容解析成TestCaseFreeMarkers对象
+     *
+     * @param module        模块
+     * @param testCases     测试用例的实体集合
+     * @param testCaseSetUp 测试用例前置条件实体
+     * @return TestCaseFreeMarkers对象
+     */
+    private TestCaseFreeMarkers handleEntities(String module, List<TestCase> testCases, TestCaseSetUp testCaseSetUp) {
+        TestCaseFreeMarkers freeMarkers = new TestCaseFreeMarkers();
+        List<Pair<TestCaseFunctionTypeEnum, String>> suites = testCaseSetUp.getSuites();
+        List<Pair<TestCaseFunctionTypeEnum, String>> functions = testCaseSetUp.getFunctions();
+        Pair<List<String>, List<String>> suitePair = splitLines(suites);
+        Pair<List<String>, List<String>> functionPair = splitLines(functions);
+        Pair<String, String> suiteText = new Pair<>(testCaseSetUp.getSuitesBefore(), testCaseSetUp.getSuitesAfter());
+        Pair<String, String> functionText = new Pair<>(testCaseSetUp.getFunctionsBefore(), testCaseSetUp.getFunctionsAfter());
+        freeMarkers.setModuleName(module.replace("_", ""));
+        // 处理TestCaseSetUp中的setup
+        freeMarkers.setSuite(new Pair<>(suitePair, suiteText));
+        freeMarkers.setFunction(new Pair<>(functionPair, functionText));
+        // 处理TestCase的部分
+        List<TestCaseFreeMarker> freeMarkerList = new ArrayList<>();
+        for (TestCase testCase : testCases) {
+            freeMarkerList.add(convert(testCase));
+        }
+        freeMarkers.setTestcases(freeMarkerList);
+        return freeMarkers;
+    }
+
+    /**
+     * 区分全自动测试用例和半自动测试用例
+     *
+     * @param testCases 测试用例集合
+     * @return 区分后的集合
+     */
+    private Pair<List<TestCase>, List<TestCase>> parseTypes(List<TestCase> testCases) {
+        List<TestCase> full = testCases.stream()
+                .filter(testCase -> testCase.getTestCaseType() == TestCaseTypeEnum.FULL)
+                .collect(Collectors.toList());
+        List<TestCase> half = testCases.stream()
+                .filter(testCase -> testCase.getTestCaseType() == TestCaseTypeEnum.HALF)
+                .collect(Collectors.toList());
+        return new Pair<>(full, half);
+    }
+
+
+    /**
      * 把测试用例集转换成每个模块拥有的测试用例字典
-     * todo 需要分开全自动测试用例和半自动测试用例
      *
      * @param map 表格字典集合
      * @return 字典
@@ -190,44 +235,15 @@ public class TestCaseWriter {
         Map<String, TestCaseSetUp> moduleSetUpMap = convertSetup(modules, testCaseSetUps);
         Map<String, List<TestCase>> moduleTestCaseMap = convertTestCase(modules, testCases);
         for (String module : modules) {
-            TestCaseFreeMarkers fullFreeMarkers = new TestCaseFreeMarkers();
-            TestCaseFreeMarkers halfFreeMarkers = new TestCaseFreeMarkers();
-            String moduleName = module.replace("_", "");
-            fullFreeMarkers.setModuleName(moduleName);
-            halfFreeMarkers.setModuleName(moduleName);
             // 处理TestCaseSetUp中的setup
             TestCaseSetUp testCaseSetUp = moduleSetUpMap.get(module);
-            List<Pair<TestCaseFunctionTypeEnum, String>> suites = testCaseSetUp.getSuites();
-            List<Pair<TestCaseFunctionTypeEnum, String>> functions = testCaseSetUp.getFunctions();
-            Pair<List<String>, List<String>> suitePair = splitLines(suites);
-            Pair<List<String>, List<String>> functionPair = splitLines(functions);
-            Pair<String, String> suiteText = new Pair<>(testCaseSetUp.getSuitesBefore(), testCaseSetUp.getSuitesAfter());
-            Pair<String, String> functionText = new Pair<>(testCaseSetUp.getFunctionsBefore(), testCaseSetUp.getFunctionsAfter());
-            fullFreeMarkers.setSuite(new Pair<>(suitePair, suiteText));
-            fullFreeMarkers.setFunction(new Pair<>(functionPair, functionText));
-            halfFreeMarkers.setSuite(new Pair<>(suitePair, suiteText));
-            halfFreeMarkers.setFunction(new Pair<>(functionPair, functionText));
             // 处理TestCase的部分
             List<TestCase> testCaseList = moduleTestCaseMap.get(module);
-            // 全自动部分
-            List<TestCase> full = testCaseList.stream()
-                    .filter(testCase -> testCase.getTestCaseType() == TestCaseTypeEnum.FULL)
-                    .collect(Collectors.toList());
-            // 半自动部分
-            List<TestCase> half = testCaseList.stream()
-                    .filter(testCase -> testCase.getTestCaseType() == TestCaseTypeEnum.HALF)
-                    .collect(Collectors.toList());
-            List<TestCaseFreeMarker> fullTestCaseFreeMarkerList = new ArrayList<>();
-            for (TestCase testCase : full) {
-                fullTestCaseFreeMarkerList.add(convert(testCase));
-            }
-            List<TestCaseFreeMarker> halfTestCaseFreeMarkerList = new ArrayList<>();
-            for (TestCase testCase : half) {
-                halfTestCaseFreeMarkerList.add(convert(testCase));
-            }
-            fullFreeMarkers.setTestcases(fullTestCaseFreeMarkerList);
-            halfFreeMarkers.setTestcases(halfTestCaseFreeMarkerList);
-            resultMap.put(module, new Pair<>(fullFreeMarkers, halfFreeMarkers));
+            // 解析成全自动和半自动两个部分
+            Pair<List<TestCase>, List<TestCase>> pair = parseTypes(testCaseList);
+            TestCaseFreeMarkers full = handleEntities(module, pair.getFirst(), testCaseSetUp);
+            TestCaseFreeMarkers half = handleEntities(module, pair.getSecond(), testCaseSetUp);
+            resultMap.put(module, new Pair<>(full, half));
         }
         return resultMap;
 

@@ -36,4 +36,14 @@ public interface Constant {
     // 右括号（英文)
     String SPLIT_RIGHT_BRACKETS = "\\)";
 
+    //template 模板名字 action
+    String TEMPLATE_ACTION = "action";
+    //template 模板名字 compare
+    String TEMPLATE_COMPARE = "compare";
+    //template 模板名字 compare
+    String TEMPLATE_CONFIG = "config";
+    //template 模板名字 compare
+    String TEMPLATE_CONTEXT = "context";
+    //template 模板名字 compare
+    String TEMPLATE_TESTCASE = "testcase";
 }

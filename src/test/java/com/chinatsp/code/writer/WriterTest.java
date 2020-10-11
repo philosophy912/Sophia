@@ -63,12 +63,12 @@ class WriterTest {
 
     @Test
     void writeTestCase() {
-        Map<String, TestCaseFreeMarkers> map = testCaseWriter.convert(entities);
-        for (Map.Entry<String, TestCaseFreeMarkers> entry : map.entrySet()) {
+        Map<String, Pair<TestCaseFreeMarkers, TestCaseFreeMarkers>> map = testCaseWriter.convert(entities);
+        for (Map.Entry<String, Pair<TestCaseFreeMarkers, TestCaseFreeMarkers>> entry : map.entrySet()) {
             String key = entry.getKey();
-            TestCaseFreeMarkers freeMarker = entry.getValue();
+            Pair<TestCaseFreeMarkers, TestCaseFreeMarkers> pair = entry.getValue();
             Path path = Paths.get(BaseTestUtils.getCodeFolder(), "test_" + key + ".py");
-            freeMarkerWriter.writeTestCase(freeMarker, path);
+            freeMarkerWriter.writeTestCase(pair.getFirst(), path, "testcase");
         }
 
     }

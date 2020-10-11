@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.chinatsp.code.utils.Constant.TEMPLATE_CONFIG;
+import static com.chinatsp.code.utils.Constant.TEMPLATE_CONTEXT;
 import static com.chinatsp.code.utils.Constant.WRITER_PACKAGE_NAME;
 
 
@@ -48,7 +50,7 @@ public class FreeMarkerWriter extends BaseWriter {
 
     @SneakyThrows
     public void writeConfigure(Map<ConfigureTypeEnum, String> configureMap, Path configurePath) {
-        Template template = getTemplate("config");
+        Template template = getTemplate(TEMPLATE_CONFIG);
         String fileName = FilesUtils.getFileNameAndExtension(configurePath).getFirst();
         Map<String, Object> map = createMap(fileName);
         List<Triple<String, String, String>> pairs = convert(configureMap);
@@ -58,7 +60,7 @@ public class FreeMarkerWriter extends BaseWriter {
 
     @SneakyThrows
     public void writeEntity(Map<String, List<BaseEntity>> entityMap, Path contextPath) {
-        Template template = getTemplate("context");
+        Template template = getTemplate(TEMPLATE_CONTEXT);
         String fileName = FilesUtils.getFileNameAndExtension(contextPath).getFirst();
         Map<String, Object> map = createMap(fileName);
         for (Map.Entry<String, List<BaseEntity>> entry : entityMap.entrySet()) {
@@ -80,8 +82,8 @@ public class FreeMarkerWriter extends BaseWriter {
     }
 
     @SneakyThrows
-    public void writeTestCase(TestCaseFreeMarkers freeMarker, Path modulePath) {
-        Template template = getTemplate("testcase");
+    public void writeTestCase(TestCaseFreeMarkers freeMarker, Path modulePath, String templateName) {
+        Template template = getTemplate(templateName);
         String fileName = FilesUtils.getFileNameAndExtension(modulePath).getFirst();
         Map<String, Object> map = createMap(fileName);
         map.put("testcase", freeMarker);

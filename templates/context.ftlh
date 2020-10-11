@@ -101,6 +101,7 @@ if mcu_serial_port and mcu_serial_baud_rate:
     mcu = SerialPort()
     logger.info(f"mcu is initialization")
 
+
 def open_device():
     if it6831:
         it6831.open()
@@ -152,6 +153,7 @@ def close_device():
     ####################################################################################################################
 <#list batteryAction as freemarker>
 
+
 def ${freemarker.params["functionName"]?lower_case}():
     """
     <#list freemarker.comment as line>
@@ -172,13 +174,13 @@ def ${freemarker.params["functionName"]?lower_case}():
 </#list>
 </#if>
 <#if elementAction??>
-
     ####################################################################################################################
     #                                                                                                                  #
     #                                           用于生成表格 --> 元素操作(ElementAction)                                  #
     #                                                                                                                  #
     ####################################################################################################################
 <#list elementAction as freemarker>
+
 
 def ${freemarker.params["functionName"]?lower_case}():
     """
@@ -200,13 +202,13 @@ def ${freemarker.params["functionName"]?lower_case}():
 </#list>
 </#if>
 <#if relayAction??>
-
     ####################################################################################################################
     #                                                                                                                  #
     #                                           用于生成表格 --> 继电器操作(RelayAction)                                  #
     #                                                                                                                  #
     ####################################################################################################################
 <#list relayAction as freemarker>
+
 
 def ${freemarker.params["functionName"]?lower_case}():
     """
@@ -218,13 +220,13 @@ def ${freemarker.params["functionName"]?lower_case}():
 </#list>
 </#if>
 <#if screenOpsAction??>
-
     ####################################################################################################################
     #                                                                                                                  #
     #                                           用于生成表格 --> 屏幕操作(ScreenOpsAction)                                #
     #                                                                                                                  #
     ####################################################################################################################
 <#list screenOpsAction as freemarker>
+
 
 def ${freemarker.params["functionName"]?lower_case}():
     """
@@ -246,13 +248,13 @@ def ${freemarker.params["functionName"]?lower_case}():
 </#list>
 </#if>
 <#if screenShotAction??>
-
     ####################################################################################################################
     #                                                                                                                  #
     #                                           用于生成表格 --> 截图操作(ScreenShotAction)                               #
     #                                                                                                                  #
     ####################################################################################################################
 <#list screenShotAction as freemarker>
+
 
 def ${freemarker.params["functionName"]?lower_case}():
     """
@@ -271,13 +273,13 @@ def ${freemarker.params["functionName"]?lower_case}():
 </#list>
 </#if>
 <#if canAction??>
-
     ####################################################################################################################
     #                                                                                                                  #
     #                                           用于生成表格 --> Can信号(CanAction)                                      #
     #                                                                                                                  #
     ####################################################################################################################
 <#list canAction as freemarker>
+
 
 def ${freemarker.params["functionName"]?lower_case}():
     """
@@ -289,13 +291,13 @@ def ${freemarker.params["functionName"]?lower_case}():
 </#list>
 </#if>
 <#if canCompare??>
-
     ####################################################################################################################
     #                                                                                                                  #
     #                                           用于生成表格 --> CAN信号对比(CanCompare)                                  #
     #                                                                                                                  #
     ####################################################################################################################
 <#list canCompare as freemarker>
+
 
 def ${freemarker.params["functionName"]?lower_case}(stack) -> tuple:
     """
@@ -307,13 +309,13 @@ def ${freemarker.params["functionName"]?lower_case}(stack) -> tuple:
 </#list>
 </#if>
 <#if elementCompare??>
-
     ####################################################################################################################
     #                                                                                                                  #
     #                                           用于生成表格 --> Android元素对比(ElementCompare)                          #
     #                                                                                                                  #
     ####################################################################################################################
 <#list elementCompare as freemarker>
+
 
 def ${freemarker.params["functionName"]?lower_case}() -> tuple:
     """
@@ -325,13 +327,13 @@ def ${freemarker.params["functionName"]?lower_case}() -> tuple:
 </#list>
 </#if>
 <#if imageCompare??>
-
     ####################################################################################################################
     #                                                                                                                  #
     #                                           用于生成表格 --> 图片对比(ImageCompare)                                   #
     #                                                                                                                  #
     ####################################################################################################################
 <#list imageCompare as freemarker>
+
 
 def ${freemarker.params["functionName"]?lower_case}() -> tuple:
     """
@@ -359,13 +361,13 @@ def ${freemarker.params["functionName"]?lower_case}() -> tuple:
 </#list>
 </#if>
 <#if information??>
-
     ####################################################################################################################
     #                                                                                                                  #
     #                                           用于生成表格 --> 信息保存(Information)                                    #
     #                                                                                                                  #
     ####################################################################################################################
 <#list information as freemarker>
+
 
 def ${freemarker.params["functionName"]?lower_case}():
     """
@@ -379,13 +381,13 @@ def ${freemarker.params["functionName"]?lower_case}():
 </#list>
 </#if>
 <#if informationCompare??>
-
     ####################################################################################################################
     #                                                                                                                  #
     #                                           用于生成表格 --> 信息对比(InformationCompare)                             #
     #                                                                                                                  #
     ####################################################################################################################
 <#list informationCompare as freemarker>
+
 
 def ${freemarker.params["functionName"]?lower_case}() -> tuple:
     """
@@ -399,13 +401,13 @@ def ${freemarker.params["functionName"]?lower_case}() -> tuple:
 </#list>
 </#if>
 <#if common??>
-
     ####################################################################################################################
     #                                                                                                                  #
     #                                           用于生成表格 --> 公共函数(Common)                                         #
     #                                                                                                                  #
     ####################################################################################################################
 <#list common as freemarker>
+
 
 def ${freemarker.params["functionName"]?lower_case}():
     """
