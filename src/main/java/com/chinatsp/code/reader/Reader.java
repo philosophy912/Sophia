@@ -144,7 +144,12 @@ public class Reader {
         sheet.removeRow(titleRow);
         log.debug("sheet name is {}", sheetName);
         for (Row row : sheet) {
-            handleRow(entities, row, clazz, entityMap, row.getRowNum());
+            try {
+                handleRow(entities, row, clazz, entityMap, row.getRowNum());
+            } catch (RuntimeException e) {
+                log.info("sheetName is {} and rowNo = {} parse error, message is [{}]", sheetName, row.getRowNum(), e.getMessage());
+            }
+
         }
         return entities;
     }
@@ -228,7 +233,9 @@ public class Reader {
             Sheet sheet = entry.getValue();
             log.debug("sheet name = {}", sheet.getSheetName());
             List<BaseEntity> classes = handleSheet(sheet, className);
-            map.put(className, classes);
+            if (classes.size() != 0) {
+                map.put(className, classes);
+            }
         }
         return map;
     }
@@ -249,7 +256,7 @@ public class Reader {
             String name = excelUtils.getCellValue(row.getCell(1)).toLowerCase();
             String description = excelUtils.getCellValue(row.getCell(2));
             String content = excelUtils.getCellValue(row.getCell(3));
-            if (!StringsUtils.isEmpty(content)){
+            if (!StringsUtils.isEmpty(content)) {
                 if (name.contains("port")) {
                     if (!content.toLowerCase().startsWith("com")) {
                         String error = "第" + Integer.parseInt(index) + "行填写错误，端口号填写错误，当前填写的是" + content;

@@ -4,6 +4,7 @@ import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.actions.ElementAction;
 import com.chinatsp.code.writer.api.FreeMarker;
 import com.chinatsp.code.writer.api.IFreeMarkerWriter;
+import com.chinatsp.dbc.entity.Message;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.Map;
 @Component
 public class ElementActionWriter implements IFreeMarkerWriter {
     @Override
-    public List<FreeMarker> convert(List<BaseEntity> entities) {
+    public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();

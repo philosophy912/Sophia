@@ -5,6 +5,7 @@ import com.chinatsp.code.entity.collection.Element;
 import com.chinatsp.code.enumeration.AndroidLocatorTypeEnum;
 import com.chinatsp.code.writer.api.FreeMarker;
 import com.chinatsp.code.writer.api.IFreeMarkerWriter;
+import com.chinatsp.dbc.entity.Message;
 import com.philosophy.base.common.Pair;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ import java.util.Map;
 public class ElementWriter implements IFreeMarkerWriter {
 
     @Override
-    public List<FreeMarker> convert(List<BaseEntity> entities) {
+    public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();

@@ -5,6 +5,7 @@ import com.chinatsp.code.entity.actions.ScreenShotAction;
 import com.chinatsp.code.enumeration.ScreenShotTypeEnum;
 import com.chinatsp.code.writer.api.FreeMarker;
 import com.chinatsp.code.writer.api.IFreeMarkerWriter;
+import com.chinatsp.dbc.entity.Message;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.Map;
 @Component
 public class ScreenShotActionWriter implements IFreeMarkerWriter {
     @Override
-    public List<FreeMarker> convert(List<BaseEntity> entities) {
+    public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();

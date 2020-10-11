@@ -32,6 +32,14 @@ class ReaderServiceTest {
 
     @Test
     void read() {
+        Path path = Paths.get(BaseTestUtils.getFileFolder(), "template3S1.xlsx");
+        Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> content = readerService.read(path);
+        System.out.println(content);
+        Assert.assertNotNull(content);
+    }
+
+    @Test
+    void read1() {
         Path path = Paths.get(BaseTestUtils.getFileFolder(), "template1q1.xlsx");
         Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> content = readerService.read(path);
         System.out.println(content);

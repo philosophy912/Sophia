@@ -14,10 +14,6 @@ import lombok.ToString;
 @ToString
 public class CanCompare extends BaseEntity {
     /**
-     * Message ID
-     */
-    private Long messageId;
-    /**
      * 信号名
      */
     private String signalName;

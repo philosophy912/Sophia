@@ -1,6 +1,7 @@
 package com.chinatsp.code.writer.api;
 
 import com.chinatsp.code.entity.BaseEntity;
+import com.chinatsp.dbc.entity.Message;
 
 import java.util.List;
 
@@ -54,6 +55,6 @@ public interface IFreeMarkerWriter {
      * @param entities 对象
      * @return freemarker函数内容
      */
-    List<FreeMarker> convert(List<BaseEntity> entities);
+    List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages);
 
 }

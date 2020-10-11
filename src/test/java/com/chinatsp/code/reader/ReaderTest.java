@@ -35,7 +35,7 @@ class ReaderTest {
     @Test
     void readTestCase() {
         List<String> classes = ClazzUtils.getClazzName(PACKAGE_NAME, true);
-        Path path = Paths.get(BaseTestUtils.getFileFolder(), "template.xlsx");
+        Path path = Paths.get(BaseTestUtils.getFileFolder(), "template3S1.xlsx");
         Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> pair = reader.readTestCase(path);
         for (Map.Entry<String, List<BaseEntity>> entry : pair.getFirst().entrySet()) {
             String className = entry.getKey();

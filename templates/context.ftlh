@@ -287,7 +287,9 @@ def ${freemarker.params["functionName"]?lower_case}():
     ${line}
     </#list>
     """
-    ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(msg=${freemarker.params["messageId"]}, signal=${r'{'}<#list freemarker.pairs as signal><#noparse>"</#noparse>${signal.first}<#noparse>"</#noparse>: ${signal.second}<#if signal_index != freemarker.pairs?size -1>, </#if></#list>${r'}'})
+    <#list freemarker.triples as line>
+    ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(msg=${line.first}, signal=${r'{'}<#noparse>"</#noparse>${line.second}<#noparse>"</#noparse>: ${line.third}${r'}'})
+    </#list>
 </#list>
 </#if>
 <#if canCompare??>

@@ -56,14 +56,14 @@ public class CheckUtils {
 
     /**
      * 函数名是否正确
-     * 仅支持长度小于100的英文字符和下划线组成的图片名且后缀不能带_
+     * 仅支持长度小于100的英文字符数字和下划线组成的图片名且后缀不能带_
      *
      * @param name 函数名
      * @return true：正确 false：不正确
      */
     private boolean isImageNameCorrect(String name) {
         int max = 100;
-        String regex = "^[a-zA-Z]+[a-zA-Z_]*[^_]$";
+        String regex = "^[a-zA-Z0-9]+[a-zA-Z_0-9]*[^_]$";
         boolean isMatch = name.matches(regex);
         if (name.length() > max) {
             return false;
@@ -74,14 +74,14 @@ public class CheckUtils {
 
     /**
      * 图片全名是否正确
-     * 仅支持长度小于100的英文字符和下划线组成的JPG、PNG、BMP图片
+     * 仅支持长度小于100的英文字符数字和下划线组成的JPG、PNG、BMP图片
      *
      * @param name 图片名
      * @return true：正确 false：不正确
      */
     private boolean isFullImageNameCorrect(String name) {
         int max = 100;
-        String regex = "^[a-zA-Z]+[a-zA-Z_]*[^_](.)((bmp)|(jpg)|(png))$";
+        String regex = "^[a-zA-Z0-9]+[a-zA-Z_0-9]*[^_](.)((bmp)|(jpg)|(png))$";
         boolean isMatch = name.matches(regex);
         if (name.length() > max) {
             return false;
@@ -123,7 +123,26 @@ public class CheckUtils {
     }
 
     /**
+     * 根据Signal的名字查找Message
+     *
+     * @param messages   can消息列表
+     * @param signalName 信号名字
+     * @return 消息对象
+     */
+    public Message getMessage(List<Message> messages, String signalName) {
+        for (Message message : messages) {
+            for (Signal signal : message.getSignals()) {
+                if (signal.getName().equals(signalName)) {
+                    return message;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * 检查CAN的value是否符合要求
+     * todo 需要计算因子，这个地方都传入的是物理值，非总线值
      *
      * @param i           第几行
      * @param className   表sheet的名字
@@ -172,7 +191,7 @@ public class CheckUtils {
     public void checkTemplateImage(String name, int index, String className) {
         if (!isFullImageNameCorrect(name)) {
             String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
-                    "图片名必须是完整的图片名，且图片仅支持英文字符和下划线方式命名的JPG、BMG、PNG图片, 当前图片名为" + name;
+                    "图片名必须是完整的图片名，且图片仅支持英文字符和数字和下划线组合方式命名的JPG、BMG、PNG图片, 当前图片名为[" + name + "]";
             throw new RuntimeException(error);
         }
     }
@@ -366,52 +385,51 @@ public class CheckUtils {
     /**
      * 检查signal的名字和值是否正确
      *
-     * @param messageId 信号ID
      * @param signals   信号
      * @param messages  消息集合
      * @param index     行号
      * @param className 类名
      */
-    public void checkSignals(Long messageId, List<Pair<String, String>> signals, List<Message> messages, int index, String className) {
-        Message message = getMessage(messages, messageId);
-        if (message == null) {
-            String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，找不到信号[" + messageId + "]";
-            throw new RuntimeException(error);
-        } else {
-            for (Pair<String, String> pair : signals) {
-                String signalName = pair.getFirst();
-                String value = pair.getSecond();
-                Signal signal = getSignal(message, signalName);
-                if (null == signal) {
-                    String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，CAN矩阵表中找不到" + signalName + "信号";
-                    throw new RuntimeException(error);
-                } else {
-                    try {
-                        checkCanValue(index, className, signalName, signal.getSignalSize(), ConvertUtils.convertLong(value));
-                    } catch (NumberFormatException e) {
-                        String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，信号值填写错误[" + e.getMessage() + "]";
-                        throw new RuntimeException(error);
-                    }
+    public void checkSignals(List<Pair<String, String>> signals, List<Message> messages, int index, String className) {
+        for (Pair<String, String> pair : signals) {
+            String signalName = pair.getFirst().trim();
+            String value = pair.getSecond();
+            Message message = getMessage(messages, signalName);
+            if (message == null) {
+                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，找不到信号[" + signalName + "]";
+                throw new RuntimeException(error);
+            }
+            Signal signal = getSignal(message, signalName);
+            if (null == signal) {
+                String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，CAN矩阵表中找不到" + signalName + "信号";
+                throw new RuntimeException(error);
+            } else {
+                try {
+                    checkCanValue(index, className, signalName, signal.getSignalSize(), ConvertUtils.convertLong(value));
+                } catch (NumberFormatException e) {
+                    String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，信号值填写错误[" + e.getMessage() + "]";
+                    // throw new RuntimeException(error);
+                    // 此处抛出异常，无法区分总线值和物理值
+                    log.debug(error);
+
                 }
             }
         }
-
     }
 
 
     /**
      * 检查Message ID的值是否正确
      *
-     * @param messageId 消息ID
      * @param messages  消息集合
      * @param index     行号
      * @param className 类名
      */
-    public void checkExpectMessage(Long messageId, String signalName, Long expectValue, List<Message> messages, int index, String className) {
-        Message message = getMessage(messages, messageId);
+    public void checkExpectMessage(String signalName, Long expectValue, List<Message> messages, int index, String className) {
+        Message message = getMessage(messages, signalName);
         if (null == message) {
             String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
-                    "CAN的消息ID[" + messageId + "]找不到";
+                    "CAN的信号名称[" + signalName + "]找不到";
             throw new RuntimeException(error);
         } else {
             Signal signal = null;
@@ -422,7 +440,7 @@ public class CheckUtils {
             }
             if (null == signal) {
                 String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
-                        "CAN矩阵表中信号[" + messageId + "]找不到[" + signalName + "]信号";
+                        "CAN矩阵表中信号[" + message.getId() + "]找不到[" + signalName + "]信号";
                 throw new RuntimeException(error);
             }
             checkCanValue(index, className, signalName, signal.getSignalSize(), expectValue);

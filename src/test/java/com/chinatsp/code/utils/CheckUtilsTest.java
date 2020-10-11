@@ -136,7 +136,7 @@ class CheckUtilsTest {
         List<BaseEntity> entities = map.get(CharUtils.lowerCase(className));
         for (int i = 0; i < entities.size(); i++) {
             CanAction baseEntity = (CanAction) entities.get(i);
-            checkUtils.checkSignals(baseEntity.getMessageId(), baseEntity.getSignals(), messages, i + 1, className);
+            checkUtils.checkSignals(baseEntity.getSignals(), messages, i + 1, className);
         }
     }
 
@@ -147,7 +147,7 @@ class CheckUtilsTest {
         List<BaseEntity> entities = map.get(CharUtils.lowerCase(className));
         for (int i = 0; i < entities.size(); i++) {
             CanCompare baseEntity = (CanCompare) entities.get(i);
-            checkUtils.checkExpectMessage(baseEntity.getMessageId(), baseEntity.getSignalName(), baseEntity.getExpectValue(), messages, i + 1, className);
+            checkUtils.checkExpectMessage(baseEntity.getSignalName(), baseEntity.getExpectValue(), messages, i + 1, className);
         }
     }
 

@@ -26,10 +26,9 @@ public class CanCompareChecker extends BaseChecker implements IChecker {
             // 检查名字是否符合python命名规范
             checkUtils.checkPythonFunction(canCompare.getName(), index, name);
             // 检查CAN的MessageID, signalName, expectValue是否符合要求
-            Long messageId = canCompare.getMessageId();
             String signalName = canCompare.getSignalName();
             Long expectValue = canCompare.getExpectValue();
-            checkUtils.checkExpectMessage(messageId, signalName, expectValue, messages, index, name);
+            checkUtils.checkExpectMessage(signalName, expectValue, messages, index, name);
         }
         // 检查函数名是否有重名
         checkUtils.findDuplicate(entities, CanCompare.class.getSimpleName());

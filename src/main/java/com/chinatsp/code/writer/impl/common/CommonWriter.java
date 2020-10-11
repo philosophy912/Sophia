@@ -5,6 +5,7 @@ import com.chinatsp.code.entity.common.Common;
 import com.chinatsp.code.enumeration.CommonTypeEnum;
 import com.chinatsp.code.writer.api.FreeMarker;
 import com.chinatsp.code.writer.api.IFreeMarkerWriter;
+import com.chinatsp.dbc.entity.Message;
 import com.philosophy.base.common.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -70,7 +71,7 @@ public class CommonWriter implements IFreeMarkerWriter {
 
 
     @Override
-    public List<FreeMarker> convert(List<BaseEntity> entities) {
+    public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity baseEntity : entities) {
             Common common = (Common) baseEntity;

@@ -4,7 +4,8 @@ import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.compare.CanCompare;
 import com.chinatsp.code.writer.api.FreeMarker;
 import com.chinatsp.code.writer.api.IFreeMarkerWriter;
-import com.chinatsp.dbc.entity.Param;
+import com.chinatsp.dbc.entity.Message;
+import com.chinatsp.dbc.entity.Signal;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -18,19 +19,37 @@ import java.util.Map;
  **/
 @Component
 public class CanCompareWriter implements IFreeMarkerWriter {
+    /**
+     * 根据Signal的名字查找Message
+     *
+     * @param messages   can消息列表
+     * @param signalName 信号名字
+     * @return 消息对象
+     */
+    private Message getMessage(List<Message> messages, String signalName) {
+        for (Message message : messages) {
+            for (Signal signal : message.getSignals()) {
+                if (signal.getName().equals(signalName)) {
+                    return message;
+                }
+            }
+        }
+        throw new RuntimeException("can not found signalName in messages");
+    }
 
     @Override
-    public List<FreeMarker> convert(List<BaseEntity> entities) {
+    public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity baseEntity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             CanCompare canCompare = (CanCompare) baseEntity;
             Map<String, String> map = new HashMap<>();
+            String signalName = canCompare.getSignalName();
             map.put(FUNCTION_NAME, canCompare.getName());
             map.put(HANDLE_NAME, "can_service");
             map.put(HANDLE_FUNCTION, "check_signal_value");
-            map.put(SIGNAL_NAME, canCompare.getSignalName());
-            map.put(MESSAGE_ID, String.valueOf(canCompare.getMessageId()));
+            map.put(SIGNAL_NAME, signalName);
+            map.put(MESSAGE_ID, String.valueOf(getMessage(messages, signalName).getId()));
             map.put(EXPECT_VALUE, String.valueOf(canCompare.getExpectValue()));
             map.put(COUNT, String.valueOf(canCompare.getAppearCount()));
             map.put(EXACT, canCompare.getExact() ? "True" : "False");

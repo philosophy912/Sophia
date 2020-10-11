@@ -93,8 +93,8 @@ public class ConvertUtils {
         log.trace("cell value is {}", value);
         List<String> strings = new LinkedList<>();
         String[] values = value.split(NEXT_LINE);
-        for(String s: values){
-            if(!StringsUtils.isEmpty(s)){
+        for (String s : values) {
+            if (!StringsUtils.isEmpty(s)) {
                 strings.add(s);
             }
         }
@@ -194,6 +194,9 @@ public class ConvertUtils {
             }
 
         });
+        if (pairs.size() == 0) {
+            throw new RuntimeException("convert zero collection with [" + cellValue + "]");
+        }
         return pairs;
     }
 

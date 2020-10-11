@@ -8,7 +8,7 @@ import com.chinatsp.code.enumeration.TestCaseTypeEnum;
 import com.chinatsp.code.writer.api.TestCaseFreeMarker;
 import com.chinatsp.code.writer.api.TestCaseFreeMarkers;
 import com.philosophy.base.common.Pair;
-import com.philosophy.base.common.Triple;
+
 import com.philosophy.character.util.CharUtils;
 import org.springframework.stereotype.Component;
 

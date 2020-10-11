@@ -5,6 +5,7 @@ import com.chinatsp.code.entity.compare.ElementCompare;
 import com.chinatsp.code.enumeration.ElementCompareTypeEnum;
 import com.chinatsp.code.writer.api.FreeMarker;
 import com.chinatsp.code.writer.api.IFreeMarkerWriter;
+import com.chinatsp.dbc.entity.Message;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.Map;
 public class ElementCompareWriter implements IFreeMarkerWriter {
 
     @Override
-    public List<FreeMarker> convert(List<BaseEntity> entities) {
+    public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity baseEntity : entities) {
             FreeMarker freeMarker = new FreeMarker();

@@ -6,6 +6,7 @@ import com.chinatsp.code.service.api.IWriteService;
 import com.chinatsp.code.writer.FreeMarkerWriter;
 import com.chinatsp.code.writer.api.TestCaseFreeMarkers;
 import com.chinatsp.code.writer.impl.testcase.TestCaseWriter;
+import com.chinatsp.dbc.entity.Message;
 import com.philosophy.base.common.Pair;
 import org.springframework.stereotype.Service;
 
@@ -28,14 +29,14 @@ public class WriteService implements IWriteService {
 
 
     @Override
-    public void write(Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> pair, Path folder) {
+    public void write(Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> pair, List<Message> messages, Path folder) {
         String folderPath = folder.toAbsolutePath().toString();
         Map<ConfigureTypeEnum, String> map = pair.getSecond();
         Map<String, List<BaseEntity>> entities = pair.getFirst();
         Path configure = Paths.get(folderPath, "configure.py");
         freeMarkerWriter.writeConfigure(map, configure);
         Path context = Paths.get(folderPath, "context.py");
-        freeMarkerWriter.writeEntity(entities, context);
+        freeMarkerWriter.writeEntity(entities, messages, context);
         Map<String, Pair<TestCaseFreeMarkers, TestCaseFreeMarkers>> freeMarkersMap = testCaseWriter.convert(entities);
         for (Map.Entry<String, Pair<TestCaseFreeMarkers, TestCaseFreeMarkers>> entry : freeMarkersMap.entrySet()) {
             // 文件名小写

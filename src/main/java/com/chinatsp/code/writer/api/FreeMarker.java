@@ -1,6 +1,7 @@
 package com.chinatsp.code.writer.api;
 
 import com.philosophy.base.common.Pair;
+import com.philosophy.base.common.Triple;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,8 @@ import java.util.Map;
 public class FreeMarker {
 
     private List<String> comment;
+
+    private List<Triple<String, String, String>> triples;
 
     private List<Pair<String, String>> pairs;
 

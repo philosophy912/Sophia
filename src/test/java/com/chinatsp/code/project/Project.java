@@ -39,9 +39,9 @@ public class Project {
     @SneakyThrows
     @Test
     public void test1() {
-        Path dbc = Paths.get(BaseTestUtils.getFileFolder(), "FAW_E115_FCP_CANMatrix_V1.6.dbc");
+        Path dbc = Paths.get(BaseTestUtils.getFileFolder(), "HiFire_B31CP_Info_HU_CAN_V2.0.dbc");
         List<Message> messages = dbcParser.parse(dbc);
-        Path excel = Paths.get(BaseTestUtils.getFileFolder(), "template1q1.xlsx");
+        Path excel = Paths.get(BaseTestUtils.getFileFolder(), "template3S1.xlsx");
         Workbook workbook = excelUtils.openWorkbook(excel);
         Sheet sheet = workbook.getSheet("Can信号(CanAction)");
         sheet.removeRow(sheet.getRow(0));

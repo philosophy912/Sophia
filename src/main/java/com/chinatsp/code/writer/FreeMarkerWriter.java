@@ -5,6 +5,7 @@ import com.chinatsp.code.entity.testcase.TestCase;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.code.utils.ReaderUtils;
 import com.chinatsp.code.writer.api.TestCaseFreeMarkers;
+import com.chinatsp.dbc.entity.Message;
 import com.philosophy.base.common.Triple;
 import com.philosophy.base.util.FilesUtils;
 import com.philosophy.character.util.CharUtils;
@@ -59,7 +60,7 @@ public class FreeMarkerWriter extends BaseWriter {
     }
 
     @SneakyThrows
-    public void writeEntity(Map<String, List<BaseEntity>> entityMap, Path contextPath) {
+    public void writeEntity(Map<String, List<BaseEntity>> entityMap, List<Message> messages, Path contextPath) {
         Template template = getTemplate(TEMPLATE_CONTEXT);
         String fileName = FilesUtils.getFileNameAndExtension(contextPath).getFirst();
         Map<String, Object> map = createMap(fileName);
@@ -71,8 +72,8 @@ public class FreeMarkerWriter extends BaseWriter {
                     String fullName = readerUtils.getFullClassName(CharUtils.upperCase(name) + "Writer", WRITER_PACKAGE_NAME);
                     Class<?> clazz = Class.forName(fullName);
                     Object object = clazz.newInstance();
-                    Method method = clazz.getDeclaredMethod("convert", List.class);
-                    Object o = method.invoke(object, entities);
+                    Method method = clazz.getDeclaredMethod("convert", List.class, List.class);
+                    Object o = method.invoke(object, entities, messages);
                     map.put(name, o);
                 } catch (RuntimeException ignored) {
                 }

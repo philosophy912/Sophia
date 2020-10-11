@@ -58,7 +58,7 @@ class WriterTest {
     @Test
     void writeEntity() {
         Path path = Paths.get(BaseTestUtils.getCodeFolder(), "context.py");
-        freeMarkerWriter.writeEntity(entities, path);
+        freeMarkerWriter.writeEntity(entities, null, path);
     }
 
     @Test
