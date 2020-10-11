@@ -554,7 +554,7 @@ public class CheckUtils {
             String functionName = pair.getSecond();
             if (!(typeEnum == TestCaseFunctionTypeEnum.SLEEP || typeEnum == TestCaseFunctionTypeEnum.YIELD
                     || typeEnum == TestCaseFunctionTypeEnum.CLEAR || typeEnum == TestCaseFunctionTypeEnum.PASS
-                    || typeEnum == TestCaseFunctionTypeEnum.STACK)) {
+                    || typeEnum == TestCaseFunctionTypeEnum.STACK || typeEnum == TestCaseFunctionTypeEnum.LOST)) {
                 List<BaseEntity> entities = map.get((CharUtils.lowerCase(typeEnum.getValue())));
                 boolean flag = false;
                 for (BaseEntity baseEntity : entities) {

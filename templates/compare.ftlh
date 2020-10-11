@@ -80,6 +80,8 @@ class Test${testcase.moduleName?cap_first}(object):
         <#list tc.expect as line>
         <#if line=="stack">
             stack = can_service.get_stack()
+        <#elseif line=="lost">
+            can_service.stop_transmit()
         <#elseif line=="clear">
             can_service.clear_stack_data()
         <#elseif line?starts_with("sleep")>

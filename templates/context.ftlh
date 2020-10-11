@@ -415,6 +415,10 @@ def ${freemarker.params["functionName"]?lower_case}():
     ${line}
     </#list>
     """
+    <#if freemarker.params["handleName"] == "can_service">
+    ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(<#list freemarker.pairs as param>${param.first}=${param.second}<#if param_index != freemarker.pairs?size -1>, </#if></#list>)
+    <#else>
     ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(<#if freemarker.locator??>locator={<#list freemarker.locator as param><#noparse>"</#noparse>${param.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${param.second}<#noparse>"</#noparse><#if param_index != freemarker.locator?size -1>, </#if>}</#list><#if freemarker.swipeElement??>, swipe_element={<#list freemarker.swipeElement as param><#noparse>"</#noparse>${param.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${param.second}<#noparse>"</#noparse><#if param_index != freemarker.swipeElement?size -1>, </#if></#list>}</#if></#if><#if freemarker.pairs??>, <#list freemarker.pairs as param>${param.first}=<#if param.first == "text"><#noparse>"</#noparse>${param.second}<#noparse>"</#noparse><#else>${param.second}</#if><#if param_index != freemarker.pairs?size -1>, </#if></#list></#if>)
+    </#if>
 </#list>
 </#if>

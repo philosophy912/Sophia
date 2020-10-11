@@ -24,6 +24,8 @@ def suite():
         ${line?lower_case}
     <#elseif line=="open">
         open_device()
+    <#elseif line=="lost">
+        can_service.stop_transmit()
     <#elseif line?starts_with("sleep")>
         ${line?lower_case}
     <#else>
@@ -35,6 +37,8 @@ def suite():
 <#list testcase.suite.first.second as line>
     <#if line=="pass">
         ${line?lower_case}
+    <#elseif line=="lost">
+        can_service.stop_transmit()
     <#elseif line?starts_with("sleep")>
         ${line?lower_case}
     <#elseif line=="close">
@@ -56,6 +60,8 @@ def function():
 <#list testcase.function.first.first as line>
     <#if line=="pass">
         ${line?lower_case}
+    <#elseif line=="lost">
+        can_service.stop_transmit()
     <#elseif line?starts_with("sleep")>
         ${line?lower_case}
     <#else>
@@ -67,6 +73,8 @@ def function():
 <#list testcase.function.first.second as line>
     <#if line=="pass">
         ${line?lower_case}
+    <#elseif line=="lost">
+        can_service.stop_transmit()
     <#elseif line?starts_with("sleep")>
         ${line?lower_case}
     <#else>
@@ -114,6 +122,8 @@ class Test${testcase.moduleName?cap_first}(object):
             ${line?lower_case}
             <#elseif line=="stack">
             stack = can_service.get_stack()
+            <#elseif line=="lost">
+            can_service.stop_transmit()
             <#elseif line?starts_with("sleep")>
             ${line?lower_case}
             <#elseif line=="clear">
@@ -128,7 +138,9 @@ class Test${testcase.moduleName?cap_first}(object):
             <#if line=="pass">
             ${line?lower_case}
             <#elseif line=="stack">
-            stack = can_service.get_stack()
+            can_service.get_stack()
+            <#elseif line=="lost">
+            can_service.stop_transmit()
             <#elseif line?starts_with("sleep")>
             ${line?lower_case}
             <#elseif line=="clear">
@@ -142,6 +154,8 @@ class Test${testcase.moduleName?cap_first}(object):
         <#list tc.expect as line>
             <#if line=="stack">
             stack = can_service.get_stack()
+            <#elseif line=="lost">
+            can_service.stop_transmit()
             <#elseif line=="clear">
             can_service.clear_stack_data()
             <#elseif line?starts_with("sleep")>

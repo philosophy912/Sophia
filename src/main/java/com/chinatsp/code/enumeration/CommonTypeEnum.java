@@ -8,6 +8,8 @@ import lombok.Setter;
  * @date 2020/9/21 15:20
  **/
 public enum CommonTypeEnum {
+    PAUSE("暂停信号发送", "stop_transmit"),
+    RESUME("恢复信号发送", "resume_transmit"),
     SWIPE_FIND_ELEMENT("滑动查找元素", "swipe_find_element"),
     CLEAR_TEXT("清空编辑框中的文字", "clear_text"),
     INPUT_TEXT("输入文本框中的文字", "input_text");

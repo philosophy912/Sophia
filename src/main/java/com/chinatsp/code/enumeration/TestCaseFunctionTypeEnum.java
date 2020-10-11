@@ -24,6 +24,7 @@ public enum TestCaseFunctionTypeEnum {
     SLEEP("sleep"),
     STACK("stack"),
     CLEAR("clear"),
+    LOST("lost"),
     OPEN("open"),
     CLOSE("close"),
     YIELD("yield");

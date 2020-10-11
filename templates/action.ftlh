@@ -55,6 +55,8 @@ def function():
 <#list testcase.function.first.first as line>
     <#if line=="pass">
         ${line?lower_case}
+    <#elseif line=="lost">
+        can_service.stop_transmit()
     <#elseif line?starts_with("sleep")>
         ${line?lower_case}
     <#else>
@@ -66,6 +68,8 @@ def function():
 <#list testcase.function.first.second as line>
     <#if line=="pass">
         ${line?lower_case}
+    <#elseif line=="lost">
+        can_service.stop_transmit()
     <#elseif line?starts_with("sleep")>
         ${line?lower_case}
     <#else>
@@ -112,6 +116,8 @@ class Test${testcase.moduleName?cap_first}(object):
             ${line?lower_case}
         <#elseif line=="stack">
             stack = can_service.get_stack()
+        <#elseif line=="lost">
+            can_service.stop_transmit()
         <#elseif line?starts_with("sleep")>
             ${line?lower_case}
         <#elseif line=="clear">
@@ -126,7 +132,9 @@ class Test${testcase.moduleName?cap_first}(object):
         <#if line=="pass">
             ${line?lower_case}
         <#elseif line=="stack">
-            stack = can_service.get_stack()
+            can_service.get_stack()
+        <#elseif line=="lost">
+            can_service.stop_transmit()
         <#elseif line?starts_with("sleep")>
             ${line?lower_case}
         <#elseif line=="clear">
