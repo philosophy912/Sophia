@@ -10,7 +10,7 @@ import lombok.Setter;
 public enum ScreenShotTypeEnum {
     QNX_DISPLAY("QNX屏", "air_condition"),
     ANDROID_DISPLAY("安卓屏", "android_service"),
-    CLUSTER_DISPLAY("仪表屏","android_service");
+    CLUSTER_DISPLAY("仪表屏","hypervisor");
 
     @Setter
     @Getter

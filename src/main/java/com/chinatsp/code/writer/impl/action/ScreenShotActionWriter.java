@@ -24,9 +24,9 @@ public class ScreenShotActionWriter implements IFreeMarkerWriter {
             ScreenShotTypeEnum type = screenShotAction.getScreenShotType();
             Map<String, String> map = new HashMap<>();
             map.put(FUNCTION_NAME, screenShotAction.getName());
-            if (type == ScreenShotTypeEnum.ANDROID_DISPLAY || type == ScreenShotTypeEnum.CLUSTER_DISPLAY) {
+            if (type == ScreenShotTypeEnum.ANDROID_DISPLAY) {
                 map.put(HANDLE_NAME, type.getName() + ".adb");
-            }else{
+            } else {
                 map.put(HANDLE_NAME, type.getName());
             }
             map.put(HANDLE_FUNCTION, "screen_shot");

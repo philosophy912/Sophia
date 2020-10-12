@@ -96,6 +96,9 @@ if max_relay_channel:
 if test_case_type == "空调屏" and air_condition_port and air_condition_baud_rate:
     air_condition = AirCondition(qnx_screen_shot_path, air_condition_port)
     logger.info(f"air_condition is initialization")
+if test_case_type == "仪表" or test_case_type == "智能座舱":
+    hypervisor = HypervisorScreenShot(qnx_screen_shot_path, android_device_id)
+    logger.info(f"hypervisor is initialization")
 if soc_serial_port and soc_serial_baud_rate:
     soc = SerialPort()
     logger.info(f"soc is initialization")
