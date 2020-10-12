@@ -53,7 +53,9 @@ interval_time = 0.5
 # 用于存放保存的内容
 save_data = dict()
 curve = Curve()
-top_folder = os.path.dirname(os.getcwd())
+current_path = os.getcwd()
+codes_folder = Utils.get_folder_path("codes", "src", current_path)
+top_folder = os.path.dirname(codes_folder)
 resource = "\\".join([top_folder, "resources"])
 # DBC解析出来的文件的路径
 dbc = "\\".join([resource, "dbc", dbc_json])
@@ -268,7 +270,7 @@ def ${freemarker.params["functionName"]?lower_case}():
     <#else>
     image_name = f<#noparse>"</#noparse>${r'{android_screen_shot_path}'}/${freemarker.params["imageName"]}__<#noparse>"</#noparse>
     for i in range(${freemarker.params["count"]}):
-        ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(remote_file=f<#noparse>"</#noparse>${r'{'}image_name${r'}'}${r'{'}i + 1${r'}'}<#noparse>"</#noparse>, display=${freemarker.params["displayId"]}, device_id=android_device_id)
+        ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(remote_file=f<#noparse>"</#noparse>${r'{'}image_name${r'}'}${r'{'}i + 1${r'}'}<#noparse>"</#noparse>, display_id=${freemarker.params["displayId"]}, device_id=android_device_id)
     </#if>
 </#list>
 </#if>

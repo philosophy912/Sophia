@@ -1,5 +1,6 @@
 package com.chinatsp.code.service;
 
+import com.alibaba.fastjson.JSON;
 import com.chinatsp.code.BaseTestUtils;
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;
@@ -62,8 +63,8 @@ class WriteServiceTest {
     void test3S1() {
         Path dbc = Paths.get(BaseTestUtils.getFileFolder(),"HiFire_B31CP_Info_HU_CAN_V2.0.dbc");
         List<Message> messages = dbcParser.parse(dbc);
-//        String s = JSON.toJSONString(messages);
-//        txtUtils.write(Paths.get("D:\\Workspace\\github\\code\\file\\FAW_E115_FCP_CANMatrix_V1.6.json"), s, "utf-8", false, true);
+        String s = JSON.toJSONString(messages);
+        txtUtils.write(Paths.get(BaseTestUtils.getFileFolder(),"HiFire_B31CP_Info_HU_CAN_V2.0.json"), s, "utf-8", false, true);
         Path path = Paths.get(BaseTestUtils.getFileFolder(), "template3S1.xlsx");
         Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> pair = readerService.read(path);
         Path folder = Paths.get(BaseTestUtils.getCodeFolder());
