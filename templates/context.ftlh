@@ -77,6 +77,7 @@ relay = None
 air_condition = None
 soc = None
 mcu = None
+hypervisor = None
 
 if it6831_serial_baud_rate and it6831_serial_port:
     it6831 = It6831Actions(port=it6831_serial_baud_rate, baud_rate=it6831_serial_port)
@@ -270,6 +271,9 @@ def ${freemarker.params["functionName"]?lower_case}():
     <#if freemarker.params["handleName"] == "air_condition">
     image_name = f<#noparse>"</#noparse>${freemarker.params["imageName"]?lower_case}<#noparse>"</#noparse>
     ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(image_name=image_name, count=${freemarker.params["count"]}, interval_time=interval_time, display=${freemarker.params["displayId"]})
+    <#elseif freemarker.params["handleName"] == "hypervisor">
+    image_name = f<#noparse>"</#noparse>${freemarker.params["imageName"]?lower_case}<#noparse>"</#noparse>
+    ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(image_name=image_name, count=${freemarker.params["count"]}, interval_time=interval_time)
     <#else>
     image_name = f<#noparse>"</#noparse>${r'{android_screen_shot_path}'}/${freemarker.params["imageName"]}__<#noparse>"</#noparse>
     for i in range(${freemarker.params["count"]}):

@@ -63,8 +63,8 @@ class WriteServiceTest {
     void test3S1() {
         Path dbc = Paths.get(BaseTestUtils.getFileFolder(),"HiFire_B31CP_Info_HU_CAN_V2.0.dbc");
         List<Message> messages = dbcParser.parse(dbc);
-        String s = JSON.toJSONString(messages);
-        txtUtils.write(Paths.get(BaseTestUtils.getFileFolder(),"HiFire_B31CP_Info_HU_CAN_V2.0.json"), s, "utf-8", false, true);
+//        String s = JSON.toJSONString(messages);
+//        txtUtils.write(Paths.get(BaseTestUtils.getFileFolder(),"HiFire_B31CP_Info_HU_CAN_V2.0.json"), s, "utf-8", false, true);
         Path path = Paths.get(BaseTestUtils.getFileFolder(), "template3S1.xlsx");
         Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> pair = readerService.read(path);
         Path folder = Paths.get(BaseTestUtils.getCodeFolder());
