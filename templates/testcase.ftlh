@@ -4,7 +4,6 @@
 # Author:      CD QA Team
 # Created:     ${createDate}
 # -------------------------------------------------------------------------------
-import allure
 import pytest
 from time import sleep
 from src.codes.context import *
@@ -13,7 +12,7 @@ from src.codes.context import *
 ########################################################################################################################
 #                                                                                                                      #
 #                                                    创建Suite                                                          #
-#                                                                                                                      #
+#                                           s                                                                           #
 ########################################################################################################################
 @pytest.fixture(scope="class", autouse=True)
 @allure.suite("创建${testcase.moduleName}测试套件")

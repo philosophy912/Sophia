@@ -6,6 +6,7 @@
 # -------------------------------------------------------------------------------
 import os
 import allure
+from time import sleep
 from automotive import *
 from src.codes.configure import *
 
@@ -88,24 +89,40 @@ if konstanter_serial_port and konstanter_serial_baud_rate:
 if dbc_json:
     can_service = CANService(dbc)
     logger.info(f"can_service is initialization")
-if android_automation_type:
-    android_service = AndroidService(ToolTypeEnum.from_value(android_automation_type))
-    logger.info(f"android_service is initialization")
 if max_relay_channel:
     relay = RelayActions()
     logger.info(f"relay is initialization")
-if test_case_type == "空调屏" and air_condition_port and air_condition_baud_rate:
-    air_condition = AirCondition(qnx_screen_shot_path, air_condition_port)
-    logger.info(f"air_condition is initialization")
-if test_case_type == "仪表" or test_case_type == "智能座舱":
-    hypervisor = HypervisorScreenShot(qnx_screen_shot_path, android_device_id)
-    logger.info(f"hypervisor is initialization")
 if soc_serial_port and soc_serial_baud_rate:
     soc = SerialPort()
     logger.info(f"soc is initialization")
 if mcu_serial_port and mcu_serial_baud_rate:
     mcu = SerialPort()
     logger.info(f"mcu is initialization")
+if test_case_type == "空调屏":
+    if air_condition_port and air_condition_baud_rate:
+        air_condition = AirCondition(qnx_screen_shot_path, air_condition_port)
+        logger.info(f"air_condition is initialization")
+if test_case_type in ("智能座舱", "仪表", "中控"):
+    logger.info("请先remount系统.................... 步骤如下")
+    logger.info("""
+        1、关闭dm-verity
+        adb root
+        adb shell setenforce 0
+        adb shell setprop ro.secure 1
+        adb disable-verity
+        2、重启设备
+        3、remount
+        adb root
+        adb shell setenforce 0
+        adb remount
+    """)
+    sleep(5)
+    if android_automation_type:
+        android_service = AndroidService(ToolTypeEnum.from_value(android_automation_type))
+        logger.info(f"android_service is initialization")
+    if test_case_type != "中控":
+        hypervisor = HypervisorScreenShot(qnx_screen_shot_path, android_device_id)
+        logger.info(f"hypervisor is initialization")
 
 
 def open_device():
@@ -268,16 +285,17 @@ def ${freemarker.params["functionName"]?lower_case}():
     ${line}
     </#list>
     """
-    <#if freemarker.params["handleName"] == "air_condition">
     image_name = f<#noparse>"</#noparse>${freemarker.params["imageName"]?lower_case}<#noparse>"</#noparse>
-    ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(image_name=image_name, count=${freemarker.params["count"]}, interval_time=interval_time, display=${freemarker.params["displayId"]})
-    <#elseif freemarker.params["handleName"] == "hypervisor">
-    image_name = f<#noparse>"</#noparse>${freemarker.params["imageName"]?lower_case}<#noparse>"</#noparse>
-    ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(image_name=image_name, count=${freemarker.params["count"]}, interval_time=interval_time)
+    <#if freemarker.params["handleName"] == "hypervisor">
+    image_files = ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(image_name=image_name, count=${freemarker.params["count"]}, interval_time=interval_time)
+    image_files = list(map(lambda x: f"{qnx_screen_shot_path}/{x}", image_files))
+    ${freemarker.params["handleName"]}.adb.pull_files(image_files, screenshot, android_device_id)
+    <#elseif freemarker.params["handleName"] == "android_service">
+    image_files = ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(image_name=image_name, count=${freemarker.params["count"]}, interval_time=interval_time, display=${freemarker.params["displayId"]})
+    image_files = list(map(lambda x: f"{android_screen_shot_path}/{x}", image_files))
+    ${freemarker.params["handleName"]}.adb.pull_files(image_files, screenshot, android_device_id)
     <#else>
-    image_name = f<#noparse>"</#noparse>${r'{android_screen_shot_path}'}/${freemarker.params["imageName"]}__<#noparse>"</#noparse>
-    for i in range(${freemarker.params["count"]}):
-        ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(remote_file=f<#noparse>"</#noparse>${r'{'}image_name${r'}'}${r'{'}i + 1${r'}'}<#noparse>"</#noparse>, display_id=${freemarker.params["displayId"]}, device_id=android_device_id)
+    image_files = ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(image_name=image_name, count=${freemarker.params["count"]}, interval_time=interval_time, display=${freemarker.params["displayId"]})
     </#if>
 </#list>
 </#if>
