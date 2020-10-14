@@ -12,6 +12,7 @@ from src.codes.context import *
 from time import sleep
 import cv2
 
+
 # from time import sleep
 #
 # folder = r"D:\Temp\screenshot"
@@ -52,15 +53,49 @@ import cv2
 #
 # cap.release()
 # cv2.destroyAllWindows()
-
+#
 # camera = Camera()
+# camera.camera_test()
 # camera.open_camera()
 # for i in range(10):
 #     camera.take_picture(rf"d:\temp\video\{Utils.get_time_as_string()}.jpg")
 #     sleep(5)
 #     logger.info(f"the {i + 1} times")
 # camera.close_camera()
-open_device()
-sleep(10)
-fl_doorajarsts_open()
-close_device()
+# open_device()
+# sleep(10)
+# fl_doorajarsts_open()
+# close_device()
+def origin():
+    client = AndroidService(ToolTypeEnum.UIAUTOMATOR2)
+    client.connect("1234567")
+    try:
+        client.click(locator={"text": "主页", "resourceId": "com.android.systemui:id/tsp_nav_button_content"})
+        logger.info("click main page")
+    except Exception:
+        logger.info("no main page")
+    try:
+        client.click(locator={"text": "车辆", "resourceId": "com.android.systemui:id/tsp_nav_button_content"})
+    except Exception:
+        logger.info("click car page")
+    client.disconnect()
+
+
+def target():
+    open_device()
+    # try:
+    #     enter_car_setting_page()
+    #     logger.info("click main page")
+    # except Exception:
+    #     logger.info("no main page")
+    # try:
+    #     enter_main_page()
+    # except Exception:
+    #     logger.info("click car page")
+    # attr = ElementAttributeEnum.from_value("TEXT")
+    info = driver_date_exist()
+    print(info)
+    close_device()
+
+
+target()

@@ -632,7 +632,7 @@ public class CheckUtils {
             }
         }
         if (!flag) {
-            String error = "Sheet[" + className + "]的第" + index + "行的原始信息" + origin + "在Information中找不到";
+            String error = "Sheet[" + className + "]的第" + index + "行的原始信息[" + origin + "]在Information中找不到";
             throw new RuntimeException(error);
 
         }
