@@ -9,6 +9,7 @@ import com.chinatsp.code.service.api.IWriteService;
 import com.chinatsp.dbc.entity.Message;
 import com.chinatsp.dbc.impl.DbcParser;
 import com.philosophy.base.common.Pair;
+import com.philosophy.base.util.ParseUtils;
 import com.philosophy.txt.util.TxtUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +51,7 @@ class WriteServiceTest {
     @SneakyThrows
     @Test
     void test1Q1() {
-        Path dbc = Paths.get(BaseTestUtils.getFileFolder(),"FAW_E115_FCP_CANMatrix_V1.6.dbc");
+        Path dbc = Paths.get(BaseTestUtils.getFileFolder(), "FAW_E115_FCP_CANMatrix_V1.6.dbc");
         List<Message> messages = dbcParser.parse(dbc);
 //        String s = JSON.toJSONString(messages);
 //        txtUtils.write(Paths.get("D:\\Workspace\\github\\code\\file\\FAW_E115_FCP_CANMatrix_V1.6.json"), s, "utf-8", false, true);
@@ -61,7 +64,7 @@ class WriteServiceTest {
     @SneakyThrows
     @Test
     void test3S1() {
-        Path dbc = Paths.get(BaseTestUtils.getFileFolder(),"HiFire_B31CP_Info_HU_CAN_V2.0.dbc");
+        Path dbc = Paths.get(BaseTestUtils.getFileFolder(), "HiFire_B31CP_Info_HU_CAN_V2.0.dbc");
         List<Message> messages = dbcParser.parse(dbc);
 //        String s = JSON.toJSONString(messages);
 //        txtUtils.write(Paths.get(BaseTestUtils.getFileFolder(),"HiFire_B31CP_Info_HU_CAN_V2.0.json"), s, "utf-8", false, true);
@@ -69,5 +72,28 @@ class WriteServiceTest {
         Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> pair = readerService.read(path);
         Path folder = Paths.get(BaseTestUtils.getCodeFolder());
         writeService.write(pair, messages, folder);
+    }
+
+    @Test
+    void testParse() {
+        String str = "element={\"resourceId\":\"com.chinatsp.vehicle:id/navigation_view\"}";
+        String[] equals = str.split("=");
+        String param = equals[1];
+        param = param.replace("{", "").replace("}", "");
+        String[] params = param.split(",");
+        String par = params[0];
+        List<String> counts = new LinkedList<>();
+        while (par.contains("\"")) {
+            int index = par.indexOf("\"");
+            // 去掉头部内容
+            par = par.substring(index + "\"".length());
+            //再次查找
+            index = par.indexOf("\"");
+            String content = par.substring(0, index);
+            par = par.substring(index + 1);
+            counts.add(content);
+        }
+        System.out.println(Arrays.toString(ParseUtils.toArray(counts)));
+
     }
 }

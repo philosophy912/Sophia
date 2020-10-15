@@ -24,15 +24,13 @@ import static com.chinatsp.dbc.api.IConstant.COLON;
 @Slf4j
 public class CommonWriter implements IFreeMarkerWriter {
 
-    String swipeElement = "swipe_element";
+    String swipeElement = "element";
     String locator = "locator";
 
 
     private List<Pair<String, String>> parseParam(List<String> params, FreeMarker freeMarker) {
         List<Pair<String, String>> pairs = new LinkedList<>();
         for (String s : params) {
-            s = s.replace("\"", "");
-            log.debug("s = [{}]", s);
             String[] param = s.trim().split(EQUAL);
             String key = param[0];
             String value = param[1];
@@ -54,13 +52,24 @@ public class CommonWriter implements IFreeMarkerWriter {
      */
     private void parseMapParam(String string, FreeMarker freeMarker, String type) {
         List<Pair<String, String>> pairs = new LinkedList<>();
-        string = string.replace("\"", "").replace("{", "").replace("}", "").trim();
+        string = string.replace("{", "").replace("}", "").trim();
         String[] params = string.split(COMMA);
         for (String s : params) {
-            String[] pair = s.trim().split(COLON);
-            String key = pair[0].trim();
-            String value = pair[1].trim();
-            pairs.add(new Pair<>(key, value));
+            // s = "resourceId":"com.chinatsp.vehicle:id/navigation_view"
+            List<String> contents = new LinkedList<>();
+            while (s.contains("\"")) {
+                int index = s.indexOf("\"");
+                // 去掉头部内容
+                s = s.substring(index + "\"".length());
+                //再次查找
+                index = s.indexOf("\"");
+                String content = s.substring(0, index);
+                s = s.substring(index + 1);
+                contents.add(content);
+            }
+            for (int i = 0; i < contents.size(); i += 2) {
+                pairs.add(new Pair<>(contents.get(i), contents.get(i + 1)));
+            }
         }
         if (type.equalsIgnoreCase(swipeElement)) {
             freeMarker.setSwipeElement(pairs);
@@ -78,9 +87,9 @@ public class CommonWriter implements IFreeMarkerWriter {
             FreeMarker freeMarker = new FreeMarker();
             Map<String, String> map = new HashMap<>();
             map.put(FUNCTION_NAME, common.getName());
-            if (common.getCommonType() == CommonTypeEnum.RESUME || common.getCommonType() == CommonTypeEnum.PAUSE){
+            if (common.getCommonType() == CommonTypeEnum.RESUME || common.getCommonType() == CommonTypeEnum.PAUSE) {
                 map.put(HANDLE_NAME, "can_service");
-            }else{
+            } else {
                 map.put(HANDLE_NAME, "android_service");
             }
             map.put(HANDLE_FUNCTION, common.getCommonType().getName());

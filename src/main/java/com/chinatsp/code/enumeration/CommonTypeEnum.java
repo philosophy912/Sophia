@@ -10,7 +10,14 @@ import lombok.Setter;
 public enum CommonTypeEnum {
     PAUSE("暂停信号发送", "stop_transmit"),
     RESUME("恢复信号发送", "resume_transmit"),
-    SWIPE_FIND_ELEMENT("滑动查找元素", "swipe_find_element"),
+    SCROLL_UP_GET_ELEMENT("上滑动查找元素", "scroll_up_get_element"),
+    SCROLL_DOWN_GET_ELEMENT("下滑动查找元素", "scroll_down_get_element"),
+    SCROLL_LEFT_GET_ELEMENT("左滑动查找元素", "scroll_left_get_element"),
+    SCROLL_RIGHT_GET_ELEMENT("右滑动查找元素", "scroll_right_get_element"),
+    SCROLL_UP_GET_ELEMENT_CLICK("上滑动查找元素并点击", "scroll_up_get_element_and_click"),
+    SCROLL_DOWN_GET_ELEMENT_CLICK("下滑动查找元素并点击", "scroll_down_get_element_and_click"),
+    SCROLL_LEFT_GET_ELEMENT_CLICK("左滑动查找元素并点击", "scroll_left_get_element_and_click"),
+    SCROLL_RIGHT_GET_ELEMENT_CLICK("右滑动查找元素并点击", "scroll_right_get_element_and_click"),
     CLEAR_TEXT("清空编辑框中的文字", "clear_text"),
     INPUT_TEXT("输入文本框中的文字", "input_text");
 
