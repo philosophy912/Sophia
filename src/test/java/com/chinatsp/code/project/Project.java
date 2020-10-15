@@ -1,7 +1,6 @@
 package com.chinatsp.code.project;
 
 import com.chinatsp.code.BaseTestUtils;
-import com.chinatsp.code.reader.Reader;
 import com.chinatsp.dbc.entity.Message;
 import com.chinatsp.dbc.entity.Signal;
 import com.chinatsp.dbc.impl.DbcParser;

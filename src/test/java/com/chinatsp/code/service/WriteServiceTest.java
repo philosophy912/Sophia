@@ -58,7 +58,7 @@ class WriteServiceTest {
         Path path = Paths.get(BaseTestUtils.getFileFolder(), "template1q1.xlsx");
         Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> pair = readerService.read(path);
         Path folder = Paths.get(BaseTestUtils.getCodeFolder());
-        writeService.write(pair, messages, folder);
+        //writeService.write(pair, messages, folder);
     }
 
     @SneakyThrows
@@ -71,7 +71,7 @@ class WriteServiceTest {
         Path path = Paths.get(BaseTestUtils.getFileFolder(), "template3S1.xlsx");
         Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> pair = readerService.read(path);
         Path folder = Paths.get(BaseTestUtils.getCodeFolder());
-        writeService.write(pair, messages, folder);
+        //writeService.write(pair, messages, folder);
     }
 
     @Test

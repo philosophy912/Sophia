@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * @author lizhe
@@ -22,16 +23,10 @@ public class TemplateService implements ITemplateService {
 
     @SneakyThrows
     public void createTemplate(Path path) {
-        String absolutePath = path.toAbsolutePath().toString();
-        if (absolutePath.endsWith("xls") || absolutePath.endsWith("xlsx")) {
-            if (Files.exists(path)) {
-                FilesUtils.deleteFiles(path);
-            }
-            template.createTemplateExcelFile(path);
-        } else {
-            String error = "文件需要是Excel文件";
-            throw new RuntimeException(error);
+        Path file = Paths.get(path.toAbsolutePath().toString(), "testcase.xls");
+        if (Files.exists(file)) {
+            FilesUtils.deleteFiles(file);
         }
-
+        template.createTemplateExcelFile(file);
     }
 }

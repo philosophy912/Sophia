@@ -46,4 +46,10 @@ public interface Constant {
     String TEMPLATE_CONTEXT = "context";
     //template 模板名字 compare
     String TEMPLATE_TESTCASE = "testcase";
+
+
+    String TOP="top";
+    String CODES = "codes";
+    String DBC = "dbc";
+    String TEST_CASE = "testcase";
 }

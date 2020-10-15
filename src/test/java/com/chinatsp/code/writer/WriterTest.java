@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -71,6 +73,15 @@ class WriterTest {
             freeMarkerWriter.writeTestCase(pair.getFirst(), path, "testcase");
         }
 
+    }
+
+
+    public static void main(String[] args) {
+        try {
+            Files.copy(Paths.get("D:\\Workspace\\github\\code\\templates\\__init__.py"), Paths.get("D:\\Workspace\\github\\code\\20201015_175357\\src"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

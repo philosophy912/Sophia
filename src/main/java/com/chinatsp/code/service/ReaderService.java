@@ -5,7 +5,9 @@ import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.code.reader.Reader;
 import com.chinatsp.code.service.api.IReadService;
+import com.chinatsp.dbc.entity.Message;
 import com.philosophy.base.common.Pair;
+import com.philosophy.base.common.Triple;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +30,9 @@ public class ReaderService implements IReadService {
 
 
     @Override
-    public Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> read(Path path) {
+    public Triple<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>, List<Message>> read(Path path) {
         Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> pair = reader.readTestCase(path);
-        checker.check(pair.getFirst(), pair.getSecond(), path.getParent().toAbsolutePath().toString());
-        return pair;
+        List<Message> messages = checker.check(pair.getFirst(), pair.getSecond(), path.getParent().toAbsolutePath().toString());
+        return new Triple<>(pair.getFirst(), pair.getSecond(), messages);
     }
 }

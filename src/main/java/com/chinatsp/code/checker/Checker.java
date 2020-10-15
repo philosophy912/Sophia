@@ -35,7 +35,7 @@ public class Checker {
 
 
     @SneakyThrows
-    public void check(Map<String, List<BaseEntity>> map, Map<ConfigureTypeEnum, String> configure, String folder) {
+    public List<Message> check(Map<String, List<BaseEntity>> map, Map<ConfigureTypeEnum, String> configure, String folder) {
         String dbcFile = configure.get(ConfigureTypeEnum.DBC_FILE);
         Path dbcPath = Paths.get(folder, dbcFile);
         if (!Files.exists(dbcPath)) {
@@ -53,5 +53,6 @@ public class Checker {
             method = clazz.getDeclaredMethod("check", Map.class, List.class, Map.class);
             method.invoke(object, map, messages, configure);
         }
+        return messages;
     }
 }
