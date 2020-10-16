@@ -46,7 +46,7 @@ config:
     isGray: 是否灰度对比
     threshold: 灰度二值化阈值
     element: 元素
-    target: 目标信息
+    savedInformation: 保存的信息
     elementAttribute: 元素属性
     testCaseType: 测试用例类型
     moduleName: 模块名
@@ -66,6 +66,8 @@ config:
     suitesBefore: 套件执行前描述
     suitesAfter: 套件执行后描述
     description: 中文描述
+    informationCompareType: 对比类型
+    info: 属性信息
   classname:
     testCase: 测试用例
     screenShotAction: 截图操作

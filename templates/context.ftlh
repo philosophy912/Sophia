@@ -406,7 +406,7 @@ def ${freemarker.params["functionName"]?lower_case}():
     """
     attr = ElementAttributeEnum.from_value(<#noparse>"</#noparse>${freemarker.params["elementAttribute"]}<#noparse>"</#noparse>)
     info = ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(${freemarker.params["locator"]})[attr]
-    return info
+    save_data[<#noparse>"</#noparse>${freemarker.params["functionName"]?lower_case}<#noparse>"</#noparse>] = info
 </#list>
 </#if>
 <#if informationCompare??>
@@ -426,7 +426,12 @@ def ${freemarker.params["functionName"]?lower_case}() -> tuple:
     """
     attr = ElementAttributeEnum.from_value(<#noparse>"</#noparse>${freemarker.params["elementAttribute"]}<#noparse>"</#noparse>)
     info = ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(${freemarker.params["locator"]})[attr]
-    return ${freemarker.params["target"]}() == info,
+    <#if freemarker.params["informationCompareType"] == "info">
+    return <#if freemarker.params["information"] == "true">True<#elseif freemarker.params["information"] == "false">False<#else>r<#noparse>"</#noparse>${freemarker.params["information"]}<#noparse>"</#noparse></#if> == info,
+    <#else>
+    return save_data[<#noparse>"</#noparse>${freemarker.params["functionName"]?lower_case}<#noparse>"</#noparse>] == info,
+    </#if>
+
 </#list>
 </#if>
 <#if common??>

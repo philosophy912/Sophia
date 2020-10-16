@@ -46,7 +46,9 @@ public interface IFreeMarkerWriter {
     String GRAY = "gray";
     String THRESHOLD = "threshold";
     String ELEMENT_ATTRIBUTE = "elementAttribute";
-    String TARGET = "target";
+    String INFORMATION_COMPARE_TYPE = "informationCompareType";
+    String SAVED_INFORMATION = "savedInformation";
+    String INFORMATION = "information";
 
 
     /**

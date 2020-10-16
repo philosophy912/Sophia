@@ -28,10 +28,11 @@ public class InformationCompareChecker extends BaseChecker implements IChecker {
             String name = informationCompare.getClass().getSimpleName();
             // 检查名字是否符合python命名规范
             checkUtils.checkPythonFunction(informationCompare.getName(), index, name);
-            // 检查原始信息是否在Information中有保存
-            checkUtils.checkInformation(informationCompare.getTarget(), index, name, infos);
             // 检查定位符是否在Element中存在
             checkUtils.checkElementExist(informationCompare.getElement(), index, name, elements);
+            // 检查原始信息是否在Information中有保存
+            checkUtils.checkInformation(informationCompare, index, name, infos);
+
         }
         // 检查函数名是否有重名
         checkUtils.findDuplicate(entities, InformationCompare.class.getSimpleName());

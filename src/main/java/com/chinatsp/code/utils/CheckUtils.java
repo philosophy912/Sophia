@@ -7,6 +7,7 @@ import com.chinatsp.code.entity.actions.ScreenOpsAction;
 import com.chinatsp.code.entity.actions.ScreenShotAction;
 import com.chinatsp.code.entity.collection.Element;
 import com.chinatsp.code.entity.compare.ImageCompare;
+import com.chinatsp.code.entity.compare.InformationCompare;
 import com.chinatsp.code.entity.storage.Information;
 import com.chinatsp.code.entity.testcase.TestCase;
 import com.chinatsp.code.entity.testcase.TestCaseSetUp;
@@ -19,8 +20,10 @@ import com.chinatsp.code.enumeration.TestCaseFunctionTypeEnum;
 import com.chinatsp.dbc.entity.Message;
 import com.chinatsp.dbc.entity.Signal;
 import com.philosophy.base.common.Pair;
+import com.philosophy.base.util.StringsUtils;
 import com.philosophy.character.util.CharUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.util.StringUtil;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -617,24 +620,31 @@ public class CheckUtils {
     /**
      * 检查要保存的信息是否在Information中能找到
      *
-     * @param origin    函数名
-     * @param index     序号
-     * @param className 类名
-     * @param entities  实体清单
+     * @param informationCompare 函数名
+     * @param index              序号
+     * @param className          类名
+     * @param entities           实体清单
      */
-    public void checkInformation(String origin, int index, String className, List<BaseEntity> entities) {
-        boolean flag = false;
-        for (BaseEntity baseEntity : entities) {
-            Information information = (Information) baseEntity;
-            if (origin.equals(information.getName())) {
-                flag = true;
-                break;
-            }
-        }
-        if (!flag) {
-            String error = "Sheet[" + className + "]的第" + index + "行的原始信息[" + origin + "]在Information中找不到";
+    public void checkInformation(InformationCompare informationCompare, int index, String className, List<BaseEntity> entities) {
+        String info = informationCompare.getInfo();
+        String origin = informationCompare.getSavedInformation();
+        if (StringsUtils.isNotEmpty(info) && StringsUtils.isNotEmpty(origin)) {
+            String error = "Sheet[" + className + "]的第" + index + "行的中既填写了属性信息info[" + info + "]，又填写了保存的信息savedInformation[" + origin + "]";
             throw new RuntimeException(error);
-
+        }
+        if (StringsUtils.isNotEmpty(origin)) {
+            boolean flag = false;
+            for (BaseEntity baseEntity : entities) {
+                Information information = (Information) baseEntity;
+                if (origin.equalsIgnoreCase(information.getName())) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) {
+                String error = "Sheet[" + className + "]的第" + index + "行的原始信息[" + origin + "]在Information中找不到";
+                throw new RuntimeException(error);
+            }
         }
     }
 

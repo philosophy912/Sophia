@@ -95,7 +95,7 @@ public class ConvertUtils {
         String[] values = value.split(NEXT_LINE);
         for (String s : values) {
             if (!StringsUtils.isEmpty(s)) {
-                strings.add(s);
+                strings.add(s.trim());
             }
         }
         return strings;
