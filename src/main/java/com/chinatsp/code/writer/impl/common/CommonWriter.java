@@ -2,7 +2,6 @@ package com.chinatsp.code.writer.impl.common;
 
 import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.common.Common;
-import com.chinatsp.code.enumeration.CommonTypeEnum;
 import com.chinatsp.code.writer.api.FreeMarker;
 import com.chinatsp.code.writer.api.IFreeMarkerWriter;
 import com.chinatsp.dbc.entity.Message;
@@ -18,7 +17,6 @@ import java.util.Map;
 
 import static com.chinatsp.code.utils.Constant.COMMA;
 import static com.chinatsp.code.utils.Constant.EQUAL;
-import static com.chinatsp.dbc.api.IConstant.COLON;
 
 @Component
 @Slf4j
@@ -87,12 +85,8 @@ public class CommonWriter implements IFreeMarkerWriter {
             FreeMarker freeMarker = new FreeMarker();
             Map<String, String> map = new HashMap<>();
             map.put(FUNCTION_NAME, common.getName());
-            if (common.getCommonType() == CommonTypeEnum.RESUME || common.getCommonType() == CommonTypeEnum.PAUSE) {
-                map.put(HANDLE_NAME, "can_service");
-            } else {
-                map.put(HANDLE_NAME, "android_service");
-            }
-            map.put(HANDLE_FUNCTION, common.getCommonType().getName());
+            map.put(HANDLE_NAME, common.getModuleName().getValue());
+            map.put(HANDLE_FUNCTION, common.getFunctionName());
             freeMarker.setPairs(parseParam(common.getParams(), freeMarker));
             freeMarker.setParams(map);
             freeMarker.setComment(common.getComments());

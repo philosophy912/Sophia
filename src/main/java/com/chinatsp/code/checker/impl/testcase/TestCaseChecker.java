@@ -6,6 +6,7 @@ import com.chinatsp.code.entity.BaseEntity;
 import com.chinatsp.code.entity.testcase.TestCase;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.dbc.entity.Message;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@Slf4j
 public class TestCaseChecker extends BaseChecker implements IChecker {
 
 
@@ -45,9 +47,12 @@ public class TestCaseChecker extends BaseChecker implements IChecker {
             String name = testCase.getClass().getName();
             // 检查名字是否符合python命名规范
             checkUtils.checkPythonFunction(testCase.getName(), index, name);
+            log.debug("{} times check preCondition", index);
             // 检查操作是否都定义了
             checkUtils.checkAction(testCase.getPreCondition(), index, map);
+            log.debug("{} times check steps", index);
             checkUtils.checkAction(testCase.getSteps(), index, map);
+            log.debug("{} times check expect", index);
             checkUtils.checkAction(testCase.getExpect(), index, map);
         }
     }

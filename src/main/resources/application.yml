@@ -68,6 +68,7 @@ config:
     description: 中文描述
     informationCompareType: 对比类型
     info: 属性信息
+    functionName: 函数名称
   classname:
     testCase: 测试用例
     screenShotAction: 截图操作

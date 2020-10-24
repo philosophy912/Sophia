@@ -38,7 +38,12 @@ public enum ConfigureTypeEnum {
     ANDROID_DEVICE_ID("安卓设备号", "android_device_id"),
     TEST_CASE_TYPE("测试类型", "test_case_type"),
     USERNAME("用户名", "username"),
-    PASSWORD("密码", "password");
+    PASSWORD("密码", "password"),
+    HMI_USERNAME("HMI用户名","hmi_username"),
+    HMI_PASSWORD("HMI密码", "hmi_password"),
+    HMI_BOARD_PATH("HMI板子路径", "hmi_board_path"),
+    HMI_TEST_BINARY("HMI测试程序路径","hmi_test_binary"),
+    IPADDRESS("ip地址", "ip_address");
 
     @Setter
     @Getter

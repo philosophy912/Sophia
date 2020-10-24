@@ -133,8 +133,10 @@ public class CodeRunner implements CommandLineRunner {
             Path testcaseXls = Paths.get(base.toAbsolutePath().toString(), "testcase.xls");
             Path testcaseXlsx = Paths.get(base.toAbsolutePath().toString(), "testcase.xlsx");
             if (Files.exists(testcaseXls)) {
+                log.info("开始生成[{}]描述的测试用例代码",testcaseXls.toAbsolutePath().toString());
                 generator(testcaseXls, folders);
             } else if (Files.exists(testcaseXlsx)) {
+                log.info("开始生成[{}]描述的测试用例代码",testcaseXlsx.toAbsolutePath().toString());
                 generator(testcaseXlsx, folders);
             } else {
                 templateService.createTemplate(folders.get(TOP));

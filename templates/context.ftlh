@@ -55,7 +55,7 @@ interval_time = 0.5
 save_data = dict()
 curve = Curve()
 current_path = os.getcwd()
-codes_folder = Utils.get_folder_path("codes", "src", current_path)
+codes_folder = Utils.get_folder_path(folder_name="codes", top_folder_name="src", current_path=current_path)
 top_folder = os.path.dirname(codes_folder)
 resource = "\\".join([top_folder, "resources"])
 # DBC解析出来的文件的路径
@@ -79,6 +79,7 @@ air_condition = None
 soc = None
 mcu = None
 hypervisor = None
+cluster_hmi = None
 
 if it6831_serial_baud_rate and it6831_serial_port:
     it6831 = It6831Actions(port=it6831_serial_baud_rate, baud_rate=it6831_serial_port)
@@ -87,7 +88,7 @@ if konstanter_serial_port and konstanter_serial_baud_rate:
     konstanter = KonstanterActions(port=konstanter_serial_port, baud_rate=konstanter_serial_baud_rate)
     logger.info(f"konstanter is initialization")
 if dbc_json:
-    can_service = CANService(dbc)
+    can_service = CANService(messages=dbc)
     logger.info(f"can_service is initialization")
 if max_relay_channel:
     relay = RelayActions()
@@ -100,7 +101,7 @@ if mcu_serial_port and mcu_serial_baud_rate:
     logger.info(f"mcu is initialization")
 if test_case_type == "空调屏":
     if air_condition_port and air_condition_baud_rate:
-        air_condition = AirCondition(qnx_screen_shot_path, air_condition_port)
+        air_condition = AirCondition(save_path=qnx_screen_shot_path, port=air_condition_port)
         logger.info(f"air_condition is initialization")
 if test_case_type in ("智能座舱", "仪表", "中控"):
     logger.info("请先remount系统.................... 步骤如下")
@@ -118,11 +119,13 @@ if test_case_type in ("智能座舱", "仪表", "中控"):
     """)
     sleep(5)
     if android_automation_type:
-        android_service = AndroidService(ToolTypeEnum.from_value(android_automation_type))
+        android_service = AndroidService(tool_type=ToolTypeEnum.from_value(android_automation_type))
         logger.info(f"android_service is initialization")
     if test_case_type != "中控":
-        hypervisor = HypervisorScreenShot(qnx_screen_shot_path, android_device_id)
+        hypervisor = HypervisorScreenShot(save_path=qnx_screen_shot_path, device_id=android_device_id)
         logger.info(f"hypervisor is initialization")
+    if hmi_username and hmi_password and hmi_board_path:
+        cluster_hmi = ClusterHmi(board_path=hmi_board_path, local_folder=screenshot, test_binary=hmi_test_binary)
 
 
 def open_device():
@@ -140,9 +143,9 @@ def open_device():
                 "appPackage": android_app_package,
                 "appActivity": android_app_activity
             }
-            android_service.connect(android_device_id, capability)
+            android_service.connect(device_id=android_device_id, capability=capability)
         else:
-            android_service.connect(android_device_id)
+            android_service.connect(device_id=android_device_id)
     if can_service:
         can_service.open_can()
     if relay:
@@ -150,9 +153,11 @@ def open_device():
     if air_condition:
         air_condition.connect()
     if mcu:
-        mcu.connect(mcu_serial_port, mcu_serial_baud_rate)
+        mcu.connect(port=mcu_serial_port, baud_rate=mcu_serial_baud_rate)
     if soc:
-        soc.connect(soc_serial_port, soc_serial_baud_rate)
+        soc.connect(port=soc_serial_port, baud_rate=soc_serial_baud_rate)
+    if cluster_hmi:
+        cluster_hmi.connect(ipaddress=ip_address, username=hmi_username, password=hmi_password)
 
 
 def close_device():
@@ -168,6 +173,8 @@ def close_device():
         relay.close()
     if air_condition:
         air_condition.disconnect()
+    if cluster_hmi:
+        cluster_hmi.disconnect()
 <#if batteryAction??>
     ####################################################################################################################
     #                                                                                                                  #
@@ -286,16 +293,21 @@ def ${freemarker.params["functionName"]?lower_case}():
     </#list>
     """
     image_name = f<#noparse>"</#noparse>${freemarker.params["imageName"]?lower_case}<#noparse>"</#noparse>
-    <#if freemarker.params["handleName"] == "hypervisor">
+    <#if freemarker.params["handleName"] == "cluster_hmi">
+    image_files = ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(image_name=image_name, count=${freemarker.params["count"]}, interval_time=interval_time)
+    ${freemarker.params["handleName"]}.download_images(image_files)
+    <#else>
+        <#if freemarker.params["handleName"] == "hypervisor">
     image_files = ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(image_name=image_name, count=${freemarker.params["count"]}, interval_time=interval_time)
     image_files = list(map(lambda x: f"{qnx_screen_shot_path}/{x}", image_files))
     ${freemarker.params["handleName"]}.adb.pull_files(image_files, screenshot, android_device_id)
-    <#elseif freemarker.params["handleName"] == "android_service">
+        <#elseif freemarker.params["handleName"] == "android_service">
     image_files = ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(image_name=image_name, count=${freemarker.params["count"]}, interval_time=interval_time, display=${freemarker.params["displayId"]})
     image_files = list(map(lambda x: f"{android_screen_shot_path}/{x}", image_files))
     ${freemarker.params["handleName"]}.adb.pull_files(image_files, screenshot, android_device_id)
-    <#else>
+        <#else>
     image_files = ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(image_name=image_name, count=${freemarker.params["count"]}, interval_time=interval_time, display=${freemarker.params["displayId"]})
+        </#if>
     </#if>
 </#list>
 </#if>

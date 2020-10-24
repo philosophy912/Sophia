@@ -8,6 +8,7 @@ import com.chinatsp.dbc.entity.Message;
 import com.chinatsp.dbc.impl.DbcParser;
 import com.philosophy.character.util.CharUtils;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,6 +26,7 @@ import static com.chinatsp.code.utils.Constant.CHECKER_PACKAGE_NAME;
  * @date 2020/9/14 12:37
  **/
 @Service
+@Slf4j
 public class Checker {
     @Resource
     private ReaderUtils readerUtils;
@@ -46,6 +48,7 @@ public class Checker {
         for (Map.Entry<String, List<BaseEntity>> entry : map.entrySet()) {
             String name = entry.getKey();
             String fullName = readerUtils.getFullClassName(CharUtils.upperCase(name) + "Checker", CHECKER_PACKAGE_NAME);
+            log.debug("try to check with {}", fullName);
             Class<?> clazz = Class.forName(fullName);
             Object object = clazz.newInstance();
             Method method = clazz.getMethod("setCheckUtils", CheckUtils.class);
