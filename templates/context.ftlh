@@ -443,7 +443,6 @@ def ${freemarker.params["functionName"]?lower_case}() -> tuple:
     <#else>
     return save_data[<#noparse>"</#noparse>${freemarker.params["functionName"]?lower_case}<#noparse>"</#noparse>] == info,
     </#if>
-
 </#list>
 </#if>
 <#if common??>
@@ -461,10 +460,6 @@ def ${freemarker.params["functionName"]?lower_case}():
     ${line}
     </#list>
     """
-    <#if freemarker.params["handleName"] == "can_service">
-    ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(<#list freemarker.pairs as param>${param.first}=${param.second}<#if param_index != freemarker.pairs?size -1>, </#if></#list>)
-    <#else>
-    ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(<#if freemarker.locator??>locator={<#list freemarker.locator as param><#noparse>"</#noparse>${param.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${param.second}<#noparse>"</#noparse><#if param_index != freemarker.locator?size -1>, </#if>}</#list><#if freemarker.swipeElement??>, element={<#list freemarker.swipeElement as param><#noparse>"</#noparse>${param.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${param.second}<#noparse>"</#noparse><#if param_index != freemarker.swipeElement?size -1>, </#if></#list>}</#if></#if><#if freemarker.pairs??>, <#list freemarker.pairs as param>${param.first}=<#if param.first == "text"><#noparse>"</#noparse>${param.second}<#noparse>"</#noparse><#else>${param.second}</#if><#if param_index != freemarker.pairs?size -1>, </#if></#list></#if>)
-    </#if>
+    ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(<#list freemarker.paramList as param>${param.first}=<#if param.third == "dict">{<#list param.second as map><#noparse>"</#noparse>${map.first}<#noparse>"</#noparse>: <#noparse>"</#noparse>${map.second}<#noparse>"</#noparse><#if map_index != param.second?size -1>, </#if></#list>}<#elseif param.third == "true"><#noparse>"</#noparse>${param.second}<#noparse>"</#noparse><#else>${param.second}</#if><#if param_index != freemarker.paramList?size -1>, </#if></#list>)
 </#list>
 </#if>

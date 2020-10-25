@@ -20,7 +20,7 @@ public class RelayActionWriter implements IFreeMarkerWriter {
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             RelayAction relayAction = (RelayAction) entity;
-            Map<String, String> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             map.put(FUNCTION_NAME, relayAction.getName());
             map.put(HANDLE_NAME, "relay");
             map.put(HANDLE_FUNCTION, relayAction.getRelayOperationType().getName());

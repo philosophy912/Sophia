@@ -6,6 +6,7 @@ import com.chinatsp.code.writer.api.FreeMarker;
 import com.chinatsp.code.writer.api.IFreeMarkerWriter;
 import com.chinatsp.dbc.entity.Message;
 import com.philosophy.base.common.Pair;
+import com.philosophy.base.common.Triple;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -22,33 +23,13 @@ import static com.chinatsp.code.utils.Constant.EQUAL;
 @Slf4j
 public class CommonWriter implements IFreeMarkerWriter {
 
-    String swipeElement = "element";
-    String locator = "locator";
-
-
-    private List<Pair<String, String>> parseParam(List<String> params, FreeMarker freeMarker) {
-        List<Pair<String, String>> pairs = new LinkedList<>();
-        for (String s : params) {
-            String[] param = s.trim().split(EQUAL);
-            String key = param[0];
-            String value = param[1];
-            if (key.equalsIgnoreCase(swipeElement) || key.equalsIgnoreCase(locator)) {
-                parseMapParam(value, freeMarker, key);
-            } else {
-                pairs.add(new Pair<>(key, value));
-            }
-        }
-        return pairs;
-    }
 
     /**
      * 转换如 {"classname": "android.widget.ListView"}为List<pair<String, String>方式，便于写到ftlh上面
      *
-     * @param string     {"classname": "android.widget.TextView"}
-     * @param freeMarker 对象
-     * @param type       类型，只支持swipe_element和locator
+     * @param string {"classname": "android.widget.TextView"}
      */
-    private void parseMapParam(String string, FreeMarker freeMarker, String type) {
+    private List<Pair<String, String>> parseDictParam(String string) {
         List<Pair<String, String>> pairs = new LinkedList<>();
         string = string.replace("{", "").replace("}", "").trim();
         String[] params = string.split(COMMA);
@@ -69,13 +50,31 @@ public class CommonWriter implements IFreeMarkerWriter {
                 pairs.add(new Pair<>(contents.get(i), contents.get(i + 1)));
             }
         }
-        if (type.equalsIgnoreCase(swipeElement)) {
-            freeMarker.setSwipeElement(pairs);
-        } else {
-            freeMarker.setLocator(pairs);
-        }
+        return pairs;
     }
 
+
+    private List<Triple<String, Object, String>> parseParam(List<String> params) {
+        List<Triple<String, Object, String>> triples = new LinkedList<>();
+        for (String s : params) {
+            boolean flag = false;
+            String[] param = s.trim().split(EQUAL);
+            String key = param[0];
+            String value = param[1];
+            if (value.contains("{") && value.contains("}")) {
+                // 解析出来字典类型的所有数据
+                List<Pair<String, String>> pairs = parseDictParam(value);
+                triples.add(new Triple<>(key, pairs, "dict"));
+            } else {
+                // 只要有双引号就表示字符串类型
+                if (value.contains("\"")) {
+                    flag = true;
+                }
+                triples.add(new Triple<>(key, value.replace("\"", ""), flag ? "true" : "false"));
+            }
+        }
+        return triples;
+    }
 
     @Override
     public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
@@ -83,11 +82,11 @@ public class CommonWriter implements IFreeMarkerWriter {
         for (BaseEntity baseEntity : entities) {
             Common common = (Common) baseEntity;
             FreeMarker freeMarker = new FreeMarker();
-            Map<String, String> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             map.put(FUNCTION_NAME, common.getName());
             map.put(HANDLE_NAME, common.getModuleName().getValue());
             map.put(HANDLE_FUNCTION, common.getFunctionName());
-            freeMarker.setPairs(parseParam(common.getParams(), freeMarker));
+            freeMarker.setParamList(parseParam(common.getParams()));
             freeMarker.setParams(map);
             freeMarker.setComment(common.getComments());
             freeMarkers.add(freeMarker);

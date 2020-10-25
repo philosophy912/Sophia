@@ -43,7 +43,7 @@ public class CanCompareWriter implements IFreeMarkerWriter {
         for (BaseEntity baseEntity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             CanCompare canCompare = (CanCompare) baseEntity;
-            Map<String, String> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             String signalName = canCompare.getSignalName();
             map.put(FUNCTION_NAME, canCompare.getName());
             map.put(HANDLE_NAME, "can_service");

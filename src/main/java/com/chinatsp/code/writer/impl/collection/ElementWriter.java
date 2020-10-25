@@ -23,7 +23,7 @@ public class ElementWriter implements IFreeMarkerWriter {
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             Element element = (Element) entity;
-            Map<String, String> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             map.put(FUNCTION_NAME, element.getName());
             List<Pair<String, String>> pairs = new ArrayList<>();
             Map<AndroidLocatorTypeEnum, String> locators = element.getLocators();

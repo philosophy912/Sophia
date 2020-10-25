@@ -24,7 +24,7 @@ public class BatteryActionWriter implements IFreeMarkerWriter {
             BatteryAction batteryAction = (BatteryAction) entity;
             BatteryOperationTypeEnum type = batteryAction.getBatteryOperationType();
             Double[] values = batteryAction.getValues();
-            Map<String, String> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             map.put(FUNCTION_NAME, batteryAction.getName());
             map.put(HANDLE_NAME, batteryAction.getBatteryType().getName());
             map.put(HANDLE_FUNCTION, type.getName());

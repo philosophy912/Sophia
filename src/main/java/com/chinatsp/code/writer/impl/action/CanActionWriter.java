@@ -40,7 +40,7 @@ public class CanActionWriter implements IFreeMarkerWriter {
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
-            Map<String, String> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             CanAction canAction = (CanAction) entity;
             map.put(FUNCTION_NAME, canAction.getName());
             map.put(HANDLE_NAME, "can_service");

@@ -22,7 +22,7 @@ public class InformationCompareWriter implements IFreeMarkerWriter {
         for (BaseEntity baseEntity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             InformationCompare informationCompare = (InformationCompare) baseEntity;
-            Map<String, String> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             map.put(FUNCTION_NAME, informationCompare.getName());
             map.put(HANDLE_NAME, "android_service");
             map.put(HANDLE_FUNCTION, "get_element_attribute");

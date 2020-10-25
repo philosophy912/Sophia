@@ -21,7 +21,7 @@ public class InformationWriter implements IFreeMarkerWriter {
         for(BaseEntity baseEntity: entities){
             FreeMarker freeMarker = new FreeMarker();
             Information information = (Information) baseEntity;
-            Map<String, String> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             map.put(FUNCTION_NAME, information.getName());
             map.put(HANDLE_NAME, "android_service");
             map.put(HANDLE_FUNCTION, "get_element_attribute");

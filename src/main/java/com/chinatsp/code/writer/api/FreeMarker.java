@@ -17,10 +17,10 @@ public class FreeMarker {
     private List<Triple<String, String, String>> triples;
 
     private List<Pair<String, String>> pairs;
+    /**
+     * 函数参数，需要适配字典类型、字符串类型（带引号解析）以及其他
+     */
+    private Map<String, Object> params;
 
-    private Map<String, String> params;
-
-    private List<Pair<String, String>> swipeElement;
-
-    private List<Pair<String, String>> locator;
+    private List<Triple<String, Object, String>> paramList;
 }

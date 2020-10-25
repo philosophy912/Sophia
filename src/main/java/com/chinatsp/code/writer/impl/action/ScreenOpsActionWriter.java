@@ -25,7 +25,7 @@ public class ScreenOpsActionWriter implements IFreeMarkerWriter {
             ScreenOpsAction screenOpsAction = (ScreenOpsAction) entity;
             DeviceTpeEnum deviceType = screenOpsAction.getDeviceType();
             ScreenOperationTypeEnum type = screenOpsAction.getScreenOperationType();
-            Map<String, String> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             map.put(FUNCTION_NAME, screenOpsAction.getName());
             if(deviceType == DeviceTpeEnum.ANDROID){
                 map.put(HANDLE_NAME, deviceType.getName() + ".adb");

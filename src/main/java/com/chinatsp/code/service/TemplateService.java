@@ -23,7 +23,7 @@ public class TemplateService implements ITemplateService {
 
     @SneakyThrows
     public void createTemplate(Path path) {
-        Path file = Paths.get(path.toAbsolutePath().toString(), "testcase.xls");
+        Path file = Paths.get(path.toAbsolutePath().toString(), "template.xls");
         if (Files.exists(file)) {
             FilesUtils.deleteFiles(file);
         }

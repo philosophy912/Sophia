@@ -20,7 +20,7 @@ public class ElementActionWriter implements IFreeMarkerWriter {
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             ElementAction elementAction = (ElementAction) entity;
-            Map<String, String> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             map.put(FUNCTION_NAME, elementAction.getName());
             map.put(HANDLE_NAME, "android_service");
             map.put(HANDLE_FUNCTION, elementAction.getOperationActionType().getName());

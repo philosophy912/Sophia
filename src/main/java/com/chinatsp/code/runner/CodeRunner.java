@@ -44,6 +44,10 @@ public class CodeRunner implements CommandLineRunner {
     @Resource
     private TemplateService templateService;
 
+    private static final String FILE_FOLDER = "file";
+    private static final String TEST_CASE_FILE_NAME_XLS = "testcase.xls";
+    private static final String TEST_CASE_FILE_NAME_XLSX = "testcase.xlsx";
+
     private Path getSub(Path path, String... names) {
         return Paths.get(path.toAbsolutePath().toString(), names);
     }
@@ -122,25 +126,44 @@ public class CodeRunner implements CommandLineRunner {
     @SneakyThrows
     @Override
     public void run(String... args) {
-        // 查找当前运行类下面的file中的excel文件
+        /*
+         * 1、当前未传入参数的时候，且在file文件夹下未找到excel文件，则只在当前文件夹下面生成template.xls文件
+         * 2、当前未传入参数，且在file文件夹下面找到了testcase.xls或者testcase.xlsx文件，则生成代码
+         * 3、当前传入了参数且为excel文件，则生成代码
+         * 4、当前传入了参数但不为excel文件，则只生成template文件
+         */
+        // 获取程序执行当前的文件夹路径
         Path runTimeFolder = Paths.get(FilesUtils.getCurrentPath());
-        Path base = Paths.get(FilesUtils.getCurrentPath(), "file");
-        Map<String, Path> folders = createFolders(runTimeFolder);
-        if (!Files.exists(base)) {
-            Files.createDirectories(base);
-            throw new RuntimeException("当前文件夹下找不到file文件夹");
+        if (args.length == 1) {
+            String param = args[0];
+            if (param.endsWith("xls") || param.endsWith("xlsx")) {
+                // 当前文件夹下面的文件名
+                Path testcase = Paths.get(runTimeFolder.toAbsolutePath().toString(), param);
+                if (!Files.exists(testcase)) {
+                    throw new RuntimeException("当前文件夹下找不到[" + param + "]文件");
+                }
+                Map<String, Path> folders = createFolders(runTimeFolder);
+                log.info("开始生成[{}]描述的测试用例代码", param);
+                generator(testcase, folders);
+            }else{
+                log.info("生成模板文件template.xls");
+                templateService.createTemplate(runTimeFolder);
+            }
         } else {
-            Path testcaseXls = Paths.get(base.toAbsolutePath().toString(), "testcase.xls");
-            Path testcaseXlsx = Paths.get(base.toAbsolutePath().toString(), "testcase.xlsx");
-            if (Files.exists(testcaseXls)) {
-                log.info("开始生成[{}]描述的测试用例代码",testcaseXls.toAbsolutePath().toString());
-                generator(testcaseXls, folders);
-            } else if (Files.exists(testcaseXlsx)) {
-                log.info("开始生成[{}]描述的测试用例代码",testcaseXlsx.toAbsolutePath().toString());
-                generator(testcaseXlsx, folders);
-            } else {
-                templateService.createTemplate(folders.get(TOP));
-                throw new RuntimeException("file文件夹下找不到testcase的excel文件，创建了testcase.xls文件");
+            Path base = Paths.get(FilesUtils.getCurrentPath(), FILE_FOLDER);
+            Path testCaseXls = Paths.get(base.toAbsolutePath().toString(),TEST_CASE_FILE_NAME_XLS);
+            Path testCaseXlsx = Paths.get(base.toAbsolutePath().toString(),TEST_CASE_FILE_NAME_XLSX);
+            if(Files.exists(testCaseXls)){
+                Map<String, Path> folders = createFolders(runTimeFolder);
+                log.info("开始生成[{}]描述的测试用例代码", TEST_CASE_FILE_NAME_XLS);
+                generator(testCaseXls, folders);
+            }else if (Files.exists(testCaseXlsx)){
+                Map<String, Path> folders = createFolders(runTimeFolder);
+                log.info("开始生成[{}]描述的测试用例代码", TEST_CASE_FILE_NAME_XLSX);
+                generator(testCaseXlsx, folders);
+            }else{
+                log.info("生成模板文件template.xls");
+                templateService.createTemplate(runTimeFolder);
             }
         }
     }
