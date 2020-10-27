@@ -70,13 +70,22 @@ def get_mymoney_content(excel_file):
 
 
 def test():
+    missing = []
     cmb_contents = get_content(cmb_file)
     my_money_contents = get_mymoney_content(my_money_file)
     for cmb in cmb_contents:
         cmb_date = cmb[1]
+        cmb_date = datetime.strptime(cmb_date, format_str)
+        cmb_price = cmb[5]
         for my_money in my_money_contents:
-            print(cmb)
-            print(my_money)
+            my_money_date = my_money[3]
+            my_money_date = datetime.strptime(my_money_date, format_str)
+            my_money_price = my_money[2]
+            if cmb_date == my_money_date and cmb_price == my_money_price:
+                break
+        missing.append(cmb)
+    for miss in missing:
+        logger.info(miss)
     logger.info("done")
 
 
