@@ -55,22 +55,26 @@ def split_contents(contents: list) -> list:
 
 def write_excel(pay: list):
     # visible设置为False的时候可能产生错误
-    app = xw.App(visible=True, add_book=False)
+    app = xw.App(visible=False, add_book=False)
     wb = app.books.open("template.xls", read_only=True)
     pay_sht = wb.sheets["支出"]
     pay_sht.range("A2").value = pay
-    file = f"template_{Utils.get_time_as_string()}.xls"
+    file = f"template_cmb_{Utils.get_time_as_string()}.xls"
     wb.save(file)
     wb.close()
     app.quit()
 
 
-def run(file: str):
+def get_content(file: str) -> list:
     contents = read_cmd(file)
     contents = filter_data(contents)
     contents = split_contents(contents)
+    return contents
+
+
+def run(file: str):
+    contents = get_content(file)
     write_excel(contents)
 
 
-run(r"D:\Workspace\code\temp\cmb\creditCard20200708.txt")
-
+run(r"C:\Users\philo\Downloads\temp\Music1\CreditCardReckoning.txt")

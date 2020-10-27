@@ -8,7 +8,7 @@
 # @Created:     2020/9/24 - 11:06
 # --------------------------------------------------------
 from automotive import *
-from src.codes.context import *
+# from src.codes.context import *
 from time import sleep
 import cv2
 
@@ -98,4 +98,22 @@ def target():
     close_device()
 
 
-target()
+def tsts():
+    folder = r"d:\temp\video"
+    camera = Camera()
+    camera.open_camera()
+    camera.stop_record()
+    for i in range(2):
+        logger.info(f"test is now start {i + 1} times")
+        # sleep(5)
+        # logger.info("1s 后牌照")
+        # sleep(1)
+        # camera.take_picture(f"{folder}\\{i + 1}__{Utils.get_time_as_string()}.jpg")
+        camera.record_video(f"{folder}\\{i + 1}__{Utils.get_time_as_string()}.avi")
+        sleep(10)
+        camera.stop_record()
+        sleep(5)
+    camera.close_camera()
+
+
+tsts()
