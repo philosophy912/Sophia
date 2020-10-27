@@ -19,6 +19,7 @@ end_date_time = "2020-10-27"
 account_type = "招行信用卡P"
 cmb_file = r"C:\Users\philo\Downloads\temp\Music1\CreditCardReckoning.txt"
 my_money_file = r"D:\Workspace\github\code\temp\myMoney.xls"
+save_file = r"D:\Workspace\github\code\temp\1.txt"
 
 
 def handle_sheet(sheet: Sheet, count: int, start_date: str = None, end_date: str = None):
@@ -69,19 +70,47 @@ def get_mymoney_content(excel_file):
     return lines
 
 
+def write_to_file(contents):
+    with open(save_file, "w") as f:
+        for content in contents:
+            category, account, exchange, date = content
+            f.write(f"{category}&&{account}&&{exchange}&&{date}\n")
+
+
+def get_content_from_file(txt_file) -> list:
+    contents = []
+    with open(txt_file, "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            line = line.replace("\n", "")
+            logger.debug(f"line = {line}")
+            if line != "":
+                line_sep = line.split("&&")
+                category = line_sep[0]
+                account = line_sep[1]
+                exchange = line_sep[2]
+                date = line_sep[3]
+                contents.append((category, account, exchange, date))
+    return contents
+
+
 def test():
     missing = []
     cmb_contents = get_content(cmb_file)
-    my_money_contents = get_mymoney_content(my_money_file)
+    # my_money_contents = get_mymoney_content(my_money_file)
+    my_money_contents = get_content_from_file(save_file)
     for cmb in cmb_contents:
         cmb_date = cmb[1]
         cmb_date = datetime.strptime(cmb_date, format_str)
-        cmb_price = cmb[5]
+        cmb_price = cmb[6]
+        logger.debug(f"cmb_date = {cmb_date} and cmb_price = {cmb_price} and type is {type(cmb_price)}")
         for my_money in my_money_contents:
             my_money_date = my_money[3]
             my_money_date = datetime.strptime(my_money_date, format_str)
             my_money_price = my_money[2]
-            if cmb_date == my_money_date and cmb_price == my_money_price:
+            logger.debug(f"my_money_date = {my_money_date} and my_money_price = {my_money_price} "
+                        f"and type is {type(my_money_price)}")
+            if cmb_date == my_money_date and cmb_price.strip() == my_money_price.strip():
                 break
         missing.append(cmb)
     for miss in missing:
@@ -90,3 +119,4 @@ def test():
 
 
 test()
+# write_to_file(get_mymoney_content(my_money_file))
