@@ -103,7 +103,7 @@ if test_case_type == "空调屏":
     if air_condition_port and air_condition_baud_rate:
         air_condition = AirCondition(save_path=qnx_screen_shot_path, port=air_condition_port)
         logger.info(f"air_condition is initialization")
-if test_case_type in ("智能座舱", "仪表", "中控"):
+if test_case_type in ("智能座舱", "仪表", "中控", "HMI"):
     logger.info("请先remount系统.................... 步骤如下")
     logger.info("""
         1、关闭dm-verity
@@ -122,10 +122,11 @@ if test_case_type in ("智能座舱", "仪表", "中控"):
         android_service = AndroidService(tool_type=ToolTypeEnum.from_value(android_automation_type))
         logger.info(f"android_service is initialization")
     if test_case_type != "中控":
-        hypervisor = HypervisorScreenShot(save_path=qnx_screen_shot_path, device_id=android_device_id)
-        logger.info(f"hypervisor is initialization")
-    if hmi_username and hmi_password and hmi_board_path:
-        cluster_hmi = ClusterHmi(board_path=hmi_board_path, local_folder=screenshot, test_binary=hmi_test_binary)
+        if ip_address and hmi_username and hmi_board_path:
+            cluster_hmi = ClusterHmi(board_path=hmi_board_path, local_folder=screenshot, test_binary=hmi_test_binary)
+        else:
+            hypervisor = HypervisorScreenShot(save_path=qnx_screen_shot_path, device_id=android_device_id)
+            logger.info(f"hypervisor is initialization")
 
 
 def open_device():
