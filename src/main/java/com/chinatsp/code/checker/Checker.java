@@ -6,6 +6,7 @@ import com.chinatsp.code.utils.CheckUtils;
 import com.chinatsp.code.utils.ReaderUtils;
 import com.chinatsp.dbc.entity.Message;
 import com.chinatsp.dbc.impl.DbcParser;
+import com.philosophy.base.util.StringsUtils;
 import com.philosophy.character.util.CharUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -38,13 +39,17 @@ public class Checker {
 
     @SneakyThrows
     public List<Message> check(Map<String, List<BaseEntity>> map, Map<ConfigureTypeEnum, String> configure, String folder) {
+        // 可以允许DBC文件不存在，但是就不能够有检查CAN的部分
         String dbcFile = configure.get(ConfigureTypeEnum.DBC_FILE);
-        Path dbcPath = Paths.get(folder, dbcFile);
-        if (!Files.exists(dbcPath)) {
-            String error = "DBC文件[" + dbcFile + "]不存在，请检查配置的路径是否正确";
-            throw new RuntimeException(error);
+        List<Message> messages = null;
+        if(StringsUtils.isNotEmpty(dbcFile)){
+            Path dbcPath = Paths.get(folder, dbcFile);
+            if (!Files.exists(dbcPath)) {
+                String error = "DBC文件[" + dbcFile + "]不存在，请检查配置的路径是否正确";
+                throw new RuntimeException(error);
+            }
+            messages = dbcParser.parse(dbcPath);
         }
-        List<Message> messages = dbcParser.parse(dbcPath);
         for (Map.Entry<String, List<BaseEntity>> entry : map.entrySet()) {
             String name = entry.getKey();
             String fullName = readerUtils.getFullClassName(CharUtils.upperCase(name) + "Checker", CHECKER_PACKAGE_NAME);

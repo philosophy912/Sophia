@@ -31,6 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.chinatsp.code.utils.Constant.EQUAL;
+
 /**
  * @author lizhe
  * @date 2020/9/7 13:22
@@ -257,9 +259,17 @@ public class CheckUtils {
         int maxWidth;
         int maxHeight;
         if (type == DeviceTpeEnum.QNX) {
+            if(qnxWidth == -1 || qnxHeight == -1){
+                String error = "请检查Sheet[配置(Configure)]中的[QNX屏幕宽高]填写是否正确";
+                throw new RuntimeException(error);
+            }
             maxWidth = qnxWidth;
             maxHeight = qnxHeight;
         } else {
+            if(androidWidth == -1 || androidHeight == -1){
+                String error = "请检查Sheet[配置(Configure)]中的[Android屏幕宽高]填写是否正确";
+                throw new RuntimeException(error);
+            }
             maxWidth = androidWidth;
             maxHeight = androidHeight;
         }
@@ -810,5 +820,23 @@ public class CheckUtils {
             String error = "Sheet[" + className + "]的第" + index + "行执行条件不正确，后半部分不能既有PASS，又有函数";
             throw new RuntimeException(error);
         }
+    }
+
+    /**
+     * 此处必须以=号分割的来表示参数名和参数值
+     * @param params 参数名列表
+     * @param index 序号
+     * @param className 类名
+     */
+    public void checkParam(List<String> params, int index, String className) {
+        for(String param : params){
+            if (param.split(EQUAL).length != 2){
+                String error = "Sheet[" + className + "]的第" + index + "行函数参数不正确，必须有函数的参数名和参数值，并以=号分开，" +
+                        "如file=\"aaa\" 或者 value={\"aa\": \"bb\"}";
+                throw new RuntimeException(error);
+            }
+        }
+
+
     }
 }

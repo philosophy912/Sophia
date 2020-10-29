@@ -14,6 +14,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,6 +22,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,10 +109,10 @@ public class CodeRunner implements CommandLineRunner {
         Path report = getSub(result, "report");
         create(report, initFile);
         // 创建screenshot文件夹并拷贝init文件
-        Path screenshot = getSub(result, "report");
+        Path screenshot = getSub(result, "screenshot");
         create(screenshot, initFile);
         // 创建temp文件夹并拷贝init文件
-        Path temp = getSub(result, "report");
+        Path temp = getSub(result, "temp");
         create(temp, initFile);
         // 创建testcase文件夹并拷贝init文件
         Path testcase = getSub(src, "testcase");
@@ -120,6 +122,18 @@ public class CodeRunner implements CommandLineRunner {
         folders.put(DBC, dbc);
         folders.put(TEST_CASE, testcase);
         return folders;
+    }
+
+    @SneakyThrows
+    private void generatorCodes(Path excel, Map<String, Path> folders){
+        try {
+            generator(excel, folders);
+        }catch (Exception e){
+            Path top = folders.get(TOP);
+            // 捕获异常则不生成代码
+            Files.walk(top).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -144,7 +158,7 @@ public class CodeRunner implements CommandLineRunner {
                 }
                 Map<String, Path> folders = createFolders(runTimeFolder);
                 log.info("开始生成[{}]描述的测试用例代码", param);
-                generator(testcase, folders);
+                generatorCodes(testcase, folders);
             }else{
                 log.info("生成模板文件template.xls");
                 templateService.createTemplate(runTimeFolder);
@@ -156,11 +170,11 @@ public class CodeRunner implements CommandLineRunner {
             if(Files.exists(testCaseXls)){
                 Map<String, Path> folders = createFolders(runTimeFolder);
                 log.info("开始生成[{}]描述的测试用例代码", TEST_CASE_FILE_NAME_XLS);
-                generator(testCaseXls, folders);
+                generatorCodes(testCaseXls, folders);
             }else if (Files.exists(testCaseXlsx)){
                 Map<String, Path> folders = createFolders(runTimeFolder);
                 log.info("开始生成[{}]描述的测试用例代码", TEST_CASE_FILE_NAME_XLSX);
-                generator(testCaseXlsx, folders);
+                generatorCodes(testCaseXlsx, folders);
             }else{
                 log.info("生成模板文件template.xls");
                 templateService.createTemplate(runTimeFolder);

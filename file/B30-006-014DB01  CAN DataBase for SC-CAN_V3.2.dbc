@@ -1006,7 +1006,7 @@ BO_ 707 HUT_FD1: 64 HUT
  SG_ LSSWarnFormSwtReq : 100|2@0+ (1,0) [0|3] ""  GW
  SG_ IntelligentEvaSwtReq : 107|1@0+ (1,0) [0|1] ""  GW
  SG_ HUT_BattSOCLimSaveMod : 119|5@0+ (1,0) [0|31] ""  GW
- SG_ HUTRadioFrq : 143|12@0+ (1,0) [0|4095] "AM; kHzFM; MHz" Vector__XXX
+ SG_ HUTRadioFrq : 143|12@0+ (1,0) [0|4095] "AM: kHzFM: MHz" Vector__XXX
  SG_ MediaPlaySrc : 159|4@0+ (1,0) [0|15] "" Vector__XXX
  SG_ HUT_DrvModReq : 167|4@0+ (1,0) [0|15] ""  GW
  SG_ USB_AudioSts : 169|2@0+ (1,0) [0|3] "" Vector__XXX

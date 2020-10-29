@@ -18,6 +18,10 @@ public class CanCompareChecker extends BaseChecker implements IChecker {
 
     @Override
     public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String> configure) {
+        if (messages==null){
+            String error = "需要在Sheet[配置(Configure)]中填写[DBC解析后生成的文件名称]内容";
+            throw new RuntimeException(error);
+        }
         List<BaseEntity> entities = map.get(CharUtils.lowerCase(this.getClass().getSimpleName().replace("Checker", "")));
         for (int i = 0; i < entities.size(); i++) {
             int index = i + 1;

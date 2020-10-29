@@ -26,6 +26,8 @@ public class CommonChecker extends BaseChecker implements IChecker {
             String name = common.getClass().getSimpleName();
             // 检查名字是否符合python命名规范
             checkUtils.checkPythonFunction(common.getName(), index, name);
+            // 检查param是否以等号分割
+            checkUtils.checkParam(common.getParams(), index, name);
         }
         // 检查函数名是否有重名
         checkUtils.findDuplicate(entities, Common.class.getSimpleName());

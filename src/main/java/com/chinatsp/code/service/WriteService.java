@@ -10,6 +10,7 @@ import com.chinatsp.code.writer.impl.testcase.TestCaseWriter;
 import com.chinatsp.dbc.entity.Message;
 import com.philosophy.base.common.Pair;
 import com.philosophy.base.common.Triple;
+import com.philosophy.base.util.StringsUtils;
 import com.philosophy.txt.util.TxtUtils;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -73,8 +74,16 @@ public class WriteService implements IWriteService {
         }
         // 写DBC
         String dbcAbsolutePath = folders.get(DBC).toAbsolutePath().toString();
-        String content = JSON.toJSONString(messages);
-        Path dbc = Paths.get(dbcAbsolutePath, map.get(ConfigureTypeEnum.DBC_JSON));
-        txtUtils.write(dbc, content, "utf-8", false, false);
+        if (messages != null) {
+            String content = JSON.toJSONString(messages);
+            String dbcFile = map.get(ConfigureTypeEnum.DBC_JSON);
+            if (StringsUtils.isEmpty(dbcFile)){
+                String error = "需要在Sheet[配置(Configure)]中填写[DBC解析后生成的文件名称]内容";
+                throw new RuntimeException(error);
+            }
+            Path dbc = Paths.get(dbcAbsolutePath, dbcFile);
+            txtUtils.write(dbc, content, "utf-8", false, false);
+        }
+
     }
 }

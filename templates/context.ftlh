@@ -88,8 +88,9 @@ if konstanter_serial_port and konstanter_serial_baud_rate:
     konstanter = KonstanterActions(port=konstanter_serial_port, baud_rate=konstanter_serial_baud_rate)
     logger.info(f"konstanter is initialization")
 if dbc_json:
-    can_service = CANService(messages=dbc)
-    logger.info(f"can_service is initialization")
+    if os.path.exists(dbc):
+        can_service = CANService(messages=dbc)
+        logger.info(f"can_service is initialization")
 if max_relay_channel:
     relay = RelayActions()
     logger.info(f"relay is initialization")
