@@ -414,8 +414,8 @@ class Compare(object):
         files = self.wechat.get_wechat_files(r"C:\Users\philo\Downloads\temp\Music1")
         contents = self.wechat.walk_files(files)
         contents = self.wechat.parse_content(contents)
-        for c in contents:
-            print(c)
+        contents = self.wechat.get_fire(contents)
+        self.wechat.write_excel(contents)
 
 
 class Wechat(object):
@@ -451,8 +451,35 @@ class Wechat(object):
                 account = line_contents[6].replace("/", "零钱")
                 exchange = date_time, pay_type, exchange_people, change_type, amount, account
                 exchanges.append(exchange)
-        exchanges = list(filter(lambda x: x[6] == "零钱", exchanges))
+        exchanges = list(filter(lambda x: x[5] == "零钱", exchanges))
         return exchanges
+
+    @staticmethod
+    def get_fire(contents: list):
+        return list(filter(lambda x: x[4].strip() == "8.00", contents))
+
+    @staticmethod
+    def __parse_excel(contents: list) -> list:
+        exchanges = []
+        # 交易类型	日期	分类	子分类	账户1	账户2	金额	成员	商家	项目	备注
+        for content in contents:
+            date_time, pay_type, exchange_people, change_type, amount, account = content
+            pay_detail = f"{pay_type} {exchange_people}"
+            pay_type = "支出"
+            exchanges.append(
+                (pay_type, date_time, "行车交通", "打车", "微信钱包P", "", amount, "", "", "", pay_detail))
+        return exchanges
+
+    def write_excel(self, contents: list):
+        # visible设置为False的时候可能产生错误
+        app = xw.App(visible=False, add_book=False)
+        wb = app.books.open("template.xls", read_only=True)
+        pay_sht = wb.sheets["支出"]
+        pay_sht.range("A2").value = self.__parse_excel(contents)
+        file = f"template_wechat_{Utils.get_time_as_string()}.xls"
+        wb.save(file)
+        wb.close()
+        app.quit()
 
 
 if __name__ == '__main__':
