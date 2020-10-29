@@ -19,6 +19,7 @@ import java.util.Map;
 public class ScreenOpsActionWriter implements IFreeMarkerWriter {
     @Override
     public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
+        String pre = this.getClass().getSimpleName().replace("Writer", "").toLowerCase() + "_";
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
@@ -26,24 +27,24 @@ public class ScreenOpsActionWriter implements IFreeMarkerWriter {
             DeviceTpeEnum deviceType = screenOpsAction.getDeviceType();
             ScreenOperationTypeEnum type = screenOpsAction.getScreenOperationType();
             Map<String, Object> map = new HashMap<>();
-            map.put(FUNCTION_NAME, screenOpsAction.getName());
-            if(deviceType == DeviceTpeEnum.ANDROID){
+            map.put(FUNCTION_NAME, pre + screenOpsAction.getName());
+            if (deviceType == DeviceTpeEnum.ANDROID) {
                 map.put(HANDLE_NAME, deviceType.getName() + ".adb");
-            }else{
+            } else {
                 map.put(HANDLE_NAME, deviceType.getName());
             }
             map.put(HANDLE_FUNCTION, type.getName());
             map.put(DISPLAY_ID, String.valueOf(screenOpsAction.getScreenIndex()));
             map.put(CONTINUE_TIMES, String.valueOf(screenOpsAction.getContinueTimes()));
             List<Pair<Integer, Integer>> points = screenOpsAction.getPoints();
-            if (type == ScreenOperationTypeEnum.SLIDE){
+            if (type == ScreenOperationTypeEnum.SLIDE) {
                 Pair<Integer, Integer> pair1 = points.get(0);
                 Pair<Integer, Integer> pair2 = points.get(1);
                 map.put(START_X, String.valueOf(pair1.getFirst()));
                 map.put(END_X, String.valueOf(pair1.getSecond()));
                 map.put(START_Y, String.valueOf(pair2.getFirst()));
                 map.put(END_Y, String.valueOf(pair2.getSecond()));
-            }else{
+            } else {
                 Pair<Integer, Integer> pair = points.get(0);
                 map.put(X, String.valueOf(pair.getFirst()));
                 map.put(Y, String.valueOf(pair.getSecond()));

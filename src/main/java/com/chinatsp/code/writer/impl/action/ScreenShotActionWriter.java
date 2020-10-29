@@ -17,13 +17,14 @@ import java.util.Map;
 public class ScreenShotActionWriter implements IFreeMarkerWriter {
     @Override
     public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
+        String pre = this.getClass().getSimpleName().replace("Writer", "").toLowerCase() + "_";
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             ScreenShotAction screenShotAction = (ScreenShotAction) entity;
             ScreenShotTypeEnum type = screenShotAction.getScreenShotType();
             Map<String, Object> map = new HashMap<>();
-            map.put(FUNCTION_NAME, screenShotAction.getName());
+            map.put(FUNCTION_NAME, pre + screenShotAction.getName());
             if (type == ScreenShotTypeEnum.ANDROID_DISPLAY) {
                 map.put(HANDLE_NAME, type.getName() + ".adb");
             } else {

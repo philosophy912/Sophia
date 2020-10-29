@@ -19,12 +19,13 @@ public class ElementWriter implements IFreeMarkerWriter {
 
     @Override
     public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
+        String pre = this.getClass().getSimpleName().replace("Writer", "").toLowerCase() + "_";
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             Element element = (Element) entity;
             Map<String, Object> map = new HashMap<>();
-            map.put(FUNCTION_NAME, element.getName());
+            map.put(FUNCTION_NAME, pre + element.getName());
             List<Pair<String, String>> pairs = new ArrayList<>();
             Map<AndroidLocatorTypeEnum, String> locators = element.getLocators();
             for (Map.Entry<AndroidLocatorTypeEnum, String> entry : locators.entrySet()) {

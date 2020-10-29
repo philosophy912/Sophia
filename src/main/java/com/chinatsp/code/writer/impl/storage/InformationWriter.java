@@ -17,12 +17,13 @@ public class InformationWriter implements IFreeMarkerWriter {
 
     @Override
     public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
+        String pre = this.getClass().getSimpleName().replace("Writer", "").toLowerCase() + "_";
         List<FreeMarker> freeMarkers = new ArrayList<>();
-        for(BaseEntity baseEntity: entities){
+        for (BaseEntity baseEntity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             Information information = (Information) baseEntity;
             Map<String, Object> map = new HashMap<>();
-            map.put(FUNCTION_NAME, information.getName());
+            map.put(FUNCTION_NAME, pre + information.getName());
             map.put(HANDLE_NAME, "android_service");
             map.put(HANDLE_FUNCTION, "get_element_attribute");
             map.put(ELEMENT_ATTRIBUTE, information.getElementAttribute().getValue());

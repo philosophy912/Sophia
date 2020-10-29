@@ -18,12 +18,13 @@ public class InformationCompareWriter implements IFreeMarkerWriter {
 
     @Override
     public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
+        String pre = this.getClass().getSimpleName().replace("Writer", "").toLowerCase() + "_";
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity baseEntity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             InformationCompare informationCompare = (InformationCompare) baseEntity;
             Map<String, Object> map = new HashMap<>();
-            map.put(FUNCTION_NAME, informationCompare.getName());
+            map.put(FUNCTION_NAME, pre + informationCompare.getName());
             map.put(HANDLE_NAME, "android_service");
             map.put(HANDLE_FUNCTION, "get_element_attribute");
             map.put(LOCATOR, informationCompare.getElement());

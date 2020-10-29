@@ -23,12 +23,13 @@ public class ElementCompareWriter implements IFreeMarkerWriter {
 
     @Override
     public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
+        String pre = this.getClass().getSimpleName().replace("Writer", "").toLowerCase() + "_";
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity baseEntity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             ElementCompare elementCompare = (ElementCompare) baseEntity;
             Map<String, Object> map = new HashMap<>();
-            map.put(FUNCTION_NAME, elementCompare.getName());
+            map.put(FUNCTION_NAME, pre + elementCompare.getName());
             map.put(HANDLE_NAME, "android_service");
             map.put(HANDLE_FUNCTION, "exist");
             map.put(EXIST, elementCompare.getElementCompareType() == ElementCompareTypeEnum.NOT_EXIST ? "1" : "0");

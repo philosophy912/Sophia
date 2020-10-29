@@ -18,6 +18,7 @@ public class BatteryActionWriter implements IFreeMarkerWriter {
 
     @Override
     public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
+        String pre = this.getClass().getSimpleName().replace("Writer", "").toLowerCase() + "_";
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
@@ -25,7 +26,7 @@ public class BatteryActionWriter implements IFreeMarkerWriter {
             BatteryOperationTypeEnum type = batteryAction.getBatteryOperationType();
             Double[] values = batteryAction.getValues();
             Map<String, Object> map = new HashMap<>();
-            map.put(FUNCTION_NAME, batteryAction.getName());
+            map.put(FUNCTION_NAME, pre + batteryAction.getName());
             map.put(HANDLE_NAME, batteryAction.getBatteryType().getName());
             map.put(HANDLE_FUNCTION, type.getName());
             map.put(CYCLE_TIME, String.valueOf(batteryAction.getRepeatTimes()));

@@ -16,12 +16,13 @@ import java.util.Map;
 public class ElementActionWriter implements IFreeMarkerWriter {
     @Override
     public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
+        String pre = this.getClass().getSimpleName().replace("Writer", "").toLowerCase() + "_";
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             ElementAction elementAction = (ElementAction) entity;
             Map<String, Object> map = new HashMap<>();
-            map.put(FUNCTION_NAME, elementAction.getName());
+            map.put(FUNCTION_NAME, pre + elementAction.getName());
             map.put(HANDLE_NAME, "android_service");
             map.put(HANDLE_FUNCTION, elementAction.getOperationActionType().getName());
             map.put(SLIDE_TIMES, String.valueOf(elementAction.getSlideTimes()));

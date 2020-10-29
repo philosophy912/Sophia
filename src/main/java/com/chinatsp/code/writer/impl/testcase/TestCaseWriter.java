@@ -90,14 +90,27 @@ public class TestCaseWriter {
         if (functionName == null) {
             return type.getValue();
         } else {
-            if (type == TestCaseFunctionTypeEnum.SLEEP) {
-                return type.getValue() + "(" + functionName + ")";
-            } else if (type == TestCaseFunctionTypeEnum.CAN_COMPARE) {
-                return functionName + "(stack)";
-            } else {
-                return functionName + "()";
+            String pre = type.getValue().toLowerCase() + "_";
+            switch (type) {
+                case BATTERY_ACTION:
+                case ELEMENT_ACTION:
+                case RELAY_ACTION:
+                case SCREEN_OPS_ACTION:
+                case SCREEN_SHOT_ACTION:
+                case CAN_ACTION:
+                case COMMON:
+                case ELEMENT_COMPARE:
+                case IMAGE_COMPARE:
+                case INFORMATION_COMPARE:
+                case INFORMATION:
+                    return pre + functionName + "()";
+                case CAN_COMPARE:
+                    return pre + functionName + "(stack)";
+                case SLEEP:
+                    return type.getValue() + "(" + functionName + ")";
+                default:
+                    return functionName + "()";
             }
-
         }
     }
 

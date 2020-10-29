@@ -78,12 +78,13 @@ public class CommonWriter implements IFreeMarkerWriter {
 
     @Override
     public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
+        String pre = this.getClass().getSimpleName().replace("Writer", "").toLowerCase() + "_";
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity baseEntity : entities) {
             Common common = (Common) baseEntity;
             FreeMarker freeMarker = new FreeMarker();
             Map<String, Object> map = new HashMap<>();
-            map.put(FUNCTION_NAME, common.getName());
+            map.put(FUNCTION_NAME, pre + common.getName());
             map.put(HANDLE_NAME, common.getModuleName().getValue());
             map.put(HANDLE_FUNCTION, common.getFunctionName());
             freeMarker.setParamList(parseParam(common.getParams()));

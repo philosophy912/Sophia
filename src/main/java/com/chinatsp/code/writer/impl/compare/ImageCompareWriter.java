@@ -18,7 +18,7 @@ import java.util.Map;
  **/
 @Component
 public class ImageCompareWriter implements IFreeMarkerWriter {
-    private String calcPosition(List<Integer[]> positions){
+    private String calcPosition(List<Integer[]> positions) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < positions.size(); i++) {
             Integer[] position = positions.get(i);
@@ -39,19 +39,20 @@ public class ImageCompareWriter implements IFreeMarkerWriter {
 
     @Override
     public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
+        String pre = this.getClass().getSimpleName().replace("Writer", "").toLowerCase() + "_";
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity baseEntity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             ImageCompare imageCompare = (ImageCompare) baseEntity;
             Map<String, Object> map = new HashMap<>();
-            map.put(FUNCTION_NAME, imageCompare.getName());
+            map.put(FUNCTION_NAME, pre + imageCompare.getName());
             map.put(HANDLE_NAME, "image_compare");
             map.put(HANDLE_FUNCTION, "compare");
             map.put(HANDLE_FUNCTION_SUB, "handle_images");
             map.put(IMAGE_NAME, imageCompare.getImageName());
             map.put(COMPARE_TYPE, imageCompare.getCompareType().getValue());
-            map.put(LIGHT,imageCompare.getTemplateLight());
-            map.put(DARK,imageCompare.getTemplateDark());
+            map.put(LIGHT, imageCompare.getTemplateLight());
+            map.put(DARK, imageCompare.getTemplateDark());
             map.put(POSITION, calcPosition(imageCompare.getPositions()));
             map.put(SIMILARITY, String.valueOf(imageCompare.getSimilarity()));
             map.put(GRAY, imageCompare.getIsGray() ? "True" : "False");

@@ -17,9 +17,7 @@ import java.util.Map;
 @Slf4j
 public class TestCaseChecker extends BaseChecker implements IChecker {
 
-
-    @Override
-    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String> configure) {
+    private void checkAllFunctionDuplicate(Map<String, List<BaseEntity>> map){
         // 检查TestCase中的是否有重复的情况发生
         Map<String, BaseEntity> duplicateMap = new HashMap<>(12);
         for (Map.Entry<String, List<BaseEntity>> entry : map.entrySet()) {
@@ -39,6 +37,12 @@ public class TestCaseChecker extends BaseChecker implements IChecker {
                 }
             }
         }
+    }
+
+
+    @Override
+    public void check(Map<String, List<BaseEntity>> map, List<Message> messages, Map<ConfigureTypeEnum, String> configure) {
+        // checkAllFunctionDuplicate(map);
         // 单独检查test case
         List<BaseEntity> entities = getEntity(map, TestCase.class);
         for (int i = 0; i < entities.size(); i++) {

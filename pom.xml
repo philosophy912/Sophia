@@ -14,7 +14,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
         <sophia>3.1.0</sophia>
-        <dbc>1.0.0</dbc>
+        <dbc>2.0.0</dbc>
     </properties>
 
     <dependencies>

@@ -16,12 +16,13 @@ import java.util.Map;
 public class RelayActionWriter implements IFreeMarkerWriter {
     @Override
     public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
+        String pre = this.getClass().getSimpleName().replace("Writer","").toLowerCase() +"_";
         List<FreeMarker> freeMarkers = new ArrayList<>();
         for (BaseEntity entity : entities) {
             FreeMarker freeMarker = new FreeMarker();
             RelayAction relayAction = (RelayAction) entity;
             Map<String, Object> map = new HashMap<>();
-            map.put(FUNCTION_NAME, relayAction.getName());
+            map.put(FUNCTION_NAME, pre + relayAction.getName());
             map.put(HANDLE_NAME, "relay");
             map.put(HANDLE_FUNCTION, relayAction.getRelayOperationType().getName());
             map.put(CHANNEL_INDEX, String.valueOf(relayAction.getChannelIndex()));
