@@ -65,12 +65,18 @@ class DbcApplicationTests {
         }
     }
 
+    public static void test5(){
+        List<Message> messages = dbcParser.parse(Paths.get("D:\\Workspace\\code\\file\\B30-006-014DB01  CAN DataBase for SC-CAN_V3.2.dbc"));
+        System.out.println(messages);
+    }
+
 
     public static void main(String[] args) {
         // test1();
         /*test2();
-        test3();*/
-        test4();
+        test3();
+        test4();*/
+        test5();
     }
 
 }

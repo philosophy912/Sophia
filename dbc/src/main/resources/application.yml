@@ -1,9 +1,8 @@
 logging:
   level:
-    com.chinatsp.dbc.*: info
+    com.chinatsp.dbc.*: debug
     root: info
 
-dbcfile: D:\Workspace\github\knife\dbc\src\test\resources\dbc\4InfoCAN_ICAR 7 月杂合车协议-1.dbc
 
 # EXCEL方式的DBC配置文件
 dbcexcel:

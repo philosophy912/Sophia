@@ -389,7 +389,7 @@ public class DbcParser implements IParse {
         int maxSize = 3;
         if (contents.length < maxSize) {
             log.debug("not standard ba");
-        }else{
+        } else {
             String name = contents[0].replaceAll(QUOTATION, NULL);
             String type = contents[1].trim();
             String msgId = contents[2].trim();
@@ -467,7 +467,16 @@ public class DbcParser implements IParse {
          *  大端模式表示反向，小端模式表示顺向
          */
         String sg = DbcUtils.getContent(content, SG);
+        log.debug("sg = {}", sg);
         String[] colons = sg.split(COLON);
+        // 此处可能存在colons.length > 2 的情况
+        if (colons.length != 2) {
+            String[] realColons = new String[2];
+            realColons[0] = colons[0];
+            realColons[1] = sg.substring(realColons[0].length() + 1);
+            colons = realColons;
+        }
+        log.debug("colons = {}", Arrays.toString(colons));
         String name = colons[0].trim();
         log.debug("signal name = {}", name);
         signal.setName(name);
@@ -478,7 +487,12 @@ public class DbcParser implements IParse {
         String at1 = ats[0];
         String[] yAxis = at1.split(Y_AXIS);
         String startBit = yAxis[0].trim();
-        signal.setStartBit(Integer.parseInt(startBit));
+        try {
+            signal.setStartBit(Integer.parseInt(startBit));
+        } catch (NumberFormatException e) {
+            System.out.println(sg);
+            throw new RuntimeException(e);
+        }
         String signalSize = yAxis[1].trim();
         signal.setSignalSize(Integer.parseInt(signalSize));
         // 0+ (1,2019) [2019|2050] "year" TBox,CGW
