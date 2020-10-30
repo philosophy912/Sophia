@@ -147,7 +147,12 @@ public class Reader {
             try {
                 handleRow(entities, row, clazz, entityMap, row.getRowNum());
             } catch (RuntimeException e) {
-                log.debug("sheetName is {} and rowNo = {} parse error, message is [{}]", sheetName, row.getRowNum(), e.getMessage());
+                if (sheetName.equalsIgnoreCase("TestCase") || sheetName.equalsIgnoreCase("TestCaseSetUp")) {
+                    throw new RuntimeException(e);
+                } else {
+                    log.debug("sheetName is {} and rowNo = {} parse error, message is [{}]", sheetName, row.getRowNum(), e.getMessage());
+
+                }
             }
 
         }

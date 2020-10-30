@@ -259,14 +259,14 @@ public class CheckUtils {
         int maxWidth;
         int maxHeight;
         if (type == DeviceTpeEnum.QNX) {
-            if(qnxWidth == -1 || qnxHeight == -1){
+            if (qnxWidth == -1 || qnxHeight == -1) {
                 String error = "请检查Sheet[配置(Configure)]中的[QNX屏幕宽高]填写是否正确";
                 throw new RuntimeException(error);
             }
             maxWidth = qnxWidth;
             maxHeight = qnxHeight;
         } else {
-            if(androidWidth == -1 || androidHeight == -1){
+            if (androidWidth == -1 || androidHeight == -1) {
                 String error = "请检查Sheet[配置(Configure)]中的[Android屏幕宽高]填写是否正确";
                 throw new RuntimeException(error);
             }
@@ -582,7 +582,11 @@ public class CheckUtils {
     public void checkAction(List<Pair<TestCaseFunctionTypeEnum, String>> pairs, int index, Map<String, List<BaseEntity>> map) {
         for (Pair<TestCaseFunctionTypeEnum, String> pair : pairs) {
             TestCaseFunctionTypeEnum typeEnum = pair.getFirst();
+            // 函数名，需要做处理
             String functionName = pair.getSecond();
+            functionName = functionName.trim().replace(" ", "_")
+                    .replace("-", "_")
+                    .replace(".", "_");
             if (!(typeEnum == TestCaseFunctionTypeEnum.SLEEP || typeEnum == TestCaseFunctionTypeEnum.YIELD
                     || typeEnum == TestCaseFunctionTypeEnum.CLEAR || typeEnum == TestCaseFunctionTypeEnum.PASS
                     || typeEnum == TestCaseFunctionTypeEnum.STACK || typeEnum == TestCaseFunctionTypeEnum.LOST)) {
@@ -615,6 +619,7 @@ public class CheckUtils {
         boolean flag = false;
         for (BaseEntity baseEntity : entities) {
             TestCase testCase = (TestCase) baseEntity;
+            // 函数名，需要做处理
             if (testCase.getModuleName().equalsIgnoreCase(moduleName)) {
                 flag = true;
                 break;
@@ -824,13 +829,14 @@ public class CheckUtils {
 
     /**
      * 此处必须以=号分割的来表示参数名和参数值
-     * @param params 参数名列表
-     * @param index 序号
+     *
+     * @param params    参数名列表
+     * @param index     序号
      * @param className 类名
      */
     public void checkParam(List<String> params, int index, String className) {
-        for(String param : params){
-            if (param.split(EQUAL).length != 2){
+        for (String param : params) {
+            if (param.split(EQUAL).length != 2) {
                 String error = "Sheet[" + className + "]的第" + index + "行函数参数不正确，必须有函数的参数名和参数值，并以=号分开，" +
                         "如file=\"aaa\" 或者 value={\"aa\": \"bb\"}";
                 throw new RuntimeException(error);

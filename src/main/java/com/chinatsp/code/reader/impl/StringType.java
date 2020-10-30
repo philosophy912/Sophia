@@ -14,6 +14,12 @@ public class StringType implements IClassType {
     @Override
     public void setValue(Object object, Field field, Class<?> clazz, String className, String cellValue, int index) {
         log.trace("handle string type");
+        String fieldName = field.getName();
+        if (fieldName.equalsIgnoreCase("name") || fieldName.equalsIgnoreCase("ImageName")) {
+            cellValue = cellValue.trim().replace(" ", "_")
+                    .replace("-", "_")
+                    .replace(".", "_");
+        }
         field.set(object, cellValue);
     }
 
