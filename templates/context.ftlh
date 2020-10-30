@@ -70,8 +70,6 @@ screenshot = "\\".join([result_folder, "screenshot"])
 temp = "\\".join([result_folder, "temp"])
 # report报告生成的路径
 report = "\\".join([result_folder, "report"])
-# allure 用例执行的路径
-allure_dir = "\\".join([result_folder, "allure"])
 
 
 image_compare = ImageCompare()

@@ -187,12 +187,13 @@ public class ConvertUtils {
         List<Pair<TestCaseFunctionTypeEnum, String>> pairs = new LinkedList<>();
         strings.forEach(s -> {
             String[] values = s.split(split);
+            TestCaseFunctionTypeEnum typeEnum = TestCaseFunctionTypeEnum.fromValue(values[0].trim());
             if (values.length == 2) {
                 String value = values[1].trim().replace(" ", "_")
                         .replace("-", "_");
-                pairs.add(new Pair<>(TestCaseFunctionTypeEnum.fromValue(values[0].trim()), value));
+                pairs.add(new Pair<>(typeEnum, value));
             } else {
-                pairs.add(new Pair<>(TestCaseFunctionTypeEnum.fromValue(values[0].trim()), null));
+                pairs.add(new Pair<>(typeEnum, null));
             }
 
         });

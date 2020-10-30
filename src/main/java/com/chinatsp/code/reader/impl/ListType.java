@@ -49,7 +49,7 @@ public class ListType implements IClassType {
                         List<Pair<TestCaseFunctionTypeEnum, String>> pairs = ConvertUtils.convertPairTestCaseFunctionTypeString(cellValue, EQUAL);
                         field.set(object, pairs);
                     } catch (Exception e) {
-                        String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "], 错误信息[" + e.getMessage() + "]";
                         throw new RuntimeException(error);
                     }
                 } else {
@@ -57,7 +57,7 @@ public class ListType implements IClassType {
                         List<Pair<String, String>> pairs = ConvertUtils.convertPairStringString(cellValue, EQUAL);
                         field.set(object, pairs);
                     } catch (Exception e) {
-                        String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
+                        String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "], 错误信息[" + e.getMessage() + "]";
                         throw new RuntimeException(error);
                     }
                 }
@@ -66,7 +66,7 @@ public class ListType implements IClassType {
                     List<Pair<Integer, Integer>> pairs = ConvertUtils.convertPairIntegerInteger(cellValue, LINE);
                     field.set(object, pairs);
                 } catch (Exception e) {
-                    String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "]";
+                    String error = "第" + index + "行填写错误，请检查" + className + "的值[" + cellValue + "], 错误信息[" + e.getMessage() + "]";
                     throw new RuntimeException(error);
                 }
             } else {
