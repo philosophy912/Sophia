@@ -68,6 +68,11 @@ result_folder = "\\".join([top_folder, "result"])
 screenshot = "\\".join([result_folder, "screenshot"])
 # 临时文件存放路径
 temp = "\\".join([result_folder, "temp"])
+# report报告生成的路径
+report = "\\".join([result_folder, "report"])
+# allure 用例执行的路径
+allure_dir = "\\".join([result_folder, "allure"])
+
 
 image_compare = ImageCompare()
 it6831 = None
@@ -297,6 +302,7 @@ def ${freemarker.params["functionName"]?lower_case}():
     image_name = f<#noparse>"</#noparse>${freemarker.params["imageName"]?lower_case}<#noparse>"</#noparse>
     <#if freemarker.params["handleName"] == "cluster_hmi">
     image_files = ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(image_name=image_name, count=${freemarker.params["count"]}, interval_time=interval_time)
+    sleep(1)
     ${freemarker.params["handleName"]}.download_images(image_files)
     <#else>
         <#if freemarker.params["handleName"] == "hypervisor">
