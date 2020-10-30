@@ -188,7 +188,9 @@ public class ConvertUtils {
         strings.forEach(s -> {
             String[] values = s.split(split);
             if (values.length == 2) {
-                pairs.add(new Pair<>(TestCaseFunctionTypeEnum.fromValue(values[0].trim()), values[1].trim()));
+                String value = values[1].trim().replace(" ", "_")
+                        .replace("-", "_");
+                pairs.add(new Pair<>(TestCaseFunctionTypeEnum.fromValue(values[0].trim()), value));
             } else {
                 pairs.add(new Pair<>(TestCaseFunctionTypeEnum.fromValue(values[0].trim()), null));
             }
