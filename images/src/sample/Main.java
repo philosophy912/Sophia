@@ -12,16 +12,21 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -41,6 +46,11 @@ public class Main extends Application {
     private Image image;
     private ImageView imageView;
     private StackPane stackPane;
+    private final String lineEnd = "\n";
+
+    private String currentFolder = null;
+    private final List<File> fileList = new LinkedList<>();
+    private int index = 0;
 
 
     private Canvas createCanvas(double width, double height) {
@@ -72,7 +82,6 @@ public class Main extends Application {
             double h = y2 - y1;
             String first = (int) x1 + "-" + (int) y1 + "-" + (int) w + "-" + (int) h;
             String second = "[  " + (int) (x1 + w / 2) + "-" + (int) (y1 + h / 2) + "  ]";
-            String lineEnd = "\n";
             if (null != image) {
                 gc.clearRect(0, 0, width, height);
                 gc.strokeRoundRect(x1, y1, w, h, 0, 0);
@@ -82,50 +91,104 @@ public class Main extends Application {
         return canvas;
     }
 
+    private void showImage(Stage primaryStage, String url) {
+        image = new Image(url);
+        width = image.getWidth();
+        height = image.getHeight();
+        primaryStage.setWidth(width);
+        primaryStage.setHeight(height + size);
+        imageView.setImage(image);
+        stackPane.getChildren().remove(1);
+        stackPane.getChildren().add(createCanvas(width, height));
+    }
+
     public MenuBar createMenuBar(Stage primaryStage) {
         // 添加菜单栏
         MenuBar menuBar = new MenuBar();
         Menu menu = new Menu("操作");
         MenuItem menuItem = new MenuItem("打开");
+        MenuItem folderItem = new MenuItem("打开文件夹");
         menu.getItems().add(menuItem);
+        menu.getItems().add(folderItem);
         menuBar.getMenus().add(menu);
         menuItem.setOnAction((ActionEvent e) -> {
             FileChooser chooser = new FileChooser();
+            if (currentFolder != null) {
+                chooser.setInitialDirectory(new File(currentFolder));
+            }
             chooser.getExtensionFilters().addAll(
 //                    new FileChooser.ExtensionFilter("JPG", "*.jpg"),
 //                    new FileChooser.ExtensionFilter("BMP", "*.bmp"),
 //                    new FileChooser.ExtensionFilter("PNG", "*.png"),
-                    new FileChooser.ExtensionFilter("All Images", "*.*")
+                    new FileChooser.ExtensionFilter("All Files", "*.*")
             );
             File file = chooser.showOpenDialog(primaryStage);
             if (null != file) {
-                String url = "file:" + file.toPath().toAbsolutePath().toAbsolutePath();
-                image = new Image(url);
-                width = image.getWidth();
-                height = image.getHeight();
-                primaryStage.setWidth(width);
-                primaryStage.setHeight(height + size);
-                imageView.setImage(image);
-                stackPane.getChildren().remove(1);
-                stackPane.getChildren().add(createCanvas(width, height));
+                currentFolder = file.getParent();
+                String fileFullName = file.getAbsolutePath();
+                String url = "file:" + fileFullName;
+                textArea.appendText("file:" + fileFullName + lineEnd);
+                showImage(primaryStage, url);
+            }
+        });
+        folderItem.setOnAction((ActionEvent e) -> {
+            DirectoryChooser chooser = new DirectoryChooser();
+            File folder = chooser.showDialog(primaryStage);
+            File[] folderFiles = folder.listFiles();
+            if (folderFiles != null) {
+                for (File file : folderFiles) {
+                    if (file.isFile()) {
+                        String fileName = file.getAbsolutePath();
+                        if (fileName.endsWith(".bmp") || fileName.endsWith(".jpg") || fileName.endsWith(".png")) {
+                            fileList.add(file);
+                        }
+                    }
+                }
+            }
+            if (fileList.size() > 0) {
+                File file = fileList.get(index);
+                String fileFullName = file.getAbsolutePath();
+                String url = "file:" + fileFullName;
+                textArea.appendText("file:" + fileFullName + lineEnd);
+                showImage(primaryStage, url);
             }
         });
         return menuBar;
     }
 
 
-    private HBox createHBox() {
+    private HBox createHBox(Stage primaryStage) {
         // 添加信息栏
         HBox hBox = new HBox();
         textArea = new TextArea();
         textArea.setPrefHeight(size);
         textArea.setWrapText(true);
+        textArea.setEditable(false);
         Button button = new Button("清除");
         button.setMinWidth(size);
         button.setPrefHeight(size);
         button.setOnAction((ActionEvent e) -> textArea.clear());
         HBox.setHgrow(textArea, Priority.ALWAYS);
         hBox.getChildren().addAll(textArea, button);
+        textArea.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
+            if (event.getCode() == KeyCode.LEFT) {
+                index = index - 1;
+                if (index < 0) {
+                    index = fileList.size() - 1;
+                }
+            } else if (event.getCode() == KeyCode.RIGHT) {
+                index = index + 1;
+                if (index > fileList.size() - 1) {
+                    index = 0;
+                }
+            }
+            File file = fileList.get(index);
+            String fileFullName = file.getAbsolutePath();
+            textArea.appendText("file:" + fileFullName + lineEnd);
+            String url = "file:" + fileFullName;
+            showImage(primaryStage, url);
+
+        });
         return hBox;
     }
 
@@ -135,7 +198,7 @@ public class Main extends Application {
         MenuBar menuBar = createMenuBar(primaryStage);
         stackPane = new StackPane();
         stackPane.getChildren().addAll(imageView, createCanvas(width, height));
-        HBox hBox = createHBox();
+        HBox hBox = createHBox(primaryStage);
         VBox root = new VBox();
         root.getChildren().addAll(menuBar, stackPane, hBox);
         Scene scene = new Scene(root, width, height + size);
