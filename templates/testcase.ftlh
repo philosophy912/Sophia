@@ -87,7 +87,7 @@ def function():
 #                                                    创建测试用例                                                        #
 #                                                                                                                      #
 ########################################################################################################################
-@allure.feature("module")
+@allure.feature("${testcase.moduleName}")
 @pytest.mark.usefixtures("suite")
 class Test${testcase.moduleName?cap_first}(object):
 <#list testcase.testcases as tc>
@@ -264,3 +264,7 @@ class Test${testcase.moduleName?cap_first}(object):
         </#list>
     </#if>
 </#list>
+
+if __name__ == '__main__':
+    os.system(f<#noparse>"</#noparse>pytest -s --reruns 2 --reruns-delay 5 --alluredir=\<#noparse>"</#noparse>{report}\<#noparse>"</#noparse> --clean-alluredir<#noparse>"</#noparse>)
+    os.system(f<#noparse>"</#noparse>allure serve \<#noparse>"</#noparse>{report}\<#noparse>"</#noparse><#noparse>"</#noparse>)
