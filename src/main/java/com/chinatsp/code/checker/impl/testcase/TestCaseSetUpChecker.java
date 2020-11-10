@@ -8,6 +8,7 @@ import com.chinatsp.code.entity.testcase.TestCase;
 import com.chinatsp.code.entity.testcase.TestCaseSetUp;
 import com.chinatsp.code.enumeration.ConfigureTypeEnum;
 import com.chinatsp.dbc.entity.Message;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Map;
  * @date 2020/9/16 10:51
  **/
 @Component
+@Slf4j
 public class TestCaseSetUpChecker extends BaseChecker implements IChecker {
 
     @Override
@@ -35,6 +37,10 @@ public class TestCaseSetUpChecker extends BaseChecker implements IChecker {
             //检查module中是否符合规范
             checkUtils.checkRule(testCaseSetUp.getSuites(), index, name);
             checkUtils.checkRule(testCaseSetUp.getFunctions(), index, name);
+            //检查module中是否有相关的函数
+            log.debug("检查module中是否有相关的函数");
+            checkUtils.checkAction(testCaseSetUp.getSuites(), index, map);
+            checkUtils.checkAction(testCaseSetUp.getFunctions(), index, map);
         }
     }
 }

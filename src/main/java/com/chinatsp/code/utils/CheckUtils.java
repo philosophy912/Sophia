@@ -584,16 +584,20 @@ public class CheckUtils {
             TestCaseFunctionTypeEnum typeEnum = pair.getFirst();
             // 函数名，需要做处理
             String functionName = pair.getSecond();
-            functionName = functionName.trim().replace(" ", "_")
-                    .replace("-", "_")
-                    .replace(".", "_");
+            if (!StringsUtils.isEmpty(functionName)) {
+                functionName = functionName.trim().replace(" ", "_")
+                        .replace("-", "_");
+            }
             if (!(typeEnum == TestCaseFunctionTypeEnum.SLEEP || typeEnum == TestCaseFunctionTypeEnum.YIELD
                     || typeEnum == TestCaseFunctionTypeEnum.CLEAR || typeEnum == TestCaseFunctionTypeEnum.PASS
-                    || typeEnum == TestCaseFunctionTypeEnum.STACK || typeEnum == TestCaseFunctionTypeEnum.LOST)) {
+                    || typeEnum == TestCaseFunctionTypeEnum.STACK || typeEnum == TestCaseFunctionTypeEnum.LOST
+                    || typeEnum == TestCaseFunctionTypeEnum.OPEN || typeEnum == TestCaseFunctionTypeEnum.CLOSE)) {
                 List<BaseEntity> entities = map.get((CharUtils.lowerCase(typeEnum.getValue())));
                 boolean flag = false;
                 for (BaseEntity baseEntity : entities) {
-                    if (baseEntity.getName().equalsIgnoreCase(functionName)) {
+                    String entityName = baseEntity.getName();
+                    log.debug("entityName is {}", entityName);
+                    if (entityName.equalsIgnoreCase(functionName)) {
                         flag = true;
                         break;
                     }
