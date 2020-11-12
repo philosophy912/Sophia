@@ -1,0 +1,87 @@
+package com.chinatsp.automotive.writer;
+
+import com.chinatsp.automotive.BaseTestUtils;
+import com.chinatsp.automotive.entity.BaseEntity;
+import com.chinatsp.automotive.enumeration.ConfigureTypeEnum;
+import com.chinatsp.automotive.service.api.IReadService;
+import com.chinatsp.automotive.writer.api.TestCaseFreeMarkers;
+import com.chinatsp.automotive.writer.impl.testcase.TestCaseWriter;
+import com.philosophy.base.common.Pair;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @author lizhe
+ * @date 2020/9/28 11:21
+ **/
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@Slf4j
+class WriterTest {
+
+    @Autowired
+    private IReadService readerService;
+    @Autowired
+    private FreeMarkerWriter freeMarkerWriter;
+    @Autowired
+    private TestCaseWriter testCaseWriter;
+
+    private Map<ConfigureTypeEnum, String> map;
+
+    private Map<String, List<BaseEntity>> entities;
+
+    @BeforeEach
+    void beforeTest() {
+        Path path = Paths.get(BaseTestUtils.getFileFolder(), "template.xlsx");
+        Pair<Map<String, List<BaseEntity>>, Map<ConfigureTypeEnum, String>> content = readerService.read(path);
+        map = content.getSecond();
+        entities = content.getFirst();
+    }
+
+
+    @Test
+    void writeConfigure() {
+        Path path = Paths.get(BaseTestUtils.getCodeFolder(), "configure.py");
+        freeMarkerWriter.writeConfigure(map, path);
+    }
+
+    @Test
+    void writeEntity() {
+        Path path = Paths.get(BaseTestUtils.getCodeFolder(), "context.py");
+        freeMarkerWriter.writeEntity(entities, null, path);
+    }
+
+    @Test
+    void writeTestCase() {
+        Map<String, Pair<TestCaseFreeMarkers, TestCaseFreeMarkers>> map = testCaseWriter.convert(entities);
+        for (Map.Entry<String, Pair<TestCaseFreeMarkers, TestCaseFreeMarkers>> entry : map.entrySet()) {
+            String key = entry.getKey();
+            Pair<TestCaseFreeMarkers, TestCaseFreeMarkers> pair = entry.getValue();
+            Path path = Paths.get(BaseTestUtils.getCodeFolder(), "test_" + key + ".py");
+            freeMarkerWriter.writeTestCase(pair.getFirst(), path, "testcase");
+        }
+
+    }
+
+
+    public static void main(String[] args) {
+        try {
+            Files.copy(Paths.get("D:\\Workspace\\github\\code\\templates\\__init__.py"), Paths.get("D:\\Workspace\\github\\code\\20201015_175357\\src"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+}

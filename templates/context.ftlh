@@ -59,7 +59,7 @@ codes_folder = Utils.get_folder_path(folder_name="codes", top_folder_name="src",
 top_folder = os.path.dirname(codes_folder)
 resource = "\\".join([top_folder, "resources"])
 # DBC解析出来的文件的路径
-dbc = "\\".join([resource, "dbc", dbc_json])
+dbc = "\\".join([resource, "dbc"])
 # 模板图片存放路径
 templates = "\\".join([resource, "templates"])
 # 结果存放路径
@@ -91,8 +91,9 @@ if konstanter_serial_port and konstanter_serial_baud_rate:
     konstanter = KonstanterActions(port=konstanter_serial_port, baud_rate=konstanter_serial_baud_rate)
     logger.info(f"konstanter is initialization")
 if dbc_json:
-    if os.path.exists(dbc):
-        can_service = CANService(messages=dbc)
+    dbc_json = fr"{dbc}\{dbc_json}"
+    if os.path.exists(dbc_json):
+        can_service = CANService(messages=dbc_json)
         logger.info(f"can_service is initialization")
 if max_relay_channel:
     relay = RelayActions()
@@ -108,21 +109,21 @@ if test_case_type == "空调屏":
         air_condition = AirCondition(save_path=qnx_screen_shot_path, port=air_condition_port)
         logger.info(f"air_condition is initialization")
 if test_case_type in ("智能座舱", "仪表", "中控", "HMI"):
-    logger.info("请先remount系统.................... 步骤如下")
-    logger.info("""
-        1、关闭dm-verity
-        adb root
-        adb shell setenforce 0
-        adb shell setprop ro.secure 1
-        adb disable-verity
-        2、重启设备
-        3、remount
-        adb root
-        adb shell setenforce 0
-        adb remount
-    """)
-    sleep(5)
     if android_automation_type:
+        logger.info("请先remount系统.................... 步骤如下")
+        logger.info("""
+            1、关闭dm-verity
+            adb root
+            adb shell setenforce 0
+            adb shell setprop ro.secure 1
+            adb disable-verity
+            2、重启设备
+            3、remount
+            adb root
+            adb shell setenforce 0
+            adb remount
+            """)
+        sleep(5)
         android_service = AndroidService(tool_type=ToolTypeEnum.from_value(android_automation_type))
         logger.info(f"android_service is initialization")
     if test_case_type != "中控":
@@ -300,7 +301,7 @@ def ${freemarker.params["functionName"]?lower_case}():
     image_name = f<#noparse>"</#noparse>${freemarker.params["imageName"]?lower_case}<#noparse>"</#noparse>
     <#if freemarker.params["handleName"] == "cluster_hmi">
     image_files = ${freemarker.params["handleName"]}.${freemarker.params["handleFunction"]}(image_name=image_name, count=${freemarker.params["count"]}, interval_time=interval_time)
-    sleep(1)
+    sleep(8)
     ${freemarker.params["handleName"]}.download_images(image_files)
     <#else>
         <#if freemarker.params["handleName"] == "hypervisor">

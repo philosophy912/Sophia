@@ -1,0 +1,24 @@
+package com.chinatsp.automotive.reader.impl;
+
+import com.chinatsp.automotive.reader.api.IClassType;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Field;
+
+import static com.chinatsp.automotive.utils.Constant.CHINESE_YES;
+import static com.chinatsp.automotive.utils.Constant.YES;
+
+@Slf4j
+@Component
+public class BooleanType implements IClassType {
+    @SneakyThrows
+    @Override
+    public void setValue(Object object, Field field, Class<?> clazz, String className, String cellValue, int index) {
+        log.trace("handle boolean type");
+        boolean flag = cellValue.equalsIgnoreCase(YES) || cellValue.equalsIgnoreCase(CHINESE_YES);
+        field.set(object, flag);
+    }
+
+}

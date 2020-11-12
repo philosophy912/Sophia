@@ -1,0 +1,58 @@
+package com.chinatsp.automotive.entity.compare;
+
+import com.chinatsp.automotive.entity.BaseEntity;
+import com.chinatsp.automotive.enumeration.CompareTypeEnum;
+import com.chinatsp.automotive.enumeration.DeviceTpeEnum;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.List;
+
+/**
+ * @author lizhe
+ * @date 2020/8/27 13:10
+ **/
+@Setter
+@Getter
+@ToString
+public class ImageCompare extends BaseEntity {
+    /**
+     * 屏幕类型
+     */
+    private DeviceTpeEnum deviceType;
+    /**
+     * 图片对比类型
+     * 仅支持CompareTypeEnum描述的类型
+     */
+    private CompareTypeEnum compareType;
+    /**
+     * 图片名字，不需要扩展名。
+     * 图片为截图而来
+     */
+    private String imageName;
+    /**
+     * 模板亮图
+     */
+    private String templateLight;
+    /**
+     * 模板暗图
+     */
+    private String templateDark;
+    /**
+     * 图片对比区域
+     */
+    private List<Integer[]> positions;
+    /**
+     * 相似度
+     */
+    private Float similarity = 0.7f;
+    /**
+     * 是否灰度对比
+     */
+    private Boolean isGray = false;
+    /**
+     * 灰度二值化的阈值
+     */
+    private Integer threshold = 240;
+}

@@ -1,0 +1,43 @@
+package com.chinatsp.automotive.writer.impl.collection;
+
+import com.chinatsp.automotive.entity.BaseEntity;
+import com.chinatsp.automotive.entity.collection.Element;
+import com.chinatsp.automotive.enumeration.AndroidLocatorTypeEnum;
+import com.chinatsp.automotive.writer.api.FreeMarker;
+import com.chinatsp.automotive.writer.api.IFreeMarkerWriter;
+import com.chinatsp.dbc.entity.Message;
+import com.philosophy.base.common.Pair;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Component
+public class ElementWriter implements IFreeMarkerWriter {
+
+    @Override
+    public List<FreeMarker> convert(List<BaseEntity> entities, List<Message> messages) {
+        String pre = this.getClass().getSimpleName().replace("Writer", "").toLowerCase() + "_";
+        List<FreeMarker> freeMarkers = new ArrayList<>();
+        for (BaseEntity entity : entities) {
+            FreeMarker freeMarker = new FreeMarker();
+            Element element = (Element) entity;
+            Map<String, Object> map = new HashMap<>();
+            map.put(FUNCTION_NAME, pre + element.getName());
+            List<Pair<String, String>> pairs = new ArrayList<>();
+            Map<AndroidLocatorTypeEnum, String> locators = element.getLocators();
+            for (Map.Entry<AndroidLocatorTypeEnum, String> entry : locators.entrySet()) {
+                String type = entry.getKey().getValue();
+                String value = entry.getValue();
+                pairs.add(new Pair<>(type, value));
+            }
+            freeMarker.setParams(map);
+            freeMarker.setPairs(pairs);
+            freeMarker.setComment(element.getComments());
+            freeMarkers.add(freeMarker);
+        }
+        return freeMarkers;
+    }
+}

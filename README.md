@@ -35,23 +35,26 @@ java只支持jdk_1.8
 
 #### 使用方法：
 
-- ```shell
-  // 当前执行的文件夹下不存在file文件夹
-  java -jar code-x.x.jar // 会在当前目录下生成template.xls文件
+- 生成Template.xls模板文件
+  ```shell
+  java -jar automotive-{version}.jar // 会在当前目录下生成template.xls文件
   ```
-
   
 
-- ```shell
-  // 当前文件夹下存在file文件夹且该文件夹中存在testcase.xls或者testcase.xlsx文件
-  java -jar code-x.x.jar // 会根据testcase中描述的信息生成测试代码
+  
+- 直接生成测试用例（当前文件夹下存在testcase.xls或者testcase.xlsx文件，若存在DBC文件请直接将DBC文件放置于jar包相同目录下）
+   ```shell
+  java -jar automotive-{version}.jar // 会根据testcase中描述的信息生成测试代码
   ```
-
-- ```
-  // 此时会在当前路径下寻找excel所描述的dbc文件，并生成测试代码
-  java -jar code-x.x.jar yy.xlsx
-  java -jar code-x.x.jar yy.xls
+  
+- 根据指定文件生成测试用例
+   ```
+  // 根据指定的excel文件[{testcaseName}]并生成测试代码
+  // 若在配置选项中填写了DBC文件，请将DBC文件放在jar包相同目录下面
+  java -jar automotive-{version}.jar {testcaseName}.xlsx
+  java -jar automotive-{version}.jar {testcaseName}.xls
   ```
+ ```
 
 
 
@@ -288,6 +291,207 @@ java只支持jdk_1.8
       - screenshot 【截图存放的路径，全自动化和半自动化都需要存放到该路径下】
       - temp 【存放对比过结果的图片，该图片用于allure报告】
     - testcase【测试用例存放地址】
+
+
+
+#### 模板文件修改
+
+模板文件主要由【action.ftlh/compare.ftlh/config.ftlh/context.ftlh/testcase.ftlh】五个文件组成
+
+**NOTICE**： 建议只修改sleep相关的时间
+
+- **config.ftlh** 主要对应的是表【配置(Configure)】的内容，当没有填写内容的时候会生成
+
+  ```python
+  # SOC串口号
+  soc_serial_port = None
+  # 密码
+  password = ""  #由于空密码的存在，所有关于password开头的不填写就会为空
+ ```
+
+- **context.ftlh**主要对应的是除了TestCase相关的表之外的内容
+
+  ```python
+  ########################## 这一部分主要用于allure贴图，一般不用修改 ##########################
+  def compare(result: tuple):
+      if len(result) > 1:
+          result, images, compare_type, dark, light = result
+          if compare_type == CompareTypeEnum.LIGHT:
+              allure.attach.file(light, '原图(亮图)', allure.attachment_type.BMP)
+          elif compare_type == CompareTypeEnum.DARK:
+              allure.attach.file(dark, '原图(暗图)', allure.attachment_type.BMP)
+          elif compare_type == CompareTypeEnum.BLINK:
+              allure.attach.file(light, '原图(亮图)', allure.attachment_type.BMP)
+              allure.attach.file(dark, '原图(暗图)', allure.attachment_type.BMP)
+          result_str = "成功" if result else "失败"
+          for image in images:
+              image_name = image.split("\\")[-1]
+              allure.attach.file(image, f"{result_str}截图[{image_name}]", allure.attachment_type.BMP)
+          assert result
+      else:
+          assert result
+  
+  interval_time = 0.5
+  
+  ####################################特别注意这个codes是根目录的地址####################################################
+  # 用于存放保存的内容
+  save_data = dict()
+  curve = Curve()
+  current_path = os.getcwd()
+  codes_folder = Utils.get_folder_path(folder_name="codes", top_folder_name="src", current_path=current_path)
+  top_folder = os.path.dirname(codes_folder)
+  resource = "\\".join([top_folder, "resources"])
+  # DBC解析出来的文件的路径
+  dbc = "\\".join([resource, "dbc"])
+  # 模板图片存放路径
+  templates = "\\".join([resource, "templates"])
+  # 结果存放路径
+  result_folder = "\\".join([top_folder, "result"])
+  # 截图图片存放路径
+  screenshot = "\\".join([result_folder, "screenshot"])
+  # 临时文件存放路径
+  temp = "\\".join([result_folder, "temp"])
+  # report报告生成的路径
+  report = "\\".join([result_folder, "report"])
+  
+  ################################定义了各个操作类################################################
+  image_compare = ImageCompare()
+  it6831 = None
+  konstanter = None
+  can_service = None
+  android_service = None
+  relay = None
+  air_condition = None
+  soc = None
+  mcu = None
+  hypervisor = None
+  cluster_hmi = None
+  
+  if it6831_serial_baud_rate and it6831_serial_port:
+      it6831 = It6831Actions(port=it6831_serial_baud_rate, baud_rate=it6831_serial_port)
+      logger.info(f"it6831 is initialization")
+  if konstanter_serial_port and konstanter_serial_baud_rate:
+      konstanter = KonstanterActions(port=konstanter_serial_port, baud_rate=konstanter_serial_baud_rate)
+      logger.info(f"konstanter is initialization")
+  if dbc_json:
+      dbc_json = fr"{dbc}\{dbc_json}"
+      if os.path.exists(dbc_json):
+          can_service = CANService(messages=dbc_json)
+          logger.info(f"can_service is initialization")
+  if max_relay_channel:
+      relay = RelayActions()
+      logger.info(f"relay is initialization")
+  if soc_serial_port and soc_serial_baud_rate:
+      soc = SerialPort()
+      logger.info(f"soc is initialization")
+  if mcu_serial_port and mcu_serial_baud_rate:
+      mcu = SerialPort()
+      logger.info(f"mcu is initialization")
+  if test_case_type == "空调屏":
+      if air_condition_port and air_condition_baud_rate:
+          air_condition = AirCondition(save_path=qnx_screen_shot_path, port=air_condition_port)
+          logger.info(f"air_condition is initialization")
+  if test_case_type in ("智能座舱", "仪表", "中控", "HMI"):
+      if android_automation_type:
+          logger.info("请先remount系统.................... 步骤如下")
+          logger.info("""
+              1、关闭dm-verity
+              adb root
+              adb shell setenforce 0
+              adb shell setprop ro.secure 1
+              adb disable-verity
+              2、重启设备
+              3、remount
+              adb root
+              adb shell setenforce 0
+              adb remount
+              """)
+          sleep(5)
+          android_service = AndroidService(tool_type=ToolTypeEnum.from_value(android_automation_type))
+          logger.info(f"android_service is initialization")
+      if test_case_type != "中控":
+          if ip_address and hmi_username and hmi_board_path:
+              cluster_hmi = ClusterHmi(board_path=hmi_board_path, local_folder=screenshot, test_binary=hmi_test_binary)
+          else:
+              hypervisor = HypervisorScreenShot(save_path=qnx_screen_shot_path, device_id=android_device_id)
+              logger.info(f"hypervisor is initialization")
+  ################################开启设备################################
+  def open_device():
+      if it6831:
+          it6831.open()
+      if konstanter:
+          konstanter.open()
+      if android_service:
+          if android_automation_type == "appium":
+              capability = {
+                  "deviceName": android_device_id,
+                  "platformVersion": android_version,
+                  "platformName": "Android",
+                  "automationName": "UiAutomator2",
+                  "appPackage": android_app_package,
+                  "appActivity": android_app_activity
+              }
+              android_service.connect(device_id=android_device_id, capability=capability)
+          else:
+              android_service.connect(device_id=android_device_id)
+      if can_service:
+          can_service.open_can()
+      if relay:
+          relay.open()
+      if air_condition:
+          air_condition.connect()
+      if mcu:
+          mcu.connect(port=mcu_serial_port, baud_rate=mcu_serial_baud_rate)
+      if soc:
+          soc.connect(port=soc_serial_port, baud_rate=soc_serial_baud_rate)
+      if cluster_hmi:
+          cluster_hmi.connect(ipaddress=ip_address, username=hmi_username, password=hmi_password)
+  
+  ################################关闭设备################################
+  def close_device():
+      if it6831:
+          it6831.close()
+      if konstanter:
+          konstanter.close()
+      if android_service:
+          android_service.disconnect()
+      if can_service:
+          can_service.close_can()
+      if relay:
+          relay.close()
+      if air_condition:
+          air_condition.disconnect()
+      if cluster_hmi:
+          cluster_hmi.disconnect()
+  ################################各个表格生成的代码，如果有错误可以直接修改这部分代码################################    
+   ####################################################################################################################
+   #                                                                                                                  #
+   #                                           用于生成表格 --> 截图操作(ScreenShotAction)                               #
+   #                                                                                                                  #
+   ####################################################################################################################
+  ```
+
+- **testcase.ftlh**/**action.ftlh**/**compare.ftlh**
+
+  ```python
+  ########################################################################################################################
+  #                                                                                                                      #
+  #                                                    创建Suite                                                          #
+  #                                                                                                                      #
+  ########################################################################################################################
+  
+  ########################################################################################################################
+  #                                                                                                                      #
+  #                                                    创建Function                                                       #
+  #                                                                                                                      #
+  ########################################################################################################################
+  
+  ########################################################################################################################
+  #                                                                                                                      #
+  #                                                    创建测试用例                                                        #
+  #                                                                                                                      #
+  ########################################################################################################################
+  ```
 
 
 
