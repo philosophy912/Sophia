@@ -1,16 +1,20 @@
 package com.chinatsp.automotive.utils;
 
+import com.chinatsp.automotive.checker.Checker;
+import com.chinatsp.automotive.entity.BaseEntity;
+import com.chinatsp.automotive.writer.BaseWriter;
+
 /**
  * @author lizhe
  * @date 2020/9/1 11:08
  **/
 public interface Constant {
     // 基本包名
-    String PACKAGE_NAME = "com.chinatsp.automotive.entity";
+    String PACKAGE_NAME = BaseEntity.class.getPackage().getName();
     // 检查者的包名
-    String CHECKER_PACKAGE_NAME = "com.chinatsp.automotive.checker.impl";
+    String CHECKER_PACKAGE_NAME = Checker.class.getPackage().getName() + ".impl";
     // Freemarker生成类的包名
-    String WRITER_PACKAGE_NAME = "com.chinatsp.automotive.writer.impl";
+    String WRITER_PACKAGE_NAME = BaseWriter.class.getPackage().getName() + ".impl";
     // 抽象基础实体类
     String BASE_ENTITY = PACKAGE_NAME + ".BaseEntity";
     // 英文的是
@@ -48,7 +52,7 @@ public interface Constant {
     String TEMPLATE_TESTCASE = "testcase";
 
 
-    String TOP="top";
+    String TOP = "top";
     String CODES = "codes";
     String DBC = "dbc";
     String TEST_CASE = "testcase";

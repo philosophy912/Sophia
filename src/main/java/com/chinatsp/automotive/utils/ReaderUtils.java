@@ -13,6 +13,21 @@ import static com.chinatsp.automotive.utils.Constant.SPLIT_POINT;
  **/
 @Component
 public class ReaderUtils {
+    /**
+     * 过滤不处理的类
+     *
+     * @param className 类名
+     * @param classList 类名列表
+     * @return 当符合一个的时候
+     */
+    public boolean ignore(String className, Class<?>... classList) {
+        for (Class<?> clazz : classList) {
+            if (className.contains(clazz.getSimpleName().toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * 根据sheet名字获取全包名

@@ -197,9 +197,15 @@ public class Reader {
             String name = field.getName();
             Integer index = entityMap.get(name);
             log.debug("handle row[{}] index = [{}]", name, index);
-            String cellValue = excelUtils.getCellValue(row.getCell(index));
+            try {
+                String cellValue = excelUtils.getCellValue(row.getCell(index));
+                setAttributeValue(o, field, cellValue, rowNo);
+            } catch (Exception e) {
+                String error = "请检查表" + o.getClass().getSimpleName() + "的" + row.getRowNum() + "行数据填写，若为空请删除该行数据";
+                throw new RuntimeException(error);
+            }
             // 设置属性值
-            setAttributeValue(o, field, cellValue, rowNo);
+
         }
     }
 
