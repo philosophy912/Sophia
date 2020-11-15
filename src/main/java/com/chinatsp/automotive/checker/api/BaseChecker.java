@@ -18,13 +18,20 @@ public abstract class BaseChecker {
     @Autowired
     protected CheckUtils checkUtils;
 
-
+    /**
+     * 获取对应的实体类的集合，如读取BatteryAction表格，则返回读取到的BatteryActionEntity的集合
+     *
+     * @param map   从excel读取到的所有Sheet的集合，一个Sheet表示一个Entity集合
+     * @param clazz 实体类名
+     * @return 实体类的集合
+     */
     protected List<BaseEntity> getEntity(Map<String, List<BaseEntity>> map, Class<?> clazz) {
         return map.get(CharUtils.lowerCase(CharUtils.lowerCase(clazz.getSimpleName())));
     }
 
     /**
      * 获取屏幕分辨率
+     * 当未传入了相关数据的时候，所有的数据都返回了-1否则变成相关数据，而相关数据的读取主要是Configure配置表中读取到的数据
      *
      * @param configure 设置的参数
      * @return 屏幕宽高信息

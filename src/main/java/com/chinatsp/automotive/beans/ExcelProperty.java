@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 该类的作用主要用于关联Entity实体以及Excel的Sheet
+ * 当添加Excel的表或者表头的时候，只需要编辑application.yml中的数据即可
+ *
  * @author lizhe
  * @date 2020/9/16 13:57
  **/
