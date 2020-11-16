@@ -65,6 +65,9 @@ public class CheckUtils {
      * @return true：正确 false：不正确
      */
     private boolean isImageNameCorrect(String name) {
+        if (name.contains("__")) {
+            return false;
+        }
         int max = 100;
         String regex = "^[a-zA-Z0-9]+[a-zA-Z_0-9]*[^_]$";
         boolean isMatch = name.matches(regex);
@@ -183,7 +186,7 @@ public class CheckUtils {
     public void checkScreenshotName(String name, int index, String className) {
         if (!isImageNameCorrect(name)) {
             String error = "Sheet[" + CharUtils.upperCase(className) + "]的第" + index + "行数据填写错误，" +
-                    "图片名只能是小于100个字符的英文字符或者下划线且不能以下划线结尾, 当前图片名为" + name;
+                    "图片名只能是小于100个字符的英文字符或者下划线且不能以下划线结尾且不能有连续__的下划线存在, 当前图片名为" + name;
             throw new RuntimeException(error);
         }
     }

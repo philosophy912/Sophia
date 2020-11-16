@@ -54,7 +54,6 @@ java只支持jdk_1.8
   java -jar automotive-{version}.jar {testcaseName}.xlsx
   java -jar automotive-{version}.jar {testcaseName}.xls
   ```
- ```
 
 
 

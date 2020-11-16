@@ -201,7 +201,8 @@ public class Reader {
                 String cellValue = excelUtils.getCellValue(row.getCell(index));
                 setAttributeValue(o, field, cellValue, rowNo);
             } catch (Exception e) {
-                String error = "请检查表" + o.getClass().getSimpleName() + "的" + row.getRowNum() + "行数据填写，若为空请删除该行数据";
+                String error = "请检查表" + o.getClass().getSimpleName() + "的" + row.getRowNum() +
+                        "行数据填写，若为空请删除该行数据。error[" + e.getMessage() + "]";
                 throw new RuntimeException(error);
             }
             // 设置属性值
