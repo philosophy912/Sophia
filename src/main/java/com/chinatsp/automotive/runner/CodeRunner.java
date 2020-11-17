@@ -157,9 +157,12 @@ public class CodeRunner implements CommandLineRunner {
             String param = args[0];
             if (param.endsWith("xls") || param.endsWith("xlsx")) {
                 // 当前文件夹下面的文件名
-                Path testcase = Paths.get(runTimeFolder.toAbsolutePath().toString(), param);
-                if (!Files.exists(testcase)) {
-                    throw new RuntimeException("当前文件夹下找不到[" + param + "]文件");
+                Path testcase = Paths.get(param);
+                if (!Files.exists(testcase)){
+                    testcase = Paths.get(runTimeFolder.toAbsolutePath().toString(), param);
+                    if (!Files.exists(testcase)) {
+                        throw new RuntimeException("当前文件夹下找不到[" + param + "]文件");
+                    }
                 }
                 Map<String, Path> folders = createFolders(runTimeFolder);
                 log.info("开始生成[{}]描述的测试用例代码", param);

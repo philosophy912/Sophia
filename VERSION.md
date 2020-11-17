@@ -8,6 +8,7 @@
   - 增加了对表【配置(Configure)】的test_case_type（测试类型)进行校验
   - 增加了对ImageName中双下划线的替换
   - 增加了对表【测试用例前置条件(TestCaseSetUp)】中FunctionsBefore、FunctionsAfter、SuitesBefore、SuitesAfter的换行处理
+  - 增加了参数可以传入非本地的excel文件
   
 - V1.0.1
   

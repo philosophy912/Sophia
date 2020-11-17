@@ -6,8 +6,6 @@
 
 ### 工具说明
 
-
-
 本工具适用于：
 
 - 高通虚拟化方案的中控+仪表测试（依赖于开发提供**Htalk**命令)
@@ -15,12 +13,40 @@
 - 单仪表测试
 - 仅HMI仪表测试用例生成（依赖于开发提供的test文件)
 - 单安卓测试
+- **java只支持jdk_1.8**
+
+
+
+#### 快速填写
+
+- 首先填写表格【测试用例(TestCase)】的文字部分，如
+
+  EPS显示黄色故障灯 -> EPS displays yellow fault light   该名字可以作为各类的函数名，方便快速填写测试用例
+
+  **特别注意**: 由于python函数的特性，请去掉除_以外的标点符号。 虽然生成器支持生成将空格转换成下划线，也支持将双下换线转换成单下划线，但仍然建议手动修改上述内容为下划线
+
+- 填写模块名字以及前置条件、操作步骤、期望结果等中文内容建立初步的模板
+
+- 填写CAN消息，但不建议CAN消息操作和测试用例名关联，除非该CAN消息仅需要发送一条，该原则适用于Action操作
+
+- 填写ScreenshotAction操作，建议函数名和截图名称与测试用例名关联
+
+- 填写ImageCompare操作，建议函数名和截图名称与测试用例名关联, 建议模板亮图和暗图名称与测试用例名也一致
+
+- 返回测试用例填写，尽量使用EXCEL公式 填写，若遇到换行可以使用**CHAR(10)**进行，但粘贴的时候需要粘贴成数值，否则代码生成器无法正确获取该内容
+
+- 若需要在Setup或者TearDown发送默认的CAN消息，请在表格Common中使用如下方式填写：
+
+  | Id<br>序号 | Name<br>名字/函数名/模块名 | Comments<br>描述      | ModuleName<br>模块名 | FunctionName<br>函数名称 | Params<br>函数参数 |
+  | ---------- | -------------------------- | --------------------- | -------------------- | ------------------------ | ------------------ |
+  | 1          | send_messages              | send_messages         | can_service          | send_messages            | node_name="IC_MMI" |
+  | 2          | send_default_messages      | send_default_messages | can_service          | send_default_messages    | node_name="IC_MMI" |
 
 #### 环境依赖
 
-java只支持jdk_1.8
+​		此后可以在其他模块中使用**common=send_messages**方式使用
 
-#### 工具包含：
+#### 工具包含
 
 - code-x.x.jar
 - templates
@@ -33,7 +59,7 @@ java只支持jdk_1.8
 
 
 
-#### 使用方法：
+#### 使用方法
 
 - 生成Template.xls模板文件
   ```shell
@@ -232,7 +258,7 @@ java只支持jdk_1.8
     | SuitesBefore<br/>套件执行前描述    | 中文描述，体现在allure中                                     |
     | SuitesAfter<br/>套件执行后描述     | 中文描述，体现在allure中                                     |
 
-- 配置(Configure)
+- **配置(Configure)**
 
   | Name     名字               | Comment     描述         | Content     内容                                             |
   | --------------------------- | ------------------------ | ------------------------------------------------------------ |
@@ -264,7 +290,7 @@ java只支持jdk_1.8
   | android_app_activity        | 安卓的启动应用的activity | 安卓版本号，用于appium                                       |
   | android_version             | 安卓系统版本号           | 安卓版本号，用于appium                                       |
   | android_device_id           | 安卓设备号               | 安卓版本号，用于appium                                       |
-  | test_case_type              | 测试类型                 | 支持智能座舱/仪表/中控/HMI/空调屏<br>                        |
+  | **test_case_type**[*]       | 测试类型                 | 支持智能座舱/仪表/中控/HMI/空调屏<br>                        |
   | username                    | 用户名                   | 空调屏的登陆用户名                                           |
   | password                    | 密码                     | 空调屏的登陆密码                                             |
   | hmi_username                | HMI用户名                | Cluster HMI的登陆用户名（telnet）                            |
@@ -273,7 +299,7 @@ java只支持jdk_1.8
   | hmi_test_binary             | HMI测试程序路径          | Cluster HMI的测试程序本地电脑的路径，填写后会自动将该文件夹下所有的文件传到HMI板子路径定义的路径中 |
   | ip_address                  | ip地址                   | 用于Cluster HMI的测试板子的地址                              |
 
-  
+  *号表示必填
 
 #### 代码生成结构
 
@@ -306,6 +332,7 @@ java只支持jdk_1.8
   soc_serial_port = None
   # 密码
   password = ""  #由于空密码的存在，所有关于password开头的不填写就会为空
+  ```
  ```
 
 - **context.ftlh**主要对应的是除了TestCase相关的表之外的内容
@@ -468,7 +495,7 @@ java只支持jdk_1.8
    #                                           用于生成表格 --> 截图操作(ScreenShotAction)                               #
    #                                                                                                                  #
    ####################################################################################################################
-  ```
+ ```
 
 - **testcase.ftlh**/**action.ftlh**/**compare.ftlh**
 
@@ -493,10 +520,4 @@ java只支持jdk_1.8
   ```
 
 
-
-#### 自动化测试填写技巧
-
-- 建议先填写测试用例的描述，并翻译该描述为英文并填写到【名字/函数名/模块名】中，然后在各个Sheet中都沿用该名称。
-- 若涉及到截图对比，建议先生成一份测试用例代码，并执行一次，会把所有的截图拷贝在截图中，如果截图无问题就可以把所有的截图去掉后缀名则直接变成模板文件
-- 若非闪烁图对比，则可以忽视暗图填写，亮图和暗图都填写成相同的名称即可。
 
