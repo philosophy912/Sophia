@@ -269,6 +269,24 @@ public class Reader {
             String name = excelUtils.getCellValue(row.getCell(1)).toLowerCase();
             String description = excelUtils.getCellValue(row.getCell(2));
             String content = excelUtils.getCellValue(row.getCell(3));
+            // 检查测试类型是否填写
+            if (name.equalsIgnoreCase(ConfigureTypeEnum.TEST_CASE_TYPE.getName())) {
+                if (StringsUtils.isEmpty(content)) {
+                    String error = "配置(Configure)表中" + ConfigureTypeEnum.TEST_CASE_TYPE.getValue() + "填写错误，" +
+                            "仅支持[智能座舱/仪表/中控/HMI/空调屏]";
+                    throw new RuntimeException(error);
+                } else {
+                    if (!(content.equalsIgnoreCase("智能座舱")
+                            || content.equalsIgnoreCase("仪表")
+                            || content.equalsIgnoreCase("中控")
+                            || content.equalsIgnoreCase("HMI")
+                            || content.equalsIgnoreCase("空调屏"))) {
+                        String error = "配置(Configure)表中" + ConfigureTypeEnum.TEST_CASE_TYPE.getValue() +
+                                "填写错误，仅支持[智能座舱/仪表/中控/HMI/空调屏], 当前填写的值为" + content + ".";
+                        throw new RuntimeException(error);
+                    }
+                }
+            }
             if (!StringsUtils.isEmpty(content)) {
                 if (name.contains("port")) {
                     if (!content.toLowerCase().startsWith("com")) {
@@ -298,6 +316,7 @@ public class Reader {
                     }
                 }
             }
+
             map.put(ConfigureTypeEnum.fromValue(description), content);
         }
         return map;

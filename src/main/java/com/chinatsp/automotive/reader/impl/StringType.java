@@ -17,7 +17,11 @@ public class StringType implements IClassType {
         String fieldName = field.getName();
         if (fieldName.equalsIgnoreCase("name") || fieldName.equalsIgnoreCase("ImageName")) {
             cellValue = cellValue.trim().replace(" ", "_")
+                    .replace("__", "_")
                     .replace("-", "_");
+        }
+        if (fieldName.contains("Before") || fieldName.contains("After")) {
+            cellValue = cellValue.replace("\n", " ");
         }
         field.set(object, cellValue);
     }

@@ -6,6 +6,7 @@ import com.chinatsp.automotive.entity.BaseEntity;
 import com.chinatsp.automotive.entity.testcase.TestCase;
 import com.chinatsp.automotive.entity.testcase.TestCaseSetUp;
 import com.chinatsp.automotive.enumeration.ConfigureTypeEnum;
+import com.chinatsp.automotive.enumeration.TestCaseFunctionTypeEnum;
 import com.chinatsp.dbc.entity.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
