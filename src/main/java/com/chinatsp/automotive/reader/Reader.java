@@ -93,9 +93,9 @@ public class Reader {
     private Map<String, Integer> getEntityAttributeMap(Row titleRow, Class<?> clazz) {
         Map<String, Integer> map = new HashMap<>(10);
         Field[] fields = clazz.getSuperclass().getDeclaredFields();
-        handleFields(titleRow, map, fields);
+        handleFields(titleRow, map, fields, clazz);
         fields = clazz.getDeclaredFields();
-        handleFields(titleRow, map, fields);
+        handleFields(titleRow, map, fields, clazz);
         return map;
     }
 
@@ -106,10 +106,12 @@ public class Reader {
      * @param map      字典
      * @param fields   对象的属性们
      */
-    private void handleFields(Row titleRow, Map<String, Integer> map, Field[] fields) {
+    private void handleFields(Row titleRow, Map<String, Integer> map, Field[] fields, Class<?> clazz) {
+        String className = clazz.getSimpleName();
         for (Field field : fields) {
             String fieldName = field.getName();
             log.trace("handle filed [{}]", fieldName);
+            boolean flag = false;
             for (int i = 0; i < titleRow.getPhysicalNumberOfCells(); i++) {
                 Cell cell = titleRow.getCell(i);
                 String cellValue = excelUtils.getCellValue(cell);
@@ -117,8 +119,13 @@ public class Reader {
                 log.trace("the filename value [{}] and cellValue =[{}]", value, cellValue);
                 if (value.equalsIgnoreCase(fieldName)) {
                     map.put(fieldName, i);
+                    flag = true;
                     break;
                 }
+            }
+            if (!flag) {
+                String error = "表[" + className + "]的表头中找不到[" + fieldName + "]请仔细检查是否修改了表头";
+                throw new RuntimeException(error);
             }
         }
     }
@@ -192,6 +199,7 @@ public class Reader {
      * @param fields    属性数组
      */
     private void setFieldValue(Row row, Map<String, Integer> entityMap, int rowNo, Object o, Field[] fields) {
+        String sheetName = o.getClass().getSimpleName();
         for (Field field : fields) {
             // 属性名
             String name = field.getName();
@@ -201,7 +209,7 @@ public class Reader {
                 String cellValue = excelUtils.getCellValue(row.getCell(index));
                 setAttributeValue(o, field, cellValue, rowNo);
             } catch (Exception e) {
-                String error = "请检查表" + o.getClass().getSimpleName() + "的" + row.getRowNum() +
+                String error = "请检查表" + sheetName + "的" + row.getRowNum() +
                         "行数据填写，若为空请删除该行数据。error[" + e.getMessage() + "]";
                 throw new RuntimeException(error);
             }
