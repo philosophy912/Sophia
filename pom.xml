@@ -15,12 +15,18 @@
         <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
         <sophia>3.1.0</sophia>
         <dbc>2.0.0</dbc>
+        <springboot.javafx>2.1.6</springboot.javafx>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.roskenet</groupId>
+            <artifactId>springboot-javafx-support</artifactId>
+            <version>${springboot.javafx}</version>
         </dependency>
         <dependency>
             <groupId>com.philosophy</groupId>

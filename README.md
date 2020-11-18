@@ -9,11 +9,20 @@
 本工具适用于：
 
 - 高通虚拟化方案的中控+仪表测试（依赖于开发提供**Htalk**命令)
+
 - QNX空调屏测试（依赖于开发提供的**InjectEvents**进行屏幕操作)
+
 - 单仪表测试
+
 - 仅HMI仪表测试用例生成（依赖于开发提供的test文件)
+
 - 单安卓测试
-- **java只支持jdk_1.8**
+
+  
+
+#### 环境依赖
+
+**java只支持jdk_1.8**
 
 
 
@@ -41,8 +50,6 @@
   | ---------- | -------------------------- | --------------------- | -------------------- | ------------------------ | ------------------ |
   | 1          | send_messages              | send_messages         | can_service          | send_messages            | node_name="IC_MMI" |
   | 2          | send_default_messages      | send_default_messages | can_service          | send_default_messages    | node_name="IC_MMI" |
-
-#### 环境依赖
 
 ​		此后可以在其他模块中使用**common=send_messages**方式使用
 
