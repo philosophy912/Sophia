@@ -145,6 +145,7 @@ public class CodeRunner implements CommandLineRunner {
     @SneakyThrows
     @Override
     public void run(String... args) {
+        log.info("run");
         /*
          * 1、当前未传入参数的时候，且在file文件夹下未找到excel文件，则只在当前文件夹下面生成template.xls文件
          * 2、当前未传入参数，且在file文件夹下面找到了testcase.xls或者testcase.xlsx文件，则生成代码
@@ -152,7 +153,7 @@ public class CodeRunner implements CommandLineRunner {
          * 4、当前传入了参数但不为excel文件，则只生成template文件
          */
         // 获取程序执行当前的文件夹路径
-        Path runTimeFolder = Paths.get(FilesUtils.getCurrentPath());
+        /*Path runTimeFolder = Paths.get(FilesUtils.getCurrentPath());
         if (args.length == 1) {
             String param = args[0];
             if (param.endsWith("xls") || param.endsWith("xlsx")) {
@@ -187,7 +188,7 @@ public class CodeRunner implements CommandLineRunner {
                 log.info("生成模板文件template.xls");
                 templateService.createTemplate(runTimeFolder);
             }
-        }
+        }*/
     }
 
     private void generator(Path testcaseXlsx, Map<String, Path> folders) {
