@@ -92,16 +92,17 @@ class AliPay(object):
                 "袁记云饺", "籣州牛肉面", "成都鸡汤抄手", "大巴山猪脚饭", "卤鹅饭", "e特黄焖鸡瓦香鸡成都店", \
                 "杨铭宇黄焖鸡米饭", "八二小区干海椒抄手", "晓武林烤鸭", "乡村基", "戊丰记卤肉饭", "沙县小吃成都银泰城店", \
                 "喜水饺", "兵哥豌豆面", "福记羊肉米粉", "岭南牛杂", "自小田", "搪瓷盌小面成都伏龙北巷", "蚝门圣焱", "本味简餐厅", \
-                "粤饺皇", "南城香冒烤鸭卤肉饭", "贰柒拾乐山干绍面", "拾小馆", "陕西面馆", "干辣椒抄手", "豆汤饭"
+                "粤饺皇", "南城香冒烤鸭卤肉饭", "贰柒拾乐山干绍面", "拾小馆", "陕西面馆", "干辣椒抄手", "豆汤饭", "北方水饺"
         vegetables = "登梅", "雪梅", "思忠", "*琴", "兰兰姐", "*再泉", "春儿", "蔡德文", "沈德全", "小兰蔬菜店", \
                      "玲利", "邓花椒"
         meat = "金忠食品", "邓哥鱼铺", "龙仕林", "成都泥厨子大食堂", "章相山", "ZXS", "黑龙滩生态鱼铺", "谢氏冷鲜店", "良波"
         out_eat = "金翠河烧鹅餐厅", "马帮冒菜", "实惠啤酒鸭", "麦当劳", "食其家", "正反面", "青羊区东方宫牛肉拉面店", "成都港九餐饮", \
                   "八二私房水饺", "鱼吖吖（武侯店）", "口味鲜面庄", "叶抄手", "雷四孃小吃", "朱记蛙三", "火舞凉山西昌原生烧烤", \
                   "万州烤鱼", "肯德基", "巴山豆花饭成都", "卡萨马可", "老北京炸酱面", "禾木烤肉", "峨眉山周记烧烤", "青年火锅店", \
-                  "茵赫餐饮管理", "汉堡王", "热恋冰淇淋", "初壹饺子", "点都德", "跷脚牛肉", "外卖订单"
+                  "茵赫餐饮管理", "汉堡王", "热恋冰淇淋", "初壹饺子", "点都德", "跷脚牛肉", "外卖订单", "芙蓉树下", \
+                  "小川王饭店", "鸡汤铺子", "重庆豌杂面", "猪脚饭", "面馆", "潮汕粥", "花甲米线", "重庆鸡公煲"
         drink = "书亦烧仙草", "星巴克", "书亦燒仙草", "Mii Coffee", "茶百道", "瑞幸咖啡", "GREYBOX COFFEE", "可口可乐", \
-                "日记咖啡馆", "丸摩堂"
+                "日记咖啡馆", "丸摩堂", "一点点"
         super_market = "成都市北城天街店", "成都荆竹中路店", "麦德龙", "欧尚成都市高新店", "谊品生鲜", "高新店", "成都盒马", \
                        "成都中营贸易", "招商雍华府店", "万家V+南区", "银犁冷藏"
         snacks = "永辉(成都市银泰城店)", "面包新语(银泰城店)", "雪糕批发"
@@ -133,7 +134,7 @@ class AliPay(object):
         elif self.check_detail(pay_detail, ("众安在线", "相互宝")):
             category = "金融保险"
             sub_category = "人身保险"
-        elif self.check_detail(pay_detail, ("成都地铁运营有限公司", "轨道交通", "成都地铁")):
+        elif self.check_detail(pay_detail, ("成都地铁运营有限公司", "轨道交通", "成都地铁", "天府通")):
             category = "行车交通"
             sub_category = "地铁"
         elif self.check_detail(pay_detail, ("天府通APP", "公共交通")):
@@ -148,7 +149,7 @@ class AliPay(object):
             sub_category = "外出美食"
         elif self.check_detail(pay_detail, ("谢孝元", "高筋鲜面")):
             sub_category = "面"
-        elif self.check_detail(pay_detail, ("无感支付", "停车场", "瑞林")):
+        elif self.check_detail(pay_detail, ("无感支付", "停车场", "瑞林", "停车费")):
             category = "行车交通"
             sub_category = "停车"
         elif "燃气费" in pay_detail:
@@ -481,13 +482,27 @@ class Wechat(object):
         wb.close()
         app.quit()
 
+    def run(self, folder: str):
+        files = self.get_wechat_files(folder)
+        contents = self.walk_files(files)
+        contents = self.parse_content(contents)
+        contents = self.get_fire(contents)
+        self.write_excel(contents)
+
 
 if __name__ == '__main__':
-    save = r"D:\Workspace\github\code\temp\aaa.txt"
-    my_money = r"C:\Users\philo\Downloads\temp\Music1\myMoney.xls"
-    cmb = r"C:\Users\philo\Downloads\temp\Music1\CreditCardReckoning.txt"
-    start = "2020-01-01"
-    end = "2020-10-27"
-    compare = Compare()
-    # compare.compare(save, my_money, cmb, start, end)
-    compare.run()
+    # alipay = AliPay(True)
+    # alipay.run(r"C:\Users\philo\Pictures\Music20201217\alipay_record_20201217_1632_1.csv")
+    # wechat = Wechat()
+    # wechat.run(r"C:\Users\philo\Pictures\Music20201217\wechat")
+    cmb = Cmb()
+    cmb.run(r"C:\Users\philo\Pictures\Music20201217\CreditCardReckoning2020.txt")
+    #
+    # save = r"D:\Workspace\github\code\temp\aaa.txt"
+    # my_money = r"C:\Users\philo\Downloads\temp\Music1\myMoney.xls"
+    # cmb = r"C:\Users\philo\Downloads\temp\Music1\CreditCardReckoning.txt"
+    # start = "2020-01-01"
+    # end = "2020-10-27"
+    # compare = Compare()
+    # # compare.compare(save, my_money, cmb, start, end)
+    # compare.run()
