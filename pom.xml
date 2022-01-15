@@ -22,7 +22,7 @@
         <slf4j>1.7.30</slf4j>
         <lang3>3.9</lang3>
         <codec>1.15</codec>
-        <io>2.6</io>
+        <io>2.7</io>
     </properties>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
