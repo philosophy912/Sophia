@@ -188,7 +188,7 @@ func (l *lasers) talk() string {
 	return strings.Repeat("pew ", int(*l))
 }
 
-func main() {
+func KKK9111() {
 	pew := lasers(2)
 	shoult(&pew)
 	// shoult(pew) // 此时会报错， lasers指针满足了这个接口，而lasers本身没有满足这个接口
