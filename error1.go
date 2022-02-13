@@ -6,6 +6,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 func OOO1() {
@@ -63,12 +64,37 @@ var (
 	ErrDigit = errors.New("invalid digit")
 )
 
-func (g *Grid) Set(row, column int, digit int8) error {
-	if !inBounds(row, column) {
-		return ErrBounds
+// error的切片
+type SudoKuError []error
+
+// 满足了error的接口
+func (se SudoKuError) Error() string {
+	var s []string
+	for _, err := range se {
+		s = append(s, err.Error())
 	}
+	return strings.Join(s, ", ")
+}
+
+func (g *Grid) Set(row, column int, digit int8) error {
+	var errs SudoKuError
+
+	if !inBounds(row, column) {
+		errs = append(errs, ErrBounds)
+	}
+	if !validDigit(digit) {
+		errs = append(errs, ErrDigit)
+	}
+	if len(errs) > 0 {
+		return errs
+	}
+
 	g[row][column] = digit
 	return nil
+}
+
+func validDigit(digit int8) bool {
+	return false
 }
 
 func inBounds(row, column int) bool {
@@ -81,15 +107,15 @@ func inBounds(row, column int) bool {
 	return true
 }
 
-func main() {
+func PPP() {
 	var g Grid
-	err := g.Set(10, 90, 5)
+	err := g.Set(12, 0, 15)
 	if err != nil {
-		switch err {
-		case ErrBounds, ErrDigit:
-			fmt.Printf("An error occurred: %v.\n", err)
-		default:
-			fmt.Println(err)
+		if errs, ok := err.(SudoKuError); ok {
+			fmt.Printf("An error occurred: %v.\n", len(errs))
+			for _, e : = range errs {
+				fmt.Printf("- %v\n", e)
+			}
 		}
 		os.Exit(1)
 	}
