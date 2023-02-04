@@ -1,6 +1,5 @@
 package com.philosophy.contact.entity;
 
-import com.philosophy.character.api.CharEnum;
 import lombok.Getter;
 import lombok.Setter;
 /**
@@ -8,7 +7,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class Csv {
+public class VcfEntity extends ContactName {
     /**
      * 姓的相关Bean
      */
@@ -22,12 +21,7 @@ public class Csv {
      */
     private int contactSize;
     /**
-     * CSV写的类型
-     */
-    private CharEnum type;
-    /**
      * 电话号码的前缀
      */
     private PhoneNumber entity;
-
 }

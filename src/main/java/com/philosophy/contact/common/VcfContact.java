@@ -2,7 +2,7 @@ package com.philosophy.contact.common;
 
 import com.philosophy.contact.api.IContact;
 import com.philosophy.contact.entity.ContactName;
-import com.philosophy.contact.entity.Vcf;
+import com.philosophy.contact.entity.VcfEntity;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class VcfContact extends Contact implements IContact {
 
     @Setter
-    private Vcf vcf;
+    private VcfEntity vcfEntity;
     /**
      * VCF的通讯录数量
      */
@@ -32,10 +32,10 @@ public class VcfContact extends Contact implements IContact {
     @Override
     public List<String[]> generator() {
         log.info("generator contents");
-        ContactName firstContact = vcf.getFirst();
-        ContactName lastContact = vcf.getLast();
-        String preNumber = vcf.getEntity().getPreNumber();
-        int contactSize = vcf.getContactSize();
+        ContactName firstContact = vcfEntity.getFirst();
+        ContactName lastContact = vcfEntity.getLast();
+        String preNumber = vcfEntity.getEntity().getPreNumber();
+        int contactSize = vcfEntity.getContactSize();
         List<String[]> contacts = new ArrayList<>();
         for (int i = 0; i < contactSize; i++) {
             String first = genName(firstContact, i, contactSize);

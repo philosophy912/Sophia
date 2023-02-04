@@ -2,7 +2,7 @@ package com.philosophy.contact.common;
 
 import com.philosophy.contact.api.IContact;
 import com.philosophy.character.api.CharEnum;
-import com.philosophy.contact.entity.Csv;
+import com.philosophy.contact.entity.CsvEntity;
 import com.philosophy.contact.entity.ContactName;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 public class CsvContact extends Contact implements IContact {
     @Setter
-    private Csv csv;
+    private CsvEntity csvEntity;
     /**
      * CSV创建的通讯录数量
      */
@@ -66,11 +66,11 @@ public class CsvContact extends Contact implements IContact {
         if (csvSize > maxCsvSize) {
             throw new RuntimeException("CSV_SIZE must less 21");
         }
-        ContactName firstContact = csv.getFirst();
-        ContactName lastContact = csv.getLast();
-        String preNumber = csv.getEntity().getPreNumber();
-        int contactSize = csv.getContactSize();
-        CharEnum language = csv.getType();
+        ContactName firstContact = csvEntity.getFirst();
+        ContactName lastContact = csvEntity.getLast();
+        String preNumber = csvEntity.getEntity().getPreNumber();
+        int contactSize = csvEntity.getContactSize();
+        CharEnum language = csvEntity.getType();
         List<String[]> contacts = new ArrayList<>();
         for (int i = 0; i < contactSize; i++) {
             String first = genName(firstContact, i, contactSize);
