@@ -1,17 +1,15 @@
 package com.philosophy.base.util;
-
+/*
+ * @author lizhe
+ * @date 2020-08-31 21:16
+ */
 import lombok.SneakyThrows;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author lizhe
- * @date 2020-08-31 21:16
- */
-@Component
+
 public class EnumUtils {
 
 
