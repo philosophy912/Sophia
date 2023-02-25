@@ -10,8 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
-/**
+/*
  * @author lizhe
  * @date 2019/10/12:17:12
  */
@@ -105,8 +107,8 @@ public class CodecUtils {
     public String encrypt(String source, Path publicPath) {
         String result;
         try {
-            rsaCodec.readPublicKey(publicPath);
-            result = rsaCodec.encrypt(source);
+            PublicKey publicKey = rsaCodec.readPublicKey(publicPath);
+            result = rsaCodec.encrypt(source, publicKey);
         } catch (IOException | ClassNotFoundException e) {
             log.debug("check param failed, will return source, error [{}]", e.getMessage());
             result = source;
@@ -125,8 +127,8 @@ public class CodecUtils {
     public String decrypt(String source, Path privatePath) {
         String result;
         try {
-            rsaCodec.readPrivateKey(privatePath);
-            result = rsaCodec.decrypt(source);
+            PrivateKey privateKey = rsaCodec.readPrivateKey(privatePath);
+            result = rsaCodec.decrypt(source, privateKey);
         } catch (IOException | ClassNotFoundException e) {
             log.debug("check param failed, will return source, error [{}]", e.getMessage());
             result = source;

@@ -3,6 +3,7 @@ package com.philosophy.codec.common;
 import com.philosophy.base.common.Closee;
 import com.philosophy.base.util.ParseUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -21,6 +22,8 @@ import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.interfaces.RSAKey;
 import java.security.interfaces.RSAPrivateKey;
@@ -143,11 +146,7 @@ public class RsaCodec {
         int i = 0;
         // 对数据分段加密
         while (inputLen - offSet > 0) {
-            if (flag) {
-                codecData(inputLen, offSet, cipher, data, out, true);
-            } else {
-                codecData(inputLen, offSet, cipher, data, out, false);
-            }
+            codecData(inputLen, offSet, cipher, data, out, flag);
             i++;
             if (flag) {
                 offSet = i * MAX_ENCRYPT_BLOCK;
@@ -202,14 +201,16 @@ public class RsaCodec {
      * @param path 秘钥路径
      * @param type true公钥false私钥
      */
-    private void readKey(Path path, boolean type) throws IOException, ClassNotFoundException {
+    private Key readKey(Path path, boolean type) throws IOException, ClassNotFoundException {
         ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(path));
+        Key key;
         if (type) {
-            publicKey = (RSAPublicKey) objectInputStream.readObject();
+            key = (RSAPublicKey) objectInputStream.readObject();
         } else {
-            privateKey = (RSAPrivateKey) objectInputStream.readObject();
+            key = (RSAPrivateKey) objectInputStream.readObject();
         }
         Closee.close(objectInputStream);
+        return key;
     }
 
     /**
@@ -217,8 +218,8 @@ public class RsaCodec {
      *
      * @param path 公钥文件
      */
-    public void readPublicKey(Path path) throws IOException, ClassNotFoundException {
-        readKey(path, true);
+    public PublicKey readPublicKey(Path path) throws IOException, ClassNotFoundException {
+        return (PublicKey)readKey(path, true);
     }
 
     /**
@@ -226,8 +227,8 @@ public class RsaCodec {
      *
      * @param path 私钥文件
      */
-    public void readPrivateKey(Path path) throws IOException, ClassNotFoundException {
-        readKey(path, false);
+    public PrivateKey readPrivateKey(Path path) throws IOException, ClassNotFoundException {
+        return (PrivateKey)readKey(path, false);
     }
 
     /**
@@ -258,10 +259,8 @@ public class RsaCodec {
      * @param source 要加密的字符串
      * @return 加密后的字符串
      */
-    public String encrypt(String source) {
-        if (publicKey == null) {
-            return source;
-        }
+    public String encrypt(String source, PublicKey publicKey) {
+        this.publicKey = (RSAPublicKey) publicKey;
         String result;
         try {
             Cipher cipher = init(true);
@@ -280,10 +279,8 @@ public class RsaCodec {
      * @param source 要解密的字符串
      * @return 解密后的字符串
      */
-    public String decrypt(String source) {
-        if (privateKey == null) {
-            return source;
-        }
+    public String decrypt(String source, PrivateKey privateKey) {
+        this.privateKey = (RSAPrivateKey) privateKey;
         String result;
         try {
             Cipher cipher = init(false);
