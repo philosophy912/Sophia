@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.philosophy912</groupId>
+    <groupId>com.philosophy</groupId>
     <artifactId>sophia</artifactId>
-    <version>3.2.3</version>
+    <version>3.2.2</version>
 
     <name>sophia</name>
 
@@ -17,7 +17,7 @@
         <spring>5.2.6.RELEASE</spring>
         <logback>1.2.10</logback>
         <poi>4.1.0</poi>
-        <lombok>1.18.8</lombok>
+        <lombok>1.18.34</lombok>
         <csv>1.7</csv>
         <slf4j>1.7.30</slf4j>
         <lang3>3.9</lang3>
